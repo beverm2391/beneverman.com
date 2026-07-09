@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" role="img" aria-labelledby="title desc">
+  <title id="title">Local inference placeholder</title>
+  <desc id="desc">A simple placeholder chart for the seeded MDX post.</desc>
+  <rect width="960" height="360" fill="#f4f7f8"/>
+  <polyline points="120,260 260,210 400,232 540,150 680,168 840,92" fill="none" stroke="#1f2937" stroke-width="5"/>
+  <circle cx="120" cy="260" r="9" fill="#1f2937"/>
+  <circle cx="260" cy="210" r="9" fill="#1f2937"/>
+  <circle cx="400" cy="232" r="9" fill="#1f2937"/>
+  <circle cx="540" cy="150" r="9" fill="#1f2937"/>
+  <circle cx="680" cy="168" r="9" fill="#1f2937"/>
+  <circle cx="840" cy="92" r="9" fill="#1f2937"/>
+  <text x="120" y="314" font-family="serif" font-size="26" fill="#222">placeholder throughput sketch</text>
+</svg>

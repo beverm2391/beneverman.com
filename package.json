@@ -1,0 +1,31 @@
+{
+  "name": "beneverman.com",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "gray-matter": "4.0.3",
+    "next": "16.2.10",
+    "next-mdx-remote": "6.0.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "rehype-pretty-code": "0.14.4",
+    "remark-gfm": "4.0.1",
+    "shiki": "4.3.1",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.1.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "9.39.4",
+    "eslint-config-next": "16.2.10",
+    "typescript": "6.0.3"
+  },
+  "packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b"
+}

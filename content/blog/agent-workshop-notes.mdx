@@ -1,0 +1,35 @@
+---
+title: "Agent Workshop Notes"
+date: "2026-07-01"
+description: "A placeholder post that exercises code fences, tables, footnotes, and images."
+tags:
+  - agents
+  - notes
+---
+
+This placeholder keeps the blog pipeline honest while the source posts are still
+being located. It is intentionally plain MDX content.
+
+![Diagram placeholder](/images/blog/agent-workshop.svg)
+
+| Step | Signal |
+| --- | --- |
+| Read | The agent can recover the current map. |
+| Act | The agent makes the smallest coherent change. |
+| Verify | The behavior is proven close to the surface. |
+
+```ts
+type WorkState = "read" | "act" | "verify";
+
+export function nextState(state: WorkState) {
+  if (state === "read") {
+    return "act";
+  }
+
+  return "verify";
+}
+```
+
+The real post will replace this with the original source once it is ported.[^1]
+
+[^1]: This footnote exists to prove `remark-gfm` footnotes compile.
