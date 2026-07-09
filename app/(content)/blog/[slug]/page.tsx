@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 
@@ -46,9 +45,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <main>
-      <p>
-        <Link href="/blog">Back to blog</Link>
-      </p>
       <article>
         <header>
           <h1>{post.title}</h1>

@@ -1,0 +1,78 @@
+---
+title: "How I Built beneverman.com"
+date: "2026-07-09"
+description: "Seven versions in — how the current one comes together: shaders, a scene lab, and a bespoke MDX blog."
+tags:
+  - meta
+  - web
+  - shaders
+---
+
+I've built seven versions of my personal site over the years. This is how I
+built the current one.
+
+I wanted two things: a cool landing page I could point people to, and a blog
+where I could write.
+
+## The landing page
+
+The homepage isn't a hero image or a headline — it's a live shader. The sun
+arcs across a slow day/night cycle and casts soft shadows over the page, and the
+background warms and cools with it.
+
+![The homepage — sun-driven shadows over the intro copy](/images/blog/homepage-placeholder.svg)
+
+I gave myself a few knobs so it feels art-directed instead of random:
+
+- a sun that moves on a real 06:00–18:00 day / night cycle
+- soft shadows cast from a procedural scene (a sundial, right now)
+- a warm, paper-ish gradient behind the text
+
+To tune all of that without editing magic numbers by hand, I built a little
+**scene lab** — a layer compositor where I stack shadow / gradient / text
+layers, tweak each one live, save the ones I like, and promote a scene straight
+to the homepage.
+
+![The scene lab — a live layer compositor for the homepage](/images/blog/lab-placeholder.svg)
+
+## The blog
+
+I didn't want a docs framework for two posts. So the blog is bespoke: MDX
+compiled with a handful of standard tools, no framework to fight. The whole
+pipeline is roughly this:
+
+```ts
+// lib/blog.ts — compile an .mdx file to rendered content
+const { content, frontmatter } = await compileMDX({
+  source,
+  options: {
+    parseFrontmatter: true,
+    mdxOptions: {
+      remarkPlugins: [remarkGfm],
+      rehypePlugins: [[rehypePrettyCode, { getHighlighter }]],
+    },
+  },
+});
+```
+
+> Bespoke means my styling and my components — not a hand-rolled Markdown parser.
+
+Syntax highlighting runs at **build time** with a single `shiki` instance, so no
+highlighter JavaScript ships to your browser — the colors are baked into the
+HTML. That was the whole reason to skip a heavier setup:
+
+| feature | Fumadocs | this blog |
+| --- | --- | --- |
+| search + sidebar + nav | yes | no — don't need it |
+| MDX + build-time Shiki | yes | yes |
+| my own styling | override it | the whole point |
+
+Everything here is deliberately simple, and standard where reinventing would be
+a waste[^unified] — bespoke where it matters (the look), boring where it should
+be (the parser). Built on Next.js[^next], highlighted with Shiki[^shiki],
+shadows in three.js[^three].
+
+[^unified]: The Markdown itself is parsed by the [remark / rehype](https://unifiedjs.com) pipeline — I only own the styling and component map on top of it.
+[^next]: [nextjs.org](https://nextjs.org)
+[^shiki]: [shiki.style](https://shiki.style)
+[^three]: [threejs.org](https://threejs.org)

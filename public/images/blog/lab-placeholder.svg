@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Scene lab screenshot placeholder">
+  <rect width="1200" height="675" fill="#101013"/>
+  <rect x="40" y="40" width="300" height="595" rx="10" fill="#17171b"/>
+  <rect x="370" y="40" width="790" height="595" rx="10" fill="#f2f0ee" opacity="0.9"/>
+  <text x="600" y="345" font-family="ui-monospace, monospace" font-size="26" fill="#9a9a9a" text-anchor="middle">scene lab screenshot — placeholder</text>
+</svg>

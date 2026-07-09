@@ -11,6 +11,7 @@ import javascript from "shiki/langs/javascript.mjs";
 import json from "shiki/langs/json.mjs";
 import python from "shiki/langs/python.mjs";
 import typescript from "shiki/langs/typescript.mjs";
+import githubDark from "shiki/themes/github-dark.mjs";
 import githubLight from "shiki/themes/github-light.mjs";
 import type { Highlighter } from "shiki";
 import { z } from "zod";
@@ -36,13 +37,15 @@ export type BlogPost = BlogPostSummary & {
 };
 
 const highlighterPromise: Promise<HighlighterCore> = createHighlighterCore({
-  themes: [githubLight],
+  themes: [githubLight, githubDark],
   langs: [python, typescript, javascript, bash, json],
   engine: createJavaScriptRegexEngine()
 });
 
 const prettyCodeOptions: PrettyCodeOptions = {
-  theme: "github-light",
+  // Dual themes: tokens carry --shiki-light / --shiki-dark, switched by the
+  // .dark class in globals.css.
+  theme: { light: "github-light", dark: "github-dark" },
   keepBackground: false,
   getHighlighter: () => highlighterPromise as Promise<unknown> as Promise<Highlighter>
 };
