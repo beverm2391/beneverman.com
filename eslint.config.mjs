@@ -8,15 +8,11 @@ const eslintConfig = [
     ignores: [".next/**", "node_modules/**", "out/**"]
   },
   {
-    files: ["scene/**/*.{ts,tsx}"],
+    files: ["scene/V2ShadowLayer.tsx"],
     rules: {
-      // The scene renderer deliberately mutates Three.js objects inside R3F
-      // effects/frames and lazy-loads a component after capability checks.
-      // Keep React Compiler diagnostics visible without treating those
-      // imperative integration patterns as blocking application errors.
-      "react-hooks/immutability": "warn",
-      "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/static-components": "warn"
+      // R3F's frame loop is the ownership boundary for these Three.js scene
+      // objects; animation intentionally mutates them before each render.
+      "react-hooks/immutability": "off"
     }
   }
 ];
