@@ -55,7 +55,7 @@ I realized I could leverage [transfer learning](https://en.wikipedia.org/wiki/Tr
 
 My goal here was not to train the most performant classifier. Maybe I'll return to that in the future, for now, it's less relevant. The easiest way to boost performance would be to use a larger base model, which I did play around with.
 
-<Callout type="info" title="Update 3/31">
+<Callout type="info" title="Update 3/31/25">
 Since writing this, I've read much more literature on retinal fundus imaging and computer vision. The gold standard model architecture seems to be a U-Net with a pretrained encoder (ImageNet) for segmentation, connected to a pre-trained classifier (ImageNet). If I go any further with this project, this is the direction I'll take. Lack of annotated data is the biggest issue.
 </Callout>
 
