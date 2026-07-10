@@ -11,14 +11,21 @@ export default async function BlogIndexPage() {
 
   return (
     <main>
-      <ul className="post-list">
+      <ul className="m-0 grid list-none gap-9 p-0">
         {posts.map((post) => (
           <li key={post.slug}>
-            <div className="post-list-head">
-              <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-              <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+            <div className="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-2">
+              <Link
+                href={`/blog/${post.slug}`}
+                className="text-[1.15rem] font-semibold tracking-[-0.01em] text-fg no-underline hover:text-accent"
+              >
+                {post.title}
+              </Link>
+              <time dateTime={post.date} className="whitespace-nowrap font-mono text-[0.8rem]">
+                {formatPostDate(post.date)}
+              </time>
             </div>
-            <p>{post.description}</p>
+            <p className="mt-[0.35rem] text-muted">{post.description}</p>
           </li>
         ))}
       </ul>

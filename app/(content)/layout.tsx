@@ -11,10 +11,14 @@ export default function ContentLayout({
 }>) {
   return (
     <>
-      <header className="site-header">
-        <nav className="site-nav">
+      <header className="sticky top-0 z-10 bg-transparent">
+        <nav className="flex gap-6 px-7 py-[1.1rem]">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href}>
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-[0.95rem] text-fg no-underline hover:text-accent"
+            >
               {item.label}
             </Link>
           ))}
