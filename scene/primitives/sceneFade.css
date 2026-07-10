@@ -1,9 +1,12 @@
 /* Cross-fade pair for useFirstFrameReveal: a CSS-only fallback that ships in
    the server HTML, and the live (WebGL/canvas) layer that replaces it once it
-   has presented a real frame. Both occupy the same fixed plane so the fade
-   reads as detail arriving, not a background swap. Scenes tune the pace by
-   setting --scene-fade-ms/--scene-fade-ease on any ancestor: a live layer
-   that differs visibly from its CSS fallback wants a slow, deliberate fade. */
+   has presented a real frame. This fade is a mechanical seam, not the entrance
+   animation: keep it fast, and make the live layer's first frame match the
+   fallback so the swap is imperceptible. Aesthetic entrances belong inside the
+   live layer itself (lerp shader params — see uEntrance in the home gradient),
+   where the scene owns its own arrival. --scene-fade-ms/--scene-fade-ease are
+   overridable per scene, but a slow fade here usually means the first-frame
+   match needs fixing instead. */
 
 .scene-fallback-layer,
 .scene-live-layer {

@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { emitDebugTimelineEvent } from './debugTimeline'
 import { createPreviewDataUrl, sampleShadowSource } from './shadowPreview'
@@ -18,6 +18,15 @@ const kernelBaselineDpr = 1
 const kernelBaselineSize = 960
 const desktopShadowAspect = 16 / 9
 const rigidWarpModes = new Set<ShadowMapMode>(['window', 'mixed', 'pool', 'sundial', 'sun'])
+
+// Shadows develop over this window after the layer mounts, like the sun coming
+// out. The ramp lives in the uOpacity uniform (not a CSS overlay) so the
+// shader owns every factor of the shadow's strength.
+const ENTRANCE_SECONDS = 1.4
+
+function easeOutCubic(t: number) {
+  return 1 - (1 - t) ** 3
+}
 
 function getShadowTextureSize(width: number, height: number, resolution: number) {
   const dpr = Math.min(window.devicePixelRatio || 1, maxShadowTextureDpr)
@@ -50,6 +59,7 @@ function getSourceCameraVerticalSpan(width: number, height: number) {
 type ShadowPlaneProps = {
   crispnessScale: number
   mode: ShadowMapMode
+  opacityScale: number
   settings: ShadowSettings
   shadowTint: readonly [number, number, number]
   showSource: boolean
@@ -59,6 +69,7 @@ type ShadowPlaneProps = {
 function SourceSceneShadowPlane({
   crispnessScale,
   mode,
+  opacityScale,
   settings,
   shadowTint,
   showSource,
@@ -182,6 +193,10 @@ function SourceSceneShadowPlane({
 
     if (materialRef.current) {
       const values = materialRef.current.uniforms
+      // Every factor of shadow strength collapses into the one uniform: the
+      // tuned base opacity, the sun-elevation factor from App, and the
+      // entrance ramp. The source preview bypasses uOpacity in the shader.
+      const entrance = easeOutCubic(Math.min(1, elapsedTimeRef.current / ENTRANCE_SECONDS))
       values.uTime.value = elapsedTimeRef.current
       values.uAnimationSpeed.value = settings.speed
       values.uAnimationStrength.value = settings.wind
@@ -191,7 +206,7 @@ function SourceSceneShadowPlane({
       values.uLayerSpread.value = settings.layerSpread
       values.uLightGlow.value = settings.lightGlow
       values.uLightRays.value = settings.lightRays
-      values.uOpacity.value = settings.opacity
+      values.uOpacity.value = settings.opacity * (showSource ? 1 : opacityScale * entrance)
       values.uRayDiffusion.value = settings.rayDiffusion
       values.uSampleCount.value = settings.sampleCount
       values.uShadowContrast.value = settings.contrast
@@ -250,7 +265,6 @@ function SourceSceneShadowPlane({
 }
 
 type V2ShadowLayerProps = Omit<ShadowPlaneProps, 'showSource'> & {
-  opacityScale: number
   showSource?: boolean
 }
 
@@ -263,23 +277,12 @@ export default function V2ShadowLayer({
   showSource = false,
   sunAngle,
 }: V2ShadowLayerProps) {
-  const [isVisible, setIsVisible] = useState(false)
-
   useEffect(() => {
     emitDebugTimelineEvent('v2 source scene mounted')
   }, [])
 
-  useEffect(() => {
-    const frameId = requestAnimationFrame(() => setIsVisible(true))
-    return () => cancelAnimationFrame(frameId)
-  }, [])
-
   return (
-    <div
-      className={`daylight-shadow-layer ${isVisible ? 'is-visible' : ''}`}
-      aria-hidden="true"
-      style={{ ['--shadow-opacity' as string]: showSource ? 1 : opacityScale }}
-    >
+    <div className="daylight-shadow-layer" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 1], near: 0.1, far: 10 }}
         dpr={[1, 1.5]}
@@ -289,6 +292,7 @@ export default function V2ShadowLayer({
         <SourceSceneShadowPlane
           crispnessScale={crispnessScale}
           mode={mode}
+          opacityScale={opacityScale}
           settings={settings}
           shadowTint={shadowTint}
           showSource={showSource}

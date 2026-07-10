@@ -6,8 +6,9 @@ import backgroundFragmentShader from './shaders/home-background.frag.glsl'
 import backgroundVertexShader from './shaders/home-background.vert.glsl'
 
 // How long the sun takes to bloom into the scene after the first presented
-// frame. Slightly longer than the CSS cross-fade (--scene-fade-ms) so the
-// canvas is fully in before the bloom finishes.
+// frame. The bloom is the entire entrance: the CSS cross-fade underneath is a
+// fast mechanical seam between the fallback and the shader's entrance=0 frame,
+// which are tuned to look alike.
 const ENTRANCE_MS = 1600
 
 function easeOutCubic(t: number) {

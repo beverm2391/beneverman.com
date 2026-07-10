@@ -6,11 +6,6 @@
   overflow: hidden;
   isolation: isolate;
   --site-inline-padding: clamp(1.25rem, 4vw, 4rem);
-  /* The WebGL gradient is much richer than its CSS fallback, so the swap
-     needs a slow cross-fade (paired with the shader's uEntrance bloom) to
-     read as the scene waking up rather than a background flash. */
-  --scene-fade-ms: 900ms;
-  --scene-fade-ease: cubic-bezier(0.33, 0, 0.2, 1);
   padding: var(--site-inline-padding);
   color: #171717;
   background: #f2f0ee;
@@ -23,20 +18,13 @@
   pointer-events: none;
 }
 
+/* Shadow strength (entrance ramp, sun-elevation factor, tuned opacity) lives
+   entirely in the shader's uOpacity uniform — see V2ShadowLayer. */
 .daylight-shadow-layer {
   position: fixed;
   inset: 0;
   z-index: 1;
-  opacity: 0;
   pointer-events: none;
-  /* Shadows develop slowly after the gradient's entrance, like the sun
-     coming out — a fast fade here reads as a layer popping in. */
-  transition: opacity 1400ms cubic-bezier(0.33, 0, 0.2, 1);
-  will-change: opacity;
-}
-
-.daylight-shadow-layer.is-visible {
-  opacity: var(--shadow-opacity, 0.24);
 }
 
 .daylight-shadow-layer canvas {
