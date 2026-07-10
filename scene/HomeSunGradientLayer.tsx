@@ -22,10 +22,12 @@ function createShader(gl: WebGLRenderingContext | WebGL2RenderingContext, type: 
 }
 
 export function HomeSunGradientLayer({
+  className,
   mode,
   onFirstFrame,
   sunAngle,
 }: {
+  className?: string
   mode: BackgroundModeConfig
   onFirstFrame?: () => void
   sunAngle: number
@@ -186,5 +188,11 @@ export function HomeSunGradientLayer({
     }
   }, [mode])
 
-  return <canvas aria-hidden="true" className="scene-live-layer" ref={canvasRef} />
+  return (
+    <canvas
+      aria-hidden="true"
+      className={`scene-live-layer${className ? ` ${className}` : ''}`}
+      ref={canvasRef}
+    />
+  )
 }

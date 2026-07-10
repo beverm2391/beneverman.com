@@ -23,6 +23,18 @@
   opacity: 1;
 }
 
+/* Per-layer variant: opacity only, applied directly to a layer's element so
+   each layer fades in the moment it is ready. The transition is compositor-
+   driven, so a later layer's shader compile can't stutter an in-flight fade. */
+.scene-arrival-layer {
+  opacity: 0;
+  transition: opacity 450ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scene-arrival-layer.is-ready {
+  opacity: 1;
+}
+
 /* Fullscreen canvas plane for live (WebGL) scene layers. */
 .scene-live-layer {
   position: fixed;

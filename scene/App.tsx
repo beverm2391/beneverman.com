@@ -66,11 +66,12 @@ function App() {
   const [shadowMapMode, setShadowMapMode] = useState<ShadowMapMode>(responsiveVisualConfig.shadowMapMode)
   const shouldRenderShadowLayer = shadowMapMode !== 'sun'
   const wantsShadowLayer = shadowCapability.enabled && shouldRenderShadowLayer
-  // The 500ms delay keeps the shadow's Three.js init and shader compile off
-  // the critical path of first paint and hydration.
-  const isShadowLayerReady = useDeferredMount(wantsShadowLayer, 'shadow', 500)
-  // The WebGL layers fade in as one unit once every wanted layer has drawn a
-  // real frame. DOM/CSS content (intro, sun widget) is never gated on this.
+  // Yield briefly so hydration wins the main thread before Three.js init;
+  // per-layer arrival means nothing visible waits on the shadow, so no
+  // longer pad is needed.
+  const isShadowLayerReady = useDeferredMount(wantsShadowLayer, 'shadow', 100)
+  // Each WebGL layer fades in the moment its own first frame is GPU-verified
+  // (per-layer choreography). DOM/CSS content is never gated on this.
   const arrival = useSceneArrival(wantsShadowLayer ? ['gradient', 'shadow'] : ['gradient'])
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
   const shadowSourcePreview = useShadowSourcePreview()
@@ -219,25 +220,25 @@ function App() {
 
   return (
     <>
-      <div className={arrival.className}>
-        <div className="visual-scene-layer" aria-hidden="true">
-          <HomeSunGradientLayer
-            mode={backgroundMode}
-            onFirstFrame={() => arrival.markLive('gradient')}
+      <div className="visual-scene-layer" aria-hidden="true">
+        <HomeSunGradientLayer
+          className={arrival.layerClassName('gradient')}
+          mode={backgroundMode}
+          onFirstFrame={() => arrival.markLive('gradient')}
+          sunAngle={effectiveSunAngle}
+        />
+        {wantsShadowLayer && isShadowLayerReady ? (
+          <DeferredShadowLayer
+            className={arrival.layerClassName('shadow')}
+            crispnessScale={shadowCrispnessScale}
+            mode={shadowMapMode}
+            onFirstFrame={() => arrival.markLive('shadow')}
+            opacityScale={shadowFactor}
+            settings={shadowSettings}
+            shadowTint={shadowTint}
             sunAngle={effectiveSunAngle}
           />
-          {wantsShadowLayer && isShadowLayerReady ? (
-            <DeferredShadowLayer
-              crispnessScale={shadowCrispnessScale}
-              mode={shadowMapMode}
-              onFirstFrame={() => arrival.markLive('shadow')}
-              opacityScale={shadowFactor}
-              settings={shadowSettings}
-              shadowTint={shadowTint}
-              sunAngle={effectiveSunAngle}
-            />
-          ) : null}
-        </div>
+        ) : null}
       </div>
       {sunWidget === 'none' ? null : (
         <HomeSunStatus angle={effectiveSunAngle} variant={sunWidget} />

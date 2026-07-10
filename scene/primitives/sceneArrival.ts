@@ -3,11 +3,10 @@ import { emitDebugTimelineEvent } from '../debugTimeline'
 import './sceneArrival.css'
 
 // The scene arrival paradigm: server-rendered content paints on the shell's
-// flat background, every WebGL layer mounts inside a `.scene-arrival`
-// container at opacity 0, and the stack fades in ONCE when every wanted
-// layer has presented a real frame. There is no CSS stand-in imitating the
-// shaders — matching a live render with static CSS is what caused seam
-// flashes. No-JS/no-WebGL visitors simply keep the clean flat page.
+// flat background, and WebGL layers fade in from it only once real frames
+// exist. There is no CSS stand-in imitating the shaders — matching a live
+// render with static CSS is what caused seam flashes. No-JS/no-WebGL
+// visitors simply keep the clean flat page.
 //
 // Gate only layers that need to prove a frame (canvases). Plain DOM/CSS
 // pieces (copy, indicators, widgets) are content: server-render them for
@@ -21,11 +20,14 @@ import './sceneArrival.css'
 //   (see gpuFrameFence.ts) — never on mount, chunk load, or merely-queued
 //   draw calls, so a failed context or a stalled shader compile leaves the
 //   flat page instead of fading in an empty layer.
-// - Spread `className` onto the container(s) wrapping the layers.
 //
-// If some layers go live but the rest stall past `graceMs`, the scene fades
-// in with what it has rather than never appearing (a later layer then appears
-// without its own fade — rare enough not to choreograph).
+// Two choreographies, both derived from the same live-layer registry:
+// - Per-layer (preferred): put `layerClassName(name)` on each layer's
+//   element; every layer fades in the moment IT is ready, so a fast gradient
+//   isn't held hostage by a heavy shadow chunk.
+// - Together: wrap the stack in `className`; it fades once when every wanted
+//   layer is live, with `graceMs` as a straggler cap so the scene still
+//   appears if one layer stalls.
 export function useSceneArrival(wantedLayers: readonly string[], graceMs = 3500) {
   const [liveLayers, setLiveLayers] = useState<ReadonlySet<string>>(new Set())
   const [graceElapsed, setGraceElapsed] = useState(false)
@@ -61,9 +63,15 @@ export function useSceneArrival(wantedLayers: readonly string[], graceMs = 3500)
     performance.mark('scene:arrival')
   }, [isReady])
 
+  const layerClassName = useCallback(
+    (layer: string) => `scene-arrival-layer${liveLayers.has(layer) ? ' is-ready' : ''}`,
+    [liveLayers],
+  )
+
   return {
     isReady,
     markLive,
+    layerClassName,
     className: `scene-arrival${isReady ? ' is-ready' : ''}`,
   }
 }

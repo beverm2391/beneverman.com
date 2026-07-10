@@ -26,10 +26,11 @@ Flows worth driving:
   client-only: server HTML has no scene markup by design. For the full no-JS
   state: agent-browser `network_route` with `resourceType: script, abort:
   true`, reload, screenshot — flat shell background + readable copy.
-- **Scene arrival**: after JS load, the `.scene-arrival` wrapper gains
-  `.is-ready` once every wanted layer has drawn a frame, and the whole scene
-  (gradient, shadow, sun widget) fades in as one unit. Debug timeline logs
-  `gradient live` / `shadow live` / `scene arrival`.
+- **Scene arrival**: each WebGL layer carries `.scene-arrival-layer` and gains
+  `.is-ready` the moment its own first frame is GPU-fence-verified — gradient
+  first (~250ms), shadow later. The load ladder is measurable post-hoc:
+  `performance.getEntriesByType('mark')` gives `scene:gradient-live`,
+  `scene:shadow-live`, `scene:arrival`.
 - **Debug panel**: `/?debug` — type tab sliders must restyle the intro copy
   (inline vars on `main.site-shell` change); shadow tab background buttons
   (paper/amber/…) must change shell + documentElement background. Range inputs

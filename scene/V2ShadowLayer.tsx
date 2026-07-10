@@ -279,10 +279,12 @@ function SourceSceneShadowPlane({
 }
 
 type V2ShadowLayerProps = Omit<ShadowPlaneProps, 'showSource'> & {
+  className?: string
   showSource?: boolean
 }
 
 export default function V2ShadowLayer({
+  className,
   crispnessScale,
   mode,
   onFirstFrame,
@@ -297,7 +299,10 @@ export default function V2ShadowLayer({
   }, [])
 
   return (
-    <div className="daylight-shadow-layer" aria-hidden="true">
+    <div
+      className={`daylight-shadow-layer${className ? ` ${className}` : ''}`}
+      aria-hidden="true"
+    >
       <Canvas
         camera={{ position: [0, 0, 1], near: 0.1, far: 10 }}
         // The display pass runs uSampleCount blur taps per fragment, so its
