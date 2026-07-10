@@ -20,10 +20,12 @@ Package manager: `pnpm`. Do not add npm or Yarn lockfiles.
 - `pnpm build` — Next production build plus artifact assertions for home SSR,
   lab exclusion, and RSS
 
-CI runs the repository line check, `pnpm check`, and `pnpm build`. The tracked
-pre-commit hook runs the staged line check and ESLint. Source warns at 400
-physical lines and blocks at 450; `PROMPT.md` warns at 250 and blocks at 300.
-GLSL is source and follows the same limit. `pnpm install` configures the hook.
+CI exposes four independent required checks: LOC, ESLint, TypeScript, and unit
+tests. Browser/E2E and production builds are intentionally outside the PR gate
+for now. The tracked pre-commit hook runs the staged line check and ESLint.
+Source warns at 400 physical lines and blocks at 450; `PROMPT.md` warns at 250
+and blocks at 300. GLSL is source and follows the same limit. `pnpm install`
+configures the hook.
 
 ## Architecture
 

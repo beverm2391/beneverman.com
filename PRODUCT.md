@@ -54,10 +54,11 @@ open gates.
 
 ### Repository gates
 
-- CI blocks on the repository line limit, ESLint errors, TypeScript, behavioral
-  tests, and the production build.
-- The build additionally asserts home SSR, lab client-asset exclusion, and RSS
-  output. This is the regression proof for the product boundaries above.
+- CI reports four independent blocking checks: the repository line limit,
+  ESLint, TypeScript, and deterministic unit tests. Browser/E2E coverage is not
+  part of the PR gate for now.
+- `pnpm build` remains the manual/release proof for home SSR, the production lab
+  404 and client-asset exclusion, and RSS output.
 
 ## Open gates
 
