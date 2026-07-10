@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { HomeBackgroundFallback } from './HomeBackgroundFallback'
 import type { BackgroundModeConfig } from './HomeSunGradientConfig'
 import backgroundFragmentShader from './shaders/home-background.frag.glsl'
 import backgroundVertexShader from './shaders/home-background.vert.glsl'
@@ -75,6 +76,7 @@ export function HomeSunGradientLayer({
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frameId = 0
     let startTime = performance.now()
+    let hasPresentedFrame = false
 
     const resize = () => {
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
@@ -112,6 +114,14 @@ export function HomeSunGradientLayer({
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 
+      // Never dismiss the durable fallback merely because the component
+      // mounted. Keep it until WebGL has actually produced a frame; failed or
+      // unavailable contexts continue to show the complete static scene.
+      if (!hasPresentedFrame) {
+        hasPresentedFrame = true
+        setIsVisible(true)
+      }
+
       if (!motionQuery.matches) frameId = requestAnimationFrame(render)
     }
 
@@ -146,17 +156,15 @@ export function HomeSunGradientLayer({
     }
   }, [mode])
 
-  useEffect(() => {
-    const frameId = requestAnimationFrame(() => setIsVisible(true))
-    return () => cancelAnimationFrame(frameId)
-  }, [])
-
   return (
-    <canvas
-      aria-hidden="true"
-      className="background-shader-layer"
-      ref={canvasRef}
-      style={{ opacity: isVisible ? 1 : 0 }}
-    />
+    <>
+      <HomeBackgroundFallback hidden={isVisible} mode={mode} sunAngle={sunAngle} />
+      <canvas
+        aria-hidden="true"
+        className="background-shader-layer"
+        ref={canvasRef}
+        style={{ opacity: isVisible ? 1 : 0 }}
+      />
+    </>
   )
 }

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { emitDebugTimelineEvent } from './debugTimeline'
 import { HomeDebugPanel } from './HomeDebugPanel'
 import { HomePageContent } from './HomePageContent'
+import { HomeSunStatus } from './HomeSunStatus'
 import {
   getResponsiveVisualConfig,
   DeferredShadowLayer,
@@ -30,8 +31,7 @@ import { HomeSunGradientLayer } from './HomeSunGradientLayer'
 import { getHomeIntroStyle } from './homeVisualConfig'
 import { activeSiteConfig } from './siteScene'
 import { shadowMapModes, type ShadowMapMode } from './shadowMapModes'
-import { getShadowFactor, SunWidget } from './SunWidget'
-import { cycleTimeAtSunAngle, formatTimeOfDay, sunCycleDurationSeconds } from './sunClock'
+import { getShadowFactor } from './SunWidget'
 
 function smoothstep(edge0: number, edge1: number, x: number) {
   const t = Math.min(Math.max((x - edge0) / (edge1 - edge0), 0), 1)
@@ -216,12 +216,7 @@ function App() {
         ) : null}
       </div>
       {sunWidget === 'none' ? null : (
-        <div className="sun-angle-widget" aria-hidden="true">
-          <SunWidget angle={effectiveSunAngle} variant={sunWidget} />
-          <span className="sun-widget-clock">
-            {formatTimeOfDay(cycleTimeAtSunAngle(Math.PI - effectiveSunAngle) / sunCycleDurationSeconds)}
-          </span>
-        </div>
+        <HomeSunStatus angle={effectiveSunAngle} variant={sunWidget} />
       )}
       <HomePageContent />
       {isDebug ? (

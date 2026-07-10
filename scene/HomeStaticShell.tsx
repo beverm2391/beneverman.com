@@ -1,5 +1,7 @@
 import { backgroundModes } from "./HomeSunGradientConfig";
+import { HomeBackgroundFallback } from "./HomeBackgroundFallback";
 import { HomePageContent } from "./HomePageContent";
+import { HomeSunStatus } from "./HomeSunStatus";
 import { getHomeIntroStyle } from "./homeVisualConfig";
 import { activeSiteConfig } from "./siteScene";
 
@@ -17,6 +19,18 @@ export function HomeStaticShell() {
         backgroundColor: backgroundMode.color
       }}
     >
+      <div className="visual-scene-layer" aria-hidden="true">
+        <HomeBackgroundFallback
+          mode={backgroundMode}
+          sunAngle={activeSiteConfig.shadowSettings.sunAngle}
+        />
+      </div>
+      {activeSiteConfig.showSunWidget ? (
+        <HomeSunStatus
+          angle={activeSiteConfig.shadowSettings.sunAngle}
+          variant={activeSiteConfig.sunWidget}
+        />
+      ) : null}
       <HomePageContent />
     </main>
   );

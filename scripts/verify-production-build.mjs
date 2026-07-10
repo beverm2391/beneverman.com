@@ -20,6 +20,11 @@ function assert(condition, message) {
 
 const homeHtml = await fs.readFile(path.join(root, ".next/server/app/index.html"), "utf8");
 assert(homeHtml.includes("Ben Everman"), "homepage HTML does not contain the server-rendered intro");
+assert(
+  homeHtml.includes("background-fallback-layer"),
+  "homepage HTML does not contain the static scene background"
+);
+assert(homeHtml.includes("sun-angle-widget"), "homepage HTML does not contain the static sun widget");
 
 const labMeta = JSON.parse(await fs.readFile(path.join(root, ".next/server/app/lab.meta"), "utf8"));
 assert(labMeta.status === 404, "production /lab route is not a 404");
@@ -41,4 +46,4 @@ const feedBodies = serverFiles.filter((file) => file.endsWith("feed.xml.body"));
 assert(feedBodies.length === 1, "RSS feed was not emitted as a static route");
 assert((await fs.readFile(feedBodies[0], "utf8")).includes('<rss version="2.0">'), "RSS output is invalid");
 
-console.log("Production build verification passed: SSR home, lab 404/exclusion, and RSS output.");
+console.log("Production build verification passed: complete SSR home, lab 404/exclusion, and RSS output.");
