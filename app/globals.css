@@ -269,6 +269,24 @@ main {
   padding: 0.4rem 0.6rem;
 }
 
+/* Footnotes (remark-gfm renders section[data-footnotes]): smaller, muted,
+   and tight — the body-prose paragraph margins are what made items float
+   apart. Placed after the p/list rules so these later equal-specificity
+   overrides win. */
+.prose :where(section[data-footnotes]) {
+  margin-top: 3rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.prose :where(section[data-footnotes] p) {
+  margin: 0;
+}
+
+.prose :where(section[data-footnotes] li) {
+  margin: 0.3rem 0;
+}
+
 /* react-medium-image-zoom lightbox: overlay follows the theme (the library
    default is hard white, which flashes in dark mode), the open/close morph
    runs on the house curve, and the magnifier cursors are replaced with plain
