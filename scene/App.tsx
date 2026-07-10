@@ -114,6 +114,23 @@ function App() {
 
   useEffect(() => emitDebugTimelineEvent('app mounted'), [])
 
+  // Clicking the open scene should release any text selection. Empty-area
+  // clicks land on the shell itself (the visual layers are
+  // pointer-events: none), and the browser doesn't reliably collapse the
+  // selection for them, so clear it unless the press is on text or a control.
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      if (target.closest('.intro, .inspiration-footer, header, a, button, input, select, textarea, label')) {
+        return
+      }
+      getSelection()?.removeAllRanges()
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [])
+
   // Take over the sun indicator from the server-rendered copy: identical
   // geometry, so the handoff to the animated version is invisible.
   useEffect(() => {
