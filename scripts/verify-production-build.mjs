@@ -21,7 +21,7 @@ function assert(condition, message) {
 const homeHtml = await fs.readFile(path.join(root, ".next/server/app/index.html"), "utf8");
 assert(homeHtml.includes("Ben Everman"), "homepage HTML does not contain the server-rendered intro");
 assert(
-  homeHtml.includes("background-fallback-layer"),
+  homeHtml.includes("scene-fallback-layer"),
   "homepage HTML does not contain the static scene background"
 );
 assert(homeHtml.includes("sun-angle-widget"), "homepage HTML does not contain the static sun widget");

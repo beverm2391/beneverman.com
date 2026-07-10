@@ -99,7 +99,10 @@ export function HomeSunGradientLayer({
     let lastFrameAt = 0
 
     const resize = () => {
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+      // Cap below full retina: the output is a soft gradient, and the fbm
+      // noise runs per fragment every frame — 1.5x cuts ~44% of that cost
+      // vs 2x with no visible difference.
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5)
       const width = Math.max(1, Math.floor(canvas.clientWidth * pixelRatio))
       const height = Math.max(1, Math.floor(canvas.clientHeight * pixelRatio))
 

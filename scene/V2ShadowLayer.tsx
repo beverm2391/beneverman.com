@@ -289,7 +289,12 @@ export default function V2ShadowLayer({
     <div className="daylight-shadow-layer" aria-hidden="true">
       <Canvas
         camera={{ position: [0, 0, 1], near: 0.1, far: 10 }}
-        dpr={[1, 1.5]}
+        // The display pass runs uSampleCount blur taps per fragment, so its
+        // pixel count is the page's dominant GPU cost (measured: 12fps at
+        // dpr 1.5 / 100 taps on an M-series laptop). The output is soft blur,
+        // so rendering at dpr 1 and letting the compositor upscale is
+        // invisible — and ~2x cheaper on retina displays.
+        dpr={1}
         gl={{ alpha: true, antialias: true }}
         onCreated={({ gl }) => gl.setClearColor(0xf2f0ee, 0)}
       >

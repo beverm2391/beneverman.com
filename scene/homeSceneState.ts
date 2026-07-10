@@ -118,7 +118,11 @@ export function useAnimatedSunAngle(baseSunAngle: number) {
     const animate = () => {
       const elapsed = (performance.now() - startedAt) / 1000
       const nextAngle = Math.PI - sunAngleAtCycleTime((startCycleTime + elapsed) % sunCycleDurationSeconds)
-      if (Math.abs(nextAngle - publishedAngleRef.current) > 0.0008) {
+      // Every publish re-renders App and pushes props through the R3F tree,
+      // so the threshold sets a permanent background re-render rate. At the
+      // ~0.019 rad/s cycle speed, 0.004 rad publishes ~5x/s — imperceptible
+      // for the soft gradient/shadow motion, vs ~24x/s at the old 0.0008.
+      if (Math.abs(nextAngle - publishedAngleRef.current) > 0.004) {
         publishedAngleRef.current = nextAngle
         setAnimatedAngle(nextAngle)
       }

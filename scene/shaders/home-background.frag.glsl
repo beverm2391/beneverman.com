@@ -70,7 +70,10 @@ void main() {
     shapedLight + (paperNoise - 0.5) * 0.08
   );
 
-  float entrance = mix(0.22, 1.0, uEntrance);
+  // Entrance floor 0.55 is calibrated against HomeBackgroundFallback's CSS
+  // gradient: at uEntrance=0 this frame should look like the fallback, so the
+  // seam swap is invisible and the lerp to 1.0 reads as a short deepening.
+  float entrance = mix(0.55, 1.0, uEntrance);
   sunMix *= entrance;
   sunGlow *= entrance;
 
