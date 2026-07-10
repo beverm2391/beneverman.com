@@ -12,10 +12,13 @@ export async function listScenes(): Promise<Scene[]> {
   return res.json()
 }
 
-export async function saveScene(scene: Scene): Promise<void> {
+export async function saveScene(scene: Scene, previousId: string | null = null): Promise<void> {
   const res = await fetch(ROUTE, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(previousId ? { 'X-Previous-Scene-Id': previousId } : {}),
+    },
     body: JSON.stringify(scene),
   })
   if (!res.ok) throw new Error(`saveScene failed: ${res.status}`)
@@ -32,14 +35,14 @@ export async function getPromoted(): Promise<string | null> {
   const res = await fetch(PROMOTED_ROUTE)
   if (!res.ok) throw new Error(`getPromoted failed: ${res.status}`)
   const body = await res.json()
-  return typeof body.id === 'string' ? body.id : null
+  return typeof body.scene?.id === 'string' ? body.scene.id : null
 }
 
-export async function setPromoted(id: string | null): Promise<void> {
+export async function setPromoted(scene: Scene | null): Promise<void> {
   const res = await fetch(PROMOTED_ROUTE, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ scene }),
   })
   if (!res.ok) throw new Error(`setPromoted failed: ${res.status}`)
 }

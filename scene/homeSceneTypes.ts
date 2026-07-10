@@ -28,10 +28,10 @@ export type SunWidgetChoice = SunWidgetVariant | 'none'
 export const sunWidgetChoices = ['none', ...sunWidgetVariants] as const
 
 export const fontModes = [
-  { label: 'inter', stack: 'Inter, ui-sans-serif, system-ui, sans-serif' },
-  { label: 'geist', stack: 'Geist, Inter, ui-sans-serif, sans-serif' },
-  { label: 'open sans', stack: '"Open Sans", Inter, ui-sans-serif, sans-serif' },
-  { label: 'rubik', stack: 'Rubik, Inter, ui-sans-serif, sans-serif' },
+  { label: 'inter', stack: 'var(--font-inter), ui-sans-serif, system-ui, sans-serif' },
+  { label: 'geist', stack: 'Geist, var(--font-inter), ui-sans-serif, sans-serif' },
+  { label: 'open sans', stack: '"Open Sans", var(--font-inter), ui-sans-serif, sans-serif' },
+  { label: 'rubik', stack: 'Rubik, var(--font-inter), ui-sans-serif, sans-serif' },
 ] as const
 
 export type FontMode = (typeof fontModes)[number]['label']

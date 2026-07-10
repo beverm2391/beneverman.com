@@ -1,6 +1,6 @@
-// Renders a Scene's enabled layers as stacked, absolutely-positioned layers.
-// Shared between the lab viewer and (via a saved scene JSON) the homepage, so
-// "what you tuned" and "what ships" render through exactly one code path.
+// Renders the lab's enabled layers as an absolutely-positioned stack.
+// Promotion maps the saved values into the homepage's responsive renderer;
+// the homepage keeps its own battery and reduced-motion behavior.
 
 import { getLayerDef } from './layers'
 import type { Scene } from './scene'

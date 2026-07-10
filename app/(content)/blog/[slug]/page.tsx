@@ -24,7 +24,22 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 
     return {
       title: post.title,
-      description: post.description
+      description: post.description,
+      alternates: { canonical: `/blog/${post.slug}` },
+      openGraph: {
+        type: "article",
+        title: post.title,
+        description: post.description,
+        url: `/blog/${post.slug}`,
+        publishedTime: `${post.date}T00:00:00Z`,
+        authors: ["Ben Everman"],
+        tags: post.tags
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description: post.description
+      }
     };
   } catch {
     return {};

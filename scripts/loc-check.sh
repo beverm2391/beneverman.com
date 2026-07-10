@@ -25,7 +25,7 @@ should_check() {
   [[ "$file" == *node_modules/* || "$file" == *.generated.* || "$file" == *.d.ts ]] && return 1
   [[ "$(basename "$file")" == "PROMPT.md" ]] && return 0
   case "${file##*.}" in
-    ts|tsx|js|jsx|py|go|rs|swift|sh) return 0 ;;
+    ts|tsx|js|jsx|py|go|rs|swift|sh|glsl) return 0 ;;
     *) return 1 ;;
   esac
 }

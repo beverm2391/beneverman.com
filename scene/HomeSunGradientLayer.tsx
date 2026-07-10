@@ -72,6 +72,7 @@ export function HomeSunGradientLayer({
     const coolLocation = gl.getUniformLocation(program, 'uCool')
     const glowStrengthLocation = gl.getUniformLocation(program, 'uGlowStrength')
     const sunAngleLocation = gl.getUniformLocation(program, 'uSunAngle')
+    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frameId = 0
     let startTime = performance.now()
 
@@ -89,6 +90,7 @@ export function HomeSunGradientLayer({
     }
 
     const render = (now: number) => {
+      frameId = 0
       resize()
       gl.useProgram(program)
       gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
@@ -101,7 +103,7 @@ export function HomeSunGradientLayer({
       gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0)
 
       gl.uniform2f(resolutionLocation, canvas.width, canvas.height)
-      gl.uniform1f(timeLocation, (now - startTime) / 1000)
+      gl.uniform1f(timeLocation, motionQuery.matches ? 0 : (now - startTime) / 1000)
       gl.uniform3fv(baseLocation, mode.shader.base)
       gl.uniform3fv(midLocation, mode.shader.mid)
       gl.uniform3fv(glowLocation, mode.shader.glow)
@@ -110,19 +112,33 @@ export function HomeSunGradientLayer({
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 
-      frameId = requestAnimationFrame(render)
+      if (!motionQuery.matches) frameId = requestAnimationFrame(render)
+    }
+
+    const scheduleRender = () => {
+      if (frameId === 0) frameId = requestAnimationFrame(render)
     }
 
     const handleVisibilityChange = () => {
       startTime = performance.now()
+      scheduleRender()
+    }
+
+    const handleMotionChange = () => {
+      cancelAnimationFrame(frameId)
+      frameId = 0
+      startTime = performance.now()
+      scheduleRender()
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
-    frameId = requestAnimationFrame(render)
+    motionQuery.addEventListener('change', handleMotionChange)
+    scheduleRender()
 
     return () => {
       cancelAnimationFrame(frameId)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      motionQuery.removeEventListener('change', handleMotionChange)
       gl.deleteBuffer(buffer)
       gl.deleteProgram(program)
       gl.deleteShader(vertexShader)

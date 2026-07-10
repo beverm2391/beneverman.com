@@ -1,78 +1,60 @@
 # beneverman.com — dev knowledge
 
-Canonical personal site: Next.js (App Router) + TypeScript. Three surfaces:
-an art-first **landing** (WebGL sun/shadow scene), a bespoke **MDX blog**, and a
-dev-only **scene lab** that authors the landing visuals. Product promise,
-acceptance, and open gates live in `PRODUCT.md`. Work is tracked in the Linear
-project **Personal Website** (BCP).
+Canonical personal site: Next.js App Router + TypeScript. It has an art-first
+landing, an MDX blog, and a development-only scene lab. Product promise, proof,
+and open gates live in `PRODUCT.md`; work state lives in Linear's **Personal
+Website** project.
 
-The landing renderer + lab were ported from the archived `beneverman.com-v7`
-(Vite + three.js); that repo remains the historical source.
+The renderer and lab originated in the archived `beneverman.com-v7`, which is
+historical source rather than a second owner.
 
-## Status
+## Commands and gates
 
-Home, blog, and lab are all live and on one styling system. The blog runs on
-**Tailwind v4** with **Geist** as the display font; the landing + lab are ported
-and working. Remaining cleanup is tracked in Linear (e.g. lifting the home
-composition out of the 1,200-line `scene/App.tsx`).
+Package manager: `pnpm`. Do not add npm or Yarn lockfiles.
 
-## Commands
+- `pnpm dev` — local development
+- `pnpm lint` — blocking ESLint errors
+- `pnpm typecheck` — TypeScript without emit
+- `pnpm test` — deterministic Vitest suite
+- `pnpm check` — lint, typecheck, and tests
+- `pnpm build` — Next production build plus artifact assertions for home SSR,
+  lab exclusion, and RSS
 
-Package manager: `pnpm` (do not add npm/yarn lockfiles).
+CI runs the repository line check, `pnpm check`, and `pnpm build`. The tracked
+pre-commit hook runs the staged line check and ESLint. Source warns at 400
+physical lines and blocks at 450; `PROMPT.md` warns at 250 and blocks at 300.
+GLSL is source and follows the same limit. `pnpm install` configures the hook.
 
-- Dev server: `pnpm dev`
-- Build: `pnpm build`
-- Lint: `pnpm lint`
-- Typecheck: `pnpm typecheck` — a `.next/types/validator` race against a running
-  dev server can print two spurious errors about blog `page.js` modules; `next
-  build` is the authority.
-- Checks: `pnpm check` runs blocking ESLint errors + TypeScript. Pre-commit
-  additionally warns at 400 physical lines and blocks at 450; `PROMPT.md`
-  warns at 250 and blocks at 300. `pnpm install` configures the tracked hook.
+## Architecture
 
-## Layout
+- The root page uses `scene/HomeMount`. The WebGL app remains a client-only
+  dynamic chunk, but its loading/no-JavaScript state is the complete
+  server-rendered `HomeStaticShell`. Never replace that fallback with `null`.
+- Blog routes live under `app/(content)/blog`; content lives in
+  `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
+  `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
+  component map. Metadata/feed routes should import the data-only module.
+- The lab lives at `/lab`. `next.config.ts` aliases the exact `LabMount` import
+  to `LabUnavailable` during production builds. Preserve that boundary and the
+  build assertion that checks lab JS/CSS cannot leak into static assets.
+- Development lab persistence uses `/lab-io/*` route handlers and
+  `scene/lab/scenes/*.json`. Promoting writes the full validated production
+  snapshot to `scene/lab/promoted.json`; there is no manual scene registry.
+- Shaders are `.glsl` files under `scene/shaders` and load as raw text through
+  the Turbopack rule in `next.config.ts`.
 
-- `app/page.tsx` — the landing (`/`), mounts the scene client-only via
-  `scene/HomeMount` (`dynamic(ssr:false)`; the scene reads `window` + WebGL).
-- `app/(content)/` — the blog route group: `layout.tsx` (header/nav, theme
-  toggle, `PaperBackground`, `PaperDebug`), `blog/page.tsx` (index),
-  `blog/[slug]/page.tsx` (SSG posts).
-- `app/lab/page.tsx` — the scene lab (`/lab`), dev-only (`notFound()` in prod),
-  mounts `scene/lab/LabMount` client-only.
-- `app/lab-io/` — dev-only Next route handlers for lab scene persistence
-  (`/lab-io/scenes` GET/PUT + `[id]` DELETE, `/lab-io/promoted` GET/PUT),
-  reading/writing `scene/lab/scenes/*.json` + `promoted.json`. (Endpoints avoid
-  a leading `_`, since Next treats `_folders` as private/unrouted.)
-- `scene/` — the ported landing + lab + shared sun/shadow renderer (App.tsx,
-  V2ShadowLayer, HomeSunGradientLayer, SunWidget, shaders, configs, and
-  `scene/lab/`). Framework-agnostic React copied near-verbatim from v7.
-- `content/blog/*.mdx` — blog source data. `public/images/blog/` — post images.
-- `lib/blog.ts` — post discovery, zod frontmatter validation, the MDX compile
-  pipeline, and the `mdxComponents` map (posts may only use registered
-  components: `Summary`, `Callout`).
-- `components/mdx/` — bespoke MDX components. `components/ui/` — Coss primitives
-  (base-ui) used by the lab. `components/debug/paper-debug.tsx` — the draggable
-  `?debug` grain tuner. `components/paper-background.tsx` — blog paper layers.
+## Styling and fonts
 
-## Conventions
+Tailwind v4 enters once through `app/globals.css`. Coss theme CSS references
+that entry instead of importing Tailwind a second time. Lab CSS and scene CSS
+are imported at their route/client boundaries, not the root layout, so blog
+routes do not pay for them.
 
-- **Styling is Tailwind v4** (`app/globals.css` is the Tailwind entry: `@import
-  "tailwindcss"`, typography `@plugin`, `@theme` mapping our CSS-var tokens,
-  class-based dark via next-themes). Blog shells are utilities; post prose uses
-  `@tailwindcss/typography` tuned in `.prose` to the bespoke look.
-- **Coss UI** (`coss.com/ui`, a shadcn-style registry) → **base-ui** primitives
-  are the lab's components; theme in `components/ui/coss.css`, registry wired in
-  `components.json` (`@coss`) so more can be pulled via CLI. Gotcha: `coss.css`
-  and `globals.css` both `@import "tailwindcss"`; preflight is global.
-- **Geist** is the sans font (self-hosted woff2 + `@font-face` in globals);
-  JetBrains Mono (next/font) is mono. next/font vars are `--font-inter` /
-  `--font-jetbrains` to avoid colliding with Tailwind's `--font-*` tokens.
-- The blog's paper background (`.paper-wash` + `.paper-grain`) is blog-scoped via
-  `PaperBackground` so it never bleeds onto the home scene. Grain is
-  `?debug`-tunable; the wash is fixed.
-- Keep Shiki highlighting server/build-time only. `lib/blog.ts` owns the shared
-  highlighter instance and scoped languages (`python`, `typescript`,
-  `javascript`, `bash`, `json`).
-- The scene lab is dev-only and must never enter the production bundle.
-- The blog's visual design is done interactively (Ben + Claude), not ticketed to
-  Codex.
+Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
+JetBrains Mono is the code font. Refer to the `next/font` variables instead of
+literal `Inter` or imaginary `Geist Mono` families. The blog paper layers are
+content-layout scoped.
+
+Keep Shiki server/build-time only. The scene lab remains development-only. The
+blog's visual design is done interactively by Ben + Claude; Codex should not
+turn those decisions into an unsolicited redesign.

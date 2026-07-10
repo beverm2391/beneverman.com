@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/verify-production-build.mjs",
     "lint": "eslint .",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm lint && pnpm typecheck",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
     "hooks:install": "./scripts/install-hooks.sh",
     "prepare": "pnpm hooks:install"
   },
@@ -41,7 +42,8 @@
     "eslint-config-next": "16.2.10",
     "raw-loader": "^4.0.2",
     "tailwindcss": "^4.3.2",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b"
 }

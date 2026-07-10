@@ -1,9 +1,15 @@
 import Link from "next/link";
-import { formatPostDate, getBlogPosts } from "@/lib/blog";
+import { formatPostDate, getBlogPosts } from "@/lib/blog-data";
 
 export const metadata = {
   title: "Blog",
-  description: "Technical notes from Ben Everman."
+  description: "Technical notes from Ben Everman.",
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    title: "Blog | Ben Everman",
+    description: "Technical notes from Ben Everman.",
+    url: "/blog"
+  }
 };
 
 export default async function BlogIndexPage() {
