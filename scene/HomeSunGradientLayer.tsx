@@ -9,7 +9,7 @@ import backgroundVertexShader from './shaders/home-background.vert.glsl'
 // frame. The bloom is the entire entrance: the CSS cross-fade underneath is a
 // fast mechanical seam between the fallback and the shader's entrance=0 frame,
 // which are tuned to look alike.
-const ENTRANCE_MS = 1600
+const ENTRANCE_MS = 900
 
 function easeOutCubic(t: number) {
   return 1 - (1 - t) ** 3

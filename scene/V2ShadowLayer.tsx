@@ -22,7 +22,7 @@ const rigidWarpModes = new Set<ShadowMapMode>(['window', 'mixed', 'pool', 'sundi
 // Shadows develop over this window after the layer mounts, like the sun coming
 // out. The ramp lives in the uOpacity uniform (not a CSS overlay) so the
 // shader owns every factor of the shadow's strength.
-const ENTRANCE_SECONDS = 1.4
+const ENTRANCE_SECONDS = 0.8
 
 function easeOutCubic(t: number) {
   return 1 - (1 - t) ** 3
