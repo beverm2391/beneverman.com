@@ -1,13 +1,7 @@
-import Link from "next/link";
+import HomeMount from "@/site/HomeMount";
 
+// The landing is the ported v7 homepage (WebGL sun/shadow scene + intro),
+// mounted client-only via HomeMount.
 export default function HomePage() {
-  return (
-    <main>
-      <h1>Ben Everman</h1>
-      <p>This is the scaffold for the personal site.</p>
-      <p>
-        <Link href="/blog">Read the blog</Link>
-      </p>
-    </main>
-  );
+  return <HomeMount />;
 }
