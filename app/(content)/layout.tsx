@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PaperBackground } from "@/components/paper-background";
 import { PaperDebug } from "@/components/debug/paper-debug";
-import { navItems } from "@/lib/nav";
+import { SiteHeader } from "@/components/site-header";
 
-// Layout for content pages (blog). The homepage lives outside this route group,
-// so it stays chrome-less.
+// Layout for content pages (blog). The nav is shared with the homepage via
+// SiteHeader; the paper background, theme toggle, and grain debugger stay
+// blog-scoped.
 export default function ContentLayout({
   children
 }: Readonly<{
@@ -14,19 +14,7 @@ export default function ContentLayout({
   return (
     <>
       <PaperBackground />
-      <header className="sticky top-0 z-10 bg-transparent">
-        <nav className="flex gap-6 px-7 py-[1.1rem]">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-[0.95rem] text-fg no-underline hover:text-accent"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </header>
+      <SiteHeader />
       <ThemeToggle />
       {children}
       <PaperDebug />

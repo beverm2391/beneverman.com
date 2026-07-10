@@ -107,7 +107,7 @@
 .sun-angle-widget {
   position: fixed;
   top: clamp(1rem, 2.5vw, 2rem);
-  left: clamp(1.25rem, 3vw, 2.5rem);
+  right: clamp(1.25rem, 3vw, 2.5rem);
   z-index: 2;
   display: grid;
   gap: 0.2rem;
