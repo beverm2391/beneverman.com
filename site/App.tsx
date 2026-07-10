@@ -1,7 +1,7 @@
 'use client'
 
 import { type ComponentType, useEffect, useRef, useState } from 'react'
-import './App.css'
+// App.css is imported globally in app/layout.tsx (shared with the lab).
 import {
   emitDebugTimelineEvent,
   getDebugTimelineEvents,
