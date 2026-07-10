@@ -79,6 +79,12 @@ article header {
   margin-bottom: 2rem;
 }
 
+/* Post-header date matches the index: small mono, muted. */
+article header time {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+}
+
 blockquote {
   margin: 1.6rem 0;
   padding-left: 1.1rem;
@@ -153,7 +159,7 @@ time {
 
 .post-list {
   list-style: none;
-  margin: 2.5rem 0 0;
+  margin: 0;
   padding: 0;
   display: grid;
   gap: 2.25rem;

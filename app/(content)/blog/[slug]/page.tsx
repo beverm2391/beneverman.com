@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBlogPost, getBlogPosts } from "@/lib/blog";
+import { formatPostDate, getBlogPost, getBlogPosts } from "@/lib/blog";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -49,7 +49,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <header>
           <h1>{post.title}</h1>
           <p>
-            <time dateTime={post.date}>{post.date}</time>
+            <time dateTime={post.date}>{formatPostDate(post.date)}</time>
           </p>
         </header>
         {post.content}

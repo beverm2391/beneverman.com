@@ -50,6 +50,19 @@ const prettyCodeOptions: PrettyCodeOptions = {
   getHighlighter: () => highlighterPromise as Promise<unknown> as Promise<Highlighter>
 };
 
+// Frontmatter dates are date-only ("2026-07-09"); format in UTC so the
+// rendered day never shifts with the build machine's timezone.
+const postDateFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "UTC"
+});
+
+export function formatPostDate(date: string) {
+  return postDateFormat.format(new Date(date));
+}
+
 async function getPostFilenames() {
   const entries = await fs.readdir(blogDirectory);
 
