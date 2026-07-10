@@ -9,7 +9,13 @@ import backgroundVertexShader from './shaders/home-background.vert.glsl'
 // frame. The bloom is the entire entrance: the CSS cross-fade underneath is a
 // fast mechanical seam between the fallback and the shader's entrance=0 frame,
 // which are tuned to look alike.
-const ENTRANCE_MS = 900
+const ENTRANCE_MS = 450
+
+// Cap how much a single frame can advance the entrance. Page load is the
+// jankiest window (hydration, chunk parsing, shader compiles); with a wall
+// clock a dropped frame would skip the bloom forward, which reads as stutter.
+// Clamped accumulation pauses it instead.
+const MAX_ENTRANCE_FRAME_MS = 34
 
 function easeOutCubic(t: number) {
   return 1 - (1 - t) ** 3
@@ -89,7 +95,8 @@ export function HomeSunGradientLayer({
     let frameId = 0
     let startTime = performance.now()
     let hasPresentedFrame = false
-    let firstFrameAt = 0
+    let entranceTime = 0
+    let lastFrameAt = 0
 
     const resize = () => {
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
@@ -127,10 +134,11 @@ export function HomeSunGradientLayer({
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
       // The bloom ramps from the first presented frame; reduced motion gets
       // the finished scene immediately (this render is its only frame).
-      if (firstFrameAt === 0) firstFrameAt = now
+      if (lastFrameAt !== 0) entranceTime += Math.min(now - lastFrameAt, MAX_ENTRANCE_FRAME_MS)
+      lastFrameAt = now
       const entrance = motionQuery.matches
         ? 1
-        : easeOutCubic(Math.min(1, (now - firstFrameAt) / ENTRANCE_MS))
+        : easeOutCubic(Math.min(1, entranceTime / ENTRANCE_MS))
       gl.uniform1f(entranceLocation, entrance)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 

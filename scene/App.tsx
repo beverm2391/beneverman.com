@@ -64,9 +64,12 @@ function App() {
   const [shadowSettings, setShadowSettings] = useState<ShadowSettings>({ ...responsiveVisualConfig.shadowSettings })
   const [shadowMapMode, setShadowMapMode] = useState<ShadowMapMode>(responsiveVisualConfig.shadowMapMode)
   const shouldRenderShadowLayer = shadowMapMode !== 'sun'
+  // The 500ms delay keeps the shadow's Three.js init and shader compile from
+  // janking the gradient's entrance bloom; shadows then develop after it.
   const isShadowLayerReady = useDeferredMount(
     shadowCapability.enabled && shouldRenderShadowLayer,
     'shadow',
+    500,
   )
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
   const shadowSourcePreview = useShadowSourcePreview()

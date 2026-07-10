@@ -21,8 +21,10 @@ const rigidWarpModes = new Set<ShadowMapMode>(['window', 'mixed', 'pool', 'sundi
 
 // Shadows develop over this window after the layer mounts, like the sun coming
 // out. The ramp lives in the uOpacity uniform (not a CSS overlay) so the
-// shader owns every factor of the shadow's strength.
-const ENTRANCE_SECONDS = 0.8
+// shader owns every factor of the shadow's strength. Entrance time accumulates
+// clamped deltas so a main-thread stall pauses the ramp instead of skipping it.
+const ENTRANCE_SECONDS = 0.45
+const MAX_ENTRANCE_FRAME_SECONDS = 1 / 30
 
 function easeOutCubic(t: number) {
   return 1 - (1 - t) ** 3
@@ -77,6 +79,7 @@ function SourceSceneShadowPlane({
 }: ShadowPlaneProps) {
   const { gl, size } = useThree()
   const elapsedTimeRef = useRef(0)
+  const entranceTimeRef = useRef(0)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const previewKeyRef = useRef('')
   const { height: textureHeight, kernelScale, width: textureWidth } = getShadowTextureSize(
@@ -196,7 +199,8 @@ function SourceSceneShadowPlane({
       // Every factor of shadow strength collapses into the one uniform: the
       // tuned base opacity, the sun-elevation factor from App, and the
       // entrance ramp. The source preview bypasses uOpacity in the shader.
-      const entrance = easeOutCubic(Math.min(1, elapsedTimeRef.current / ENTRANCE_SECONDS))
+      entranceTimeRef.current += Math.min(delta, MAX_ENTRANCE_FRAME_SECONDS)
+      const entrance = easeOutCubic(Math.min(1, entranceTimeRef.current / ENTRANCE_SECONDS))
       values.uTime.value = elapsedTimeRef.current
       values.uAnimationSpeed.value = settings.speed
       values.uAnimationStrength.value = settings.wind
