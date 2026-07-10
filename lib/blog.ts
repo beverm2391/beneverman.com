@@ -12,6 +12,7 @@ import githubDark from "shiki/themes/github-dark.mjs";
 import githubLight from "shiki/themes/github-light.mjs";
 import type { Highlighter } from "shiki";
 import { Callout } from "@/components/mdx/callout";
+import { CodeBlock } from "@/components/mdx/code-block";
 import { MdxLink } from "@/components/mdx/mdx-link";
 import { Summary } from "@/components/mdx/summary";
 import { ZoomImage } from "@/components/mdx/zoom-image";
@@ -34,8 +35,9 @@ export type BlogPost = BlogPostSummary & {
 };
 
 // Besides the bespoke components, MDX primitives are remapped: images get the
-// click-to-zoom lightbox, links get internal/external routing.
-const mdxComponents = { Callout, Summary, a: MdxLink, img: ZoomImage };
+// click-to-zoom lightbox, links get internal/external routing, code blocks
+// get a copy button.
+const mdxComponents = { Callout, Summary, a: MdxLink, img: ZoomImage, pre: CodeBlock };
 
 const highlighterPromise: Promise<HighlighterCore> = createHighlighterCore({
   themes: [githubLight, githubDark],

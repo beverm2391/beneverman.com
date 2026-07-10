@@ -269,6 +269,35 @@ main {
   padding: 0.4rem 0.6rem;
 }
 
+/* Code blocks (rehype-pretty-code wraps them in a figure; ```lang
+   title="file.py" adds a figcaption). The title renders as a small tab
+   attached to the top-left of the block. */
+.prose :where(figure[data-rehype-pretty-code-figure]):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin: 1.6rem 0;
+}
+
+.prose :where(figure[data-rehype-pretty-code-figure] pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin: 0;
+}
+
+.prose :where(figcaption[data-rehype-pretty-code-title]):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  width: fit-content;
+  padding: 0.3rem 0.9rem;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--code-bg);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.prose
+  :where(figure[data-rehype-pretty-code-figure]):has([data-rehype-pretty-code-title])
+  :where(pre) {
+  border-top-left-radius: 0;
+}
+
 /* Footnotes (remark-gfm renders section[data-footnotes]): smaller, muted,
    and tight — the body-prose paragraph margins are what made items float
    apart. Placed after the p/list rules so these later equal-specificity

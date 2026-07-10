@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { formatPostDate, getBlogPost, getBlogPosts } from "@/lib/blog";
 
 type BlogPostPageProps = {
@@ -57,6 +57,10 @@ async function getPostOrNotFound(slug: string) {
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = await getPostOrNotFound(slug);
+
+  // Withdrawn posts keep their URL working but send readers to the index —
+  // frontmatter-driven, so no hardcoded redirects in next.config.
+  if (post.archived) redirect("/blog");
 
   return (
     <main>

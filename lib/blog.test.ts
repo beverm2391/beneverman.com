@@ -15,6 +15,11 @@ describe("blog content", () => {
     expect(published.map((post) => post.slug)).not.toContain("agent-workshop-notes");
   });
 
+  it("excludes archived posts from every list", async () => {
+    const posts = await getBlogPosts({ drafts: true });
+    expect(posts.every((post) => !post.archived)).toBe(true);
+  });
+
   it("rejects slugs before they can escape the content directory", async () => {
     await expect(getBlogPostSummary("../PRODUCT")).rejects.toThrow("Invalid blog slug");
   });

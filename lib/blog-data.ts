@@ -16,7 +16,11 @@ const frontmatterSchema = z.object({
   // Drafts are dev-only test/styling surfaces. They render locally but are
   // excluded from production everywhere that lists posts (index, static
   // params, feed, sitemap) and from direct slug access (getBlogPost throws).
-  draft: z.boolean().default(false)
+  draft: z.boolean().default(false),
+  // Archived posts were once published but are withdrawn: excluded from every
+  // list in every environment, and their URL redirects to /blog (see the post
+  // page) instead of 404ing — no hardcoded redirects in next.config.
+  archived: z.boolean().default(false)
 });
 
 export type BlogPostFrontmatter = z.infer<typeof frontmatterSchema>;
@@ -72,6 +76,6 @@ export async function getBlogPosts(
     filenames.map((filename) => getBlogPostSummary(filename.replace(/\.mdx$/, "")))
   );
   return posts
-    .filter((post) => drafts || !post.draft)
+    .filter((post) => !post.archived && (drafts || !post.draft))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
