@@ -40,7 +40,12 @@
 .surface-texture {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  /* Below the text (z-2), above the scene layers: with the grain's multiply
+     blend over the text, every selection-drag repaint had to re-blend the
+     whole group — measured 32fps vs 46fps during selection. The grain only
+     ever mattered on the scene, and selection highlights no longer get
+     multiplied by it. */
+  z-index: 1;
   pointer-events: none;
   opacity: var(--texture-opacity, 0.14);
   mix-blend-mode: multiply;
