@@ -1,0 +1,239 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Dark mode is class-driven by next-themes (.dark on <html>), not media. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Blog runs on Tailwind: colours map to the runtime CSS vars below (so dark
+   mode swaps values), and the sans font is Geist. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-code-bg: var(--code-bg);
+}
+
+@theme {
+  --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Geist — the homepage/scene display font, ported exactly from v7 (same
+   woff2, weight range, and unicode-range). Global so both the home and the
+   lab's text layer resolve real Geist for every visitor, not just machines
+   with it installed locally. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 250 650;
+  font-display: swap;
+  src: url("/fonts/geist-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  /* Warm, light-first palette — echoes the homepage paper. Starting values;
+     tune freely. Dark mode is a later add (also needs a dark Shiki theme). */
+  --bg: #fbfaf8;
+  --fg: #1c1a17;
+  --muted: #6f6a61;
+  --border: rgb(28 26 23 / 0.12);
+  --accent: #9a5b2e;
+  --code-bg: rgb(28 26 23 / 0.05);
+  --radius: 8px;
+
+  /* Grain overlay knobs — tweakable live via the ?debug panel. */
+  --grain-opacity: 0.19;
+  --grain-scale: 180px;
+  --grain-blend: multiply;
+}
+
+.dark {
+  --bg: #17140f;
+  --fg: #eae5dd;
+  --muted: #a09890;
+  --border: rgb(255 255 255 / 0.13);
+  --accent: #dba36c;
+  --code-bg: rgb(255 255 255 / 0.06);
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    background: var(--bg);
+  }
+
+  body {
+    background: transparent;
+    color: var(--fg);
+    font-family: var(--font-sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* ---- paper background (blog only) ------------------------------------ */
+/* Two fixed layers behind blog content: a soft white->paper gradient wash,
+   then a static grain overlay ported from beneverman.com-v7's
+   `.surface-texture` (inline SVG feTurbulence — pure CSS, no JS/canvas/image
+   files). Rendered by the content layout (PaperBackground) so it never bleeds
+   onto the home scene. Only the grain is ?debug-tunable; the wash is fixed. */
+.paper-wash {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(125% 90% at 50% 0%, #ffffff 0%, var(--bg) 65%);
+}
+
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23paper)'/%3E%3C/svg%3E");
+  background-size: var(--grain-scale) var(--grain-scale);
+}
+
+/* Dark mode: multiply would crush to black, so lighten with screen and pull
+   the grain back; the wash goes warm-dark instead of white. */
+.dark .paper-wash {
+  background: radial-gradient(125% 90% at 50% 0%, #1e1912 0%, var(--bg) 55%, #120f0a 100%);
+}
+
+.dark .paper-grain {
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+
+/* Debug toggle: hide the grain layer while keeping its tuned values. */
+.grain-off .paper-grain {
+  display: none;
+}
+
+main {
+  width: min(100% - 2rem, 68ch);
+  margin-inline: auto;
+  padding-block: 4rem;
+}
+
+/* ---- prose (post body via @tailwindcss/typography) ------------------- */
+/* The plugin supplies rhythm/reset; these overrides pin it to the bespoke
+   look (Geist inherits from body). Colours come from our tokens so dark mode
+   swaps automatically. */
+.prose {
+  --tw-prose-body: var(--fg);
+  --tw-prose-headings: var(--fg);
+  --tw-prose-links: var(--accent);
+  --tw-prose-bold: var(--fg);
+  --tw-prose-counters: var(--muted);
+  --tw-prose-bullets: var(--border);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--muted);
+  --tw-prose-quote-borders: var(--accent);
+  --tw-prose-captions: var(--muted);
+  --tw-prose-code: var(--fg);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+  max-width: none;
+  color: var(--fg);
+  line-height: 1.65;
+}
+
+.prose :where(h2) {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 2.75rem 0 0.75rem;
+}
+
+.prose :where(h3) {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 2rem 0 0.5rem;
+}
+
+.prose :where(p) {
+  margin: 0 0 1.15rem;
+}
+
+.prose :where(a) {
+  font-weight: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+.prose :where(blockquote) {
+  font-style: normal;
+  font-weight: inherit;
+  border-left-width: 2px;
+  padding-left: 1.1rem;
+  margin: 1.6rem 0;
+  color: var(--muted);
+}
+
+.prose :where(blockquote p) {
+  margin: 0.3rem 0;
+}
+
+/* The plugin adds decorative quotes/backticks; drop them. */
+.prose :where(blockquote p)::before,
+.prose :where(blockquote p)::after,
+.prose :where(:not(pre) > code)::before,
+.prose :where(:not(pre) > code)::after {
+  content: none;
+}
+
+.prose :where(code),
+.prose :where(pre) {
+  font-family: var(--font-mono);
+}
+
+.prose :where(:not(pre) > code) {
+  background: var(--code-bg);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-weight: inherit;
+  font-size: 0.9em;
+}
+
+.prose :where(pre) {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  color: inherit;
+  overflow-x: auto;
+}
+
+.prose :where(img),
+.prose :where(svg) {
+  border-radius: var(--radius);
+}
+
+.prose :where(th),
+.prose :where(td) {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.6rem;
+}
+
+/* Dual Shiki themes: token colors switch by theme (bg comes from --code-bg). */
+pre code[data-theme*=" "] span {
+  color: var(--shiki-light);
+}
+
+.dark pre code[data-theme*=" "] span {
+  color: var(--shiki-dark);
+}
+
+time {
+  color: var(--muted);
+}
