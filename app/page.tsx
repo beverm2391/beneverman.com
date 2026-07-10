@@ -11,10 +11,16 @@ import "@/scene/App.css";
 // The client scene restyles this shell through useSceneShellStyle when
 // responsive presets or debug controls change.
 export default function HomePage() {
+  const shellStyle = getHomeShellStyle();
   return (
     <>
+      {/* Every layer behind the page (html, body, main) carries the same
+          color from the first byte, so no stylesheet/paint timing gap can
+          ever show a differently-colored band. The client scene overrides
+          this when debug controls change the background. */}
+      <style>{`html { background: ${String(shellStyle.backgroundColor)}; }`}</style>
       <SiteHeader variant="scene" />
-      <main className="site-shell" style={getHomeShellStyle()}>
+      <main className="site-shell" style={shellStyle}>
         <HomeMount />
         <HomePageContent />
       </main>
