@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+echo "Running pre-commit checks..."
+./scripts/loc-check.sh
+pnpm lint
+echo "Pre-commit checks passed."
