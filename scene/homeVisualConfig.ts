@@ -58,5 +58,13 @@ export function getHomeShellStyle(options: HomeShellStyleOptions = {}): HomeIntr
     '--texture-opacity': textureSettings.opacity,
     '--texture-scale': `${textureSettings.scale}px`,
     backgroundColor: backgroundMode.color,
+    // Critical shell geometry rides inline with the color: if HTML ever paints
+    // before stylesheets (dev FOUC, slow CSS), an inline background on a
+    // content-height block reads as a grey band behind the text that then
+    // snaps to full viewport. Inlining the full-bleed centering keeps the
+    // unstyled paint indistinguishable from the styled one.
+    display: 'grid',
+    placeItems: 'center',
+    minHeight: '100svh',
   }
 }
