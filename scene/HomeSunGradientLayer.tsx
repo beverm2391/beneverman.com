@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react'
 import type { BackgroundModeConfig } from './HomeSunGradientConfig'
+import { createGpuFrameFence } from './primitives/gpuFrameFence'
 import backgroundFragmentShader from './shaders/home-background.frag.glsl'
 import backgroundVertexShader from './shaders/home-background.vert.glsl'
 import './primitives/sceneArrival.css'
 
-function createShader(gl: WebGLRenderingContext, type: number, source: string) {
+function createShader(gl: WebGLRenderingContext | WebGL2RenderingContext, type: number, source: string) {
   const shader = gl.createShader(type)
   if (!shader) return null
 
@@ -43,13 +44,19 @@ export function HomeSunGradientLayer({
 
   useEffect(() => {
     const canvas = canvasRef.current
-    const gl = canvas?.getContext('webgl', {
+    const contextOptions: WebGLContextAttributes = {
       alpha: false,
       antialias: false,
       depth: false,
       powerPreference: 'low-power',
       stencil: false,
-    })
+    }
+    // WebGL2 first: it provides fence syncs, which make the arrival signal
+    // truthful (GPU actually executed the frame). The shader is GLSL ES 1.0,
+    // valid in both contexts.
+    const gl: WebGL2RenderingContext | WebGLRenderingContext | null | undefined =
+      (canvas?.getContext('webgl2', contextOptions) as WebGL2RenderingContext | null) ??
+      (canvas?.getContext('webgl', contextOptions) as WebGLRenderingContext | null)
 
     if (!canvas || !gl) return
 
@@ -81,8 +88,9 @@ export function HomeSunGradientLayer({
     const sunAngleLocation = gl.getUniformLocation(program, 'uSunAngle')
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frameId = 0
+    let fencePollId = 0
     let startTime = performance.now()
-    let hasPresentedFrame = false
+    let hasSubmittedFrame = false
 
     const resize = () => {
       // Cap below full retina: the output is a soft gradient, and the fbm
@@ -123,12 +131,24 @@ export function HomeSunGradientLayer({
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 
-      // Signal readiness only after WebGL has actually produced a frame, so a
-      // failed or unavailable context never fades an empty scene in (see
-      // useSceneArrival).
-      if (!hasPresentedFrame) {
-        hasPresentedFrame = true
-        onFirstFrameRef.current?.()
+      // Signal readiness only once the GPU has actually executed the first
+      // frame (fence sync), not merely when the draw call was queued — the
+      // driver may still be compiling the shader at that point. The dedicated
+      // poll loop keeps working under prefers-reduced-motion, where the
+      // render loop stops after this single frame.
+      if (!hasSubmittedFrame) {
+        hasSubmittedFrame = true
+        const fence = createGpuFrameFence(gl)
+        const pollFence = () => {
+          if (fence.poll()) {
+            fence.dispose()
+            fencePollId = 0
+            onFirstFrameRef.current?.()
+            return
+          }
+          fencePollId = requestAnimationFrame(pollFence)
+        }
+        fencePollId = requestAnimationFrame(pollFence)
       }
 
       if (!motionQuery.matches) frameId = requestAnimationFrame(render)
@@ -156,6 +176,7 @@ export function HomeSunGradientLayer({
 
     return () => {
       cancelAnimationFrame(frameId)
+      cancelAnimationFrame(fencePollId)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       motionQuery.removeEventListener('change', handleMotionChange)
       gl.deleteBuffer(buffer)

@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { emitDebugTimelineEvent } from './debugTimeline'
+import { createGpuFrameFence, type GpuFrameFence } from './primitives/gpuFrameFence'
 import { createPreviewDataUrl, sampleShadowSource } from './shadowPreview'
 import type { ShadowMapMode } from './shadowMapModes'
 import type { ShadowSettings } from './shadowSettings'
@@ -70,7 +71,9 @@ function SourceSceneShadowPlane({
 }: ShadowPlaneProps) {
   const { gl, size } = useThree()
   const elapsedTimeRef = useRef(0)
-  const hasPresentedFrameRef = useRef(false)
+  const frameCountRef = useRef(0)
+  const firstFrameFenceRef = useRef<GpuFrameFence | null>(null)
+  const hasSignaledLiveRef = useRef(false)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const previewKeyRef = useRef('')
   const { height: textureHeight, kernelScale, width: textureWidth } = getShadowTextureSize(
@@ -210,10 +213,21 @@ function SourceSceneShadowPlane({
       values.uWarpStrength.value = rigidWarpModes.has(mode) ? 0 : 1
     }
 
-    // First real frame: safe to include this layer in the scene arrival fade.
-    if (!hasPresentedFrameRef.current) {
-      hasPresentedFrameRef.current = true
-      onFirstFrame?.()
+    // useFrame runs BEFORE R3F renders, so the first invocation predates any
+    // rendered frame. On the second invocation frame 1's commands have been
+    // submitted; a fence after them signals only once the GPU has actually
+    // executed the frame (including its shader compile), and only then is
+    // this layer safe to include in the scene arrival fade.
+    frameCountRef.current += 1
+    if (!hasSignaledLiveRef.current) {
+      if (frameCountRef.current === 2) {
+        firstFrameFenceRef.current = createGpuFrameFence(gl.getContext())
+      } else if (firstFrameFenceRef.current?.poll()) {
+        firstFrameFenceRef.current.dispose()
+        firstFrameFenceRef.current = null
+        hasSignaledLiveRef.current = true
+        onFirstFrame?.()
+      }
     }
 
     const previewKey = [

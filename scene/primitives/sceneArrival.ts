@@ -16,9 +16,11 @@ import './sceneArrival.css'
 // Contract for any scene:
 // - Name the layers you intend to show and pass them as `wantedLayers`
 //   (recompute the array when capability gates change what you want).
-// - Each layer calls `markLive(name)` only after it has actually produced a
-//   frame (first WebGL draw, first R3F frame callback) — never on mount or
-//   chunk load, so a failed context leaves the flat page instead of a hole.
+// - Each layer calls `markLive(name)` only after the GPU has actually
+//   executed its first frame — verified with a fence sync where available
+//   (see gpuFrameFence.ts) — never on mount, chunk load, or merely-queued
+//   draw calls, so a failed context or a stalled shader compile leaves the
+//   flat page instead of fading in an empty layer.
 // - Spread `className` onto the container(s) wrapping the layers.
 //
 // If some layers go live but the rest stall past `graceMs`, the scene fades
