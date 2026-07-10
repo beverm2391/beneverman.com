@@ -1,13 +1,18 @@
 :root {
   /* Warm, light-first palette — echoes the homepage paper. Starting values;
      tune freely. Dark mode is a later add (also needs a dark Shiki theme). */
-  --bg: #f4f1ec;
+  --bg: #fbfaf8;
   --fg: #1c1a17;
   --muted: #6f6a61;
   --border: rgb(28 26 23 / 0.12);
   --accent: #9a5b2e;
   --code-bg: rgb(28 26 23 / 0.05);
   --radius: 8px;
+
+  /* Grain overlay knobs — tweakable live via the ?debug panel. */
+  --grain-opacity: 0.19;
+  --grain-scale: 180px;
+  --grain-blend: multiply;
 }
 
 .dark {
@@ -26,15 +31,59 @@
 
 html {
   color-scheme: light;
+  background: var(--bg);
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: transparent;
   color: var(--fg);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---- paper background ------------------------------------------------ */
+/* Two fixed layers behind all content: a soft white->paper gradient wash,
+   then a static grain overlay ported from beneverman.com-v7's
+   `.surface-texture` (inline SVG feTurbulence — pure CSS, no JS/canvas/image
+   files). Sitting behind content keeps body text crisp; the grain multiplies
+   onto the wash. Only the grain is ?debug-tunable; the wash is fixed. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: radial-gradient(125% 90% at 50% 0%, #ffffff 0%, var(--bg) 65%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23paper)'/%3E%3C/svg%3E");
+  background-size: var(--grain-scale) var(--grain-scale);
+}
+
+/* Dark mode: multiply would crush to black, so lighten with screen and pull
+   the grain back; the wash goes warm-dark instead of white. */
+.dark body::before {
+  background: radial-gradient(125% 90% at 50% 0%, #1e1912 0%, var(--bg) 55%, #120f0a 100%);
+}
+
+.dark body::after {
+  opacity: 0.05;
+  mix-blend-mode: screen;
+}
+
+/* Debug toggle: hide the grain layer while keeping its tuned values. */
+.grain-off body::after {
+  display: none;
 }
 
 main {
@@ -313,4 +362,105 @@ time {
 
 .theme-toggle:hover {
   color: var(--accent);
+}
+
+/* ---- paper debug panel (?debug only) --------------------------------- */
+
+.paper-debug {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  width: 15rem;
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  background: rgb(255 255 255 / 0.82);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.7rem;
+  color: var(--fg);
+  box-shadow: 0 8px 24px rgb(28 26 23 / 0.08);
+}
+
+.paper-debug-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.paper-debug-title {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.paper-debug-toggle {
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.15rem 0.55rem;
+  color: var(--fg);
+  background: rgb(28 26 23 / 0.06);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.paper-debug-toggle[aria-pressed="true"] {
+  color: #fff;
+  background: var(--fg);
+  border-color: var(--fg);
+}
+
+.paper-debug-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paper-debug-label {
+  color: var(--muted);
+}
+
+.paper-debug-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.paper-debug-range input {
+  width: 6rem;
+}
+
+.paper-debug-value {
+  min-width: 2.6rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.paper-debug-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.paper-debug-actions button {
+  flex: 1;
+  padding: 0.3rem 0.4rem;
+  font: inherit;
+  color: var(--fg);
+  background: rgb(28 26 23 / 0.06);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.paper-debug-actions button:hover {
+  background: rgb(28 26 23 / 0.1);
 }
