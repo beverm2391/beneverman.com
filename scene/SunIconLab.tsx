@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import './SunIconLab.css'
 import { siteVisualConfig } from './siteVisualConfig'
@@ -67,7 +68,7 @@ export function SunIconLab() {
       <section className="sun-lab-intro" aria-label="Sun position icon studies">
         <p>sun position studies</p>
         <p className="sun-lab-angle">{sunDegrees}&deg;</p>
-        <a href="/">back</a>
+        <Link href="/">back</Link>
       </section>
       <section className="sun-lab-grid">
         {concepts.map(({ id, note, variant }) => (

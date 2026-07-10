@@ -50,9 +50,14 @@ export function PaperDebug() {
   );
 
   useEffect(() => {
-    setEnabled(new URLSearchParams(window.location.search).has("debug"));
-    // Park top-right on first mount; dragging takes over from there.
-    setPos({ x: window.innerWidth - PANEL_WIDTH - 16, y: 16 });
+    // Defer browser-derived state until after the first paint. This keeps the
+    // server/client render identical and avoids a synchronous effect cascade.
+    const frameId = window.requestAnimationFrame(() => {
+      setEnabled(new URLSearchParams(window.location.search).has("debug"));
+      // Park top-right on first mount; dragging takes over from there.
+      setPos({ x: window.innerWidth - PANEL_WIDTH - 16, y: 16 });
+    });
+    return () => window.cancelAnimationFrame(frameId);
   }, []);
 
   // Push every value to the document as a CSS var whenever it changes.

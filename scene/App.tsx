@@ -1,4 +1,5 @@
 'use client'
+// loc-check: limit 1218 | warn: 400 | reason: Temporary ceiling for the ported home/debug compositor; remove when its tracked decomposition lands
 
 import { type ComponentType, useEffect, useRef, useState } from 'react'
 // App.css is imported globally in app/layout.tsx (shared with the lab).

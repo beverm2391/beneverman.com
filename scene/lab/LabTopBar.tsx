@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Copy, Pencil, Rocket } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogFooter, DialogHeader, DialogPanel, DialogPopup, DialogTitle } from '@/components/ui/dialog'
@@ -27,9 +27,10 @@ export function LabTopBar({
   const [renameOpen, setRenameOpen] = useState(false)
   const [draft, setDraft] = useState(scene.name)
 
-  useEffect(() => {
-    if (renameOpen) setDraft(scene.name)
-  }, [renameOpen, scene.name])
+  const setRenameDialogOpen = (open: boolean) => {
+    if (open) setDraft(scene.name)
+    setRenameOpen(open)
+  }
 
   const isSaved = savedScenes.some((s) => s.id === scene.id)
   const isPromoted = promotedId === scene.id && isSaved
@@ -69,7 +70,7 @@ export function LabTopBar({
             ))}
           </SelectPopup>
         </Select>
-        <Button aria-label="Rename scene" onClick={() => setRenameOpen(true)} size="icon-sm" title="Rename scene" variant="ghost">
+        <Button aria-label="Rename scene" onClick={() => setRenameDialogOpen(true)} size="icon-sm" title="Rename scene" variant="ghost">
           <Pencil />
         </Button>
         {dirty ? <span className="lab__dirty" title="Unsaved changes" /> : null}
@@ -103,7 +104,7 @@ export function LabTopBar({
         </Button>
       </div>
 
-      <Dialog onOpenChange={setRenameOpen} open={renameOpen}>
+      <Dialog onOpenChange={setRenameDialogOpen} open={renameOpen}>
         <DialogPopup>
           <DialogHeader>
             <DialogTitle>Rename scene</DialogTitle>

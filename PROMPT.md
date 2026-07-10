@@ -26,6 +26,9 @@ Package manager: `pnpm` (do not add npm/yarn lockfiles).
 - Typecheck: `pnpm typecheck` — a `.next/types/validator` race against a running
   dev server can print two spurious errors about blog `page.js` modules; `next
   build` is the authority.
+- Checks: `pnpm check` runs blocking ESLint errors + TypeScript. Pre-commit
+  additionally warns at 400 physical lines and blocks at 450; `PROMPT.md`
+  warns at 250 and blocks at 300. `pnpm install` configures the tracked hook.
 
 ## Layout
 
