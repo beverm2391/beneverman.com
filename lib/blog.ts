@@ -14,6 +14,7 @@ import type { Highlighter } from "shiki";
 import { Callout } from "@/components/mdx/callout";
 import { Summary } from "@/components/mdx/summary";
 import {
+  includeDrafts,
   readBlogPostSource,
   type BlogPostSummary
 } from "@/lib/blog-data";
@@ -46,6 +47,11 @@ const prettyCodeOptions: PrettyCodeOptions = {
 
 export async function getBlogPost(slug: string): Promise<BlogPost> {
   const { source, frontmatter } = await readBlogPostSource(slug);
+  // Drafts must not be reachable in production, even by direct URL; the page
+  // catches this and renders notFound().
+  if (frontmatter.draft && !includeDrafts) {
+    throw new Error(`Post "${slug}" is a draft.`);
+  }
   const { content } = await compileMDX({
     source,
     components: mdxComponents,

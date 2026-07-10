@@ -13,6 +13,17 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-code-bg: var(--code-bg);
+
+  /* Tokens the Coss Alert (components/ui/alert.tsx) needs when it renders in
+     blog posts via Callout. coss.css only loads in the lab, so the blog theme
+     must own these; values echo the paper palette, not Coss's defaults. */
+  --color-card-foreground: var(--fg);
+  --color-muted-foreground: var(--muted);
+  --color-input: var(--border);
+  --color-info: var(--info);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
 }
 
 @theme {
@@ -36,15 +47,25 @@
 }
 
 :root {
-  /* Warm, light-first palette — echoes the homepage paper. Starting values;
-     tune freely. Dark mode is a later add (also needs a dark Shiki theme). */
-  --bg: #fbfaf8;
-  --fg: #1c1a17;
-  --muted: #6f6a61;
-  --border: rgb(28 26 23 / 0.12);
-  --accent: #9a5b2e;
-  --code-bg: rgb(28 26 23 / 0.05);
-  --radius: 8px;
+  /* Base Coss UI scheme (neutral, white-first) — values mirror coss.css:
+     background white, foreground neutral-800, border black/8%, muted
+     ≈ neutral-500 mixed 90% toward black. --accent is the link/hover colour
+     (Coss has no link token; near-black neutral-950 keeps links a shade
+     darker than body text). */
+  --bg: #ffffff;
+  --fg: #262626;
+  --muted: #686868;
+  --border: rgb(0 0 0 / 0.08);
+  --accent: #0a0a0a;
+  --code-bg: rgb(0 0 0 / 0.04);
+  --radius: 0.625rem;
+
+  /* Alert accents — Coss UI's stock values (Tailwind blue/emerald/
+     amber/red-500), for the punchy dev-blog look rather than the paper tones. */
+  --info: oklch(62.3% 0.214 259.815);
+  --success: oklch(69.6% 0.17 162.48);
+  --warning: oklch(76.9% 0.188 70.08);
+  --destructive: oklch(63.7% 0.237 25.331);
 
   /* Grain overlay knobs — tweakable live via the ?debug panel. */
   --grain-opacity: 0.19;
@@ -53,16 +74,27 @@
 }
 
 .dark {
-  --bg: #17140f;
-  --fg: #eae5dd;
-  --muted: #a09890;
-  --border: rgb(255 255 255 / 0.13);
-  --accent: #dba36c;
-  --code-bg: rgb(255 255 255 / 0.06);
+  /* coss.css dark: background neutral-950 mixed 5% toward white, foreground
+     neutral-100, border white/6%. */
+  --bg: #161616;
+  --fg: #f5f5f5;
+  --muted: #818181;
+  --border: rgb(255 255 255 / 0.06);
+  --accent: #fafafa;
+  --code-bg: rgb(255 255 255 / 0.04);
   color-scheme: dark;
 }
 
 @layer base {
+  /* Tailwind v4 defaults border-color to currentColor; default it to the
+     hairline token (as coss.css does) so bare `border` utilities — e.g. the
+     Coss Alert — read as hairlines, not ink outlines. */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
   html {
     color-scheme: light;
     background: var(--bg);
@@ -103,9 +135,9 @@
 }
 
 /* Dark mode: multiply would crush to black, so lighten with screen and pull
-   the grain back; the wash goes warm-dark instead of white. */
+   the grain back; the wash goes soft-dark instead of white. */
 .dark .paper-wash {
-  background: radial-gradient(125% 90% at 50% 0%, #1e1912 0%, var(--bg) 55%, #120f0a 100%);
+  background: radial-gradient(125% 90% at 50% 0%, #1c1c1c 0%, var(--bg) 55%, #101010 100%);
 }
 
 .dark .paper-grain {
@@ -147,31 +179,34 @@ main {
   line-height: 1.65;
 }
 
-.prose :where(h2) {
+/* Every override carries the same not-prose guard the typography plugin uses,
+   so embedded components (e.g. the Coss Alert inside Callout) opt out of
+   prose styling entirely — bare `.prose :where(p)` would reach inside them. */
+.prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   margin: 2.75rem 0 0.75rem;
 }
 
-.prose :where(h3) {
+.prose :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   margin: 2rem 0 0.5rem;
 }
 
-.prose :where(p) {
+.prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin: 0 0 1.15rem;
 }
 
-.prose :where(a) {
+.prose :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-weight: inherit;
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
 
-.prose :where(blockquote) {
+.prose :where(blockquote):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-style: normal;
   font-weight: inherit;
   border-left-width: 2px;
@@ -180,24 +215,23 @@ main {
   color: var(--muted);
 }
 
-.prose :where(blockquote p) {
+.prose :where(blockquote p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   margin: 0.3rem 0;
 }
 
 /* The plugin adds decorative quotes/backticks; drop them. */
-.prose :where(blockquote p)::before,
-.prose :where(blockquote p)::after,
-.prose :where(:not(pre) > code)::before,
-.prose :where(:not(pre) > code)::after {
+.prose :where(blockquote p):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+.prose :where(blockquote p):not(:where([class~="not-prose"], [class~="not-prose"] *))::after,
+.prose :where(:not(pre) > code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+.prose :where(:not(pre) > code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
   content: none;
 }
 
-.prose :where(code),
-.prose :where(pre) {
+.prose :where(code, pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-family: var(--font-mono);
 }
 
-.prose :where(:not(pre) > code) {
+.prose :where(:not(pre) > code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   background: var(--code-bg);
   padding: 0.15em 0.35em;
   border-radius: 4px;
@@ -205,7 +239,7 @@ main {
   font-size: 0.9em;
 }
 
-.prose :where(pre) {
+.prose :where(pre):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -214,13 +248,11 @@ main {
   overflow-x: auto;
 }
 
-.prose :where(img),
-.prose :where(svg) {
+.prose :where(img, svg):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   border-radius: var(--radius);
 }
 
-.prose :where(th),
-.prose :where(td) {
+.prose :where(th, td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   border: 1px solid var(--border);
   padding: 0.4rem 0.6rem;
 }
