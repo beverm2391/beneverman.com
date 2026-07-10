@@ -75,8 +75,15 @@ p {
   margin: 0 0 1.15rem;
 }
 
+/* Post header: quieter than the default h1, with clear air before the body. */
 article header {
-  margin-bottom: 2rem;
+  margin-bottom: 3.25rem;
+}
+
+article header h1 {
+  font-size: 1.7rem;
+  font-weight: 650;
+  margin-bottom: 0.35rem;
 }
 
 /* Post-header date matches the index: small mono, muted. */
