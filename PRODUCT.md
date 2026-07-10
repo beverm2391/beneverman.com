@@ -79,9 +79,15 @@ the blog's look is done live with Ben.
 
 ## Open gates
 
-1. **Content sources.** Locate the current Fumadocs beneverman.com repo to port
-   the 2 posts' source `.mdx` + images (port originals, don't re-derive from
-   live HTML).
-2. **Cutover.** 301s from old `/blog/*` + RSS + OG in place, then point the
+1. **Cutover.** 301s from old `/blog/*` + RSS + OG in place, then point the
    domain — keep the old blog live until the new home exists so writing never
    404s.
+
+## Content porting (resolved source)
+
+Old post sources live locally in `~/Documents/Code/web/beneverman.com-v6-fumadocs`
+(`content/blog/*.mdx` + `public/blog/*` images). Porting is done section by
+section with Ben, deciding component treatments as they come up. The
+`minimalist-ai-agent` post is explicitly not ported. Mermaid diagrams and video
+embeds are wanted **eventually** for future posts — not v1 scope, but don't
+design the renderer in a way that forecloses them.

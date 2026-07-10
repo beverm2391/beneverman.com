@@ -28,8 +28,10 @@ Package manager: `pnpm`.
 - `app/blog/page.tsx` — blog index generated from post frontmatter.
 - `app/blog/[slug]/page.tsx` — statically generated post pages.
 - `content/blog/*.mdx` — blog source data.
-- `lib/blog.ts` — post discovery, zod frontmatter validation, and MDX compile
-  pipeline.
+- `lib/blog.ts` — post discovery, zod frontmatter validation, MDX compile
+  pipeline, and the `mdxComponents` map (posts may only use components
+  registered there).
+- `components/mdx/` — bespoke MDX components (currently `Callout`).
 - `public/images/blog/` — image assets referenced by seeded posts.
 
 ## Conventions
