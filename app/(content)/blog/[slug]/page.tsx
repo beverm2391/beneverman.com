@@ -46,13 +46,17 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <main>
       <article>
-        <header>
-          <h1>{post.title}</h1>
+        <header className="mb-[3.25rem]">
+          <h1 className="mb-[0.35rem] text-[1.7rem] font-[650] leading-[1.2] tracking-[-0.02em]">
+            {post.title}
+          </h1>
           <p>
-            <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+            <time dateTime={post.date} className="font-mono text-[0.8rem]">
+              {formatPostDate(post.date)}
+            </time>
           </p>
         </header>
-        {post.content}
+        <div className="prose">{post.content}</div>
       </article>
     </main>
   );

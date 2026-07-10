@@ -7,15 +7,18 @@ import "./globals.css";
 // text layer share one source of truth for .intro typography — they must match.
 import "@/site/App.css";
 
+// Inter is loaded as the fallback family in the Geist stack; JetBrains Mono is
+// the code/label font. Non-colliding var names so Tailwind's --font-sans/mono
+// theme tokens (globals.css) own those.
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
   display: "swap"
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   display: "swap"
 });
 

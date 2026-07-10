@@ -3,7 +3,7 @@
 // not an inline aside.
 export function Summary({ children }: { children: React.ReactNode }) {
   return (
-    <aside className="summary">
+    <aside className="summary not-prose">
       <div className="summary-label">Summary</div>
       {children}
     </aside>

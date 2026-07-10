@@ -19,7 +19,7 @@ export function Callout({
   children: React.ReactNode;
 }) {
   return (
-    <aside className="callout" data-callout={type}>
+    <aside className="callout not-prose" data-callout={type}>
       <div className="callout-label">{title ?? CALLOUT_LABELS[type]}</div>
       {children}
     </aside>
