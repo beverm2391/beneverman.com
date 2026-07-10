@@ -1,0 +1,32 @@
+---
+title: "Building Neural Networks to Detect Eye Diseases"
+date: "2024-02-28"
+description: "Training a Convolutional Neural Network to detect eye diseases. Designed to be used as part of a Clinical Decision Support System."
+tags:
+  - ml
+  - healthcare
+---
+
+<Callout label="Summary">
+Training a Convolutional Neural Network to detect eye diseases, designed to be used as part of a Clinical Decision Support System.
+
+- The source code is [here](https://colab.research.google.com/drive/1u16VMEfoQmuXb5adNLExwes6OQZbT-7e?usp=sharing), in Colab. You'll need a GPU to run it.
+- If you have any questions, reach out on [X](https://x.com/beneverman) or email me: [ben@beneverman.com](mailto:ben@beneverman.com).
+</Callout>
+
+## Doctors Can't Keep Up
+
+Healthcare is constantly changing and evolving. Research moves fast: in a 2011 publication, Densen estimated that by 2020, medical knowledge would double every 73 days, a marked departure from the 1950s, when doubling took 50 years[^1]. For the average physician, though some continuing education is required to maintain licensure and board certification, they must fight to keep pace with the rate of new research while they juggle heavy caseloads, administrative responsibility, and personal care.
+
+> "This growing aggregation of advances and reversals presents a significant challenge to physicians attempting to stay up to date. Historically, there has been an average 17-year lag between medical discoveries and implementation into clinical practice. With the acceleration of changes in clinical medicine, coupled with normal lag times in dissemination, there is a higher probability than ever before that physicians, within just a few years of leaving their training, may not be practicing contemporary standards of care." [^2]
+
+With new technology like Machine Learning (ML) and Artificial Intelligence (AI), what are the implications for the average physician? Can we reduce the 17-year lag?
+
+I think we can. How? By building clinical *Decision Support Systems* (DSS)[^3]. While older decision support systems date back to the British in World War II, a modern example is NASA's mission control. While astronauts pilot air and spacecraft, mission control gathers and manages vast data sets, utilizes advanced models for analysis, offers user-friendly interfaces for astronaut interaction, and provides crucial support for real-time decision-making. Observing NASA in action - throughout the Apollo program, 32 astronauts were assigned to fly missions. At a 1:100 ratio, one would estimate as many as 3200 staff on mission control. [^4]
+
+So how can we use ML and AI to support clinical decision making? One way is using computer vision. With neural networks that take images as input, we can batch-process large amounts of medical imagery and use the network to return the much smaller subset that requires actual physician review. The goal is not to diagnose, but to identify what needs physician review while providing the physician with as much supporting information as possible.
+
+[^1]: [Densen P, (2011)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3116346/)
+[^2]: [Laiteerapong, Neda, and Elbert S Huang. (2015)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441682/)
+[^3]: [Sutton, et al. (2020)](https://www.nature.com/articles/s41746-020-0221-y)
+[^4]: The actual number? [400,000](https://www.bbc.com/future/article/20190617-apollo-in-50-numbers-the-workers).
