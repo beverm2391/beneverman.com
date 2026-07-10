@@ -21,13 +21,15 @@ out from under you.
 
 Flows worth driving:
 
-- **Homepage SSR/no-JS**: `curl -s localhost:3000/ | grep` for intro copy,
-  `scene-fallback-layer`, and inline `--intro-*`/`--texture-*` vars on
-  `main.site-shell`. For the full no-JS state: agent-browser
-  `network_route` with `resourceType: script, abort: true`, reload, screenshot —
-  gradient fallback + copy + sun widget must all render.
-- **Scene reveal**: after JS load, `.scene-live-layer` has `.is-revealed` and
-  `.scene-fallback-layer` has `.is-hidden`.
+- **Homepage SSR/no-JS**: `curl -s localhost:3000/ | grep` for intro copy and
+  inline `--intro-*`/`--texture-*` vars on `main.site-shell`. The scene is
+  client-only: server HTML has no scene markup by design. For the full no-JS
+  state: agent-browser `network_route` with `resourceType: script, abort:
+  true`, reload, screenshot — flat shell background + readable copy.
+- **Scene arrival**: after JS load, the `.scene-arrival` wrapper gains
+  `.is-ready` once every wanted layer has drawn a frame, and the whole scene
+  (gradient, shadow, sun widget) fades in as one unit. Debug timeline logs
+  `gradient live` / `shadow live` / `scene arrival`.
 - **Debug panel**: `/?debug` — type tab sliders must restyle the intro copy
   (inline vars on `main.site-shell` change); shadow tab background buttons
   (paper/amber/…) must change shell + documentElement background. Range inputs

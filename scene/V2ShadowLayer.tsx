@@ -19,17 +19,6 @@ const kernelBaselineSize = 960
 const desktopShadowAspect = 16 / 9
 const rigidWarpModes = new Set<ShadowMapMode>(['window', 'mixed', 'pool', 'sundial', 'sun'])
 
-// Shadows develop over this window after the layer mounts, like the sun coming
-// out. The ramp lives in the uOpacity uniform (not a CSS overlay) so the
-// shader owns every factor of the shadow's strength. Entrance time accumulates
-// clamped deltas so a main-thread stall pauses the ramp instead of skipping it.
-const ENTRANCE_SECONDS = 0.45
-const MAX_ENTRANCE_FRAME_SECONDS = 1 / 30
-
-function easeOutCubic(t: number) {
-  return 1 - (1 - t) ** 3
-}
-
 function getShadowTextureSize(width: number, height: number, resolution: number) {
   const dpr = Math.min(window.devicePixelRatio || 1, maxShadowTextureDpr)
   const maxTextureSize = maxShadowTextureSize * Math.max(0.25, resolution)
@@ -61,6 +50,7 @@ function getSourceCameraVerticalSpan(width: number, height: number) {
 type ShadowPlaneProps = {
   crispnessScale: number
   mode: ShadowMapMode
+  onFirstFrame?: () => void
   opacityScale: number
   settings: ShadowSettings
   shadowTint: readonly [number, number, number]
@@ -71,6 +61,7 @@ type ShadowPlaneProps = {
 function SourceSceneShadowPlane({
   crispnessScale,
   mode,
+  onFirstFrame,
   opacityScale,
   settings,
   shadowTint,
@@ -79,7 +70,7 @@ function SourceSceneShadowPlane({
 }: ShadowPlaneProps) {
   const { gl, size } = useThree()
   const elapsedTimeRef = useRef(0)
-  const entranceTimeRef = useRef(0)
+  const hasPresentedFrameRef = useRef(false)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const previewKeyRef = useRef('')
   const { height: textureHeight, kernelScale, width: textureWidth } = getShadowTextureSize(
@@ -196,11 +187,10 @@ function SourceSceneShadowPlane({
 
     if (materialRef.current) {
       const values = materialRef.current.uniforms
-      // Every factor of shadow strength collapses into the one uniform: the
-      // tuned base opacity, the sun-elevation factor from App, and the
-      // entrance ramp. The source preview bypasses uOpacity in the shader.
-      entranceTimeRef.current += Math.min(delta, MAX_ENTRANCE_FRAME_SECONDS)
-      const entrance = easeOutCubic(Math.min(1, entranceTimeRef.current / ENTRANCE_SECONDS))
+      // Shadow strength collapses into the one uniform: the tuned base
+      // opacity times the sun-elevation factor from App. The source preview
+      // bypasses uOpacity in the shader; the scene-wide arrival fade owns the
+      // entrance (see useSceneArrival).
       values.uTime.value = elapsedTimeRef.current
       values.uAnimationSpeed.value = settings.speed
       values.uAnimationStrength.value = settings.wind
@@ -210,7 +200,7 @@ function SourceSceneShadowPlane({
       values.uLayerSpread.value = settings.layerSpread
       values.uLightGlow.value = settings.lightGlow
       values.uLightRays.value = settings.lightRays
-      values.uOpacity.value = settings.opacity * (showSource ? 1 : opacityScale * entrance)
+      values.uOpacity.value = settings.opacity * (showSource ? 1 : opacityScale)
       values.uRayDiffusion.value = settings.rayDiffusion
       values.uSampleCount.value = settings.sampleCount
       values.uShadowContrast.value = settings.contrast
@@ -218,6 +208,12 @@ function SourceSceneShadowPlane({
       values.uShowSource.value = showSource ? 1 : 0
       values.uSunAngle.value = sunAngle
       values.uWarpStrength.value = rigidWarpModes.has(mode) ? 0 : 1
+    }
+
+    // First real frame: safe to include this layer in the scene arrival fade.
+    if (!hasPresentedFrameRef.current) {
+      hasPresentedFrameRef.current = true
+      onFirstFrame?.()
     }
 
     const previewKey = [
@@ -275,6 +271,7 @@ type V2ShadowLayerProps = Omit<ShadowPlaneProps, 'showSource'> & {
 export default function V2ShadowLayer({
   crispnessScale,
   mode,
+  onFirstFrame,
   opacityScale,
   settings,
   shadowTint,
@@ -301,6 +298,7 @@ export default function V2ShadowLayer({
         <SourceSceneShadowPlane
           crispnessScale={crispnessScale}
           mode={mode}
+          onFirstFrame={onFirstFrame}
           opacityScale={opacityScale}
           settings={settings}
           shadowTint={shadowTint}

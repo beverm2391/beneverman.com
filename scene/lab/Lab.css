@@ -384,7 +384,6 @@
 
 .lab-render-layer canvas,
 .lab-render-layer .daylight-shadow-layer,
-.lab-render-layer .scene-fallback-layer,
 .lab-render-layer .scene-live-layer {
   position: absolute;
   inset: 0;

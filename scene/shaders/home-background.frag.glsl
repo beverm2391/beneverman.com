@@ -8,10 +8,6 @@ uniform vec3 uGlow;
 uniform vec3 uCool;
 uniform float uGlowStrength;
 uniform float uSunAngle;
-// 0 -> 1 scene entrance ramp, driven from JS after the first presented frame.
-// At 0 the sun's presence is dimmed toward the calm paper base (close to the
-// CSS fallback), so the scene blooms in instead of flashing fully formed.
-uniform float uEntrance;
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -69,13 +65,6 @@ void main() {
     1.0,
     shapedLight + (paperNoise - 0.5) * 0.08
   );
-
-  // Entrance floor 0.55 is calibrated against HomeBackgroundFallback's CSS
-  // gradient: at uEntrance=0 this frame should look like the fallback, so the
-  // seam swap is invisible and the lerp to 1.0 reads as a short deepening.
-  float entrance = mix(0.55, 1.0, uEntrance);
-  sunMix *= entrance;
-  sunGlow *= entrance;
 
   float sunElevation = sin(uSunAngle);
   float daylight = smoothstep(-0.12, 0.22, sunElevation);

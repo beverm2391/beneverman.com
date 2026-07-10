@@ -20,11 +20,9 @@ function assert(condition, message) {
 
 const homeHtml = await fs.readFile(path.join(root, ".next/server/app/index.html"), "utf8");
 assert(homeHtml.includes("Ben Everman"), "homepage HTML does not contain the server-rendered intro");
-assert(
-  homeHtml.includes("scene-fallback-layer"),
-  "homepage HTML does not contain the static scene background"
-);
-assert(homeHtml.includes("sun-angle-widget"), "homepage HTML does not contain the static sun widget");
+// The scene is client-only and fades in after load (useSceneArrival); the
+// server HTML is the flat shell plus content, with no scene markup.
+assert(homeHtml.includes("site-shell"), "homepage HTML does not contain the server-rendered shell");
 
 const labMeta = JSON.parse(await fs.readFile(path.join(root, ".next/server/app/lab.meta"), "utf8"));
 assert(labMeta.status === 404, "production /lab route is not a 404");
