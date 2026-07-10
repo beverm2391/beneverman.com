@@ -270,9 +270,11 @@ main {
 }
 
 /* Code blocks (rehype-pretty-code wraps them in a figure; ```lang
-   title="file.py" adds a figcaption). The title renders as a small tab
-   attached to the top-left of the block. */
+   title="file.py" adds a figcaption). A titled block gets a full-width
+   header band: the filename on the left, the copy button on the right.
+   Untitled blocks float the copy button over the code instead. */
 .prose :where(figure[data-rehype-pretty-code-figure]):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  position: relative;
   margin: 1.6rem 0;
 }
 
@@ -281,8 +283,7 @@ main {
 }
 
 .prose :where(figcaption[data-rehype-pretty-code-title]):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  width: fit-content;
-  padding: 0.3rem 0.9rem;
+  padding: 0.4rem 1.1rem;
   border: 1px solid var(--border);
   border-bottom: 0;
   border-radius: var(--radius) var(--radius) 0 0;
@@ -290,12 +291,26 @@ main {
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 0.72rem;
+  line-height: 1.4;
 }
 
 .prose
   :where(figure[data-rehype-pretty-code-figure]):has([data-rehype-pretty-code-title])
   :where(pre) {
   border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Copy button sits inside the header band when there is one: anchored to the
+   figure, ghost styling, always visible. */
+figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .code-copy {
+  top: 0.18rem;
+  right: 0.45rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  border: 0;
+  background: transparent;
+  opacity: 1;
 }
 
 /* Footnotes (remark-gfm renders section[data-footnotes]): smaller, muted,

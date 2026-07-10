@@ -36,6 +36,10 @@ configures the hook.
   `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
   `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
   component map. Metadata/feed routes should import the data-only module.
+- ```mermaid fences render to inline SVG at compile time (rehype-mermaid via
+  headless Chromium; its packages sit in `serverExternalPackages` because
+  Turbopack lacks `import.meta.resolve`). Any environment that runs
+  `next build` needs `pnpm exec playwright install chromium` first.
 - The lab lives at `/lab`. `next.config.ts` aliases the exact `LabMount` import
   to `LabUnavailable` during production builds. Preserve that boundary and the
   build assertion that checks lab JS/CSS cannot leak into static assets.

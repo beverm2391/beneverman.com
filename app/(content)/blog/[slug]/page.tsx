@@ -49,7 +49,10 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 async function getPostOrNotFound(slug: string) {
   try {
     return await getBlogPost(slug);
-  } catch {
+  } catch (error) {
+    // Bad slugs 404, but a post that fails to *compile* must be loud in the
+    // server log — a silent 404 here once hid a broken MDX pipeline.
+    console.error(`getBlogPost("${slug}") failed:`, error);
     notFound();
   }
 }

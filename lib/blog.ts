@@ -1,4 +1,5 @@
 import { compileMDX } from "next-mdx-remote/rsc";
+import rehypeMermaid from "rehype-mermaid";
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
 import { createHighlighterCore, type HighlighterCore } from "shiki/core";
@@ -65,7 +66,19 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
       parseFrontmatter: false,
       mdxOptions: {
         remarkPlugins: [remarkGfm],
-        rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]]
+        // Mermaid runs first so ```mermaid fences become inline SVG at
+        // compile time (headless Chromium, no client JS, no flash) before
+        // pretty-code touches the remaining fences.
+        rehypePlugins: [
+          [
+            rehypeMermaid,
+            {
+              strategy: "inline-svg",
+              mermaidConfig: { theme: "neutral", fontFamily: "Geist, ui-sans-serif, sans-serif" }
+            }
+          ],
+          [rehypePrettyCode, prettyCodeOptions]
+        ]
       }
     }
   });
