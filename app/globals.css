@@ -257,6 +257,13 @@ main {
   border-radius: var(--radius);
 }
 
+/* The plugin gives images 2em above and below; keep the air above but let
+   what follows (the ZoomImage caption, or the paragraph's own bottom margin)
+   own the gap below. */
+.prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin: 2em 0 0;
+}
+
 .prose :where(th, td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   border: 1px solid var(--border);
   padding: 0.4rem 0.6rem;

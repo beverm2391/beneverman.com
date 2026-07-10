@@ -24,7 +24,7 @@ export function ZoomImage({ title, ...props }: React.ComponentProps<"img">) {
         <img loading="lazy" {...props} />
       </Zoom>
       {title ? (
-        <span className="mt-2 block text-center text-[0.8rem] leading-snug text-muted">
+        <span className="mt-1 block text-[0.8rem] leading-snug text-muted">
           {title}
         </span>
       ) : null}
