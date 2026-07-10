@@ -6,27 +6,32 @@ export const metadata = {
   description: "Technical notes from Ben Everman."
 };
 
+// Frontmatter dates are date-only ("2026-07-09"); format in UTC so the
+// rendered day never shifts with the build machine's timezone.
+const dateFormat = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "UTC"
+});
+
 export default async function BlogIndexPage() {
   const posts = await getBlogPosts();
 
   return (
     <main>
       <h1>Blog</h1>
-      <ol>
+      <ul className="post-list">
         {posts.map((post) => (
           <li key={post.slug}>
-            <article>
-              <h2>
-                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-              </h2>
-              <p>{post.description}</p>
-              <p>
-                <time dateTime={post.date}>{post.date}</time>
-              </p>
-            </article>
+            <div className="post-list-head">
+              <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+              <time dateTime={post.date}>{dateFormat.format(new Date(post.date))}</time>
+            </div>
+            <p>{post.description}</p>
           </li>
         ))}
-      </ol>
+      </ul>
     </main>
   );
 }

@@ -149,6 +149,47 @@ time {
   color: var(--muted);
 }
 
+/* ---- blog index ------------------------------------------------------ */
+
+.post-list {
+  list-style: none;
+  margin: 2.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 2.25rem;
+}
+
+.post-list-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+.post-list-head a {
+  color: var(--fg);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.post-list-head a:hover {
+  color: var(--accent);
+}
+
+.post-list-head time {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.post-list p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+}
+
 /* ---- content-page header (blog) ------------------------------------- */
 
 .site-header {
