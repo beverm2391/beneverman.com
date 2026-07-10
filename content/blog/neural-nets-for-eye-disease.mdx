@@ -7,10 +7,9 @@ tags:
   - healthcare
 ---
 
-<Summary>
-- The source code is [here](https://colab.research.google.com/drive/1u16VMEfoQmuXb5adNLExwes6OQZbT-7e?usp=sharing), in Colab. You'll need a GPU to run it.
-- If you have any questions, reach out on [X](https://x.com/beneverman) or email me: [ben@beneverman.com](mailto:ben@beneverman.com).
-</Summary>
+<Callout type="note" title="Source code">
+The source code is [here](https://colab.research.google.com/drive/1u16VMEfoQmuXb5adNLExwes6OQZbT-7e?usp=sharing), in Colab — you'll need a GPU to run it. Questions? Reach out on [X](https://x.com/beneverman) or email me: [ben@beneverman.com](mailto:ben@beneverman.com).
+</Callout>
 
 ## Doctors Can't Keep Up
 
@@ -24,7 +23,33 @@ I think we can. How? By building clinical *Decision Support Systems* (DSS)[^3]. 
 
 So how can we use ML and AI to support clinical decision making? One way is using computer vision. With neural networks that take images as input, we can batch-process large amounts of medical imagery and use the network to return the much smaller subset that requires actual physician review. The goal is not to diagnose, but to identify what needs physician review while providing the physician with as much supporting information as possible.
 
+## Using Math to See Disease
+
+This project was inspired by the work of [Ophthalytics](https://www.ophthalytics.com/). In their recent paper[^5] they trained a Convolutional Neural Network (CNN), commonly used in computer vision, to detect Diabetic Retinopathy. DR is a complication of diabetes that affects the retina and can lead to vision loss if not detected and treated early.
+In the paper, the model takes close-up [retinal fundus](https://ophthalmology.med.ubc.ca/patient-care/ophthalmic-photography/color-fundus-photography/) images as input and classifies them as `DR-Positive` or `DR-Negative`. See the figure below.
+
+![Figure 3 from the Ophthalytics paper: retinal fundus images](/images/blog/neural-nets-for-eye-disease/ophth-fig-3.png)
+`(a) DR Negative and (b) DR Positive`
+
+I decided I wanted to build a similar eye disease classifier. My goals for this project were twofold:
+
+1. Train a classifier that can detect *multiple* eye diseases
+2. Train the model using minimal compute, as fast as possible
+
+## Implementing a CNN for Eye Disease Classification
+
+Since my goal was to minimize compute costs, I chose the EfficientNet architecture. The original EfficientNet paper[^6] was published in 2019. The EfficientNet architecture uses a compound scaling method that uniformly scales all architectural dimensions of the CNN (depth/width/resolution). The big benefit of the EfficientNet is that it's optimized for performance/compute cost. At the time of publication, their largest model, the *EfficientNetB7* was deemed "8.4x smaller and 6.1x faster on inference than the best existing ConvNet"[^6]. Here's a figure from the paper:
+
+![Accuracy vs FLOPs figure from the EfficientNet paper](/images/blog/neural-nets-for-eye-disease/efficientnet.png)
+
+Notice the Y axis is Accuracy and the X axis is FLOPs - a direct measure for compute cost. FLOPs stands for *Floating Point Operations*, which is the total number of floating-point arithmetic operations performed by (inference) or required by (training) the model.[^7]
+
+For this project, I used an A100 on Google Colab, which costs me about \$9.99 a month. The isolated cost of this project would be much lower (\<\$2 maybe?). It turns out that being poor does force you to be more creative.
+
 [^1]: [Densen P, (2011)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3116346/)
 [^2]: [Laiteerapong, Neda, and Elbert S Huang. (2015)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4441682/)
 [^3]: [Sutton, et al. (2020)](https://www.nature.com/articles/s41746-020-0221-y)
 [^4]: The actual number? [400,000](https://www.bbc.com/future/article/20190617-apollo-in-50-numbers-the-workers).
+[^5]: [Bajwa, et al. (2023)](https://www.mdpi.com/2075-4418/13/3/393)
+[^6]: [Tan and Le. (2019)](https://arxiv.org/abs/1905.11946)
+[^7]: For context, the [speculated number of FLOPs](https://patmcguinness.substack.com/p/gpt-4-details-revealed) used to train [GPT-4](https://arxiv.org/abs/2303.08774) (aka ChatGPT) was ~2.15e25 or 21,500,000 EFLOPs, which for \$1/A100 hour is estimated at \$63 Million.

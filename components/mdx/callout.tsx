@@ -3,18 +3,19 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Inline aside for the body of a post, rendered with the Coss Alert. `type`
 // picks the variant + icon + default label; `title` overrides the label.
-type CalloutType = "note" | "tip" | "warn" | "error";
+// note is the neutral gray one; info is the blue one.
+type CalloutType = "note" | "info" | "tip" | "warn" | "error";
 
 const CALLOUTS: Record<
   CalloutType,
   {
     label: string;
-    variant: "info" | "success" | "warning" | "error";
+    variant: "default" | "info" | "success" | "warning" | "error";
     Icon: typeof Info;
   }
 > = {
-  // GitHub-callout convention: Note is the blue/info one.
-  note: { label: "Note", variant: "info", Icon: Info },
+  note: { label: "Note", variant: "default", Icon: Info },
+  info: { label: "Info", variant: "info", Icon: Info },
   tip: { label: "Tip", variant: "success", Icon: Lightbulb },
   warn: { label: "Warning", variant: "warning", Icon: TriangleAlert },
   error: { label: "Caution", variant: "error", Icon: OctagonAlert }

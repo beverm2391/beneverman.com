@@ -29,6 +29,11 @@
 @theme {
   --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* The house animation curve (transitions.dev's resize ease). Use as the
+     `ease-smooth` utility with duration-300 for any size/position morph —
+     the lightbox below uses the same tokens. */
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Geist — the homepage/scene display font, ported exactly from v7 (same
@@ -255,6 +260,31 @@ main {
 .prose :where(th, td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   border: 1px solid var(--border);
   padding: 0.4rem 0.6rem;
+}
+
+/* react-medium-image-zoom lightbox: overlay follows the theme (the library
+   default is hard white, which flashes in dark mode), the open/close morph
+   runs on the house curve, and the magnifier cursors are replaced with plain
+   pointers. The library's own prefers-reduced-motion rule still wins. */
+/* Parent-prefixed selectors out-specify the library stylesheet, which loads
+   after globals (bundled with the client component). */
+[data-rmiz-modal] [data-rmiz-modal-overlay="visible"] {
+  background-color: var(--bg);
+}
+
+[data-rmiz-modal] [data-rmiz-modal-overlay],
+[data-rmiz-modal] [data-rmiz-modal-img] {
+  transition-duration: 300ms;
+  transition-timing-function: var(--ease-smooth);
+}
+
+[data-rmiz] [data-rmiz-content="found"] img,
+[data-rmiz] [data-rmiz-content="found"] svg,
+[data-rmiz] [data-rmiz-content="found"] [role="img"],
+[data-rmiz] [data-rmiz-content="found"] [data-zoom],
+[data-rmiz-modal] [data-rmiz-modal-img],
+[data-rmiz-modal] [data-rmiz-btn-unzoom] {
+  cursor: pointer;
 }
 
 /* Dual Shiki themes: token colors switch by theme (bg comes from --code-bg). */
