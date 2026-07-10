@@ -13,7 +13,6 @@ import {
   useDeferredFontStylesheet,
   useShadowSourcePreview,
 } from './homeSceneState'
-import { useDeferredMount } from './primitives/deferredMount'
 import { useSceneArrival } from './primitives/sceneArrival'
 import { useSceneCapability } from './primitives/sceneCapability'
 import { useSceneShellStyle } from './primitives/sceneShell'
@@ -65,11 +64,10 @@ function App() {
   const [shadowSettings, setShadowSettings] = useState<ShadowSettings>({ ...responsiveVisualConfig.shadowSettings })
   const [shadowMapMode, setShadowMapMode] = useState<ShadowMapMode>(responsiveVisualConfig.shadowMapMode)
   const shouldRenderShadowLayer = shadowMapMode !== 'sun'
+  // No mount deferral: App itself only mounts after hydration (client-only
+  // dynamic chunk), so layers load as early as possible and the only delay a
+  // visitor experiences is each layer's own fade-in.
   const wantsShadowLayer = shadowCapability.enabled && shouldRenderShadowLayer
-  // Yield briefly so hydration wins the main thread before Three.js init;
-  // per-layer arrival means nothing visible waits on the shadow, so no
-  // longer pad is needed.
-  const isShadowLayerReady = useDeferredMount(wantsShadowLayer, 'shadow', 100)
   // Each WebGL layer fades in the moment its own first frame is GPU-verified
   // (per-layer choreography). DOM/CSS content is never gated on this.
   const arrival = useSceneArrival(wantsShadowLayer ? ['gradient', 'shadow'] : ['gradient'])
@@ -227,7 +225,7 @@ function App() {
           onFirstFrame={() => arrival.markLive('gradient')}
           sunAngle={effectiveSunAngle}
         />
-        {wantsShadowLayer && isShadowLayerReady ? (
+        {wantsShadowLayer ? (
           <DeferredShadowLayer
             className={arrival.layerClassName('shadow')}
             crispnessScale={shadowCrispnessScale}
