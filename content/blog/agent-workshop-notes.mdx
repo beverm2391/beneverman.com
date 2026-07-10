@@ -7,8 +7,35 @@ tags:
   - notes
 ---
 
+<Summary>
+Sandbox for workshopping the `Summary` and `Callout` components. The summary
+card sits at the top; the callouts below show every `type`.
+
+- Source: [the repo](https://github.com/beneverman/beneverman.com)
+- Questions: [ben@beneverman.com](mailto:ben@beneverman.com)
+</Summary>
+
 This placeholder keeps the blog pipeline honest while the source posts are still
 being located. It is intentionally plain MDX content.
+
+<Callout type="note">
+A plain note — the default. Neutral accent, for asides that add context without
+raising alarm.
+</Callout>
+
+<Callout type="tip">
+A tip. Use it for shortcuts, recommendations, and the thing you wish you'd known
+earlier.
+</Callout>
+
+<Callout type="warn" title="Updated 3/31/24">
+A warning, here doubling as a dated update note. The `title` prop overrides the
+default label.
+</Callout>
+
+<Callout type="error">
+A caution — for the GPU-will-OOM, this-will-cost-money class of warning.
+</Callout>
 
 ![Diagram placeholder](/images/blog/agent-workshop.svg)
 

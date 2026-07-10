@@ -1,15 +1,26 @@
-// Bespoke aside for MDX posts: summary cards, tips, warnings, update notes.
-// One component covers all of them; `label` sets the small mono header.
+// Inline aside for the body of a post: notes, tips, warnings, update notes.
+// `type` picks the accent colour + default label; `title` overrides the label.
+type CalloutType = "note" | "tip" | "warn" | "error";
+
+const CALLOUT_LABELS: Record<CalloutType, string> = {
+  note: "Note",
+  tip: "Tip",
+  warn: "Warning",
+  error: "Caution"
+};
+
 export function Callout({
-  label,
+  type = "note",
+  title,
   children
 }: {
-  label?: string;
+  type?: CalloutType;
+  title?: string;
   children: React.ReactNode;
 }) {
   return (
-    <aside className="callout">
-      {label ? <div className="callout-label">{label}</div> : null}
+    <aside className="callout" data-callout={type}>
+      <div className="callout-label">{title ?? CALLOUT_LABELS[type]}</div>
       {children}
     </aside>
   );

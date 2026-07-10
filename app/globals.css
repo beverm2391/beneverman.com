@@ -162,26 +162,64 @@ time {
   color: var(--muted);
 }
 
-/* ---- callout / summary aside ----------------------------------------- */
+/* ---- summary (lead card) --------------------------------------------- */
 
-.callout {
-  margin: 1.6rem 0;
+.summary {
+  margin: 1.6rem 0 2.4rem;
   padding: 1rem 1.2rem;
-  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
 }
 
-.callout p {
+.summary p {
   margin: 0.5rem 0 0;
 }
 
-.callout ul,
-.callout ol {
+.summary ul,
+.summary ol {
   margin: 0.5rem 0 0;
   padding-left: 1.2rem;
 }
 
+/* ---- callout (inline aside) ------------------------------------------ */
+
+.callout {
+  margin: 1.6rem 0;
+  padding: 0.7rem 1rem;
+  border-left: 3px solid var(--callout-accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: color-mix(in srgb, var(--callout-accent) 7%, transparent);
+  --callout-accent: var(--muted);
+}
+
+.callout[data-callout="tip"] {
+  --callout-accent: #4f8a5b;
+}
+
+.callout[data-callout="warn"] {
+  --callout-accent: #b7791f;
+}
+
+.callout[data-callout="error"] {
+  --callout-accent: #b4472e;
+}
+
+.callout p {
+  margin: 0.4rem 0 0;
+}
+
+.callout ul,
+.callout ol {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.callout .callout-label {
+  color: var(--callout-accent);
+}
+
+/* Shared mono label for summary + callout. */
+.summary-label,
 .callout-label {
   font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.75rem;

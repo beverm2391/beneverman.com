@@ -16,9 +16,10 @@ import githubLight from "shiki/themes/github-light.mjs";
 import type { Highlighter } from "shiki";
 import { z } from "zod";
 import { Callout } from "@/components/mdx/callout";
+import { Summary } from "@/components/mdx/summary";
 
 // The bespoke MDX component map. Posts may only use what's registered here.
-const mdxComponents = { Callout };
+const mdxComponents = { Callout, Summary };
 
 const blogDirectory = path.join(process.cwd(), "content/blog");
 const allowedSlug = /^[a-z0-9-]+$/;
