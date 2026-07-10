@@ -35,6 +35,9 @@ export function useSceneArrival(wantedLayers: readonly string[], graceMs = 3500)
     setLiveLayers((current) => {
       if (current.has(layer)) return current
       emitDebugTimelineEvent(`${layer} live`)
+      // performance.mark makes the arrival ladder measurable in any browser:
+      // performance.getEntriesByType('mark') or the DevTools Performance panel.
+      performance.mark(`scene:${layer}-live`)
       return new Set(current).add(layer)
     })
   }, [])
@@ -53,7 +56,9 @@ export function useSceneArrival(wantedLayers: readonly string[], graceMs = 3500)
   const isReady = allLive || (liveLayers.size > 0 && graceElapsed)
 
   useEffect(() => {
-    if (isReady) emitDebugTimelineEvent('scene arrival')
+    if (!isReady) return
+    emitDebugTimelineEvent('scene arrival')
+    performance.mark('scene:arrival')
   }, [isReady])
 
   return {
