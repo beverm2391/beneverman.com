@@ -1,21 +1,21 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { emitDebugTimelineEvent } from './debugTimeline'
 import { HomeDebugPanel } from './HomeDebugPanel'
-import { HomePageContent } from './HomePageContent'
 import { HomeSunStatus } from './HomeSunStatus'
 import {
   getResponsiveVisualConfig,
   DeferredShadowLayer,
-  useAfterInteractiveShadowLayer,
   useAnimatedSunAngle,
   useDebugMode,
   useDebugTimeline,
   useDeferredFontStylesheet,
-  useShadowCapability,
   useShadowSourcePreview,
 } from './homeSceneState'
+import { useDeferredMount } from './primitives/deferredMount'
+import { useSceneCapability } from './primitives/sceneCapability'
+import { useSceneShellStyle } from './primitives/sceneShell'
 import type {
   AppliedVisualPreset,
   DebugPanelTab,
@@ -28,7 +28,7 @@ import type {
 } from './homeSceneTypes'
 import { backgroundModes, type BackgroundMode } from './HomeSunGradientConfig'
 import { HomeSunGradientLayer } from './HomeSunGradientLayer'
-import { getHomeIntroStyle } from './homeVisualConfig'
+import { getHomeShellStyle } from './homeVisualConfig'
 import { activeSiteConfig } from './siteScene'
 import { shadowMapModes, type ShadowMapMode } from './shadowMapModes'
 import { getShadowFactor } from './SunWidget'
@@ -60,12 +60,13 @@ function App() {
   const [background, setBackground] = useState<BackgroundMode>(responsiveVisualConfig.background)
   const [font, setFont] = useState<FontMode>(responsiveVisualConfig.font)
   const timelineEvents = useDebugTimeline()
-  const shadowCapability = useShadowCapability()
+  const shadowCapability = useSceneCapability()
   const [shadowSettings, setShadowSettings] = useState<ShadowSettings>({ ...responsiveVisualConfig.shadowSettings })
   const [shadowMapMode, setShadowMapMode] = useState<ShadowMapMode>(responsiveVisualConfig.shadowMapMode)
   const shouldRenderShadowLayer = shadowMapMode !== 'sun'
-  const isShadowLayerReady = useAfterInteractiveShadowLayer(
+  const isShadowLayerReady = useDeferredMount(
     shadowCapability.enabled && shouldRenderShadowLayer,
+    'shadow',
   )
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
   const shadowSourcePreview = useShadowSourcePreview()
@@ -89,6 +90,15 @@ function App() {
     daylight,
   )
   const shadowCrispnessScale = 0.45 + 0.55 * smoothstep(0.05, 0.6, sunElevation)
+
+  // Restyle the server-rendered shell when presets or debug controls change.
+  // Memoized so per-frame sun-angle renders don't rewrite shell styles.
+  useSceneShellStyle(
+    useMemo(
+      () => getHomeShellStyle({ background, font, textureSettings, typeSettings }),
+      [background, font, textureSettings, typeSettings],
+    ),
+  )
 
   useEffect(() => {
     document.documentElement.style.background = backgroundMode.color
@@ -193,15 +203,7 @@ function App() {
   }
 
   return (
-    <main
-      className="site-shell"
-      style={{
-        ...getHomeIntroStyle({ font, typeSettings }),
-        ['--texture-opacity' as string]: textureSettings.opacity,
-        ['--texture-scale' as string]: `${textureSettings.scale}px`,
-        backgroundColor: backgroundMode.color,
-      }}
-    >
+    <>
       <div className="visual-scene-layer" aria-hidden="true">
         <HomeSunGradientLayer mode={backgroundMode} sunAngle={effectiveSunAngle} />
         {shadowCapability.enabled && shouldRenderShadowLayer && isShadowLayerReady ? (
@@ -218,7 +220,6 @@ function App() {
       {sunWidget === 'none' ? null : (
         <HomeSunStatus angle={effectiveSunAngle} variant={sunWidget} />
       )}
-      <HomePageContent />
       {isDebug ? (
         <HomeDebugPanel
           activeTab={debugPanelTab}
@@ -254,7 +255,7 @@ function App() {
           typeSettings={typeSettings}
         />
       ) : null}
-    </main>
+    </>
   )
 }
 

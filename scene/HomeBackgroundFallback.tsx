@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { BackgroundModeConfig } from './HomeSunGradientConfig'
-import './HomeBackground.css'
+import './primitives/sceneFade.css'
 
 function toRgb(channels: readonly [number, number, number]) {
   return `rgb(${channels.map((channel) => Math.round(channel * 255)).join(', ')})`
@@ -32,7 +32,7 @@ export function HomeBackgroundFallback({
   return (
     <div
       aria-hidden="true"
-      className={`background-fallback-layer${hidden ? ' is-hidden' : ''}`}
+      className={`scene-fallback-layer${hidden ? ' is-hidden' : ''}`}
       style={style}
     />
   )

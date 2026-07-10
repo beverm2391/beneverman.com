@@ -8,7 +8,6 @@ import {
 import type {
   AppliedVisualPreset,
   ResponsiveVisualConfig,
-  ShadowCapability,
   VisualSizeClass,
 } from './homeSceneTypes'
 import { activeSiteConfig } from './siteScene'
@@ -19,14 +18,6 @@ import {
   type ShadowSourcePreview,
 } from './shadowSourcePreview'
 import { cycleTimeAtSunAngle, sunAngleAtCycleTime, sunCycleDurationSeconds } from './sunClock'
-
-type BatteryStatus = { charging: boolean; level: number }
-
-type NavigatorWithEffectHints = Navigator & {
-  connection?: { effectiveType?: string; saveData?: boolean }
-  deviceMemory?: number
-  getBattery?: () => Promise<BatteryStatus>
-}
 
 const debugFontStylesheet =
   'https://fonts.googleapis.com/css2?family=Inter:wght@250..650&family=Open+Sans:wght@250..650&family=Rubik:wght@250..650&display=optional'
@@ -68,21 +59,6 @@ export function useDeferredFontStylesheet(isDebug: boolean) {
   }, [isDebug])
 }
 
-function getShadowCapability(battery?: BatteryStatus | null): ShadowCapability {
-  const hints = navigator as NavigatorWithEffectHints
-  const reasons: string[] = []
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const effectiveType = hints.connection?.effectiveType
-
-  if (reducedMotion) reasons.push('reduced motion')
-  if (hints.connection?.saveData) reasons.push('data saver')
-  if (effectiveType === 'slow-2g' || effectiveType === '2g') reasons.push(effectiveType)
-  if (typeof hints.deviceMemory === 'number' && hints.deviceMemory <= 2) reasons.push(`${hints.deviceMemory}gb memory`)
-  if (navigator.hardwareConcurrency <= 2) reasons.push(`${navigator.hardwareConcurrency} cores`)
-  if (battery && !battery.charging && battery.level <= 0.2) reasons.push('low battery')
-  return { enabled: reasons.length === 0, reasons: reasons.length > 0 ? reasons : ['ok'] }
-}
-
 export function useDebugMode() {
   const readDebugMode = () => new URLSearchParams(window.location.search).has('debug')
   const [isDebug, setIsDebug] = useState(readDebugMode)
@@ -98,33 +74,6 @@ export function useDebugTimeline() {
   const [events, setEvents] = useState<DebugTimelineEvent[]>(getDebugTimelineEvents)
   useEffect(() => subscribeDebugTimeline(setEvents), [])
   return events
-}
-
-export function useShadowCapability() {
-  const [battery, setBattery] = useState<BatteryStatus | null>(null)
-  const [capability, setCapability] = useState(() => getShadowCapability())
-
-  useEffect(() => {
-    const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const refresh = () => setCapability(getShadowCapability(battery))
-    motionQuery.addEventListener('change', refresh)
-    refresh()
-    return () => motionQuery.removeEventListener('change', refresh)
-  }, [battery])
-
-  useEffect(() => {
-    const hints = navigator as NavigatorWithEffectHints
-    let cancelled = false
-    void hints.getBattery?.().then((nextBattery) => {
-      if (cancelled) return
-      setBattery(nextBattery)
-      setCapability(getShadowCapability(nextBattery))
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [])
-  return capability
 }
 
 function getVisualSizeClass(width: number, height: number): VisualSizeClass {
@@ -194,17 +143,3 @@ export const DeferredShadowLayer = lazy(() => {
     return module
   })
 })
-
-export function useAfterInteractiveShadowLayer(shouldLoad: boolean) {
-  const [isReady, setIsReady] = useState(false)
-  useEffect(() => {
-    if (!shouldLoad) {
-      emitDebugTimelineEvent('shadow gated')
-      return
-    }
-    emitDebugTimelineEvent('chunk scheduled')
-    const timeoutId = globalThis.setTimeout(() => setIsReady(true), 0)
-    return () => globalThis.clearTimeout(timeoutId)
-  }, [shouldLoad])
-  return shouldLoad && isReady
-}

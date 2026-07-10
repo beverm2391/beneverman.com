@@ -1,24 +1,18 @@
 import { backgroundModes } from "./HomeSunGradientConfig";
 import { HomeBackgroundFallback } from "./HomeBackgroundFallback";
-import { HomePageContent } from "./HomePageContent";
 import { HomeSunStatus } from "./HomeSunStatus";
-import { getHomeIntroStyle } from "./homeVisualConfig";
 import { activeSiteConfig } from "./siteScene";
 
 const backgroundMode =
   backgroundModes.find((mode) => mode.label === activeSiteConfig.background) ?? backgroundModes[0];
 
-// This is both the server-rendered first paint and the durable no-JavaScript
-// fallback. Keep its geometry identical to App so hydration cannot shift copy.
+// The scene's server-rendered first paint and durable no-JavaScript fallback:
+// only the visual layers behind the content. The page content itself lives in
+// app/page.tsx, outside the client-scene swap, so it never remounts when the
+// App chunk arrives (see primitives/clientScene.tsx).
 export function HomeStaticShell() {
   return (
-    <main
-      className="site-shell"
-      style={{
-        ...getHomeIntroStyle(),
-        backgroundColor: backgroundMode.color
-      }}
-    >
+    <>
       <div className="visual-scene-layer" aria-hidden="true">
         <HomeBackgroundFallback
           mode={backgroundMode}
@@ -31,7 +25,6 @@ export function HomeStaticShell() {
           variant={activeSiteConfig.sunWidget}
         />
       ) : null}
-      <HomePageContent />
-    </main>
+    </>
   );
 }

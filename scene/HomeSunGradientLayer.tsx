@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { HomeBackgroundFallback } from './HomeBackgroundFallback'
 import type { BackgroundModeConfig } from './HomeSunGradientConfig'
+import { useFirstFrameReveal } from './primitives/firstFrameReveal'
 import backgroundFragmentShader from './shaders/home-background.frag.glsl'
 import backgroundVertexShader from './shaders/home-background.vert.glsl'
 
@@ -29,7 +30,7 @@ export function HomeSunGradientLayer({
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const sunAngleRef = useRef(sunAngle)
-  const [isVisible, setIsVisible] = useState(false)
+  const { isRevealed, reveal } = useFirstFrameReveal()
 
   useEffect(() => {
     sunAngleRef.current = sunAngle
@@ -114,12 +115,12 @@ export function HomeSunGradientLayer({
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 
-      // Never dismiss the durable fallback merely because the component
-      // mounted. Keep it until WebGL has actually produced a frame; failed or
-      // unavailable contexts continue to show the complete static scene.
+      // Reveal only after WebGL has actually produced a frame; failed or
+      // unavailable contexts continue to show the complete static scene
+      // (see useFirstFrameReveal).
       if (!hasPresentedFrame) {
         hasPresentedFrame = true
-        setIsVisible(true)
+        reveal()
       }
 
       if (!motionQuery.matches) frameId = requestAnimationFrame(render)
@@ -154,16 +155,15 @@ export function HomeSunGradientLayer({
       gl.deleteShader(vertexShader)
       gl.deleteShader(fragmentShader)
     }
-  }, [mode])
+  }, [mode, reveal])
 
   return (
     <>
-      <HomeBackgroundFallback hidden={isVisible} mode={mode} sunAngle={sunAngle} />
+      <HomeBackgroundFallback hidden={isRevealed} mode={mode} sunAngle={sunAngle} />
       <canvas
         aria-hidden="true"
-        className="background-shader-layer"
+        className={`scene-live-layer${isRevealed ? ' is-revealed' : ''}`}
         ref={canvasRef}
-        style={{ opacity: isVisible ? 1 : 0 }}
       />
     </>
   )

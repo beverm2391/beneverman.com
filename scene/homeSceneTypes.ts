@@ -36,11 +36,6 @@ export const fontModes = [
 
 export type FontMode = (typeof fontModes)[number]['label']
 
-export type ShadowCapability = {
-  enabled: boolean
-  reasons: string[]
-}
-
 export type ResponsiveVisualConfig = {
   appliedPreset: AppliedVisualPreset
   sizeClass: VisualSizeClass

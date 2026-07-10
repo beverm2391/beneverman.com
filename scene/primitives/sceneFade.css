@@ -1,0 +1,35 @@
+/* Cross-fade pair for useFirstFrameReveal: a CSS-only fallback that ships in
+   the server HTML, and the live (WebGL/canvas) layer that replaces it once it
+   has presented a real frame. Both occupy the same fixed plane so the fade
+   reads as detail arriving, not a background swap. */
+
+.scene-fallback-layer,
+.scene-live-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 160ms ease-out;
+  will-change: opacity;
+}
+
+.scene-live-layer {
+  opacity: 0;
+}
+
+.scene-live-layer.is-revealed {
+  opacity: 1;
+}
+
+.scene-fallback-layer.is-hidden {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-fallback-layer,
+  .scene-live-layer {
+    transition: none;
+  }
+}
