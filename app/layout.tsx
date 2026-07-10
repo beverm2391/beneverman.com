@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "./theme-provider";
-import { PaperDebug } from "@/components/debug/paper-debug";
 import "./globals.css";
 // App.css is global (as it was via <link> in v7) so the home AND the lab's
 // text layer share one source of truth for .intro typography — they must match.
@@ -40,7 +39,6 @@ export default function RootLayout({
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}
-          <PaperDebug />
         </ThemeProvider>
       </body>
     </html>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { PaperBackground } from "@/components/paper-background";
+import { PaperDebug } from "@/components/debug/paper-debug";
 import { navItems } from "@/lib/nav";
 
 // Layout for content pages (blog). The homepage lives outside this route group,
@@ -11,6 +13,7 @@ export default function ContentLayout({
 }>) {
   return (
     <>
+      <PaperBackground />
       <header className="sticky top-0 z-10 bg-transparent">
         <nav className="flex gap-6 px-7 py-[1.1rem]">
           {navItems.map((item) => (
@@ -26,6 +29,7 @@ export default function ContentLayout({
       </header>
       <ThemeToggle />
       {children}
+      <PaperDebug />
     </>
   );
 }

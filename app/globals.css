@@ -77,14 +77,13 @@
   }
 }
 
-/* ---- paper background ------------------------------------------------ */
-/* Two fixed layers behind all content: a soft white->paper gradient wash,
+/* ---- paper background (blog only) ------------------------------------ */
+/* Two fixed layers behind blog content: a soft white->paper gradient wash,
    then a static grain overlay ported from beneverman.com-v7's
    `.surface-texture` (inline SVG feTurbulence — pure CSS, no JS/canvas/image
-   files). Sitting behind content keeps body text crisp; the grain multiplies
-   onto the wash. Only the grain is ?debug-tunable; the wash is fixed. */
-body::before {
-  content: "";
+   files). Rendered by the content layout (PaperBackground) so it never bleeds
+   onto the home scene. Only the grain is ?debug-tunable; the wash is fixed. */
+.paper-wash {
   position: fixed;
   inset: 0;
   z-index: -2;
@@ -92,8 +91,7 @@ body::before {
   background: radial-gradient(125% 90% at 50% 0%, #ffffff 0%, var(--bg) 65%);
 }
 
-body::after {
-  content: "";
+.paper-grain {
   position: fixed;
   inset: 0;
   z-index: -1;
@@ -106,17 +104,17 @@ body::after {
 
 /* Dark mode: multiply would crush to black, so lighten with screen and pull
    the grain back; the wash goes warm-dark instead of white. */
-.dark body::before {
+.dark .paper-wash {
   background: radial-gradient(125% 90% at 50% 0%, #1e1912 0%, var(--bg) 55%, #120f0a 100%);
 }
 
-.dark body::after {
+.dark .paper-grain {
   opacity: 0.05;
   mix-blend-mode: screen;
 }
 
 /* Debug toggle: hide the grain layer while keeping its tuned values. */
-.grain-off body::after {
+.grain-off .paper-grain {
   display: none;
 }
 
