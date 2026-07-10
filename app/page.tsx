@@ -1,7 +1,9 @@
 import HomeMount from "@/scene/HomeMount";
 import { SiteHeader } from "@/components/site-header";
 import { HomePageContent } from "@/scene/HomePageContent";
+import { HomeSunStatus } from "@/scene/HomeSunStatus";
 import { getHomeShellStyle } from "@/scene/homeVisualConfig";
+import { activeSiteConfig } from "@/scene/siteScene";
 import "@/scene/App.css";
 
 // The shell <main> and page content are server-rendered once and never remount.
@@ -22,6 +24,19 @@ export default function HomePage() {
       <SiteHeader variant="scene" />
       <main className="site-shell" style={shellStyle}>
         <HomeMount />
+        {/* The sun indicator is DOM/CSS content, not a WebGL layer, so it
+            renders at first paint (static config angle) instead of waiting on
+            the scene arrival. App hides this copy on mount and takes over
+            with the animated one at identical geometry. display:contents
+            keeps the wrapper out of the shell's centering grid. */}
+        {activeSiteConfig.showSunWidget ? (
+          <div data-ssr-sun-widget style={{ display: "contents" }}>
+            <HomeSunStatus
+              angle={activeSiteConfig.shadowSettings.sunAngle}
+              variant={activeSiteConfig.sunWidget}
+            />
+          </div>
+        ) : null}
         <HomePageContent />
       </main>
     </>

@@ -3,11 +3,15 @@ import { emitDebugTimelineEvent } from '../debugTimeline'
 import './sceneArrival.css'
 
 // The scene arrival paradigm: server-rendered content paints on the shell's
-// flat background, every scene layer mounts inside a `.scene-arrival`
-// container at opacity 0, and the whole stack fades in ONCE when every wanted
+// flat background, every WebGL layer mounts inside a `.scene-arrival`
+// container at opacity 0, and the stack fades in ONCE when every wanted
 // layer has presented a real frame. There is no CSS stand-in imitating the
 // shaders — matching a live render with static CSS is what caused seam
 // flashes. No-JS/no-WebGL visitors simply keep the clean flat page.
+//
+// Gate only layers that need to prove a frame (canvases). Plain DOM/CSS
+// pieces (copy, indicators, widgets) are content: server-render them for
+// first paint and hand off to the client version at identical geometry.
 //
 // Contract for any scene:
 // - Name the layers you intend to show and pass them as `wantedLayers`

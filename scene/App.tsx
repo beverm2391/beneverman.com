@@ -69,8 +69,8 @@ function App() {
   // The 500ms delay keeps the shadow's Three.js init and shader compile off
   // the critical path of first paint and hydration.
   const isShadowLayerReady = useDeferredMount(wantsShadowLayer, 'shadow', 500)
-  // The whole scene (background, shadow, sun widget) fades in as one unit
-  // once every wanted layer has drawn a real frame.
+  // The WebGL layers fade in as one unit once every wanted layer has drawn a
+  // real frame. DOM/CSS content (intro, sun widget) is never gated on this.
   const arrival = useSceneArrival(wantsShadowLayer ? ['gradient', 'shadow'] : ['gradient'])
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
   const shadowSourcePreview = useShadowSourcePreview()
@@ -114,6 +114,17 @@ function App() {
   }, [backgroundMode.color])
 
   useEffect(() => emitDebugTimelineEvent('app mounted'), [])
+
+  // Take over the sun indicator from the server-rendered copy: identical
+  // geometry, so the handoff to the animated version is invisible.
+  useEffect(() => {
+    const ssrWidget = document.querySelector<HTMLElement>('[data-ssr-sun-widget]')
+    if (!ssrWidget) return
+    ssrWidget.style.display = 'none'
+    return () => {
+      ssrWidget.style.display = 'contents'
+    }
+  }, [])
 
   useEffect(() => {
     let frameId = 0
@@ -227,10 +238,10 @@ function App() {
             />
           ) : null}
         </div>
-        {sunWidget === 'none' ? null : (
-          <HomeSunStatus angle={effectiveSunAngle} variant={sunWidget} />
-        )}
       </div>
+      {sunWidget === 'none' ? null : (
+        <HomeSunStatus angle={effectiveSunAngle} variant={sunWidget} />
+      )}
       {isDebug ? (
         <HomeDebugPanel
           activeTab={debugPanelTab}
