@@ -5,6 +5,15 @@ import { useFirstFrameReveal } from './primitives/firstFrameReveal'
 import backgroundFragmentShader from './shaders/home-background.frag.glsl'
 import backgroundVertexShader from './shaders/home-background.vert.glsl'
 
+// How long the sun takes to bloom into the scene after the first presented
+// frame. Slightly longer than the CSS cross-fade (--scene-fade-ms) so the
+// canvas is fully in before the bloom finishes.
+const ENTRANCE_MS = 1600
+
+function easeOutCubic(t: number) {
+  return 1 - (1 - t) ** 3
+}
+
 function createShader(gl: WebGLRenderingContext, type: number, source: string) {
   const shader = gl.createShader(type)
   if (!shader) return null
@@ -74,10 +83,12 @@ export function HomeSunGradientLayer({
     const coolLocation = gl.getUniformLocation(program, 'uCool')
     const glowStrengthLocation = gl.getUniformLocation(program, 'uGlowStrength')
     const sunAngleLocation = gl.getUniformLocation(program, 'uSunAngle')
+    const entranceLocation = gl.getUniformLocation(program, 'uEntrance')
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frameId = 0
     let startTime = performance.now()
     let hasPresentedFrame = false
+    let firstFrameAt = 0
 
     const resize = () => {
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
@@ -113,6 +124,13 @@ export function HomeSunGradientLayer({
       gl.uniform3fv(coolLocation, mode.shader.cool)
       gl.uniform1f(glowStrengthLocation, mode.shader.glowStrength)
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
+      // The bloom ramps from the first presented frame; reduced motion gets
+      // the finished scene immediately (this render is its only frame).
+      if (firstFrameAt === 0) firstFrameAt = now
+      const entrance = motionQuery.matches
+        ? 1
+        : easeOutCubic(Math.min(1, (now - firstFrameAt) / ENTRANCE_MS))
+      gl.uniform1f(entranceLocation, entrance)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 
       // Reveal only after WebGL has actually produced a frame; failed or
