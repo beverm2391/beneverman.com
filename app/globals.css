@@ -282,9 +282,13 @@ main {
 [data-rmiz] [data-rmiz-content="found"] svg,
 [data-rmiz] [data-rmiz-content="found"] [role="img"],
 [data-rmiz] [data-rmiz-content="found"] [data-zoom],
-[data-rmiz-modal] [data-rmiz-modal-img],
-[data-rmiz-modal] [data-rmiz-btn-unzoom] {
+[data-rmiz-modal] [data-rmiz-modal-img] {
   cursor: pointer;
+}
+
+/* No unzoom button chrome — click-away and Esc close the lightbox. */
+[data-rmiz-modal] [data-rmiz-btn-unzoom] {
+  display: none;
 }
 
 /* Dual Shiki themes: token colors switch by theme (bg comes from --code-bg). */
