@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "./theme-provider";
 import "./globals.css";
-// App.css is global (as it was via <link> in v7) so the home AND the lab's
-// text layer share one source of truth for .intro typography — they must match.
-import "@/scene/App.css";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Inter is loaded as the fallback family in the Geist stack; JetBrains Mono is
 // the code/label font. Non-colliding var names so Tailwind's --font-sans/mono
@@ -22,11 +20,29 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Ben Everman",
-    template: "%s | Ben Everman"
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`
   },
-  description: "Ben Everman's personal site and technical blog."
+  description: SITE_DESCRIPTION,
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml"
+    }
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: "/"
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION
+  }
 };
 
 export default function RootLayout({

@@ -1,9 +1,8 @@
 // Promote a lab scene to the live homepage — in code, no UI.
 //
-// The homepage doesn't render via the lab's LayerStack (that's where the
-// animation/battery/responsive logic lives); it just needs its BASE config.
-// sceneToSiteConfig maps a saved scene's layers onto the fields the homepage
-// consumes, so promoting a scene is a one-liner: set PROMOTED_SCENE_ID below.
+// The homepage doesn't render via the lab's LayerStack because its responsive,
+// battery, and reduced-motion behavior differs. sceneToSiteConfig maps the
+// committed promoted snapshot onto the fields the homepage consumes.
 //
 // Constraint: this maps the homepage's fixed shape — one shadow, one gradient,
 // one sun indicator. A scene with multiple shadow layers can't be represented
@@ -12,16 +11,15 @@
 import type { BackgroundMode } from './HomeSunGradientConfig'
 import promotedFile from './lab/promoted.json'
 import type { Scene } from './lab/scene'
-import { getSceneById } from './lab/sceneStore'
+import { parseScene } from './lab/sceneSchema'
 import type { ShadowMapMode } from './shadowMapModes'
+import type { ShadowSettings } from './shadowSettings'
 import { siteVisualConfig } from './siteVisualConfig'
 import type { SunWidgetVariant } from './SunWidget'
-import type { ShadowSettings } from './V2ShadowLayer'
 
-// Which saved scene drives the homepage. Set from the lab's Promote button
-// (writes src/lab/promoted.json); commit that file + merge to deploy. null =
-// the hand-written siteVisualConfig defaults.
-export const PROMOTED_SCENE_ID: string | null = promotedFile.id || null
+const promoted: Scene | null = promotedFile.scene
+  ? (parseScene(promotedFile.scene, 'scene/lab/promoted.json') as Scene)
+  : null
 
 // The shadow knobs the lab exposes; everything else stays at the site default.
 const SHADOW_KEYS = ['lightGlow', 'opacity', 'contrast', 'depthMix', 'density', 'scale'] as const
@@ -55,8 +53,6 @@ export function sceneToSiteConfig(scene: Scene): SiteSceneConfig {
     showSunWidget: Boolean(sun),
   }
 }
-
-const promoted = PROMOTED_SCENE_ID ? getSceneById(PROMOTED_SCENE_ID) : undefined
 
 // The effective base config for the homepage: a promoted scene if set, else the
 // site defaults.

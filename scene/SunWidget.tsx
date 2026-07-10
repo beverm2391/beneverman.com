@@ -1,8 +1,8 @@
 import { useId } from 'react'
 import './SunWidget.css'
 
-// Small sun-position widgets shared by the homepage (top-left corner) and the
-// /sun-icon design lab. Every widget shares a 48x32 viewBox and the background
+// Small sun-position widgets shared by the homepage and scene lab. Every
+// widget shares a 48x32 viewBox and the background
 // shader's angle convention: 0 = sun on the right horizon, PI/2 = overhead,
 // PI = left horizon. Angles in (PI, 2*PI) are night: geometry clamps to the
 // horizon and the sun-driven marks fade out via getSunFactor.

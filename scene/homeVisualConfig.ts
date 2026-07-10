@@ -2,10 +2,10 @@ import type { CSSProperties } from 'react'
 import { siteVisualConfig } from './siteVisualConfig'
 
 const fontStacks = {
-  geist: 'Geist, Inter, ui-sans-serif, sans-serif',
-  inter: 'Inter, ui-sans-serif, system-ui, sans-serif',
-  'open sans': '"Open Sans", Inter, ui-sans-serif, sans-serif',
-  rubik: 'Rubik, Inter, ui-sans-serif, sans-serif',
+  geist: 'Geist, var(--font-inter), ui-sans-serif, sans-serif',
+  inter: 'var(--font-inter), ui-sans-serif, system-ui, sans-serif',
+  'open sans': '"Open Sans", var(--font-inter), ui-sans-serif, sans-serif',
+  rubik: 'Rubik, var(--font-inter), ui-sans-serif, sans-serif',
 } as const
 
 export type HomeIntroStyle = CSSProperties & Record<`--${string}`, string | number>

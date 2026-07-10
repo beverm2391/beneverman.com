@@ -25,12 +25,14 @@ import {
 import { LabSidebar, type LabActions } from './LabSidebar'
 import { LabTopBar } from './LabTopBar'
 import '@/components/ui/coss.css'
+import '../App.css'
 import './Lab.css'
 
 export default function Lab() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [savedScenes, setSavedScenes] = useState<Scene[]>([])
   const [scene, setScene] = useState<Scene | null>(null)
+  const [savedSceneId, setSavedSceneId] = useState<string | null>(null)
   const [dirty, setDirty] = useState(false)
   const [status, setStatus] = useState('')
   const [promotedId, setPromotedId] = useState<string | null>(null)
@@ -50,8 +52,9 @@ export default function Lab() {
   }, [])
 
   const selectInto = useCallback(
-    (next: Scene) => {
+    (next: Scene, persistedId: string | null) => {
       setScene(cloneScene(next))
+      setSavedSceneId(persistedId)
       setDirty(false)
       setInspectedIds(new Set())
       setSearchParams(
@@ -84,6 +87,7 @@ export default function Lab() {
         const wanted = searchParams.get('scene')
         const initial = scenes.find((s) => s.id === wanted) ?? scenes[0]
         setScene(cloneScene(initial))
+        setSavedSceneId(initial.id)
         setDirty(false)
       } catch (error) {
         if (!cancelled) setStatus(`load failed: ${String(error)}`)
@@ -113,28 +117,42 @@ export default function Lab() {
     setDirty(true)
   }, [])
 
+  const persistScene = useCallback(
+    async (next: Scene) => {
+      await saveSceneToDisk(next, savedSceneId)
+      if (savedSceneId && savedSceneId !== next.id) await deleteSceneOnDisk(savedSceneId)
+      setSavedSceneId(next.id)
+      setSavedScenes(await listScenes())
+    },
+    [savedSceneId],
+  )
+
   const actions = useMemo<LabActions>(
     () => ({
       selectScene: (id) => {
         const target = savedScenes.find((s) => s.id === id)
-        if (target) selectInto(target)
+        if (target) selectInto(target, target.id)
       },
-      newScene: () => selectInto(createScene('Untitled')),
-      duplicateScene: () =>
-        setScene((current) => {
-          if (!current) return current
-          const copyName = `${current.name} copy`
-          setDirty(true)
-          return { ...cloneScene(current), id: slugify(copyName), name: copyName }
-        }),
+      newScene: () => selectInto(createScene('Untitled'), null),
+      duplicateScene: () => {
+        if (!scene) return
+        const copyName = `${scene.name} copy`
+        selectInto({ ...cloneScene(scene), id: slugify(copyName), name: copyName }, null)
+        setDirty(true)
+      },
       renameScene: (name) => edit((current) => ({ ...current, name, id: slugify(name) })),
       deleteScene: async () => {
         if (!scene) return
         try {
-          await deleteSceneOnDisk(scene.id)
-          const remaining = savedScenes.filter((s) => s.id !== scene.id)
+          if (savedSceneId) await deleteSceneOnDisk(savedSceneId)
+          if (promotedId === savedSceneId) {
+            await setPromoted(null)
+            setPromotedId(null)
+          }
+          const remaining = savedScenes.filter((s) => s.id !== savedSceneId)
           setSavedScenes(remaining)
-          selectInto(remaining[0] ?? createScene('Sundial'))
+          const next = remaining[0] ?? createScene('Sundial')
+          selectInto(next, remaining[0]?.id ?? null)
           setStatus('deleted')
         } catch (error) {
           setStatus(`delete failed: ${String(error)}`)
@@ -143,28 +161,30 @@ export default function Lab() {
       saveScene: async () => {
         if (!scene) return
         try {
-          await saveSceneToDisk(scene)
-          setSavedScenes(await listScenes())
+          await persistScene(scene)
           setDirty(false)
           setStatus('saved')
         } catch (error) {
           setStatus(`save failed: ${String(error)}`)
         }
       },
-      copyJson: () => {
-        if (scene) navigator.clipboard?.writeText(JSON.stringify(scene, null, 2))
-        setStatus('copied JSON')
+      copyJson: async () => {
+        if (!scene) return
+        try {
+          await navigator.clipboard.writeText(JSON.stringify(scene, null, 2))
+          setStatus('copied JSON')
+        } catch (error) {
+          setStatus(`copy failed: ${String(error)}`)
+        }
       },
       promote: async () => {
         if (!scene) return
         try {
-          // Homepage loads bundled scene JSON, so promoting must save first.
-          await saveSceneToDisk(scene)
-          setSavedScenes(await listScenes())
+          await persistScene(scene)
           setDirty(false)
-          await setPromoted(scene.id)
+          await setPromoted(scene)
           setPromotedId(scene.id)
-          setStatus('promoted — commit src/lab/promoted.json + merge to deploy')
+          setStatus('promoted — commit scene/lab/promoted.json to deploy')
         } catch (error) {
           setStatus(`promote failed: ${String(error)}`)
         }
@@ -180,7 +200,7 @@ export default function Lab() {
         ),
       reorderLayer: (from, to) => edit((current) => moveLayer(current, from, to)),
     }),
-    [savedScenes, scene, selectInto, edit],
+    [savedScenes, scene, savedSceneId, promotedId, selectInto, edit, persistScene],
   )
 
   if (!scene) {

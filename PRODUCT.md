@@ -1,93 +1,85 @@
 # beneverman.com — product
 
-Ben's personal home: an **art-first landing page** plus a **small, high-craft
-technical blog**, under his own name. One cohesive site, minimal and bespoke.
+Ben's personal home: an art-first landing page and a small, high-craft
+technical blog under his own name. The landing, blog, and the development scene
+lab live together here; the archived `beneverman.com-v7` is only historical
+source material.
 
-This is the canonical `beneverman.com` repo (Next.js). It houses the landing,
-the blog, and the scene lab. The predecessor `beneverman.com-v7` (Vite +
-three.js) is the archived source we port the renderer and lab *from*.
+Work is tracked in Linear's **Personal Website** project. `PROMPT.md` owns local
+development workflow. This file owns the product promise, proof status, and
+open gates.
 
-Work is tracked in the Linear project **Personal Website** (BCP). Dev workflow,
-commands, and layout live in `PROMPT.md` — this file owns the product promise,
-acceptance, and open gates.
+## The three surfaces
 
-## Mental model
+- **Landing (`/`)** — a server-rendered static introduction enhanced by the
+  client-only WebGL sun and shadow scene. It must remain useful without
+  JavaScript or WebGL.
+- **Blog (`/blog`, `/blog/{slug}`)** — technical build-in-public posts compiled
+  from MDX. Seeded placeholder posts are not content.
+- **Scene lab (`/lab`, development only)** — the compositor used to author the
+  landing. The production route is a 404, and the editor, its UI dependencies,
+  and its CSS must not enter production client assets.
 
-Three surfaces, one aesthetic:
+## Acceptance and current proof
 
-- **Landing (`/`)** — the animated WebGL shadow/sun scene + intro copy. The
-  identity piece. Visuals are authored in the lab and promoted as a scene JSON.
-- **Blog** — technical build-in-public posts (MDX). Currently 2 posts, growing
-  slowly. Under Ben's name (not bencorp.dev); it's technical, so the personal
-  domain is the right home and preserves SEO.
-- **Scene lab** (dev-only) — the compositor that authors the landing visuals.
-  Ships in this repo, dev-only, never in the production bundle.
+### Landing
 
-## Acceptance
+- Initial HTML contains the complete intro and stable shell. The production
+  build fails if that server-rendered copy disappears.
+- JavaScript progressively replaces the static shell with the live scene. A
+  missing WebGL context leaves the same solid background and readable content.
+- Reduced-motion freezes both the sun cycle and shader time. Data saver, slow
+  connections, low memory/CPU, and low battery disable the expensive shadow
+  layer.
+- The live visual config comes from a validated scene snapshot in
+  `scene/lab/promoted.json`. Promotion must fail loudly on malformed data; it
+  must never fall back because a separate scene registry was not updated.
 
-**Landing**
-- Fast first paint, no layout shift.
-- Graceful degradation: reduced-motion, low-battery, and no-WebGL resolve to a
-  sensible static state, never blank/broken.
-- Visuals come from a promoted lab scene, not hand-edited magic numbers.
+### Blog
 
-**Blog**
-- MDX posts rendered by a **bespoke slim renderer** on the standard
-  remark/rehype pipeline — no docs framework. Bespoke = our styling, component
-  map, and layout; not a hand-rolled Markdown parser.
-- **Content as data**: posts are `.mdx` in `content/blog/`, read and compiled
-  with `next-mdx-remote` — no content-layer codegen, no `@next/mdx`
-  route-modules. Authoring is unchanged: drop an `.mdx` with frontmatter.
-- **Static generation** via `generateStaticParams`.
-- **Build-time Shiki** highlighting (`rehype-pretty-code`), one **shared
-  highlighter instance** with only the languages we use — zero runtime highlight
-  JS. This is the lever that keeps MDX builds fast as posts grow.
-- `remark-gfm` for tables + footnotes (posts carry 10–18 citations each).
-- Per-post: TOC for long-form, copy-code, optimized images, dark-mode aware.
-- Frontmatter validated by a small **zod schema**.
-- Blog index from frontmatter; clean `/{slug}` URLs.
-- **The blog's visual design is done interactively (Ben + Claude), not by
-  Codex.** Codex builds the plumbing unstyled; the look is a collaborative
-  track.
+- Posts are `.mdx` content with zod-validated frontmatter, discovered and
+  compiled by the standard remark/rehype pipeline. There is no docs framework,
+  CMS, content codegen, or hand-rolled Markdown parser.
+- Posts statically generate from `generateStaticParams`. Shiki highlighting is
+  build-time only, with one shared highlighter and a small language set.
+- GFM tables and footnotes work. The component map is deliberately narrow.
+- The index and canonical post routes are `/blog` and `/blog/{slug}`.
+- Metadata includes canonical URLs, article fields, generated OG images, and
+  Twitter cards. `/feed.xml`, `/sitemap.xml`, and `/robots.txt` are static.
+- The deliberately retired published `minimalist-ai-agent` URL permanently
+  redirects to `/blog`; ported Fumadocs posts kept their existing `/blog/*`
+  paths, so they do not need redirects.
+- The blog's visual design remains a Ben + Claude collaboration. Codex owns the
+  mechanical plumbing, not unilateral visual redesign.
 
-**Cross-cutting**
-- Minimal client JS; the art scene is the only heavy asset and stays isolated /
-  lazy. Strong Lighthouse.
-- SEO/portability: per-post metadata + OG images, an **RSS feed**, and **301
-  redirects from the old Fumadocs `/blog/*` slugs** so no links or rank break.
-- Authoring: a new post is one `.mdx` + frontmatter. Landing tuning is the lab.
+### Repository gates
 
-## Non-goals (explicit)
-
-No search, no sidebar/doc-tree, no CMS, no comments (v1), no versioning/i18n. A
-content-layer (Velite / Content Collections) is a later drop-in **only if** post
-count makes build/dev time annoying — reversible, not needed at current scale.
-
-## Build approach
-
-Fresh Next.js app (app router, TS, minimal). Codex owns the mechanical work;
-the blog's look is done live with Ben.
-
-- **Scaffold + MDX plumbing (unstyled)** — the skeleton: routing, compile
-  pipeline, SSG, seeded posts. Explicitly not designed.
-- **Port the landing renderer** from `beneverman.com-v7` as a client component
-  (`dynamic(..., { ssr: false })`).
-- **Port the scene lab** from v7; its Vite dev-middleware disk persistence
-  becomes a **dev-only Next route handler**.
-- **SEO + RSS + redirects.**
-- **Blog design** — Ben + Claude, interactive, on top of the plumbing.
+- CI blocks on the repository line limit, ESLint errors, TypeScript, behavioral
+  tests, and the production build.
+- The build additionally asserts home SSR, lab client-asset exclusion, and RSS
+  output. This is the regression proof for the product boundaries above.
 
 ## Open gates
 
-1. **Cutover.** 301s from old `/blog/*` + RSS + OG in place, then point the
-   domain — keep the old blog live until the new home exists so writing never
-   404s.
+1. **Finish the real content port.** The eye-disease article currently contains
+   only the first ported section. Continue section by section with Ben and
+   Claude because figures, captions, callouts, and the article's visual rhythm
+   require interactive design decisions.
+2. **Finish long-form affordances.** Before the completed long post ships, add
+   the promised long-form TOC, copy-code interaction, and an optimized-image
+   treatment. These are not present today and should not be marked complete by
+   inference.
+3. **Cut over deliberately.** After the content/design gates close, verify the
+   deployed domain, redirects, feed, metadata, no-WebGL state, and reduced-motion
+   state before retiring the old site.
 
-## Content porting (resolved source)
+## Non-goals
 
-Old post sources live locally in `~/Documents/Code/web/beneverman.com-v6-fumadocs`
-(`content/blog/*.mdx` + `public/blog/*` images). Porting is done section by
-section with Ben, deciding component treatments as they come up. The
-`minimalist-ai-agent` post is explicitly not ported. Mermaid diagrams and video
-embeds are wanted **eventually** for future posts — not v1 scope, but don't
-design the renderer in a way that forecloses them.
+No search, sidebar/doc tree, CMS, comments, versioning, or i18n. A content layer
+is only worth adding if post count makes the current build path measurably
+painful. Mermaid and video embeds remain possible future components, not v1
+requirements.
+
+The old post source remains local at
+`~/Documents/Code/web/beneverman.com-v6-fumadocs`. The
+`minimalist-ai-agent` post is intentionally retired, not awaiting porting.

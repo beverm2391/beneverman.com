@@ -22,7 +22,7 @@
   padding: 0.6rem;
   background: var(--lab-bg);
   color: var(--lab-text);
-  font-family: 'Geist', Inter, ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Geist', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   font-size: 0.75rem;
   line-height: 1.35;
 }

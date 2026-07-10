@@ -1,12 +1,17 @@
 "use client";
 
-// Client boundary for the ported v7 homepage. App reads window.location and
-// drives a WebGL scene, so it must not server-render — dynamic() with
-// ssr:false keeps it client-only (the equivalent of v7 mounting App into #root
-// in the browser). The heavy three.js work stays lazy and isolated here.
 import dynamic from "next/dynamic";
+import { HomeStaticShell } from "./HomeStaticShell";
+import "./App.css";
 
-const App = dynamic(() => import("./App"), { ssr: false });
+// The shader/Three.js renderer still needs the browser. Its loading component
+// is intentionally the full static experience, not an empty placeholder: Next
+// emits it in the initial HTML and it remains useful when JavaScript or WebGL
+// is unavailable.
+const App = dynamic(() => import("./App"), {
+  ssr: false,
+  loading: HomeStaticShell
+});
 
 export default function HomeMount() {
   return <App />;

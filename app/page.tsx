@@ -1,7 +1,7 @@
 import HomeMount from "@/scene/HomeMount";
 
-// The landing is the ported v7 homepage (WebGL sun/shadow scene + intro),
-// mounted client-only via HomeMount.
+// HomeMount keeps the WebGL renderer client-only while server-rendering the
+// complete static shell as its loading and no-JavaScript state.
 export default function HomePage() {
   return <HomeMount />;
 }

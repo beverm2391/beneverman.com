@@ -1,9 +1,13 @@
-import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import LabMount from "@/scene/lab/LabMount";
 
-// The scene lab is a dev-only authoring tool — never reachable in production
-// (matches v7, where the /lab route only existed outside the prod build).
+export const metadata: Metadata = {
+  robots: { index: false, follow: false }
+};
+
+// next.config aliases this exact module to a tiny 404 in production. That
+// excludes the editor, Three.js lab layers, Coss UI, and lab CSS from client
+// assets instead of merely hiding them behind a runtime NODE_ENV branch.
 export default function LabPage() {
-  if (process.env.NODE_ENV === "production") notFound();
   return <LabMount />;
 }

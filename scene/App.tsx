@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { emitDebugTimelineEvent } from './debugTimeline'
 import { HomeDebugPanel } from './HomeDebugPanel'
-import { HomeIntro } from './HomeIntro'
+import { HomePageContent } from './HomePageContent'
 import {
   getResponsiveVisualConfig,
   DeferredShadowLayer,
@@ -30,7 +30,6 @@ import { HomeSunGradientLayer } from './HomeSunGradientLayer'
 import { getHomeIntroStyle } from './homeVisualConfig'
 import { activeSiteConfig } from './siteScene'
 import { shadowMapModes, type ShadowMapMode } from './shadowMapModes'
-import { SunIconLab } from './SunIconLab'
 import { getShadowFactor, SunWidget } from './SunWidget'
 import { cycleTimeAtSunAngle, formatTimeOfDay, sunCycleDurationSeconds } from './sunClock'
 
@@ -52,8 +51,6 @@ function App() {
   }
 
   const isDebug = useDebugMode()
-  const isSunIconLab = window.location.pathname.startsWith('/sun-icon')
-  const isSourceView = window.location.pathname.startsWith('/source')
   useDeferredFontStylesheet(isDebug)
 
   const [responsiveVisualConfig, setResponsiveVisualConfig] = useState(() =>
@@ -68,7 +65,7 @@ function App() {
   const [shadowMapMode, setShadowMapMode] = useState<ShadowMapMode>(responsiveVisualConfig.shadowMapMode)
   const shouldRenderShadowLayer = shadowMapMode !== 'sun'
   const isShadowLayerReady = useAfterInteractiveShadowLayer(
-    shadowCapability.enabled && !isSunIconLab && shouldRenderShadowLayer,
+    shadowCapability.enabled && shouldRenderShadowLayer,
   )
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
   const shadowSourcePreview = useShadowSourcePreview()
@@ -195,8 +192,6 @@ function App() {
     emitDebugTimelineEvent('preset logged', responsivePreset.sizeClass)
   }
 
-  if (isSunIconLab) return <SunIconLab />
-
   return (
     <main
       className="site-shell"
@@ -216,12 +211,11 @@ function App() {
             opacityScale={shadowFactor}
             settings={shadowSettings}
             shadowTint={shadowTint}
-            showSource={isSourceView}
             sunAngle={effectiveSunAngle}
           />
         ) : null}
       </div>
-      {sunWidget === 'none' || isSourceView ? null : (
+      {sunWidget === 'none' ? null : (
         <div className="sun-angle-widget" aria-hidden="true">
           <SunWidget angle={effectiveSunAngle} variant={sunWidget} />
           <span className="sun-widget-clock">
@@ -229,13 +223,7 @@ function App() {
           </span>
         </div>
       )}
-      {isSourceView ? null : <HomeIntro />}
-      {isSourceView ? null : (
-        <footer className="inspiration-footer">
-          shaders inspired by <a href="https://basement.studio/" rel="noreferrer" target="_blank">Basement Studio</a>{' '}
-          and <a href="https://farayan.me/" rel="noreferrer" target="_blank">Fara Yan</a>
-        </footer>
-      )}
+      <HomePageContent />
       {isDebug ? (
         <HomeDebugPanel
           activeTab={debugPanelTab}
@@ -271,7 +259,6 @@ function App() {
           typeSettings={typeSettings}
         />
       ) : null}
-      {isSourceView ? null : <div className="surface-texture" aria-hidden="true" />}
     </main>
   )
 }

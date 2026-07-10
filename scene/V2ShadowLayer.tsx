@@ -65,6 +65,7 @@ function SourceSceneShadowPlane({
   sunAngle,
 }: ShadowPlaneProps) {
   const { gl, size } = useThree()
+  const elapsedTimeRef = useRef(0)
   const materialRef = useRef<THREE.ShaderMaterial>(null)
   const previewKeyRef = useRef('')
   const { height: textureHeight, kernelScale, width: textureWidth } = getShadowTextureSize(
@@ -144,8 +145,9 @@ function SourceSceneShadowPlane({
 
   // These objects are private to this R3F scene. The frame callback is their
   // animation owner and mutates them immediately before Three renders them.
-  useFrame(({ clock }) => {
-    const animatedTime = clock.elapsedTime * settings.speed
+  useFrame((_, delta) => {
+    elapsedTimeRef.current += delta
+    const animatedTime = elapsedTimeRef.current * settings.speed
     const canopyGroup = sourceScene.getObjectByName('canopy')
     const sundialGroup = sourceScene.getObjectByName('sundial')
     const poolGroup = sourceScene.getObjectByName('lightpool')
@@ -180,7 +182,7 @@ function SourceSceneShadowPlane({
 
     if (materialRef.current) {
       const values = materialRef.current.uniforms
-      values.uTime.value = clock.elapsedTime
+      values.uTime.value = elapsedTimeRef.current
       values.uAnimationSpeed.value = settings.speed
       values.uAnimationStrength.value = settings.wind
       values.uDepthMix.value = settings.depthMix
