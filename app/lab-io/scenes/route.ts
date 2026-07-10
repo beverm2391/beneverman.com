@@ -3,11 +3,11 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 // Dev-only disk persistence for lab scenes — the Next port of v7's
-// vite/labScenes.ts middleware. Scenes are plain JSON under site/lab/scenes so
+// vite/labScenes.ts middleware. Scenes are plain JSON under scene/lab/scenes so
 // they can be committed, diffed, and imported by the homepage to promote in
 // code. Gated to dev; returns 404 in production so it never ships as an API.
 
-const SCENES_DIR = path.resolve(process.cwd(), "site/lab/scenes");
+const SCENES_DIR = path.resolve(process.cwd(), "scene/lab/scenes");
 
 const isProd = () => process.env.NODE_ENV === "production";
 const notFound = () => new NextResponse("Not found", { status: 404 });

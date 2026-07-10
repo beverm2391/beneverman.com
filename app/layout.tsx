@@ -4,7 +4,7 @@ import { ThemeProvider } from "./theme-provider";
 import "./globals.css";
 // App.css is global (as it was via <link> in v7) so the home AND the lab's
 // text layer share one source of truth for .intro typography — they must match.
-import "@/site/App.css";
+import "@/scene/App.css";
 
 // Inter is loaded as the fallback family in the Geist stack; JetBrains Mono is
 // the code/label font. Non-colliding var names so Tailwind's --font-sans/mono

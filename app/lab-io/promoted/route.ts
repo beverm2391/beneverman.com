@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 // Promoted scene: which saved scene drives the live homepage (read in code by
 // site/siteScene.ts via promoted.json). Dev-only, like the scenes endpoint.
-const PROMOTED_FILE = path.resolve(process.cwd(), "site/lab/promoted.json");
+const PROMOTED_FILE = path.resolve(process.cwd(), "scene/lab/promoted.json");
 
 const isProd = () => process.env.NODE_ENV === "production";
 const notFound = () => new NextResponse("Not found", { status: 404 });
