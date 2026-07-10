@@ -18,6 +18,12 @@
   pointer-events: none;
 }
 
+/* The gradient is the page's light: it arrives fast and lands soft. Shadows
+   keep the slower default fade so they read as developing after the light. */
+.visual-scene-layer .scene-live-layer {
+  --arrival-fade-ms: 260ms;
+}
+
 /* Shadow strength (entrance ramp, sun-elevation factor, tuned opacity) lives
    entirely in the shader's uOpacity uniform — see V2ShadowLayer. */
 .daylight-shadow-layer {
