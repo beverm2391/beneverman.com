@@ -18,7 +18,7 @@
         "type": "shadow",
         "enabled": true,
         "config": {
-          "preset": "sundial",
+          "preset": "sun",
           "lightGlow": 0.6,
           "opacity": 0.19,
           "contrast": 0.9,
