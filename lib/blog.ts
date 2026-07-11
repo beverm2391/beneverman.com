@@ -60,6 +60,37 @@ const prettyCodeOptions: PrettyCodeOptions = {
   getHighlighter: () => highlighterPromise as Promise<unknown> as Promise<Highlighter>
 };
 
+type HastNode = {
+  type?: string;
+  properties?: { style?: unknown };
+  children?: HastNode[];
+};
+
+// Mermaid emits junk style attributes on some diagram types — ER relationship
+// paths carry a literal style="undefined;;;undefined" (upstream mermaid bug) —
+// and MDX's HAST→JSX conversion throws on any style it cannot parse, which
+// 404s the whole post. Keep only declarations shaped like `prop: value`,
+// dropping `undefined` values; delete the attribute when nothing survives.
+const rehypeSanitizeStyleAttributes = () => (tree: HastNode) => {
+  const declaration = /^-{0,2}[a-zA-Z][a-zA-Z0-9-]*\s*:\s*(?!undefined\s*$).+$/;
+  const walk = (node: HastNode) => {
+    if (node.type === "element" && typeof node.properties?.style === "string") {
+      const cleaned = node.properties.style
+        .split(";")
+        .map((part) => part.trim())
+        .filter((part) => declaration.test(part))
+        .join("; ");
+      if (cleaned) {
+        node.properties.style = cleaned;
+      } else {
+        delete node.properties.style;
+      }
+    }
+    node.children?.forEach(walk);
+  };
+  walk(tree);
+};
+
 export async function getBlogPost(slug: string): Promise<BlogPost> {
   const { source, frontmatter } = await readBlogPostSource(slug);
   // Drafts must not be reachable in production, even by direct URL; the page
@@ -85,6 +116,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
               mermaidConfig: { theme: "neutral", fontFamily: "Geist, ui-sans-serif, sans-serif" }
             }
           ],
+          rehypeSanitizeStyleAttributes,
           [rehypePrettyCode, prettyCodeOptions]
         ]
       }

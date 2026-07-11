@@ -1,3 +1,5 @@
+/* loc-check: limit 700 | reason: Ben-approved headroom while the Tailwind
+   migration (BCP-2840) drains the legacy plain-CSS sections below. */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -398,7 +400,9 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
 /* Parent-prefixed selectors out-specify the library stylesheet, which loads
    after globals (bundled with the client component). */
 [data-rmiz-modal] [data-rmiz-modal-overlay="visible"] {
-  background-color: rgb(0 0 0 / 0.5);
+  /* Full-bleed landscape grey — the card grey rebuilt opaquely (--code-bg is
+     a translucent tint), so zoomed content floats on one seamless surface. */
+  background-color: color-mix(in srgb, var(--bg) 96%, var(--fg));
 }
 
 [data-rmiz-modal] [data-rmiz-modal-overlay],
@@ -423,14 +427,9 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
 /* Mermaid (ZoomSvg): the zoomed clone keeps mermaid's inline max-width,
    which would clamp the lightbox scale-up back to natural size — lift it
    inside the portaled modal only; inline styling lives on the component.
-   The clone also carries the inline card look, scaled up with the zoom —
-   but --code-bg is a translucent tint that would disappear over the scrim,
-   so recreate that gray opaquely from the theme tokens. */
+   No card on the clone: the overlay above is already the landscape grey. */
 [data-rmiz-modal] [data-rmiz-modal-img] svg {
   max-width: none !important;
-  background-color: color-mix(in srgb, var(--bg) 96%, var(--fg));
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
 }
 
 /* Dual Shiki themes: token colors switch by theme (bg comes from --code-bg). */

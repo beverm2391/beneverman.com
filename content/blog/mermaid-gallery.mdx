@@ -1,0 +1,169 @@
+---
+title: "Mermaid Gallery"
+date: "2026-07-10"
+description: "A draft styling sandbox that exercises every mermaid diagram type we care about."
+tags:
+  - notes
+draft: true
+---
+
+<Summary>
+Dev-only sandbox: one of each mermaid diagram type, for tuning the diagram
+card, centering, and lightbox behavior against tall, wide, and dense shapes.
+</Summary>
+
+## Flowchart (tall)
+
+```mermaid
+flowchart TD
+  A[query] --> B[call LLM]
+  B <--> C[handle tool call]
+  C --> D[final answer]
+```
+
+## Flowchart (wide)
+
+```mermaid
+flowchart LR
+  A[request] --> B{cache hit?}
+  B -- yes --> C[serve cached]
+  B -- no --> D[compile MDX]
+  D --> E[render mermaid]
+  E --> F[highlight code]
+  F --> G[store in cache]
+  G --> C
+```
+
+## Sequence
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant A as Agent
+  participant T as Tool
+  U->>A: prompt
+  loop until final answer
+    A->>T: tool call
+    T-->>A: tool result
+  end
+  A-->>U: answer
+```
+
+## State
+
+```mermaid
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Running: start
+  Running --> Blocked: await input
+  Blocked --> Running: input received
+  Running --> Done: complete
+  Done --> [*]
+```
+
+## Class
+
+```mermaid
+classDiagram
+  class Agent {
+    +messages: Message[]
+    +run(prompt) string
+    -callLLM() Response
+  }
+  class Tool {
+    +name: string
+    +execute(input) string
+  }
+  Agent o-- Tool: uses
+```
+
+## Entity relationship
+
+```mermaid
+erDiagram
+  POST ||--o{ TAG : has
+  POST {
+    string slug
+    string title
+    date published
+  }
+  TAG {
+    string name
+  }
+```
+
+## Gantt
+
+```mermaid
+gantt
+  title Port plan
+  dateFormat YYYY-MM-DD
+  section Blog
+    MDX pipeline: done, a1, 2026-07-01, 3d
+    Diagram styling: active, a2, after a1, 2d
+  section Landing
+    Lab port: b1, after a2, 4d
+```
+
+## Pie
+
+```mermaid
+pie title Where the tokens go
+  "prompt" : 62
+  "tool results" : 28
+  "output" : 10
+```
+
+## Git graph
+
+```mermaid
+gitGraph
+  commit
+  branch styling
+  checkout styling
+  commit
+  commit
+  checkout main
+  merge styling
+  commit
+```
+
+## Mindmap
+
+```mermaid
+mindmap
+  root((site))
+    Landing
+      Scene lab
+      Shaders
+    Blog
+      MDX
+      Diagrams
+```
+
+## Timeline
+
+```mermaid
+timeline
+  title Site versions
+  2019 : v1-v3 experiments
+  2022 : v4 static
+  2024 : v6 Fumadocs
+  2026 : v7 renderer : v8 Next
+```
+
+## Quadrant
+
+```mermaid
+quadrantChart
+  title Effort vs payoff
+  x-axis Low effort --> High effort
+  y-axis Low payoff --> High payoff
+  quadrant-1 Plan carefully
+  quadrant-2 Do first
+  quadrant-3 Skip
+  quadrant-4 Automate away
+  Lightbox: [0.3, 0.75]
+  Dark mermaid theme: [0.55, 0.5]
+  Content port: [0.8, 0.85]
+```
