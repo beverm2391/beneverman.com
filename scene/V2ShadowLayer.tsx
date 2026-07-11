@@ -6,7 +6,7 @@ import { createGpuFrameFence, type GpuFrameFence } from './primitives/gpuFrameFe
 import { createPreviewDataUrl, sampleShadowSource } from './shadowPreview'
 import type { ShadowMapMode } from './shadowMapModes'
 import type { ShadowSettings } from './shadowSettings'
-import { publishShadowSourcePreview } from './shadowSourcePreview'
+import { hasShadowSourcePreviewListeners, publishShadowSourcePreview } from './shadowSourcePreview'
 import { buildSourceScene } from './shadowSourceScene'
 import shadowFragmentShader from './shaders/shadow.frag.glsl'
 import shadowVertexShader from './shaders/shadow.vert.glsl'
@@ -229,6 +229,11 @@ function SourceSceneShadowPlane({
         onFirstFrame?.()
       }
     }
+
+    // The preview readback is a synchronous GPU stall; only pay it when a
+    // preview panel is actually subscribed (homepage ?debug). In the lab,
+    // settings change on every slider tick and nothing subscribes.
+    if (!hasShadowSourcePreviewListeners()) return
 
     const previewKey = [
       mode,

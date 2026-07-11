@@ -133,10 +133,15 @@ export function useAnimatedSunAngle(baseSunAngle: number) {
   return animatedAngle
 }
 
-export function useShadowSourcePreview() {
+// Subscribing is what tells V2ShadowLayer to pay for preview readbacks, so
+// only subscribe while the debug panel actually shows them.
+export function useShadowSourcePreview(enabled: boolean) {
   const [preview, setPreview] = useState<ShadowSourcePreview | null>(getShadowSourcePreview)
-  useEffect(() => subscribeShadowSourcePreview(setPreview), [])
-  return preview
+  useEffect(() => {
+    if (!enabled) return
+    return subscribeShadowSourcePreview(setPreview)
+  }, [enabled])
+  return enabled ? preview : null
 }
 
 export const DeferredShadowLayer = lazy(() => {

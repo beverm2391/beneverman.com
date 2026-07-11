@@ -72,7 +72,7 @@ function App() {
   // (per-layer choreography). DOM/CSS content is never gated on this.
   const arrival = useSceneArrival(wantsShadowLayer ? ['gradient', 'shadow'] : ['gradient'])
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
-  const shadowSourcePreview = useShadowSourcePreview()
+  const shadowSourcePreview = useShadowSourcePreview(isDebug)
   const [showShadowSource, setShowShadowSource] = useState(false)
   const [sunWidget, setSunWidget] = useState<SunWidgetChoice>(
     activeSiteConfig.showSunWidget ? activeSiteConfig.sunWidget : 'none',
