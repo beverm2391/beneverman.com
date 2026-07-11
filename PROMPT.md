@@ -56,6 +56,12 @@ that entry instead of importing Tailwind a second time. Lab CSS and scene CSS
 are imported at their route/client boundaries, not the root layout, so blog
 routes do not pay for them.
 
+New styling is Tailwind-only (Ben's directive): utilities on components, not
+new plain-CSS blocks in `globals.css`. The plain CSS already there is legacy
+awaiting migration (BCP-2840); the exception is selectors that cannot live on
+a component, e.g. overrides for library-portaled DOM like the image-zoom
+modal.
+
 Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
 JetBrains Mono is the code font. Refer to the `next/font` variables instead of
 literal `Inter` or imaginary `Geist Mono` families. The blog paper layers are
