@@ -406,9 +406,9 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
 /* Parent-prefixed selectors out-specify the library stylesheet, which loads
    after globals (bundled with the client component). */
 [data-rmiz-modal] [data-rmiz-modal-overlay="visible"] {
-  /* Full-bleed card material: same --surface as the mermaid card, so the
-     zoom reads as the card taking over the screen, not a separate portal. */
-  background-color: var(--surface);
+  /* Plain dialog scrim: the lightbox just zooms the clicked object (the
+     mermaid card travels with its svg clone); the page dims behind it. */
+  background-color: rgb(0 0 0 / 0.5);
 }
 
 /* Zoomed content keeps the rounded corners prose gives it inline (the modal
