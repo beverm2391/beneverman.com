@@ -422,9 +422,15 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
 
 /* Mermaid (ZoomSvg): the zoomed clone keeps mermaid's inline max-width,
    which would clamp the lightbox scale-up back to natural size — lift it
-   inside the portaled modal only; inline styling lives on the component. */
+   inside the portaled modal only; inline styling lives on the component.
+   The clone also carries the inline card look, scaled up with the zoom —
+   but --code-bg is a translucent tint that would disappear over the scrim,
+   so recreate that gray opaquely from the theme tokens. */
 [data-rmiz-modal] [data-rmiz-modal-img] svg {
   max-width: none !important;
+  background-color: color-mix(in srgb, var(--bg) 96%, var(--fg));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
 
 /* Dual Shiki themes: token colors switch by theme (bg comes from --code-bg). */
