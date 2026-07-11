@@ -113,7 +113,15 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
             rehypeMermaid,
             {
               strategy: "inline-svg",
-              mermaidConfig: { theme: "neutral", fontFamily: "Geist, ui-sans-serif, sans-serif" }
+              mermaidConfig: {
+                theme: "neutral",
+                fontFamily: "Geist, ui-sans-serif, sans-serif",
+                // Compile-time SVGs carry one palette into both site themes:
+                // mid-gray connectors stay legible on the light card and the
+                // dark card alike (the neutral default is too dark for dark
+                // mode).
+                themeVariables: { lineColor: "#8a8a8a" }
+              }
             }
           ],
           rehypeSanitizeStyleAttributes,
