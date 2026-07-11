@@ -24,10 +24,14 @@ open gates.
 
 ### Landing
 
-- Initial HTML contains the complete intro and stable shell. The production
-  build fails if that server-rendered copy disappears.
-- JavaScript progressively replaces the static shell with the live scene. A
-  missing WebGL context leaves the same solid background and readable content.
+- Initial HTML contains the complete intro, the sun indicator, and a stable
+  full-bleed shell. The production build fails if that server-rendered copy
+  disappears.
+- The WebGL scene is additive decoration behind the content: each layer fades
+  in only after its first frame is GPU-verified, with no timers, placeholders
+  imitating the shaders, or flash states. A missing WebGL context leaves the
+  same flat page and readable content. The load ladder is measurable via
+  `performance.mark` (`scene:*-live`, `scene:arrival`).
 - Reduced-motion freezes both the sun cycle and shader time. Data saver, slow
   connections, low memory/CPU, and low battery disable the expensive shadow
   layer.

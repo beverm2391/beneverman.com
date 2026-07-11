@@ -13,6 +13,22 @@ for the same dir. If none: `pnpm dev --port <port>`.
 
 `pnpm check` = lint + typecheck + vitest, but that's CI, not verification.
 
+Gotchas:
+
+- Dev 500s everywhere with `TurbopackInternalError: Failed to restore task
+  data`: the dev cache corrupted (usually from `pnpm build` running while dev
+  was up — avoid interleaving them). Kill the dev server, move `.next/dev`
+  aside, restart.
+- Chrome caches the prerendered homepage HTML + hashed chunks aggressively;
+  after rebuilding, hard-refresh or cache-bust with a query param, or you will
+  verify a stale build.
+- Multiple `next start` processes can pile up on one port; the first one keeps
+  the socket and serves its stale in-memory build. `safe lsof -i :<port> -t`
+  and kill them all before restarting.
+- Other agents may drive the same browser and navigate your tab mid-
+  measurement; record `location.href` inside evals and treat wrong-origin
+  results as invalid.
+
 ## Drive
 
 Use agent-browser. Other agents may share the default browser/tab — pass a

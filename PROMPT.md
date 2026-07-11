@@ -61,13 +61,14 @@ that entry instead of importing Tailwind a second time. Lab CSS and scene CSS
 are imported at their route/client boundaries, not the root layout, so blog
 routes do not pay for them.
 
-Styling policy (Ben, 2026-07): Tailwind where appropriate — UI chrome, layout,
-and components you iterate on are Tailwind-first — but bespoke CSS files are
-fine for genuinely custom/graphical artifacts (e.g. `SunWidget.css`, the
-`sceneArrival.css` primitive, tuned scene visuals in `App.css`). Don't port
-tuned scene CSS for its own sake; `Lab.css` is the one migration worth doing
-(BCP-2840). Selectors that cannot live on a component (library-portaled DOM
-like the image-zoom modal) also stay in CSS.
+Styling policy (Ben, 2026-07): Tailwind wherever reasonably possible — UI
+chrome, layout, and components are Tailwind-first, and new code defaults to
+it. Bespoke CSS files stay only where they are genuinely cleaner: custom
+graphical artifacts (`SunWidget.css`), documented primitives
+(`sceneArrival.css`), tuned scene visuals (`App.css` — don't port for its own
+sake, its scene will be replaced), and selectors that cannot live on a
+component (library-portaled DOM like the image-zoom modal). `Lab.css` is the
+one migration worth doing (BCP-2840).
 
 Tailwind v4 gotcha: utilities are generated only by the `globals.css` build.
 A `@theme` in any other file (e.g. `components/ui/coss.css`) defines variables
