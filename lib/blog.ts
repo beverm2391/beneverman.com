@@ -17,6 +17,7 @@ import { CodeBlock } from "@/components/mdx/code-block";
 import { MdxLink } from "@/components/mdx/mdx-link";
 import { Summary } from "@/components/mdx/summary";
 import { ZoomImage } from "@/components/mdx/zoom-image";
+import { ZoomSvg } from "@/components/mdx/zoom-svg";
 import {
   includeDrafts,
   readBlogPostSource,
@@ -35,10 +36,17 @@ export type BlogPost = BlogPostSummary & {
   content: React.ReactElement;
 };
 
-// Besides the bespoke components, MDX primitives are remapped: images get the
-// click-to-zoom lightbox, links get internal/external routing, code blocks
-// get a copy button.
-const mdxComponents = { Callout, Summary, a: MdxLink, img: ZoomImage, pre: CodeBlock };
+// Besides the bespoke components, MDX primitives are remapped: images and
+// compile-time mermaid svgs get the click-to-zoom lightbox, links get
+// internal/external routing, code blocks get a copy button.
+const mdxComponents = {
+  Callout,
+  Summary,
+  a: MdxLink,
+  img: ZoomImage,
+  svg: ZoomSvg,
+  pre: CodeBlock
+};
 
 const highlighterPromise: Promise<HighlighterCore> = createHighlighterCore({
   themes: [githubLight, githubDark],

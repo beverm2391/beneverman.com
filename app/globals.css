@@ -24,6 +24,13 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-destructive: var(--destructive);
+
+  /* Popup surfaces (Coss Select/Dialog in the lab). Utilities are generated
+     by THIS build, so bg-popover only exists if the token lives here —
+     coss.css's own @theme can't emit utilities. Values resolve to coss.css's
+     :root overrides wherever it loads (the lab). */
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 }
 
 @theme {
@@ -63,6 +70,8 @@
   --border: rgb(0 0 0 / 0.08);
   --accent: #0a0a0a;
   --code-bg: rgb(0 0 0 / 0.04);
+  --popover: #ffffff;
+  --popover-foreground: #262626;
   --radius: 0.625rem;
 
   /* Alert accents — Coss UI's stock values (Tailwind blue/emerald/
@@ -87,6 +96,8 @@
   --border: rgb(255 255 255 / 0.06);
   --accent: #fafafa;
   --code-bg: rgb(255 255 255 / 0.04);
+  --popover: #1d1d1d;
+  --popover-foreground: #f5f5f5;
   color-scheme: dark;
 }
 
@@ -331,14 +342,15 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
   margin: 0.3rem 0;
 }
 
-/* react-medium-image-zoom lightbox: overlay follows the theme (the library
-   default is hard white, which flashes in dark mode), the open/close morph
-   runs on the house curve, and the magnifier cursors are replaced with plain
-   pointers. The library's own prefers-reduced-motion rule still wins. */
+/* react-medium-image-zoom lightbox: the overlay is a basic dialog scrim
+   (coss-ui style translucent black, not the library's hard-white fill), the
+   open/close morph runs on the house curve, and the magnifier cursors are
+   replaced with plain pointers. The library's own prefers-reduced-motion rule
+   still wins. */
 /* Parent-prefixed selectors out-specify the library stylesheet, which loads
    after globals (bundled with the client component). */
 [data-rmiz-modal] [data-rmiz-modal-overlay="visible"] {
-  background-color: var(--bg);
+  background-color: rgb(0 0 0 / 0.5);
 }
 
 [data-rmiz-modal] [data-rmiz-modal-overlay],
@@ -358,6 +370,30 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
 /* No unzoom button chrome — click-away and Esc close the lightbox. */
 [data-rmiz-modal] [data-rmiz-btn-unzoom] {
   display: none;
+}
+
+/* Mermaid diagrams (ZoomSvg): blockify the library's inline span wrappers so
+   the svg — width 100%, capped by its inline natural max-width — centers on
+   auto margins. The figure owns block spacing; prose has no rule for svg. */
+/* The zoomed clone keeps mermaid's inline max-width, which would clamp the
+   lightbox scale-up back to natural size — lift it inside the modal only. */
+[data-rmiz-modal] [data-rmiz-modal-img] svg {
+  max-width: none !important;
+}
+
+.mermaid-figure,
+.mermaid-figure [data-rmiz],
+.mermaid-figure [data-rmiz-content] {
+  display: block;
+}
+
+.mermaid-figure {
+  margin-block: 2em;
+}
+
+.mermaid-figure svg {
+  display: block;
+  margin-inline: auto;
 }
 
 /* Dual Shiki themes: token colors switch by theme (bg comes from --code-bg). */
