@@ -15,6 +15,7 @@
   --color-border: var(--border);
   --color-accent: var(--accent);
   --color-code-bg: var(--code-bg);
+  --color-surface: var(--surface);
 
   /* Tokens the Coss Alert (components/ui/alert.tsx) needs when it renders in
      blog posts via Callout. coss.css only loads in the lab, so the blog theme
@@ -88,6 +89,11 @@
   --border: rgb(0 0 0 / 0.08);
   --accent: #0a0a0a;
   --code-bg: rgb(0 0 0 / 0.04);
+  /* The card grey as one opaque material — the mermaid card and the lightbox
+     overlay share it, so zooming a diagram promotes the card's surface to the
+     whole screen. (Code blocks keep the translucent --code-bg tint.) Tracks
+     the theme because --bg/--fg re-resolve under .dark. */
+  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
   --radius: 0.625rem;
 
   /* Coss semantic fallbacks (light) — values verbatim from coss.css so Coss
@@ -400,9 +406,16 @@ figure[data-rehype-pretty-code-figure]:has([data-rehype-pretty-code-title]) .cod
 /* Parent-prefixed selectors out-specify the library stylesheet, which loads
    after globals (bundled with the client component). */
 [data-rmiz-modal] [data-rmiz-modal-overlay="visible"] {
-  /* Full-bleed landscape grey — the card grey rebuilt opaquely (--code-bg is
-     a translucent tint), so zoomed content floats on one seamless surface. */
-  background-color: color-mix(in srgb, var(--bg) 96%, var(--fg));
+  /* Full-bleed card material: same --surface as the mermaid card, so the
+     zoom reads as the card taking over the screen, not a separate portal. */
+  background-color: var(--surface);
+}
+
+/* Zoomed content keeps the rounded corners prose gives it inline (the modal
+   clone renders outside .prose). overflow clips the svg clone's corners. */
+[data-rmiz-modal] [data-rmiz-modal-img] {
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 [data-rmiz-modal] [data-rmiz-modal-overlay],

@@ -14,7 +14,7 @@ import "react-medium-image-zoom/dist/styles.css";
 // modal portals outside this tree.
 export function ZoomSvg(props: React.ComponentProps<"svg">) {
   return (
-    <span className="mermaid-figure my-8 block rounded-[var(--radius)] border border-border bg-code-bg px-4 py-5 [&_[data-rmiz-content]]:block [&_[data-rmiz]]:block [&_svg]:mx-auto [&_svg]:block">
+    <span className="mermaid-figure my-8 block rounded-[var(--radius)] border border-border bg-surface px-4 py-5 [&_[data-rmiz-content]]:block [&_[data-rmiz]]:block [&_svg]:mx-auto [&_svg]:block">
       <Zoom wrapElement="span" zoomMargin={96}>
         <svg {...props} />
       </Zoom>
