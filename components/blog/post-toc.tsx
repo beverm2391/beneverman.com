@@ -8,8 +8,8 @@ import type { TocItem } from "@/lib/toc";
 // header while reading. It exists only where the margin is wide enough (the
 // .post-toc media query in globals.css) — no drawer at narrow widths. Highlight
 // tracks reading position: the last heading at or above the 112px mark is the
-// section being read. That threshold must stay above the largest heading
-// scroll-margin-top in globals.css (h2: 6.5rem = 104px), or a TOC click would
+// section being read. That threshold must stay above the :target
+// scroll-margin-top in globals.css (4.75rem = 76px), or a TOC click would
 // land a heading just below the line and fail to activate it. A rAF-throttled
 // scroll listener over a handful of headings is cheap and, unlike an
 // IntersectionObserver, has no fast-scroll misses.

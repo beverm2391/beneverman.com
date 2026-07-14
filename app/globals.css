@@ -279,25 +279,12 @@ main {
   }
 }
 
-/* Anchored headings land below the 3.75rem sticky header with their own
-   natural top margin (h2 2.75rem, h3 2rem — see the prose rules), so a jump
-   reads like normal document flow. Keep the h2 value (6.5rem = 104px) below
-   the scrollspy threshold in post-toc.tsx so a clicked heading still counts
-   as the active section. The bare :target covers other fragment jumps
-   (footnotes and their backrefs). */
-.prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  scroll-margin-top: 6.5rem;
-}
-
-.prose :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
-  scroll-margin-top: 5.75rem;
-}
-
-/* :where keeps this at class specificity but headings excluded outright:
-   this rule sits later in the file and would otherwise beat the per-heading
-   margins above on the tie. */
-:target:not(:where(h2, h3)) {
-  scroll-margin-top: 5rem;
+/* Fragment jumps (TOC, footnotes) land just clear of the 3.75rem sticky
+   header: a small breath of air, not a gap that shows the previous section.
+   Keep this below the scrollspy threshold in post-toc.tsx so a clicked
+   heading still counts as the active section. */
+:target {
+  scroll-margin-top: 4.75rem;
 }
 
 /* ---- prose (post body via @tailwindcss/typography) ------------------- */
