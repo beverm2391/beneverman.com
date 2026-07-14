@@ -3,9 +3,9 @@ import { navItems } from "@/lib/nav";
 
 // Shared home/blog nav. Two variants because the surfaces disagree on layout
 // and color:
-// - "paper" (blog): sticky in flow, theme-var colors, translucent blurred
-//   surface so scrolled content reads as passing under it (anchor jumps
-//   reserve its height via :target scroll-margin in globals.css).
+// - "paper" (blog): sticky in flow, theme-var colors. Deliberately
+//   transparent — Ben rejected a translucent/blurred bar; content scrolling
+//   under the bare links is the intended look.
 // - "scene" (homepage): fixed so it adds no flow height to the 100svh scene
 //   shell, and hard-coded scene ink (#171717) since the scene ignores the
 //   light/dark theme.
@@ -21,7 +21,7 @@ export function SiteHeader({
       className={
         onScene
           ? "fixed top-0 left-0 z-10"
-          : "sticky top-0 z-10 border-b border-border/60 bg-bg/75 backdrop-blur-md"
+          : "sticky top-0 z-10 bg-transparent"
       }
     >
       <nav className="flex gap-6 px-7 py-[1.1rem]">
