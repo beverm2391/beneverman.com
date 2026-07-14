@@ -279,12 +279,11 @@ main {
   }
 }
 
-/* Fragment jumps (TOC, footnotes) land just clear of the 3.75rem sticky
-   header: a small breath of air, not a gap that shows the previous section.
-   Keep this below the scrollspy threshold in post-toc.tsx so a clicked
-   heading still counts as the active section. */
+/* Fragment jumps (TOC, footnotes) land flush under the 3.75rem sticky
+   header — no extra air. Keep this below the scrollspy threshold in
+   post-toc.tsx so a clicked heading still counts as the active section. */
 :target {
-  scroll-margin-top: 4.75rem;
+  scroll-margin-top: 3.75rem;
 }
 
 /* ---- prose (post body via @tailwindcss/typography) ------------------- */
