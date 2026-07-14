@@ -19,8 +19,10 @@ export function ZoomImage({ title, ...props }: React.ComponentProps<"img">) {
           hydration mismatch). zoomMargin keeps the zoomed image comfortably
           inside the viewport rather than edge-to-edge. */}
       <Zoom wrapElement="span" zoomMargin={96}>
-        {/* eslint-disable-next-line @next/next/no-img-element -- MDX content
-            images have unknown dimensions; next/image needs width/height. */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- plain img
+            keeps the zoom lib simple; intrinsic width/height arrive from the
+            compile-time rehype plugin in lib/blog.ts, so the box is reserved
+            before load (no layout shift under lazy loading). */}
         <img loading="lazy" {...props} />
       </Zoom>
       {title ? (

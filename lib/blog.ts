@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+import { imageSize } from "image-size";
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeMermaid from "rehype-mermaid";
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
@@ -65,8 +68,40 @@ const prettyCodeOptions: PrettyCodeOptions = {
 
 type HastNode = {
   type?: string;
-  properties?: { style?: unknown };
+  tagName?: string;
+  properties?: {
+    style?: unknown;
+    src?: unknown;
+    width?: unknown;
+    height?: unknown;
+  };
   children?: HastNode[];
+};
+
+// Post images live in /public, so their intrinsic size is knowable at compile
+// time. Stamping width/height lets the browser reserve the box before the
+// bytes arrive — without it, lazy images load at zero height and shift the
+// page under the reader (and under anchor scrolls). CSS keeps them responsive
+// (max-width + height:auto via the prose img rule).
+const rehypeLocalImageDimensions = () => (tree: HastNode) => {
+  const walk = (node: HastNode) => {
+    if (
+      node.type === "element" &&
+      node.tagName === "img" &&
+      typeof node.properties?.src === "string" &&
+      node.properties.src.startsWith("/") &&
+      node.properties.width === undefined &&
+      node.properties.height === undefined
+    ) {
+      const file = path.join(process.cwd(), "public", node.properties.src);
+      // A typo'd src fails loudly here rather than shipping a 404 image.
+      const { width, height } = imageSize(fs.readFileSync(file));
+      node.properties.width = width;
+      node.properties.height = height;
+    }
+    node.children?.forEach(walk);
+  };
+  walk(tree);
 };
 
 // Mermaid emits junk style attributes on some diagram types — ER relationship
@@ -131,6 +166,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
             }
           ],
           rehypeSanitizeStyleAttributes,
+          rehypeLocalImageDimensions,
           [rehypePrettyCode, prettyCodeOptions]
         ]
       }
