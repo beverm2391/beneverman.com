@@ -19,6 +19,10 @@ Gotchas:
   data`: the dev cache corrupted (usually from `pnpm build` running while dev
   was up — avoid interleaving them). Kill the dev server, move `.next/dev`
   aside, restart.
+- The same stale dev cache can fail *silently*: a globals.css edit logs
+  "✓ Compiled" but the served CSS chunk keeps the old rules, even across
+  dev-server restarts. If a style change won't appear and it isn't browser
+  cache (curl the chunk to check), move `.next/dev` aside and restart.
 - Chrome caches the prerendered homepage HTML + hashed chunks aggressively;
   after rebuilding, hard-refresh or cache-bust with a query param, or you will
   verify a stale build.
