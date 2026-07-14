@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import type { TocItem } from "@/lib/toc";
 
-// Minimal long-form TOC: a fixed rail to the right of the 68ch article column,
-// existing only where the margin is wide enough for it (the .post-toc media
-// query in globals.css) — no drawer or toggle at narrow widths. Highlight
+// Minimal long-form TOC: a sticky rail to the right of the 68ch article
+// column that starts level with the article body and pins below the site
+// header while reading. It exists only where the margin is wide enough (the
+// .post-toc media query in globals.css) — no drawer at narrow widths. Highlight
 // tracks reading position: the last heading at or above the ~6rem mark (just
 // under the sticky header) is the section being read. A plain rAF-throttled
 // scroll listener over a handful of headings is cheap and, unlike an

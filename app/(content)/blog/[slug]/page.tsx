@@ -79,10 +79,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </time>
           </p>
         </header>
+        {/* Long-form only: a couple of headings don't need navigation. In
+            flow here so the rail starts level with the article body — see
+            the .post-toc rules for how it leaves the column. */}
+        {post.toc.length >= 4 ? <PostToc items={post.toc} /> : null}
         <div className="prose">{post.content}</div>
       </article>
-      {/* Long-form only: a couple of headings don't need navigation. */}
-      {post.toc.length >= 4 ? <PostToc items={post.toc} /> : null}
     </main>
   );
 }

@@ -230,37 +230,37 @@ main {
 
 /* ---- post TOC (components/blog/post-toc.tsx) -------------------------- */
 /* Exists only where the viewport leaves real margin beside the 68ch column;
-   below that it is simply absent — no drawer. The 1rem font-size on the nav
-   makes its `ch` match the column's so the rail sits just right of it; the
-   list restates the small size. Fixed, not sticky: `main` is the centered
-   column, so a sticky child could not sit in the margin without reshaping
-   the article layout. */
+   below that it is simply absent — no drawer. In flow it sits where the
+   article body starts (between the post header and the prose), then sticks
+   just under the sticky site header as you read. height: 0 keeps the rail
+   from adding vertical space to the column; margin-left (100% = the column
+   width) pushes it into the right margin. */
 .post-toc {
   display: none;
 }
 
-@media (min-width: 80rem) {
+@media (min-width: 84rem) {
   .post-toc {
     display: block;
-    position: fixed;
-    top: 10.5rem;
-    left: calc(50% + 34ch + 2.5rem);
-    width: 15rem;
-    max-height: calc(100vh - 13rem);
-    overflow-y: auto;
-    font-size: 1rem;
+    position: sticky;
+    top: 5.5rem;
+    height: 0;
+    width: 16rem;
+    margin-left: calc(100% + 2.5rem);
   }
 
   .post-toc ul {
     margin: 0;
     padding: 0;
     list-style: none;
-    font-size: 0.78rem;
-    line-height: 1.45;
+    max-height: calc(100vh - 7.5rem);
+    overflow-y: auto;
+    font-size: 0.875rem;
+    line-height: 1.5;
   }
 
   .post-toc li {
-    margin: 0.45rem 0;
+    margin: 0.5rem 0;
   }
 
   .post-toc a {
