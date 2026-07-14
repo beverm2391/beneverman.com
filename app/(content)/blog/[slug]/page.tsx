@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { formatPostDate, getBlogPost, getBlogPosts } from "@/lib/blog";
+import { PostToc } from "@/components/blog/post-toc";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -80,6 +81,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </header>
         <div className="prose">{post.content}</div>
       </article>
+      {/* Long-form only: a couple of headings don't need navigation. */}
+      {post.toc.length >= 4 ? <PostToc items={post.toc} /> : null}
     </main>
   );
 }

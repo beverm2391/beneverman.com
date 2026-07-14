@@ -228,6 +228,51 @@ main {
   padding-block: 4rem;
 }
 
+/* ---- post TOC (components/blog/post-toc.tsx) -------------------------- */
+/* Exists only where the viewport leaves real margin beside the 68ch column;
+   below that it is simply absent — no drawer. The 1rem font-size on the nav
+   makes its `ch` match the column's so the rail sits just right of it; the
+   list restates the small size. Fixed, not sticky: `main` is the centered
+   column, so a sticky child could not sit in the margin without reshaping
+   the article layout. */
+.post-toc {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .post-toc {
+    display: block;
+    position: fixed;
+    top: 10.5rem;
+    left: calc(50% + 34ch + 2.5rem);
+    width: 15rem;
+    max-height: calc(100vh - 13rem);
+    overflow-y: auto;
+    font-size: 1rem;
+  }
+
+  .post-toc ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .post-toc li {
+    margin: 0.45rem 0;
+  }
+
+  .post-toc a {
+    text-decoration: none;
+  }
+}
+
+/* Anchored headings land clear of the sticky header. */
+:target {
+  scroll-margin-top: 5rem;
+}
+
 /* ---- prose (post body via @tailwindcss/typography) ------------------- */
 /* The plugin supplies rhythm/reset; these overrides pin it to the bespoke
    look (Geist inherits from body). Colours come from our tokens so dark mode

@@ -1,6 +1,7 @@
 import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeMermaid from "rehype-mermaid";
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { createHighlighterCore, type HighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
@@ -23,6 +24,7 @@ import {
   readBlogPostSource,
   type BlogPostSummary
 } from "@/lib/blog-data";
+import { extractToc, type TocItem } from "@/lib/toc";
 
 export {
   formatPostDate,
@@ -34,6 +36,7 @@ export {
 
 export type BlogPost = BlogPostSummary & {
   content: React.ReactElement;
+  toc: TocItem[];
 };
 
 // Besides the bespoke components, MDX primitives are remapped: images and
@@ -109,6 +112,9 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
         // compile time (headless Chromium, no client JS, no flash) before
         // pretty-code touches the remaining fences.
         rehypePlugins: [
+          // Heading anchors for the TOC and deep links. lib/toc.ts mirrors
+          // this slug generation from the raw source; keep them in sync.
+          rehypeSlug,
           [
             rehypeMermaid,
             {
@@ -131,5 +137,5 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
     }
   });
 
-  return { slug, ...frontmatter, content };
+  return { slug, ...frontmatter, content, toc: extractToc(source) };
 }
