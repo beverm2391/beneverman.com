@@ -246,7 +246,10 @@ main {
     top: 5.5rem;
     height: 0;
     width: 16rem;
-    margin-left: calc(100% + 2.5rem);
+    /* Centered in the free right margin: the margin is (100vw - column)/2,
+       so the rail's offset from the column edge is (25vw - 25% - 8rem),
+       on top of the 100% that clears the column itself. */
+    margin-left: calc(75% + 25vw - 8rem);
   }
 
   .post-toc ul {
@@ -294,6 +297,14 @@ main {
   max-width: none;
   color: var(--fg);
   line-height: 1.65;
+}
+
+/* The gap from the post header to the first block is the header's margin
+   alone. Deliberately no not-prose guard: components like Callout opt out of
+   prose styling and keep their own vertical margin, which would otherwise
+   stack on top of the header's. Direct children only. */
+.prose > :first-child {
+  margin-top: 0;
 }
 
 /* Every override carries the same not-prose guard the typography plugin uses,
