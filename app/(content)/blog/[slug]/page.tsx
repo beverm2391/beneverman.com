@@ -69,7 +69,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <main>
       <article>
-        <header className="mb-[3.25rem]">
+        <header className="mb-8">
           <h1 className="mb-[0.35rem] text-[1.7rem] font-[650] leading-[1.2] tracking-[-0.02em]">
             {post.title}
           </h1>
