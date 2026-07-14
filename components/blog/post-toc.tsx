@@ -7,8 +7,10 @@ import type { TocItem } from "@/lib/toc";
 // column that starts level with the article body and pins below the site
 // header while reading. It exists only where the margin is wide enough (the
 // .post-toc media query in globals.css) — no drawer at narrow widths. Highlight
-// tracks reading position: the last heading at or above the ~6rem mark (just
-// under the sticky header) is the section being read. A plain rAF-throttled
+// tracks reading position: the last heading at or above the 112px mark is the
+// section being read. That threshold must stay above the largest heading
+// scroll-margin-top in globals.css (h2: 6.5rem = 104px), or a TOC click would
+// land a heading just below the line and fail to activate it. A rAF-throttled
 // scroll listener over a handful of headings is cheap and, unlike an
 // IntersectionObserver, has no fast-scroll misses.
 export function PostToc({ items }: { items: TocItem[] }) {
@@ -23,7 +25,7 @@ export function PostToc({ items }: { items: TocItem[] }) {
       for (const { id } of items) {
         const heading = document.getElementById(id);
         if (!heading) continue;
-        if (heading.getBoundingClientRect().top > 96) break;
+        if (heading.getBoundingClientRect().top > 112) break;
         current = id;
       }
       setActive(current);
