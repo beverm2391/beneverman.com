@@ -48,11 +48,16 @@ open gates.
   build-time only, with one shared highlighter and a small language set.
 - GFM tables and footnotes work. The component map is deliberately narrow.
 - The index and canonical post routes are `/blog` and `/blog/{slug}`.
-- Metadata includes canonical URLs, article fields, generated OG images, and
-  Twitter cards. `/feed.xml`, `/sitemap.xml`, and `/robots.txt` are static.
-- The deliberately retired `minimalist-ai-agent` post is `archived: true`, so its
-  published URL redirects to `/blog` (307) and it leaves every list; ported
-  Fumadocs posts kept their existing `/blog/*` paths, so they need no redirects.
+- Metadata includes canonical URLs, article fields, generated OG images, Twitter
+  cards carrying Ben's handle, and JSON-LD. `/feed.xml`, `/sitemap.xml`, and
+  `/robots.txt` are static. `updated` is optional and stays unset unless a post
+  is genuinely revised: a modified date is an editorial claim, not a record of
+  when the file last changed.
+- One `status` field per post, defaulting to `draft`, decides what a URL does.
+  A draft 404s in production because it was never public. An archived post
+  redirects to `/blog` (307) because it was, and links to it exist: that is the
+  deliberately retired `minimalist-ai-agent`. Ported Fumadocs posts kept their
+  `/blog/*` paths, so they need no redirects.
 - The blog's visual design remains a Ben + Claude collaboration. Codex owns the
   mechanical plumbing, not unilateral visual redesign.
 
