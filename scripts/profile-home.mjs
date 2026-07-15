@@ -42,10 +42,12 @@ await page.addInitScript(() => {
         at: Math.round(e.startTime),
         sources: (e.sources ?? []).map((s) => {
           const n = s.node;
-          if (!n) return "(detached)";
-          const tag = n.tagName?.toLowerCase() ?? n.nodeName;
-          const cls = (n.className?.baseVal ?? n.className ?? "").toString().trim().split(/\s+/)[0];
-          return `${tag}${cls ? "." + cls : ""}`;
+          const tag = n?.tagName?.toLowerCase() ?? n?.nodeName ?? "(detached)";
+          const cls = (n?.className?.baseVal ?? n?.className ?? "").toString().trim().split(/\s+/)[0];
+          const r = (b) => (b ? `${Math.round(b.x)},${Math.round(b.y)} ${Math.round(b.width)}x${Math.round(b.height)}` : "?");
+          // The rects say what actually moved: a jump in y is content being
+          // pushed, a change in height is a box resizing under it.
+          return `${tag}${cls ? "." + cls : ""} [${r(s.previousRect)} -> ${r(s.currentRect)}]`;
         })
       });
     }
@@ -91,19 +93,38 @@ const result = await page.evaluate(() => {
       .toFixed(0);
 
   const shifts = window.__shifts ?? [];
+  // CLS is the worst session window, not the lifetime sum. A window collects
+  // shifts less than 1s apart and spans at most 5s; the score is the biggest
+  // one. Summing everything is the pre-2021 definition and inflates any page
+  // whose shifts are spread across the load, which would invent regressions
+  // that no real CLS measurement agrees with.
+  const windows = [];
+  for (const s of [...shifts].sort((a, b) => a.at - b.at)) {
+    const w = windows.at(-1);
+    if (w && s.at - w.last < 1000 && s.at - w.first < 5000) {
+      w.value += s.value;
+      w.last = s.at;
+    } else {
+      windows.push({ value: s.value, first: s.at, last: s.at });
+    }
+  }
+
   return {
     ttfb: Math.round(nav.responseStart),
     domContentLoaded: Math.round(nav.domContentLoadedEventEnd),
     load: Math.round(nav.loadEventEnd),
     fcp: paint["first-contentful-paint"] ?? null,
     marks,
-    cls: +shifts.reduce((n, s) => n + s.value, 0).toFixed(4),
+    cls: +Math.max(0, ...windows.map((w) => w.value)).toFixed(4),
+    clsWindows: windows.length,
     shifts: shifts
       .sort((a, b) => b.value - a.value)
       .slice(0, 6)
       .map((s) => `${s.value.toFixed(4)} at ${s.at}ms  <- ${[...new Set(s.sources)].join(", ") || "(no attribution)"}`),
     bytes: {
-      totalKB: +(total() / 1024).toFixed(1),
+      // The document is a navigation entry, not a resource entry, so it has to
+      // be added back or "total" quietly means "everything except the page".
+      totalKB: +((total() + nav.transferSize) / 1024).toFixed(1),
       scriptKB: +(total("script") / 1024).toFixed(1),
       htmlKB: +(nav.transferSize / 1024).toFixed(1)
     },
@@ -116,7 +137,10 @@ console.log(`TTFB                ${result.ttfb} ms`);
 console.log(`First Contentful    ${result.fcp} ms   <- content is readable here`);
 console.log(`DOMContentLoaded    ${result.domContentLoaded} ms`);
 console.log(`load                ${result.load} ms`);
-console.log(`Cumulative Layout Shift  ${result.cls}   ${result.cls > 0.1 ? "<- over the 0.1 'good' threshold" : "(good is < 0.1)"}`);
+console.log(
+  `Cumulative Layout Shift  ${result.cls}   ${result.cls > 0.1 ? "<- over the 0.1 'good' threshold" : "(good is < 0.1)"}` +
+    `  [worst of ${result.clsWindows} session window(s)]`
+);
 if (result.shifts.length) {
   console.log(`\nlayout shifts, worst first:`);
   for (const s of result.shifts) console.log(`  ${s}`);
