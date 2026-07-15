@@ -8,3 +8,7 @@ out/
 *.log
 tsconfig.tsbuildinfo
 .DS_Store
+
+# Next rewrites this on every run and points it at a different types path for
+# dev than for build, so tracking it means a permanently dirty tree.
+next-env.d.ts

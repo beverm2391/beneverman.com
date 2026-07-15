@@ -141,7 +141,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   const { source, frontmatter } = await readBlogPostSource(slug);
   // Drafts must not be reachable in production, even by direct URL; the page
   // catches this and renders notFound().
-  if (frontmatter.draft && !includeDrafts) {
+  if (frontmatter.status === "draft" && !includeDrafts) {
     throw new Error(`Post "${slug}" is a draft.`);
   }
   const launchOptions = await mermaidLaunchOptions();

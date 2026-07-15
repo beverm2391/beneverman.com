@@ -78,8 +78,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   // generateStaticParams, so this path runs on demand in the serverless runtime,
   // where compiling a mermaid post would try to launch a headless Chromium that
   // isn't there — turning the redirect into a 404.
-  const { archived } = await getSummaryOrNotFound(slug);
-  if (archived) redirect("/blog");
+  const { status } = await getSummaryOrNotFound(slug);
+  if (status === "archived") redirect("/blog");
 
   const post = await getPostOrNotFound(slug);
 

@@ -14,19 +14,27 @@ const allowedSlug = /^[a-z0-9-]+$/;
 export const includeDrafts =
   process.env.NODE_ENV !== "production" || process.env.VERCEL_ENV === "preview";
 
-const frontmatterSchema = z.object({
+export const frontmatterSchema = z.object({
   title: z.string().min(1),
   date: z.coerce.date().transform((date) => date.toISOString().slice(0, 10)),
   description: z.string().min(1),
   tags: z.array(z.string().min(1)).default([]),
-  // Drafts are dev-only test/styling surfaces. They render locally but are
-  // excluded from production everywhere that lists posts (index, static
-  // params, feed, sitemap) and from direct slug access (getBlogPost throws).
-  draft: z.boolean().default(false),
-  // Archived posts were once published but are withdrawn: excluded from every
-  // list in every environment, and their URL redirects to /blog (see the post
-  // page) instead of 404ing — no hardcoded redirects in next.config.
-  archived: z.boolean().default(false)
+  // One field rather than draft/archived booleans, which allowed a fourth state
+  // that means nothing. What separates these is what the URL does:
+  //
+  //   draft      unfinished. Renders locally and on previews; in production it
+  //              is absent from every list and getBlogPost throws, so the slug
+  //              404s. It was never public, so there is nothing to redirect.
+  //   published  live.
+  //   archived   was published and is withdrawn. Absent from every list in
+  //              every environment, but the slug still redirects to /blog (see
+  //              the post page) because inbound links to it exist. Frontmatter
+  //              drives that, so there are no hardcoded redirects in
+  //              next.config.
+  //
+  // Defaulting to draft means a new post ships only when it says so. The
+  // reverse default once left a deliberately retired post live.
+  status: z.enum(["draft", "published", "archived"]).default("draft")
 });
 
 export type BlogPostFrontmatter = z.infer<typeof frontmatterSchema>;
@@ -82,6 +90,6 @@ export async function getBlogPosts(
     filenames.map((filename) => getBlogPostSummary(filename.replace(/\.mdx$/, "")))
   );
   return posts
-    .filter((post) => !post.archived && (drafts || !post.draft))
+    .filter((post) => post.status === "published" || (drafts && post.status === "draft"))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
