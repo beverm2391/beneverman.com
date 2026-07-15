@@ -6,7 +6,13 @@ import { z } from "zod";
 const blogDirectory = path.join(process.cwd(), "content/blog");
 const allowedSlug = /^[a-z0-9-]+$/;
 
-export const includeDrafts = process.env.NODE_ENV !== "production";
+// Drafts render locally and on Vercel previews — a preview exists to look at
+// unfinished work, and it is auth-gated and noindex, so nothing leaks. Only the
+// production deploy hides them. This also keeps previews honest about the build:
+// a draft that fails to compile fails the preview instead of waiting to surface
+// on the day it ships.
+export const includeDrafts =
+  process.env.NODE_ENV !== "production" || process.env.VERCEL_ENV === "preview";
 
 const frontmatterSchema = z.object({
   title: z.string().min(1),

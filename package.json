@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/verify-production-build.mjs",
+    "build": "playwright install chromium && next build && node scripts/verify-production-build.mjs",
     "lint": "eslint .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
