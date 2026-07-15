@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "playwright install chromium && next build && node scripts/verify-production-build.mjs",
+    "build": "[ -n \"$VERCEL\" ] || playwright install chromium && next build && node scripts/verify-production-build.mjs",
     "lint": "eslint .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@react-three/fiber": "^9.6.1",
+    "@sparticuz/chromium": "^149.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "github-slugger": "^2.0.0",

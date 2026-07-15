@@ -27,7 +27,12 @@ import {
   readBlogPostSource,
   type BlogPostSummary
 } from "@/lib/blog-data";
-import { mermaidFontCSS, mermaidFontFamily, mermaidThemeCSS } from "@/lib/mermaid-theme";
+import {
+  mermaidFontCSS,
+  mermaidFontFamily,
+  mermaidLaunchOptions,
+  mermaidThemeCSS
+} from "@/lib/mermaid-theme";
 import { extractToc, type TocItem } from "@/lib/toc";
 
 export {
@@ -139,6 +144,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   if (frontmatter.draft && !includeDrafts) {
     throw new Error(`Post "${slug}" is a draft.`);
   }
+  const launchOptions = await mermaidLaunchOptions();
   const { content } = await compileMDX({
     source,
     components: mdxComponents,
@@ -158,6 +164,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
             {
               strategy: "inline-svg",
               css: mermaidFontCSS,
+              launchOptions,
               mermaidConfig: {
                 theme: "base",
                 fontFamily: mermaidFontFamily,

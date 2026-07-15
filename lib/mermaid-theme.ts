@@ -1,5 +1,20 @@
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import type { LaunchOptions } from "playwright";
+
+// Vercel's build image has no Chromium and no way to install its system
+// libraries (no root for `playwright install-deps`), so playwright's own
+// download lands but refuses to launch: libnspr4.so is missing. @sparticuz's
+// build bundles what it needs. It is a Linux binary, so it is only right on
+// Vercel — locally playwright's chromium is already present and faster.
+export async function mermaidLaunchOptions(): Promise<LaunchOptions | undefined> {
+  if (!process.env.VERCEL) return undefined;
+  const { default: chromium } = await import("@sparticuz/chromium");
+  return {
+    executablePath: await chromium.executablePath(),
+    args: chromium.args
+  };
+}
 
 // Mermaid measures text with getBBox() in a real browser, so the render page
 // must resolve the same Geist the reader gets or every node is sized for the
