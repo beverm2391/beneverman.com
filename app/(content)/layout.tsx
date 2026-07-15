@@ -1,3 +1,4 @@
+import "./content.css";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { PaperBackground } from "@/components/paper-background";
 import { PaperDebug } from "@/components/debug/paper-debug";
