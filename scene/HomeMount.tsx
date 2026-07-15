@@ -1,18 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { HomeStaticShell } from "./HomeStaticShell";
-import "./App.css";
+import { createClientScene } from "./primitives/clientScene";
 
-// The shader/Three.js renderer still needs the browser. Its loading component
-// is intentionally the full static experience, not an empty placeholder: Next
-// emits it in the initial HTML and it remains useful when JavaScript or WebGL
-// is unavailable.
-const App = dynamic(() => import("./App"), {
-  ssr: false,
-  loading: HomeStaticShell
-});
-
-export default function HomeMount() {
-  return <App />;
-}
+// The WebGL scene mounts client-only behind the server-rendered page content
+// and fades in as one unit once its layers have rendered (see useSceneArrival).
+// There is no loading shell: until then — and forever without JS/WebGL — the
+// page is the clean flat shell background plus the content.
+export default createClientScene(() => import("./App"));

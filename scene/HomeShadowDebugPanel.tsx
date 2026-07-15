@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { backgroundModes, type BackgroundMode } from './HomeSunGradientConfig'
 import type {
-  ShadowCapability,
   ShadowSettings,
   SunWidgetChoice,
   TextureSettings,
 } from './homeSceneTypes'
+import type { SceneCapability } from './primitives/sceneCapability'
 import { canopyStyles, shadowMapModes, type ShadowMapMode } from './shadowMapModes'
 import type { ShadowSourcePreview } from './shadowSourcePreview'
 import { ShadowSourcePreviewPanel } from './ShadowSourcePreviewPanel'
@@ -17,7 +17,7 @@ type ShadowLayerTab = 'blinds' | 'canopy'
 
 type Props = {
   background: BackgroundMode
-  capability: ShadowCapability
+  capability: SceneCapability
   currentMode: ShadowMapMode
   onBackgroundChange: (background: BackgroundMode) => void
   onChange: (mode: ShadowMapMode) => void

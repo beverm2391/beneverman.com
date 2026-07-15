@@ -30,6 +30,13 @@ export function publishShadowSourcePreview(preview: ShadowSourcePreview) {
   listeners.forEach((listener) => listener(currentPreview))
 }
 
+// Producing a preview requires a synchronous GPU readback (a full pipeline
+// stall), so the producer checks this and skips the work when nothing is
+// showing previews — e.g. the lab, where settings change on every slider tick.
+export function hasShadowSourcePreviewListeners() {
+  return listeners.size > 0
+}
+
 export function getShadowSourcePreview() {
   return currentPreview
 }

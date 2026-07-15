@@ -4,12 +4,12 @@ import {
   fontModes,
   type DebugPanelTab,
   type FontMode,
-  type ShadowCapability,
   type ShadowSettings,
   type SunWidgetChoice,
   type TextureSettings,
   type TypeSettings,
 } from './homeSceneTypes'
+import type { SceneCapability } from './primitives/sceneCapability'
 import type { BackgroundMode } from './HomeSunGradientConfig'
 import type { ShadowMapMode } from './shadowMapModes'
 import type { ShadowSourcePreview } from './shadowSourcePreview'
@@ -17,7 +17,7 @@ import type { ShadowSourcePreview } from './shadowSourcePreview'
 type Props = {
   activeTab: DebugPanelTab
   background: BackgroundMode
-  capability: ShadowCapability
+  capability: SceneCapability
   currentMode: ShadowMapMode
   events: DebugTimelineEvent[]
   font: FontMode

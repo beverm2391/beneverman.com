@@ -1,0 +1,68 @@
+---
+title: "Agent Workshop Notes"
+date: "2026-07-01"
+description: "A placeholder post that exercises code fences, tables, footnotes, and images."
+tags:
+  - agents
+  - notes
+status: draft
+---
+
+<Summary>
+Sandbox for workshopping the `Summary` and `Callout` components. The summary
+card sits at the top; the callouts below show every `type`.
+
+- Source: [the repo](https://github.com/beneverman/beneverman.com)
+- Questions: [ben@beneverman.com](mailto:ben@beneverman.com)
+</Summary>
+
+This placeholder keeps the blog pipeline honest while the source posts are still
+being located. It is intentionally plain MDX content.
+
+<Callout type="note">
+A plain note — the default. Neutral accent, for asides that add context without
+raising alarm.
+</Callout>
+
+<Callout type="info">
+An info callout — the blue one, for pointers the reader should notice: source
+links, prerequisites, related posts.
+</Callout>
+
+<Callout type="tip">
+A tip. Use it for shortcuts, recommendations, and the thing you wish you'd known
+earlier.
+</Callout>
+
+<Callout type="warn" title="Updated 3/31/24">
+A warning, here doubling as a dated update note. The `title` prop overrides the
+default label.
+</Callout>
+
+<Callout type="error">
+A caution — for the GPU-will-OOM, this-will-cost-money class of warning.
+</Callout>
+
+![Diagram placeholder](/images/blog/agent-workshop.svg)
+
+| Step | Signal |
+| --- | --- |
+| Read | The agent can recover the current map. |
+| Act | The agent makes the smallest coherent change. |
+| Verify | The behavior is proven close to the surface. |
+
+```ts
+type WorkState = "read" | "act" | "verify";
+
+export function nextState(state: WorkState) {
+  if (state === "read") {
+    return "act";
+  }
+
+  return "verify";
+}
+```
+
+The real post will replace this with the original source once it is ported.[^1]
+
+[^1]: This footnote exists to prove `remark-gfm` footnotes compile.

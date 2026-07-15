@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import type { BackgroundModeConfig } from './HomeSunGradientConfig'
+import { createGpuFrameFence } from './primitives/gpuFrameFence'
 import backgroundFragmentShader from './shaders/home-background.frag.glsl'
 import backgroundVertexShader from './shaders/home-background.vert.glsl'
+import './primitives/sceneArrival.css'
 
-function createShader(gl: WebGLRenderingContext, type: number, source: string) {
+function createShader(gl: WebGLRenderingContext | WebGL2RenderingContext, type: number, source: string) {
   const shader = gl.createShader(type)
   if (!shader) return null
 
@@ -20,29 +22,43 @@ function createShader(gl: WebGLRenderingContext, type: number, source: string) {
 }
 
 export function HomeSunGradientLayer({
+  className,
   mode,
+  onFirstFrame,
   sunAngle,
 }: {
+  className?: string
   mode: BackgroundModeConfig
+  onFirstFrame?: () => void
   sunAngle: number
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const sunAngleRef = useRef(sunAngle)
-  const [isVisible, setIsVisible] = useState(false)
+  const onFirstFrameRef = useRef(onFirstFrame)
 
   useEffect(() => {
     sunAngleRef.current = sunAngle
   }, [sunAngle])
 
   useEffect(() => {
+    onFirstFrameRef.current = onFirstFrame
+  }, [onFirstFrame])
+
+  useEffect(() => {
     const canvas = canvasRef.current
-    const gl = canvas?.getContext('webgl', {
+    const contextOptions: WebGLContextAttributes = {
       alpha: false,
       antialias: false,
       depth: false,
       powerPreference: 'low-power',
       stencil: false,
-    })
+    }
+    // WebGL2 first: it provides fence syncs, which make the arrival signal
+    // truthful (GPU actually executed the frame). The shader is GLSL ES 1.0,
+    // valid in both contexts.
+    const gl: WebGL2RenderingContext | WebGLRenderingContext | null | undefined =
+      (canvas?.getContext('webgl2', contextOptions) as WebGL2RenderingContext | null) ??
+      (canvas?.getContext('webgl', contextOptions) as WebGLRenderingContext | null)
 
     if (!canvas || !gl) return
 
@@ -74,10 +90,15 @@ export function HomeSunGradientLayer({
     const sunAngleLocation = gl.getUniformLocation(program, 'uSunAngle')
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     let frameId = 0
+    let fencePollId = 0
     let startTime = performance.now()
+    let hasSubmittedFrame = false
 
     const resize = () => {
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+      // Cap below full retina: the output is a soft gradient, and the fbm
+      // noise runs per fragment every frame — 1.5x cuts ~44% of that cost
+      // vs 2x with no visible difference.
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5)
       const width = Math.max(1, Math.floor(canvas.clientWidth * pixelRatio))
       const height = Math.max(1, Math.floor(canvas.clientHeight * pixelRatio))
 
@@ -112,6 +133,26 @@ export function HomeSunGradientLayer({
       gl.uniform1f(sunAngleLocation, sunAngleRef.current)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
 
+      // Signal readiness only once the GPU has actually executed the first
+      // frame (fence sync), not merely when the draw call was queued — the
+      // driver may still be compiling the shader at that point. The dedicated
+      // poll loop keeps working under prefers-reduced-motion, where the
+      // render loop stops after this single frame.
+      if (!hasSubmittedFrame) {
+        hasSubmittedFrame = true
+        const fence = createGpuFrameFence(gl)
+        const pollFence = () => {
+          if (fence.poll()) {
+            fence.dispose()
+            fencePollId = 0
+            onFirstFrameRef.current?.()
+            return
+          }
+          fencePollId = requestAnimationFrame(pollFence)
+        }
+        fencePollId = requestAnimationFrame(pollFence)
+      }
+
       if (!motionQuery.matches) frameId = requestAnimationFrame(render)
     }
 
@@ -137,6 +178,7 @@ export function HomeSunGradientLayer({
 
     return () => {
       cancelAnimationFrame(frameId)
+      cancelAnimationFrame(fencePollId)
       document.removeEventListener('visibilitychange', handleVisibilityChange)
       motionQuery.removeEventListener('change', handleMotionChange)
       gl.deleteBuffer(buffer)
@@ -146,17 +188,11 @@ export function HomeSunGradientLayer({
     }
   }, [mode])
 
-  useEffect(() => {
-    const frameId = requestAnimationFrame(() => setIsVisible(true))
-    return () => cancelAnimationFrame(frameId)
-  }, [])
-
   return (
     <canvas
       aria-hidden="true"
-      className="background-shader-layer"
+      className={`scene-live-layer${className ? ` ${className}` : ''}`}
       ref={canvasRef}
-      style={{ opacity: isVisible ? 1 : 0 }}
     />
   )
 }

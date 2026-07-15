@@ -29,13 +29,28 @@ configures the hook.
 
 ## Architecture
 
-- The root page uses `scene/HomeMount`. The WebGL app remains a client-only
-  dynamic chunk, but its loading/no-JavaScript state is the complete
-  server-rendered `HomeStaticShell`. Never replace that fallback with `null`.
+- The root page server-renders the shell, copy, and sun indicator; the WebGL
+  scene is a client-only dynamic chunk (`scene/HomeMount`) mounted behind them
+  as pure decoration. There is no CSS imitation of the scene: each layer fades
+  in only after its first frame is GPU-fence-verified, and no-JS/no-WebGL
+  visitors keep the flat page. The paradigm and its invariants live in
+  `scene/primitives/` (`clientScene`, `sceneArrival`, `gpuFrameFence`,
+  `sceneShell`) — read those doc comments before changing homepage loading.
+  Page content must never live inside the dynamic scene swap.
 - Blog routes live under `app/(content)/blog`; content lives in
   `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
   `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
   component map. Metadata/feed routes should import the data-only module.
+- ```mermaid fences render to inline SVG at compile time. `pnpm build` installs
+  its own Chromium: playwright's locally, `@sparticuz/chromium` on Vercel, the
+  only one that launches there. Mermaid's packages sit in
+  `serverExternalPackages` because Turbopack lacks `import.meta.resolve`.
+  `lib/mermaid-theme.ts` owns the config; `docs/mermaid-renderer.md` explains
+  why any of it is true. Read that before changing the pipeline: the theme, the
+  font loading and the two browsers each look removable and are not.
+- Drafts render locally and on Vercel previews (`VERCEL_ENV=preview`), never in
+  production. Previews are auth-gated and noindex, so they are where unfinished
+  posts get reviewed, and a broken draft fails its own preview.
 - The lab lives at `/lab`. `next.config.ts` aliases the exact `LabMount` import
   to `LabUnavailable` during production builds. Preserve that boundary and the
   build assertion that checks lab JS/CSS cannot leak into static assets.
@@ -51,6 +66,20 @@ Tailwind v4 enters once through `app/globals.css`. Coss theme CSS references
 that entry instead of importing Tailwind a second time. Lab CSS and scene CSS
 are imported at their route/client boundaries, not the root layout, so blog
 routes do not pay for them.
+
+Styling policy (Ben, 2026-07): Tailwind wherever reasonably possible — UI
+chrome, layout, and components are Tailwind-first, and new code defaults to
+it. Bespoke CSS files stay only where they are genuinely cleaner: custom
+graphical artifacts (`SunWidget.css`), documented primitives
+(`sceneArrival.css`), tuned scene visuals (`App.css` — don't port for its own
+sake, its scene will be replaced), and selectors that cannot live on a
+component (library-portaled DOM like the image-zoom modal). `Lab.css` is the
+one migration worth doing (BCP-2840).
+
+Tailwind v4 gotcha: utilities are generated only by the `globals.css` build.
+A `@theme` in any other file (e.g. `components/ui/coss.css`) defines variables
+but cannot emit utilities — Coss semantic tokens must stay mapped in globals'
+`@theme inline` or their utilities silently vanish (transparent popups).
 
 Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
 JetBrains Mono is the code font. Refer to the `next/font` variables instead of

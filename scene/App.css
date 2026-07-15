@@ -11,17 +11,6 @@
   background: #f2f0ee;
 }
 
-.background-shader-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  transition: opacity 100ms ease-out;
-  will-change: opacity;
-}
-
 .visual-scene-layer {
   position: fixed;
   inset: 0;
@@ -29,18 +18,19 @@
   pointer-events: none;
 }
 
+/* The gradient is the page's light: it arrives fast and lands soft. Shadows
+   keep the slower default fade so they read as developing after the light. */
+.visual-scene-layer .scene-live-layer {
+  --arrival-fade-ms: 260ms;
+}
+
+/* Shadow strength (entrance ramp, sun-elevation factor, tuned opacity) lives
+   entirely in the shader's uOpacity uniform — see V2ShadowLayer. */
 .daylight-shadow-layer {
   position: fixed;
   inset: 0;
   z-index: 1;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity 400ms cubic-bezier(0.37, 0, 0.63, 1);
-  will-change: opacity;
-}
-
-.daylight-shadow-layer.is-visible {
-  opacity: var(--shadow-opacity, 0.24);
 }
 
 .daylight-shadow-layer canvas {
@@ -50,7 +40,12 @@
 .surface-texture {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  /* Below the text (z-2), above the scene layers: with the grain's multiply
+     blend over the text, every selection-drag repaint had to re-blend the
+     whole group — measured 32fps vs 46fps during selection. The grain only
+     ever mattered on the scene, and selection highlights no longer get
+     multiplied by it. */
+  z-index: 1;
   pointer-events: none;
   opacity: var(--texture-opacity, 0.14);
   mix-blend-mode: multiply;

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="ui-monospace, Menlo, monospace" font-size="15">
+  <!-- Placeholder diagram for the draft styling sandbox: exercises the MDX
+       image pipeline (and the click-to-zoom lightbox) with a diagram-shaped
+       asset until real post images are ported. -->
+  <rect width="800" height="420" fill="#fafafa"/>
+  <rect x="0.5" y="0.5" width="799" height="419" fill="none" stroke="#e5e5e5"/>
+
+  <g stroke="#a3a3a3" fill="none" stroke-width="1.5">
+    <rect x="70" y="160" width="150" height="80" rx="10" fill="#ffffff"/>
+    <rect x="325" y="160" width="150" height="80" rx="10" fill="#ffffff"/>
+    <rect x="580" y="160" width="150" height="80" rx="10" fill="#ffffff"/>
+    <path d="M220 200 H305 m0 0 l-12 -7 m12 7 l-12 7"/>
+    <path d="M475 200 H560 m0 0 l-12 -7 m12 7 l-12 7"/>
+    <path d="M655 240 V300 H145 V248 m0 0 l-7 12 m7 -12 l7 12" stroke-dasharray="5 5"/>
+  </g>
+
+  <g fill="#525252" text-anchor="middle">
+    <text x="145" y="205">read</text>
+    <text x="400" y="205">act</text>
+    <text x="655" y="205">verify</text>
+    <text x="400" y="290">iterate</text>
+  </g>
+
+  <text x="400" y="70" fill="#a3a3a3" text-anchor="middle">placeholder diagram — click to zoom</text>
+</svg>

@@ -3,7 +3,9 @@ import { navItems } from "@/lib/nav";
 
 // Shared home/blog nav. Two variants because the surfaces disagree on layout
 // and color:
-// - "paper" (blog): sticky in flow, theme-var colors.
+// - "paper" (blog): sticky in flow, theme-var colors. Deliberately
+//   transparent — Ben rejected a translucent/blurred bar; content scrolling
+//   under the bare links is the intended look.
 // - "scene" (homepage): fixed so it adds no flow height to the 100svh scene
 //   shell, and hard-coded scene ink (#171717) since the scene ignores the
 //   light/dark theme.

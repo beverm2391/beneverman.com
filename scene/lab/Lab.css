@@ -384,7 +384,7 @@
 
 .lab-render-layer canvas,
 .lab-render-layer .daylight-shadow-layer,
-.lab-render-layer .background-shader-layer {
+.lab-render-layer .scene-live-layer {
   position: absolute;
   inset: 0;
   width: 100%;

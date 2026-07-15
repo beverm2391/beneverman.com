@@ -6,11 +6,42 @@ import { z } from "zod";
 const blogDirectory = path.join(process.cwd(), "content/blog");
 const allowedSlug = /^[a-z0-9-]+$/;
 
-const frontmatterSchema = z.object({
+// Drafts render locally and on Vercel previews — a preview exists to look at
+// unfinished work, and it is auth-gated and noindex, so nothing leaks. Only the
+// production deploy hides them. This also keeps previews honest about the build:
+// a draft that fails to compile fails the preview instead of waiting to surface
+// on the day it ships.
+export const includeDrafts =
+  process.env.NODE_ENV !== "production" || process.env.VERCEL_ENV === "preview";
+
+export const frontmatterSchema = z.object({
   title: z.string().min(1),
   date: z.coerce.date().transform((date) => date.toISOString().slice(0, 10)),
+  // Set this when a published post changes in a way a reader would care about.
+  // Without it the eye-disease post reads as untouched since 2024, which is a
+  // fact about when it was written, not about whether it is current.
+  updated: z.coerce
+    .date()
+    .transform((date) => date.toISOString().slice(0, 10))
+    .optional(),
   description: z.string().min(1),
-  tags: z.array(z.string().min(1)).default([])
+  tags: z.array(z.string().min(1)).default([]),
+  // One field rather than draft/archived booleans, which allowed a fourth state
+  // that means nothing. What separates these is what the URL does:
+  //
+  //   draft      unfinished. Renders locally and on previews; in production it
+  //              is absent from every list and getBlogPost throws, so the slug
+  //              404s. It was never public, so there is nothing to redirect.
+  //   published  live.
+  //   archived   was published and is withdrawn. Absent from every list in
+  //              every environment, but the slug still redirects to /blog (see
+  //              the post page) because inbound links to it exist. Frontmatter
+  //              drives that, so there are no hardcoded redirects in
+  //              next.config.
+  //
+  // Defaulting to draft means a new post ships only when it says so. The
+  // reverse default once left a deliberately retired post live.
+  status: z.enum(["draft", "published", "archived"]).default("draft")
 });
 
 export type BlogPostFrontmatter = z.infer<typeof frontmatterSchema>;
@@ -54,12 +85,18 @@ export async function getBlogPostSummary(slug: string): Promise<BlogPostSummary>
   return { slug, ...frontmatter };
 }
 
-export async function getBlogPosts(): Promise<BlogPostSummary[]> {
+export async function getBlogPosts(
+  // Overridable so tests can assert the production (drafts-excluded) list
+  // without stubbing NODE_ENV.
+  { drafts = includeDrafts }: { drafts?: boolean } = {}
+): Promise<BlogPostSummary[]> {
   const filenames = (await fs.readdir(blogDirectory))
     .filter((entry) => entry.endsWith(".mdx"))
     .sort();
   const posts = await Promise.all(
     filenames.map((filename) => getBlogPostSummary(filename.replace(/\.mdx$/, "")))
   );
-  return posts.sort((a, b) => b.date.localeCompare(a.date));
+  return posts
+    .filter((post) => post.status === "published" || (drafts && post.status === "draft"))
+    .sort((a, b) => b.date.localeCompare(a.date));
 }

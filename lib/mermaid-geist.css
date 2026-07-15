@@ -1,0 +1,12 @@
+/* Loaded into mermaid's headless render page (see lib/mermaid-theme.ts), not
+   into the site. Mermaid sizes every node by measuring its label with
+   getBBox(), so the render page must resolve the *same* font the reader gets:
+   measure in a fallback and ship Geist, and every label overflows the box it
+   was measured for. The src is relative on purpose — mermaid-isomorphic adds
+   this file by URL, so the woff2 resolves against it on any machine. */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 250 650;
+  src: url("../public/fonts/geist-latin.woff2") format("woff2");
+}

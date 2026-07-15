@@ -1,20 +1,21 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { emitDebugTimelineEvent } from './debugTimeline'
 import { HomeDebugPanel } from './HomeDebugPanel'
-import { HomePageContent } from './HomePageContent'
+import { HomeSunStatus } from './HomeSunStatus'
 import {
   getResponsiveVisualConfig,
   DeferredShadowLayer,
-  useAfterInteractiveShadowLayer,
   useAnimatedSunAngle,
   useDebugMode,
   useDebugTimeline,
   useDeferredFontStylesheet,
-  useShadowCapability,
   useShadowSourcePreview,
 } from './homeSceneState'
+import { useSceneArrival } from './primitives/sceneArrival'
+import { useSceneCapability } from './primitives/sceneCapability'
+import { useSceneShellStyle } from './primitives/sceneShell'
 import type {
   AppliedVisualPreset,
   DebugPanelTab,
@@ -27,11 +28,10 @@ import type {
 } from './homeSceneTypes'
 import { backgroundModes, type BackgroundMode } from './HomeSunGradientConfig'
 import { HomeSunGradientLayer } from './HomeSunGradientLayer'
-import { getHomeIntroStyle } from './homeVisualConfig'
+import { getHomeShellStyle } from './homeVisualConfig'
 import { activeSiteConfig } from './siteScene'
 import { shadowMapModes, type ShadowMapMode } from './shadowMapModes'
-import { getShadowFactor, SunWidget } from './SunWidget'
-import { cycleTimeAtSunAngle, formatTimeOfDay, sunCycleDurationSeconds } from './sunClock'
+import { getShadowFactor } from './SunWidget'
 
 function smoothstep(edge0: number, edge1: number, x: number) {
   const t = Math.min(Math.max((x - edge0) / (edge1 - edge0), 0), 1)
@@ -60,15 +60,19 @@ function App() {
   const [background, setBackground] = useState<BackgroundMode>(responsiveVisualConfig.background)
   const [font, setFont] = useState<FontMode>(responsiveVisualConfig.font)
   const timelineEvents = useDebugTimeline()
-  const shadowCapability = useShadowCapability()
+  const shadowCapability = useSceneCapability()
   const [shadowSettings, setShadowSettings] = useState<ShadowSettings>({ ...responsiveVisualConfig.shadowSettings })
   const [shadowMapMode, setShadowMapMode] = useState<ShadowMapMode>(responsiveVisualConfig.shadowMapMode)
   const shouldRenderShadowLayer = shadowMapMode !== 'sun'
-  const isShadowLayerReady = useAfterInteractiveShadowLayer(
-    shadowCapability.enabled && shouldRenderShadowLayer,
-  )
+  // No mount deferral: App itself only mounts after hydration (client-only
+  // dynamic chunk), so layers load as early as possible and the only delay a
+  // visitor experiences is each layer's own fade-in.
+  const wantsShadowLayer = shadowCapability.enabled && shouldRenderShadowLayer
+  // Each WebGL layer fades in the moment its own first frame is GPU-verified
+  // (per-layer choreography). DOM/CSS content is never gated on this.
+  const arrival = useSceneArrival(wantsShadowLayer ? ['gradient', 'shadow'] : ['gradient'])
   const [isDebugPanelCollapsed, setIsDebugPanelCollapsed] = useState(false)
-  const shadowSourcePreview = useShadowSourcePreview()
+  const shadowSourcePreview = useShadowSourcePreview(isDebug)
   const [showShadowSource, setShowShadowSource] = useState(false)
   const [sunWidget, setSunWidget] = useState<SunWidgetChoice>(
     activeSiteConfig.showSunWidget ? activeSiteConfig.sunWidget : 'none',
@@ -90,6 +94,15 @@ function App() {
   )
   const shadowCrispnessScale = 0.45 + 0.55 * smoothstep(0.05, 0.6, sunElevation)
 
+  // Restyle the server-rendered shell when presets or debug controls change.
+  // Memoized so per-frame sun-angle renders don't rewrite shell styles.
+  useSceneShellStyle(
+    useMemo(
+      () => getHomeShellStyle({ background, font, textureSettings, typeSettings }),
+      [background, font, textureSettings, typeSettings],
+    ),
+  )
+
   useEffect(() => {
     document.documentElement.style.background = backgroundMode.color
     document.body.style.background = backgroundMode.color
@@ -100,6 +113,34 @@ function App() {
   }, [backgroundMode.color])
 
   useEffect(() => emitDebugTimelineEvent('app mounted'), [])
+
+  // Clicking the open scene should release any text selection. Empty-area
+  // clicks land on the shell itself (the visual layers are
+  // pointer-events: none), and the browser doesn't reliably collapse the
+  // selection for them, so clear it unless the press is on text or a control.
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+      if (target.closest('.intro, .inspiration-footer, header, a, button, input, select, textarea, label')) {
+        return
+      }
+      getSelection()?.removeAllRanges()
+    }
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [])
+
+  // Take over the sun indicator from the server-rendered copy: identical
+  // geometry, so the handoff to the animated version is invisible.
+  useEffect(() => {
+    const ssrWidget = document.querySelector<HTMLElement>('[data-ssr-sun-widget]')
+    if (!ssrWidget) return
+    ssrWidget.style.display = 'none'
+    return () => {
+      ssrWidget.style.display = 'contents'
+    }
+  }, [])
 
   useEffect(() => {
     let frameId = 0
@@ -193,21 +234,20 @@ function App() {
   }
 
   return (
-    <main
-      className="site-shell"
-      style={{
-        ...getHomeIntroStyle({ font, typeSettings }),
-        ['--texture-opacity' as string]: textureSettings.opacity,
-        ['--texture-scale' as string]: `${textureSettings.scale}px`,
-        backgroundColor: backgroundMode.color,
-      }}
-    >
+    <>
       <div className="visual-scene-layer" aria-hidden="true">
-        <HomeSunGradientLayer mode={backgroundMode} sunAngle={effectiveSunAngle} />
-        {shadowCapability.enabled && shouldRenderShadowLayer && isShadowLayerReady ? (
+        <HomeSunGradientLayer
+          className={arrival.layerClassName('gradient')}
+          mode={backgroundMode}
+          onFirstFrame={() => arrival.markLive('gradient')}
+          sunAngle={effectiveSunAngle}
+        />
+        {wantsShadowLayer ? (
           <DeferredShadowLayer
+            className={arrival.layerClassName('shadow')}
             crispnessScale={shadowCrispnessScale}
             mode={shadowMapMode}
+            onFirstFrame={() => arrival.markLive('shadow')}
             opacityScale={shadowFactor}
             settings={shadowSettings}
             shadowTint={shadowTint}
@@ -216,14 +256,8 @@ function App() {
         ) : null}
       </div>
       {sunWidget === 'none' ? null : (
-        <div className="sun-angle-widget" aria-hidden="true">
-          <SunWidget angle={effectiveSunAngle} variant={sunWidget} />
-          <span className="sun-widget-clock">
-            {formatTimeOfDay(cycleTimeAtSunAngle(Math.PI - effectiveSunAngle) / sunCycleDurationSeconds)}
-          </span>
-        </div>
+        <HomeSunStatus angle={effectiveSunAngle} variant={sunWidget} />
       )}
-      <HomePageContent />
       {isDebug ? (
         <HomeDebugPanel
           activeTab={debugPanelTab}
@@ -259,7 +293,7 @@ function App() {
           typeSettings={typeSettings}
         />
       ) : null}
-    </main>
+    </>
   )
 }
 
