@@ -279,11 +279,13 @@ main {
   }
 }
 
-/* Fragment jumps (TOC, footnotes) land flush under the 3.75rem sticky
-   header — no extra air. Keep this below the scrollspy threshold in
-   post-toc.tsx so a clicked heading still counts as the active section. */
+/* Fragment jumps (TOC, footnotes) land near the viewport top. The sticky
+   nav is transparent, so no space is reserved for it — on narrow widths a
+   landed heading can pass behind the nav links, accepted trade. Keep this
+   below the scrollspy threshold in post-toc.tsx so a clicked heading still
+   counts as the active section. */
 :target {
-  scroll-margin-top: 3.75rem;
+  scroll-margin-top: 1rem;
 }
 
 /* ---- prose (post body via @tailwindcss/typography) ------------------- */
