@@ -111,10 +111,13 @@ would have doubled the bytes and the render time to buy nothing.
 
 Flowchart, class and ER are clean. Sequence, state, gantt, pie, gitGraph,
 mindmap, timeline and quadrant still paint some of mermaid's own colours,
-visible as cream shapes or invisible dark labels on a dark card. Half of those
-are categorical-colour diagrams where a pie chart wants distinct slices, so
-forcing them onto a monochrome palette is a design decision and not a missing
-selector. Every post so far uses flowchart.
+visible as cream shapes or invisible dark labels on a dark card.
+
+Leave them. The rule is to theme a diagram type when a post first uses that
+type, not before, and the gallery is a sandbox rather than a promise. Half of
+those are categorical-colour diagrams anyway, where a pie chart wants distinct
+slices, so what they should look like here is a design decision waiting on a
+real use rather than a selector someone forgot.
 
 Accessibility is authoring, not code. Mermaid compiles `accTitle:` and
 `accDescr:` in a fence into a real `title` and `desc` with `aria-labelledby` and
