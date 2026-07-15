@@ -2,7 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { imageSize } from "image-size";
 import { compileMDX } from "next-mdx-remote/rsc";
-import rehypeMermaid from "rehype-mermaid";
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
@@ -144,6 +143,14 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   if (frontmatter.status === "draft" && !includeDrafts) {
     throw new Error(`Post "${slug}" is a draft.`);
   }
+  // Imported here rather than at module scope on purpose. rehype-mermaid pulls
+  // in playwright, and this module is loaded by the post route, so a top-level
+  // import dragged playwright into the serverless function — where its
+  // browsers.json is not traced, and every on-demand render 500'd on module
+  // load. Nothing on demand ever compiles MDX: archived posts redirect and
+  // unknown slugs 404 before reaching this. Compiling is a build-time job, so
+  // the compiler loads only when something is actually compiled.
+  const { default: rehypeMermaid } = await import("rehype-mermaid");
   const launchOptions = await mermaidLaunchOptions();
   const { content } = await compileMDX({
     source,
