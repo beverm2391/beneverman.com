@@ -41,18 +41,16 @@ configures the hook.
   `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
   `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
   component map. Metadata/feed routes should import the data-only module.
-- ```mermaid fences render to inline SVG at compile time (rehype-mermaid via
-  headless Chromium; its packages sit in `serverExternalPackages` because
-  Turbopack lacks `import.meta.resolve`). `pnpm build` installs Chromium itself
-  rather than documenting it as a prerequisite: Vercel's build image has none,
-  and a missing browser fails the MDX compile, which 404s the post instead of
-  crashing the build. `lib/mermaid-theme.ts` owns the rest — mermaid is handed
-  the site's colour tokens and the real `geist-latin.woff2`, because it sizes
-  nodes by measuring labels in the render page and must resolve the font the
-  reader gets.
+- ```mermaid fences render to inline SVG at compile time. `pnpm build` installs
+  its own Chromium: playwright's locally, `@sparticuz/chromium` on Vercel, the
+  only one that launches there. Mermaid's packages sit in
+  `serverExternalPackages` because Turbopack lacks `import.meta.resolve`.
+  `lib/mermaid-theme.ts` owns the config; `docs/mermaid-renderer.md` explains
+  why any of it is true. Read that before changing the pipeline: the theme, the
+  font loading and the two browsers each look removable and are not.
 - Drafts render locally and on Vercel previews (`VERCEL_ENV=preview`), never in
-  production. Previews are auth-gated and noindex, so they are the place to
-  review unfinished posts — and a draft that fails to compile fails the preview.
+  production. Previews are auth-gated and noindex, so they are where unfinished
+  posts get reviewed, and a broken draft fails its own preview.
 - The lab lives at `/lab`. `next.config.ts` aliases the exact `LabMount` import
   to `LabUnavailable` during production builds. Preserve that boundary and the
   build assertion that checks lab JS/CSS cannot leak into static assets.
