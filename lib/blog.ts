@@ -27,6 +27,7 @@ import {
   readBlogPostSource,
   type BlogPostSummary
 } from "@/lib/blog-data";
+import { mermaidFontCSS, mermaidFontFamily, mermaidThemeCSS } from "@/lib/mermaid-theme";
 import { extractToc, type TocItem } from "@/lib/toc";
 
 export {
@@ -104,11 +105,13 @@ const rehypeLocalImageDimensions = () => (tree: HastNode) => {
   walk(tree);
 };
 
-// Mermaid emits junk style attributes on some diagram types — ER relationship
-// paths carry a literal style="undefined;;;undefined" (upstream mermaid bug) —
-// and MDX's HAST→JSX conversion throws on any style it cannot parse, which
-// 404s the whole post. Keep only declarations shaped like `prop: value`,
-// dropping `undefined` values; delete the attribute when nothing survives.
+// Diagram renderers emit junk style attributes: beautiful-mermaid writes bare
+// values like style="solid" and style="italic" where it means a property, and
+// mermaid's ER paths carried a literal style="undefined;;;undefined". Browsers
+// ignore both, but MDX's HAST→JSX conversion throws on any style it cannot
+// parse, which 404s the whole post. Keep only declarations shaped like
+// `prop: value`, dropping `undefined` values; delete the attribute when nothing
+// survives.
 const rehypeSanitizeStyleAttributes = () => (tree: HastNode) => {
   const declaration = /^-{0,2}[a-zA-Z][a-zA-Z0-9-]*\s*:\s*(?!undefined\s*$).+$/;
   const walk = (node: HastNode) => {
@@ -144,7 +147,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
       mdxOptions: {
         remarkPlugins: [remarkGfm],
         // Mermaid runs first so ```mermaid fences become inline SVG at
-        // compile time (headless Chromium, no client JS, no flash) before
+        // compile time (no browser, no client JS, no flash) before
         // pretty-code touches the remaining fences.
         rehypePlugins: [
           // Heading anchors for the TOC and deep links. lib/toc.ts mirrors
@@ -154,14 +157,11 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
             rehypeMermaid,
             {
               strategy: "inline-svg",
+              css: mermaidFontCSS,
               mermaidConfig: {
-                theme: "neutral",
-                fontFamily: "Geist, ui-sans-serif, sans-serif",
-                // Compile-time SVGs carry one palette into both site themes:
-                // mid-gray connectors stay legible on the light card and the
-                // dark card alike (the neutral default is too dark for dark
-                // mode).
-                themeVariables: { lineColor: "#8a8a8a" }
+                theme: "base",
+                fontFamily: mermaidFontFamily,
+                themeCSS: mermaidThemeCSS
               }
             }
           ],
