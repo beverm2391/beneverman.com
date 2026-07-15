@@ -16,7 +16,7 @@ export default async function BlogIndexPage() {
   const posts = await getBlogPosts();
 
   return (
-    <main>
+    <main className="reading-column">
       <ul className="m-0 grid list-none gap-9 p-0">
         {posts.map((post) => (
           <li key={post.slug}>

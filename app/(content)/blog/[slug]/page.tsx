@@ -110,7 +110,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   };
 
   return (
-    <main>
+    <main className="reading-column">
       <script
         type="application/ld+json"
         // Serialised from our own frontmatter, never from reader input.

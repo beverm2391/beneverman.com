@@ -1,7 +1,6 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-import type { ComponentType, ReactNode } from 'react'
+import { lazy, Suspense, useEffect, useState, type ComponentType, type ReactNode } from 'react'
 
 // The site's scene loading paradigm: a scene is a client-only, purely additive
 // decoration mounted behind server-rendered content.
@@ -19,9 +18,28 @@ import type { ComponentType, ReactNode } from 'react'
 //   no-JS/no-WebGL visitors — the page is the shell's flat background plus
 //   content, so there is nothing to flash. An optional StaticShell renders
 //   during loading for scenes that do want SSR chrome of their own.
+// - The scene must never make the page wait, and the mount gate below is what
+//   enforces it. This used to be next/dynamic with ssr:false, whose lazy
+//   promise never settled when the scene mounted a second time: navigating
+//   blog -> home -> blog -> home left the route suspended forever, so the URL
+//   changed to / while the blog stayed on screen (navigation is a React
+//   transition, which keeps the previous page visible until the new one can
+//   commit). Rendering nothing until after mount gives the same ssr:false
+//   guarantee, and the route commits before the scene is ever asked for, so
+//   decoration cannot hold the page hostage again.
 export function createClientScene(
   load: () => Promise<{ default: ComponentType }>,
   StaticShell?: () => ReactNode,
 ) {
-  return dynamic(load, { ssr: false, ...(StaticShell ? { loading: StaticShell } : {}) })
+  const Scene = lazy(load)
+
+  return function ClientScene() {
+    const [mounted, setMounted] = useState(false)
+    useEffect(() => setMounted(true), [])
+
+    const shell = StaticShell ? <StaticShell /> : null
+    if (!mounted) return shell
+
+    return <Suspense fallback={shell}>{<Scene />}</Suspense>
+  }
 }
