@@ -62,6 +62,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      {/* Geist is declared by hand in globals.css rather than via next/font
+          (compiled diagram SVGs name the family literally, so it cannot become a
+          hash), so the browser only discovers it once the stylesheet parses.
+          That is too late for font-display: optional to ever choose it. */}
+      <link
+        rel="preload"
+        href="/fonts/geist-latin.woff2"
+        as="font"
+        type="font/woff2"
+        crossOrigin="anonymous"
+      />
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           {children}

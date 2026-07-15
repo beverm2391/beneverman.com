@@ -70,7 +70,12 @@
   font-family: "Geist";
   font-style: normal;
   font-weight: 250 650;
-  font-display: swap;
+  /* optional, not swap: Geist is ~3% narrower than the Inter it falls back to,
+     so a swap re-wraps every paragraph and the intro jumps. optional gives the
+     browser a short window to use Geist from the first paint and otherwise
+     declines it for that load, so text is laid out once either way. The preload
+     below is what makes it win that window. */
+  font-display: optional;
   src: url("/fonts/geist-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
@@ -222,7 +227,13 @@
   display: none;
 }
 
-main {
+/* The reading column, and only the reading column. This was a bare `main`
+   selector, which also caught the homepage's <main class="site-shell">: the
+   full-bleed shell was being squeezed into a 68ch column, and since 1ch is the
+   width of the current font's "0", its width was computed from font metrics. It
+   grew 686px -> 721px the moment Geist swapped in, dragging its background with
+   it. Anything sized in ch belongs where text is read, not where a scene is. */
+.reading-column {
   width: min(100% - 2rem, 68ch);
   margin-inline: auto;
   padding-block: 4rem;
