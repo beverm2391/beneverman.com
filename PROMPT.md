@@ -44,7 +44,11 @@ configures the hook.
 - ```mermaid fences render to inline SVG at compile time (rehype-mermaid via
   headless Chromium; its packages sit in `serverExternalPackages` because
   Turbopack lacks `import.meta.resolve`). Any environment that runs
-  `next build` needs `pnpm exec playwright install chromium` first.
+  `next build` needs `pnpm exec playwright install chromium` first. Production
+  deploys ride Vercel's git integration, where that install does not happen — no
+  post in the published set uses mermaid today, so builds pass. Publishing a
+  mermaid post means installing Chromium in the Vercel build first; the build
+  verifier now fails loudly instead of shipping the post as a 404.
 - The lab lives at `/lab`. `next.config.ts` aliases the exact `LabMount` import
   to `LabUnavailable` during production builds. Preserve that boundary and the
   build assertion that checks lab JS/CSS cannot leak into static assets.

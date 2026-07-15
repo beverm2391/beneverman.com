@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { formatPostDate, getBlogPost, getBlogPosts } from "@/lib/blog";
+import { formatPostDate, getBlogPost, getBlogPostSummary, getBlogPosts } from "@/lib/blog";
 import { PostToc } from "@/components/blog/post-toc";
 
 type BlogPostPageProps = {
@@ -21,7 +21,9 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const { slug } = await params;
 
   try {
-    const post = await getBlogPost(slug);
+    // Frontmatter is all this needs — compiling the body here would cost a full
+    // MDX render (and a headless Chromium launch for mermaid posts) per route.
+    const post = await getBlogPostSummary(slug);
 
     return {
       title: post.title,
@@ -58,13 +60,28 @@ async function getPostOrNotFound(slug: string) {
   }
 }
 
+async function getSummaryOrNotFound(slug: string) {
+  try {
+    return await getBlogPostSummary(slug);
+  } catch (error) {
+    console.error(`getBlogPostSummary("${slug}") failed:`, error);
+    notFound();
+  }
+}
+
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
-  const post = await getPostOrNotFound(slug);
 
   // Withdrawn posts keep their URL working but send readers to the index —
-  // frontmatter-driven, so no hardcoded redirects in next.config.
-  if (post.archived) redirect("/blog");
+  // frontmatter-driven, so no hardcoded redirects in next.config. This reads
+  // frontmatter *before* compiling on purpose: archived posts are excluded from
+  // generateStaticParams, so this path runs on demand in the serverless runtime,
+  // where compiling a mermaid post would try to launch a headless Chromium that
+  // isn't there — turning the redirect into a 404.
+  const { archived } = await getSummaryOrNotFound(slug);
+  if (archived) redirect("/blog");
+
+  const post = await getPostOrNotFound(slug);
 
   return (
     <main>

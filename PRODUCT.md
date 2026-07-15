@@ -50,9 +50,9 @@ open gates.
 - The index and canonical post routes are `/blog` and `/blog/{slug}`.
 - Metadata includes canonical URLs, article fields, generated OG images, and
   Twitter cards. `/feed.xml`, `/sitemap.xml`, and `/robots.txt` are static.
-- The deliberately retired published `minimalist-ai-agent` URL permanently
-  redirects to `/blog`; ported Fumadocs posts kept their existing `/blog/*`
-  paths, so they do not need redirects.
+- The deliberately retired `minimalist-ai-agent` post is `archived: true`, so its
+  published URL redirects to `/blog` (307) and it leaves every list; ported
+  Fumadocs posts kept their existing `/blog/*` paths, so they need no redirects.
 - The blog's visual design remains a Ben + Claude collaboration. Codex owns the
   mechanical plumbing, not unilateral visual redesign.
 
@@ -62,21 +62,20 @@ open gates.
   ESLint, TypeScript, and deterministic unit tests. Browser/E2E coverage is not
   part of the PR gate for now.
 - `pnpm build` remains the manual/release proof for home SSR, the production lab
-  404 and client-asset exclusion, and RSS output.
+  404 and client-asset exclusion, RSS output, and that every prerendered post is
+  a real article. A post whose MDX fails to compile renders as a 404 rather than
+  crashing the build, so the build must assert posts rendered or it ships dead
+  URLs green.
 
 ## Open gates
 
-1. **Finish the real content port.** The eye-disease article currently contains
-   only the first ported section. Continue section by section with Ben and
-   Claude because figures, captions, callouts, and the article's visual rhythm
-   require interactive design decisions.
-2. **Finish long-form affordances.** Before the completed long post ships, add
-   the promised long-form TOC, copy-code interaction, and an optimized-image
-   treatment. These are not present today and should not be marked complete by
-   inference.
-3. **Cut over deliberately.** After the content/design gates close, verify the
-   deployed domain, redirects, feed, metadata, no-WebGL state, and reduced-motion
-   state before retiring the old site.
+1. **Cut over deliberately.** Deployment rides Vercel's git integration. Before
+   retiring the old site, verify the deployed domain, the archived-post
+   redirect, feed, metadata, the no-WebGL state, and the reduced-motion state.
+2. **Grow the published set.** `neural-nets-for-eye-disease` is content-complete
+   and is the only post production ships today. `how-i-built-beneverman-com`
+   stays a draft until Ben lands a shader worth writing up. Figures, captions,
+   and visual rhythm stay a Ben + Claude decision, not a port to grind through.
 
 ## Non-goals
 
