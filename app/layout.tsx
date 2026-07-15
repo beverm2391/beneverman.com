@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "./theme-provider";
 import "./globals.css";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, SITE_X_HANDLE } from "@/lib/site";
 
 // Inter is loaded as the fallback family in the Geist stack; JetBrains Mono is
 // the code/label font. Non-colliding var names so Tailwind's --font-sans/mono
@@ -41,7 +41,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: SITE_NAME,
-    description: SITE_DESCRIPTION
+    description: SITE_DESCRIPTION,
+    site: SITE_X_HANDLE,
+    creator: SITE_X_HANDLE
   }
 };
 

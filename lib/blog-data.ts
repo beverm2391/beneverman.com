@@ -17,6 +17,13 @@ export const includeDrafts =
 export const frontmatterSchema = z.object({
   title: z.string().min(1),
   date: z.coerce.date().transform((date) => date.toISOString().slice(0, 10)),
+  // Set this when a published post changes in a way a reader would care about.
+  // Without it the eye-disease post reads as untouched since 2024, which is a
+  // fact about when it was written, not about whether it is current.
+  updated: z.coerce
+    .date()
+    .transform((date) => date.toISOString().slice(0, 10))
+    .optional(),
   description: z.string().min(1),
   tags: z.array(z.string().min(1)).default([]),
   // One field rather than draft/archived booleans, which allowed a fourth state
