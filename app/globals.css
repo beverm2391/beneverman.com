@@ -177,14 +177,21 @@
    homepage and the blog share it. Only the grain is ?debug-tunable (blog
    routes); the wash is fixed. */
 .paper-wash {
-  position: fixed;
-  inset: 0;
+  /* Positional, not viewport-fixed: the glow belongs to the top of the
+     DOCUMENT and scrolls away with it, like light falling on the sheet. As
+     a fixed overlay it tracked the viewport instead, so the same content
+     changed tint as you scrolled (diagrams read orange near the top). One
+     viewport-height of glow, flat paper below. */
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100lvh;
   z-index: -2;
   pointer-events: none;
-  /* The glow is bright but carries the paper's warmth, not pure #ffffff: a
-     fully neutral glow made the warm-derived diagram cards read orange by
-     contrast at the top of the viewport. Full lightness stays so the
-     gradient itself still reads. */
+  /* The glow is bright but carries the paper's warmth, not pure #ffffff —
+     a fully neutral glow made the warm-derived diagram cards read orange
+     by contrast. */
   background: radial-gradient(125% 90% at 50% 0%, #fffdf9 0%, var(--bg) 65%);
 }
 
