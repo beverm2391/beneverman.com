@@ -1,6 +1,6 @@
 # beneverman.com — dev knowledge
 
-Canonical personal site: Next.js App Router + TypeScript. It has an art-first
+Canonical personal site: Next.js App Router + TypeScript. It has a flat paper
 landing, an MDX blog, and a development-only scene lab. Product promise, proof,
 and open gates live in `PRODUCT.md`; work state lives in Linear's **Personal
 Website** project.
@@ -29,14 +29,14 @@ configures the hook.
 
 ## Architecture
 
-- The root page server-renders the shell, copy, and sun indicator; the WebGL
-  scene is a client-only dynamic chunk (`scene/HomeMount`) mounted behind them
-  as pure decoration. There is no CSS imitation of the scene: each layer fades
-  in only after its first frame is GPU-fence-verified, and no-JS/no-WebGL
-  visitors keep the flat page. The paradigm and its invariants live in
+- The root page is a flat, fully server-rendered paper page (Ben, 2026-07):
+  same background, tokens, and theme toggle as the blog. The WebGL sun scene
+  no longer mounts in production — it is parked in the dev-only lab for a
+  future pass. Its mounting paradigm and invariants live in
   `scene/primitives/` (`clientScene`, `sceneArrival`, `gpuFrameFence`,
-  `sceneShell`) — read those doc comments before changing homepage loading.
-  Page content must never live inside the dynamic scene swap.
+  `sceneShell`); read those doc comments before remounting any scene on a
+  route. `scene/homeCopy.ts` still owns the intro copy (the lab's text layer
+  renders it too).
 - Blog routes live under `app/(content)/blog`; content lives in
   `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
   `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
@@ -83,8 +83,8 @@ but cannot emit utilities — Coss semantic tokens must stay mapped in globals'
 
 Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
 JetBrains Mono is the code font. Refer to the `next/font` variables instead of
-literal `Inter` or imaginary `Geist Mono` families. The blog paper layers are
-content-layout scoped.
+literal `Inter` or imaginary `Geist Mono` families. The paper background
+layers are site-wide (globals.css) — the homepage and blog share them.
 
 Keep Shiki server/build-time only. The scene lab remains development-only. The
 blog's visual design is done interactively by Ben + Claude; Codex should not

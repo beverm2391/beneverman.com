@@ -13,46 +13,8 @@
    globals.css: Tailwind only emits utilities from that entry, so a @theme here
    would define variables that silently generate nothing. */
 
-/* ---- paper background (blog only) ------------------------------------ */
-/* Two fixed layers behind blog content: a soft white->paper gradient wash,
-   then a static grain overlay ported from beneverman.com-v7's
-   `.surface-texture` (inline SVG feTurbulence — pure CSS, no JS/canvas/image
-   files). Rendered by the content layout (PaperBackground) so it never bleeds
-   onto the home scene. Only the grain is ?debug-tunable; the wash is fixed. */
-.paper-wash {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-  background: radial-gradient(125% 90% at 50% 0%, #ffffff 0%, var(--bg) 65%);
-}
-
-.paper-grain {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  mix-blend-mode: var(--grain-blend);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23paper)'/%3E%3C/svg%3E");
-  background-size: var(--grain-scale) var(--grain-scale);
-}
-
-/* Dark mode: multiply would crush to black, so lighten with screen and pull
-   the grain back; the wash goes soft-dark instead of white. */
-.dark .paper-wash {
-  background: radial-gradient(125% 90% at 50% 0%, #1c1c1c 0%, var(--bg) 55%, #101010 100%);
-}
-
-.dark .paper-grain {
-  opacity: 0.05;
-  mix-blend-mode: screen;
-}
-
-/* Debug toggle: hide the grain layer while keeping its tuned values. */
-.grain-off .paper-grain {
-  display: none;
-}
+/* The paper background layers (.paper-wash / .paper-grain) live in
+   globals.css: the homepage renders them too, and it never loads this file. */
 
 /* The reading column, and only the reading column. This was a bare `main`
    selector, which also caught the homepage's <main class="site-shell">: the
