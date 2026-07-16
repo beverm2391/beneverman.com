@@ -87,12 +87,11 @@
      ≈ neutral-500 mixed 90% toward black. --accent is the link/hover colour
      (Coss has no link token; near-black neutral-950 keeps links a shade
      darker than body text). */
-  /* Off-white with only a breath of warmth: the paper-wash radial runs
-     #ffffff -> --bg, so this needs real distance from white or the
-     light-mode gradient disappears (pure white here rendered
-     white-on-white). Full warm cream was tried and rejected (2026-07) — it
-     fought the neutral diagram/code surfaces — and dead-neutral read gray. */
-  --bg: #f7f6f3;
+  /* Off-white with only a breath of warmth — this flat color IS the page
+     (the wash gradient is gone). Full warm cream was tried and rejected
+     (2026-07) — it fought the neutral diagram/code surfaces — and
+     dead-neutral read gray. */
+  --bg: #faf9f6;
   --fg: #262626;
   --muted: #686868;
   --border: rgb(0 0 0 / 0.08);
@@ -130,11 +129,6 @@
   --success: oklch(69.6% 0.17 162.48);
   --warning: oklch(76.9% 0.188 70.08);
   --destructive: oklch(63.7% 0.237 25.331);
-
-  /* Grain overlay knobs — tweakable live via the ?debug panel. */
-  --grain-opacity: 0.25;
-  --grain-scale: 180px;
-  --grain-blend: multiply;
 }
 
 .dark {
@@ -167,38 +161,6 @@
   --info-foreground: var(--color-blue-400);
   --success-foreground: var(--color-emerald-400);
   --warning-foreground: var(--color-amber-400);
-}
-
-/* ---- paper background (site-wide) ------------------------------------- */
-/* A static grain overlay ported from beneverman.com-v7's `.surface-texture`
-   (inline SVG feTurbulence — pure CSS, no JS/canvas/image files) over the
-   flat --bg paper. Rendered per-page/layout by
-   components/paper-background.tsx; the homepage and the blog share it, and
-   the grain is ?debug-tunable on blog routes. A gradient wash layer lived
-   here too and was killed (2026-07): any glow — viewport-fixed or baked
-   into the document top — made content read a different temperature
-   depending on where it sat. */
-.paper-grain {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: var(--grain-opacity);
-  mix-blend-mode: var(--grain-blend);
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23paper)'/%3E%3C/svg%3E");
-  background-size: var(--grain-scale) var(--grain-scale);
-}
-
-/* Dark mode: multiply would crush to black, so lighten with screen and pull
-   the grain back. */
-.dark .paper-grain {
-  opacity: 0.07;
-  mix-blend-mode: screen;
-}
-
-/* Debug toggle: hide the grain layer while keeping its tuned values. */
-.grain-off .paper-grain {
-  display: none;
 }
 
 @layer base {

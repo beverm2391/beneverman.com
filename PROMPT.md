@@ -1,6 +1,6 @@
 # beneverman.com — dev knowledge
 
-Canonical personal site: Next.js App Router + TypeScript. It has a flat paper
+Canonical personal site: Next.js App Router + TypeScript. It has a flat
 landing, an MDX blog, and a development-only scene lab. Product promise, proof,
 and open gates live in `PRODUCT.md`; work state lives in Linear's **Personal
 Website** project.
@@ -29,8 +29,8 @@ configures the hook.
 
 ## Architecture
 
-- The root page is a flat, fully server-rendered paper page (Ben, 2026-07):
-  same background, tokens, and theme toggle as the blog. The WebGL sun scene
+- The root page is a flat, fully server-rendered page (Ben, 2026-07): same
+  background, tokens, and theme toggle as the blog. The WebGL sun scene
   no longer mounts in production — it is parked in the dev-only lab for a
   future pass. Its mounting paradigm and invariants live in
   `scene/primitives/` (`clientScene`, `sceneArrival`, `gpuFrameFence`,
@@ -83,8 +83,9 @@ but cannot emit utilities — Coss semantic tokens must stay mapped in globals'
 
 Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
 JetBrains Mono is the code font. Refer to the `next/font` variables instead of
-literal `Inter` or imaginary `Geist Mono` families. The paper background
-layers are site-wide (globals.css) — the homepage and blog share them.
+literal `Inter` or imaginary `Geist Mono` families. The background is the
+flat `--bg` token on every route — the wash gradient and grain overlay were
+tried and deleted (2026-07).
 
 Keep Shiki server/build-time only. The scene lab remains development-only. The
 blog's visual design is done interactively by Ben + Claude; Codex should not

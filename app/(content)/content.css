@@ -13,9 +13,6 @@
    globals.css: Tailwind only emits utilities from that entry, so a @theme here
    would define variables that silently generate nothing. */
 
-/* The paper background layer (.paper-grain) lives in globals.css: the
-   homepage renders it too, and it never loads this file. */
-
 /* The reading column, and only the reading column. This was a bare `main`
    selector, which also caught the homepage's <main class="site-shell">: the
    full-bleed shell was being squeezed into a 68ch column, and since 1ch is the

@@ -1,16 +1,14 @@
-import { PaperBackground } from "@/components/paper-background";
 import { SiteHeader } from "@/components/site-header";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { homepageIntroCopy } from "@/scene/homeCopy";
 
-// The homepage is a flat paper page on the same background, tokens, and theme
-// as the blog. The WebGL sun scene is parked in the dev-only lab (scene/lab)
+// The homepage is a flat page on the same background, tokens, and theme as
+// the blog. The WebGL sun scene is parked in the dev-only lab (scene/lab)
 // until a future pass earns it back; scene/homeCopy.ts stays the single owner
 // of the intro copy because the lab's text layer renders it too.
 export default function HomePage() {
   return (
     <>
-      <PaperBackground />
       <SiteHeader variant="overlay" />
       <ThemeToggle />
       <main className="grid min-h-svh place-items-center px-[clamp(1.25rem,4vw,4rem)]">
