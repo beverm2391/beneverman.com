@@ -181,7 +181,11 @@
   inset: 0;
   z-index: -2;
   pointer-events: none;
-  background: radial-gradient(125% 90% at 50% 0%, #ffffff 0%, var(--bg) 65%);
+  /* The glow is bright but carries the paper's warmth, not pure #ffffff: a
+     fully neutral glow made the warm-derived diagram cards read orange by
+     contrast at the top of the viewport. Full lightness stays so the
+     gradient itself still reads. */
+  background: radial-gradient(125% 90% at 50% 0%, #fffdf9 0%, var(--bg) 65%);
 }
 
 .paper-grain {
