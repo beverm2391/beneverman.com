@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPostDate, getBlogPosts } from "@/lib/blog-data";
+import { formatPostDate, getBlogPosts, includeDrafts } from "@/lib/blog-data";
 import { PostStatusBadge } from "@/components/blog/post-status-badge";
 
 export const metadata = {
@@ -14,7 +14,10 @@ export const metadata = {
 };
 
 export default async function BlogIndexPage() {
-  const posts = await getBlogPosts();
+  // Where drafts render (dev/preview), archived posts join the list too, so
+  // the index shows the full status picture; production readers never see
+  // either.
+  const posts = await getBlogPosts({ archived: includeDrafts });
 
   return (
     <main className="reading-column">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { formatPostDate, getBlogPost, getBlogPostSummary, getBlogPosts } from "@/lib/blog";
+import { includeDrafts } from "@/lib/blog-data";
 import { PostStatusBadge } from "@/components/blog/post-status-badge";
 import { PostToc } from "@/components/blog/post-toc";
 import { SITE_NAME, SITE_URL, SITE_X_HANDLE } from "@/lib/site";
@@ -12,7 +13,11 @@ type BlogPostPageProps = {
 };
 
 export async function generateStaticParams() {
-  const posts = await getBlogPosts();
+  // Archived posts prerender wherever they are viewable (dev/preview, below).
+  // This must stay in lockstep with the redirect gate: an archived post that
+  // renders on demand instead would try to compile MDX in the serverless
+  // runtime, where mermaid's headless Chromium does not exist.
+  const posts = await getBlogPosts({ archived: includeDrafts });
 
   return posts.map((post) => ({
     slug: post.slug
@@ -85,12 +90,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   // Withdrawn posts keep their URL working but send readers to the index —
   // frontmatter-driven, so no hardcoded redirects in next.config. This reads
-  // frontmatter *before* compiling on purpose: archived posts are excluded from
-  // generateStaticParams, so this path runs on demand in the serverless runtime,
-  // where compiling a mermaid post would try to launch a headless Chromium that
-  // isn't there — turning the redirect into a 404.
+  // frontmatter *before* compiling on purpose: in production archived posts
+  // are excluded from generateStaticParams, so this path runs on demand in
+  // the serverless runtime, where compiling a mermaid post would try to
+  // launch a headless Chromium that isn't there — turning the redirect into
+  // a 404. In dev/preview archived posts render (with a status badge) so
+  // withdrawn work stays reviewable.
   const { status } = await getSummaryOrNotFound(slug);
-  if (status === "archived") redirect("/blog");
+  if (status === "archived" && !includeDrafts) redirect("/blog");
 
   const post = await getPostOrNotFound(slug);
 

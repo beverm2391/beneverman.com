@@ -86,9 +86,15 @@ export async function getBlogPostSummary(slug: string): Promise<BlogPostSummary>
 }
 
 export async function getBlogPosts(
-  // Overridable so tests can assert the production (drafts-excluded) list
-  // without stubbing NODE_ENV.
-  { drafts = includeDrafts }: { drafts?: boolean } = {}
+  // `drafts` is overridable so tests can assert the production
+  // (drafts-excluded) list without stubbing NODE_ENV. `archived` defaults to
+  // false because withdrawn posts stay out of every reader-facing list; only
+  // the dev/preview blog index (and its prerender params) opts in so post
+  // status is visible where drafts are.
+  {
+    drafts = includeDrafts,
+    archived = false
+  }: { drafts?: boolean; archived?: boolean } = {}
 ): Promise<BlogPostSummary[]> {
   const filenames = (await fs.readdir(blogDirectory))
     .filter((entry) => entry.endsWith(".mdx"))
@@ -97,6 +103,11 @@ export async function getBlogPosts(
     filenames.map((filename) => getBlogPostSummary(filename.replace(/\.mdx$/, "")))
   );
   return posts
-    .filter((post) => post.status === "published" || (drafts && post.status === "draft"))
+    .filter(
+      (post) =>
+        post.status === "published" ||
+        (drafts && post.status === "draft") ||
+        (archived && post.status === "archived")
+    )
     .sort((a, b) => b.date.localeCompare(a.date));
 }
