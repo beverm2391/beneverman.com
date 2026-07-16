@@ -87,7 +87,10 @@
      ≈ neutral-500 mixed 90% toward black. --accent is the link/hover colour
      (Coss has no link token; near-black neutral-950 keeps links a shade
      darker than body text). */
-  --bg: #ffffff;
+  /* Off-white, slightly warm: the paper-wash radial runs #ffffff -> --bg, so
+     this is what makes the light-mode gradient visible at all (pure white
+     here rendered white-on-white, i.e. no wash). */
+  --bg: #f6f4f0;
   --fg: #262626;
   --muted: #686868;
   --border: rgb(0 0 0 / 0.08);
