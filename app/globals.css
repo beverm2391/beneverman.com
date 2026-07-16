@@ -87,11 +87,12 @@
      ≈ neutral-500 mixed 90% toward black. --accent is the link/hover colour
      (Coss has no link token; near-black neutral-950 keeps links a shade
      darker than body text). */
-  /* Neutral off-white: the paper-wash radial runs #ffffff -> --bg, so this
-     needs real distance from white or the light-mode gradient disappears
-     (pure white here rendered white-on-white). Warm cream was tried and
-     rejected (2026-07) — it fought the neutral diagram/code surfaces. */
-  --bg: #f6f6f5;
+  /* Off-white with only a breath of warmth: the paper-wash radial runs
+     #ffffff -> --bg, so this needs real distance from white or the
+     light-mode gradient disappears (pure white here rendered
+     white-on-white). Full warm cream was tried and rejected (2026-07) — it
+     fought the neutral diagram/code surfaces — and dead-neutral read gray. */
+  --bg: #f7f6f3;
   --fg: #262626;
   --muted: #686868;
   --border: rgb(0 0 0 / 0.08);
