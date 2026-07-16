@@ -43,11 +43,13 @@ export const mermaidThemeCSS = `
   .label, .nodeLabel, .cluster-label, span, p { color: var(--fg); }
   text, tspan, .label text, .flowchartTitleText, .titleText { fill: var(--fg); }
 
-  /* Node shells share the card's material. */
+  /* Node shells share the card's material. The stroke is firmer than the
+     UI hairline (--border): box outlines are the diagram's structure, and
+     the 8% hairline all but vanished against the card. */
   .node rect, .node circle, .node ellipse, .node polygon, .node path,
   .basic.label-container, .rect_left_inv_arrow {
     fill: var(--surface);
-    stroke: var(--border);
+    stroke: color-mix(in srgb, var(--fg) 22%, transparent);
   }
 
   /* Connectors and arrowheads read as secondary. */
@@ -71,7 +73,7 @@ export const mermaidThemeCSS = `
   /* Sequence, class, state and ER reuse the same materials. */
   .actor, .classGroup rect, .entityBox, .stateGroup rect, .node .state-start {
     fill: var(--surface);
-    stroke: var(--border);
+    stroke: color-mix(in srgb, var(--fg) 22%, transparent);
   }
   .actor text, .classGroup text, .entityLabel, .messageText, .loopText, .noteText {
     fill: var(--fg);
