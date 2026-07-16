@@ -7,13 +7,23 @@ import type { LaunchOptions } from "playwright";
 // download lands but refuses to launch: libnspr4.so is missing. @sparticuz's
 // build bundles what it needs. It is a Linux binary, so it is only right on
 // Vercel — locally playwright's chromium is already present and faster.
-export async function mermaidLaunchOptions(): Promise<LaunchOptions | undefined> {
-  if (!process.env.VERCEL) return undefined;
-  const { default: chromium } = await import("@sparticuz/chromium");
-  return {
-    executablePath: await chromium.executablePath(),
-    args: chromium.args
-  };
+//
+// Memoized: posts prerender concurrently, and chromium.executablePath()
+// EXTRACTS the binary to /tmp on first call — two concurrent extractions
+// let one compile spawn a binary the other is still writing, which fails
+// the launch with ETXTBSY and 404s the post. One shared promise means one
+// extraction; spawning an already-written binary concurrently is fine.
+let launchOptionsPromise: Promise<LaunchOptions | undefined> | undefined;
+
+export function mermaidLaunchOptions(): Promise<LaunchOptions | undefined> {
+  return (launchOptionsPromise ??= (async () => {
+    if (!process.env.VERCEL) return undefined;
+    const { default: chromium } = await import("@sparticuz/chromium");
+    return {
+      executablePath: await chromium.executablePath(),
+      args: chromium.args
+    };
+  })());
 }
 
 // Mermaid measures text with getBBox() in a real browser, so the render page
