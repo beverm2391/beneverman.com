@@ -87,21 +87,21 @@
      ≈ neutral-500 mixed 90% toward black. --accent is the link/hover colour
      (Coss has no link token; near-black neutral-950 keeps links a shade
      darker than body text). */
-  /* Off-white, slightly warm: the paper-wash radial runs #ffffff -> --bg, so
-     this is what makes the light-mode gradient visible at all (pure white
-     here rendered white-on-white, i.e. no wash). */
-  --bg: #fdf8ea;
+  /* Neutral off-white: the paper-wash radial runs #ffffff -> --bg, so this
+     needs real distance from white or the light-mode gradient disappears
+     (pure white here rendered white-on-white). Warm cream was tried and
+     rejected (2026-07) — it fought the neutral diagram/code surfaces. */
+  --bg: #f6f6f5;
   --fg: #262626;
   --muted: #686868;
   --border: rgb(0 0 0 / 0.08);
   --accent: #0a0a0a;
   --code-bg: rgb(0 0 0 / 0.04);
-  /* The diagram-card material (mermaid card + node fills via
-     lib/mermaid-theme.ts). Solid white, NOT derived from --bg: the paper went
-     cream and diagrams need a neutral solid ground — white card on cream
-     reads as paper-on-paper. Dark overrides below. (Code blocks keep the
-     translucent --code-bg tint.) */
-  --surface: #ffffff;
+  /* The card grey as one opaque material — the mermaid card and node fills
+     share it (lib/mermaid-theme.ts). (Code blocks keep the translucent
+     --code-bg tint.) Tracks the theme because --bg/--fg re-resolve under
+     .dark. */
+  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
   --radius: 0.625rem;
 
   /* Coss semantic fallbacks (light) — values verbatim from coss.css so Coss
@@ -145,8 +145,6 @@
   --border: rgb(255 255 255 / 0.06);
   --accent: #fafafa;
   --code-bg: rgb(255 255 255 / 0.04);
-  /* Dark diagram card: a step above the page, still neutral and solid. */
-  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
   color-scheme: dark;
 
   /* Coss semantic fallbacks (dark) — verbatim from coss.css's .dark scheme. */
