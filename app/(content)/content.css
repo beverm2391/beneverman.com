@@ -13,8 +13,8 @@
    globals.css: Tailwind only emits utilities from that entry, so a @theme here
    would define variables that silently generate nothing. */
 
-/* The paper background layers (.paper-wash / .paper-grain) live in
-   globals.css: the homepage renders them too, and it never loads this file. */
+/* The paper background layer (.paper-grain) lives in globals.css: the
+   homepage renders it too, and it never loads this file. */
 
 /* The reading column, and only the reading column. This was a bare `main`
    selector, which also caught the homepage's <main class="site-shell">: the

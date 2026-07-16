@@ -21,8 +21,8 @@ function assert(condition, message) {
 const homeHtml = await fs.readFile(path.join(root, ".next/server/app/index.html"), "utf8");
 assert(homeHtml.includes("Ben Everman"), "homepage HTML does not contain the server-rendered intro");
 // The homepage is a flat paper page (the WebGL scene is parked in the lab);
-// the server HTML must carry the paper background layers.
-assert(homeHtml.includes("paper-wash"), "homepage HTML does not contain the paper background");
+// the server HTML must carry the paper background layer.
+assert(homeHtml.includes("paper-grain"), "homepage HTML does not contain the paper background");
 
 const labMeta = JSON.parse(await fs.readFile(path.join(root, ".next/server/app/lab.meta"), "utf8"));
 assert(labMeta.status === 404, "production /lab route is not a 404");

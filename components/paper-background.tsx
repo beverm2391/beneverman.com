@@ -1,11 +1,7 @@
-// The blog's paper background: a fixed gradient wash + grain overlay. Rendered
-// by the content layout only, so the home scene stays clean. Styling + the
-// ?debug-tunable grain vars live in globals.css (.paper-wash / .paper-grain).
+// The site's paper background: flat --bg with a static grain overlay.
+// Rendered by the homepage and the content layout. Styling + the
+// ?debug-tunable grain vars live in globals.css (.paper-grain). A gradient
+// wash layer was removed (2026-07) — see the globals.css comment.
 export function PaperBackground() {
-  return (
-    <>
-      <div className="paper-wash" aria-hidden="true" />
-      <div className="paper-grain" aria-hidden="true" />
-    </>
-  );
+  return <div className="paper-grain" aria-hidden="true" />;
 }

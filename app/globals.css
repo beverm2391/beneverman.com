@@ -170,31 +170,14 @@
 }
 
 /* ---- paper background (site-wide) ------------------------------------- */
-/* Two fixed layers behind page content: a soft white->paper gradient wash,
-   then a static grain overlay ported from beneverman.com-v7's
-   `.surface-texture` (inline SVG feTurbulence — pure CSS, no JS/canvas/image
-   files). Rendered per-page/layout by components/paper-background.tsx; the
-   homepage and the blog share it. Only the grain is ?debug-tunable (blog
-   routes); the wash is fixed. */
-.paper-wash {
-  /* Positional, not viewport-fixed: the glow belongs to the top of the
-     DOCUMENT and scrolls away with it, like light falling on the sheet. As
-     a fixed overlay it tracked the viewport instead, so the same content
-     changed tint as you scrolled (diagrams read orange near the top). One
-     viewport-height of glow, flat paper below. */
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 100lvh;
-  z-index: -2;
-  pointer-events: none;
-  /* The glow is bright but carries the paper's warmth, not pure #ffffff —
-     a fully neutral glow made the warm-derived diagram cards read orange
-     by contrast. */
-  background: radial-gradient(125% 90% at 50% 0%, #fffdf9 0%, var(--bg) 65%);
-}
-
+/* A static grain overlay ported from beneverman.com-v7's `.surface-texture`
+   (inline SVG feTurbulence — pure CSS, no JS/canvas/image files) over the
+   flat --bg paper. Rendered per-page/layout by
+   components/paper-background.tsx; the homepage and the blog share it, and
+   the grain is ?debug-tunable on blog routes. A gradient wash layer lived
+   here too and was killed (2026-07): any glow — viewport-fixed or baked
+   into the document top — made content read a different temperature
+   depending on where it sat. */
 .paper-grain {
   position: fixed;
   inset: 0;
@@ -207,11 +190,7 @@
 }
 
 /* Dark mode: multiply would crush to black, so lighten with screen and pull
-   the grain back; the wash goes soft-dark instead of white. */
-.dark .paper-wash {
-  background: radial-gradient(125% 90% at 50% 0%, #1c1c1c 0%, var(--bg) 55%, #101010 100%);
-}
-
+   the grain back. */
 .dark .paper-grain {
   opacity: 0.07;
   mix-blend-mode: screen;
