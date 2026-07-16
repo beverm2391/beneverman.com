@@ -51,6 +51,9 @@ export function HomeSunGradientLayer({
       antialias: false,
       depth: false,
       powerPreference: 'low-power',
+      // Readable after the frame, so the lab's dither treatment layer can
+      // sample this gradient as its field (scene/DitherFieldLayer.tsx).
+      preserveDrawingBuffer: true,
       stencil: false,
     }
     // WebGL2 first: it provides fence syncs, which make the arrival signal

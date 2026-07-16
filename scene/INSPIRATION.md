@@ -75,6 +75,26 @@ Record/Cathedral spheres are the strongest homepage-form candidates (they
 rhyme with the old sun without being a sundial). Slat height and gap are the
 key ratios to study.
 
+### "--sref a7eeb4: dithers, halftones, and ASCII" — @bnj (video)
+
+<https://x.com/bnj/status/2027135590777725101> (2026-02-28)
+
+Midjourney style-ref study rendered as print cards: a pink/black halftone
+wave poster ("PHASE // SHIFT"), a cream card whose lower half is a **green
+halftone metaball field** under serif display type, an orange/grey halftone
+blob panel. **Steal:** variable-dot-size halftone over organic blob fields —
+this is the exact "blobs under" construction; dot size carries all tone. Two
+colors per composition, spec-sheet microtype framing. The green card is the
+closest thing to a target render for our light mode.
+
+### ASCII rendering deep-dive — alexharri
+
+<https://alexharri.com/blog/ascii-rendering>
+
+Technique reference (not yet digested into steal notes): rendering scenes as
+ASCII/characters — glyph-by-luminance mapping, sampling, edge handling.
+Relevant when the character-dither variant (OpenAI Emergence globe) comes up.
+
 ## Lab implications
 
 Candidate layers to prototype (each its own lab layer so they stack/A-B):

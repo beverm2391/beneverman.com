@@ -133,7 +133,7 @@ export default function Lab() {
         const target = savedScenes.find((s) => s.id === id)
         if (target) selectInto(target, target.id)
       },
-      newScene: () => selectInto(createScene('Untitled'), null),
+      newScene: () => selectInto(createScene('Untitled', []), null),
       duplicateScene: () => {
         if (!scene) return
         const copyName = `${scene.name} copy`

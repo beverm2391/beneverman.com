@@ -13,7 +13,7 @@ export const sceneSchema = z.object({
   layers: z.array(
     z.object({
       instanceId: z.string().min(1),
-      type: z.enum(["sunGradient", "text", "shadow", "sunWidget"]),
+      type: z.enum(["sunGradient", "text", "shadow", "sunWidget", "ditherField"]),
       enabled: z.boolean(),
       config: z.record(z.string(), layerConfigValueSchema)
     })
