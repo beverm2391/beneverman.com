@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { formatPostDate, getBlogPosts } from "@/lib/blog-data";
+import { PostStatusBadge } from "@/components/blog/post-status-badge";
 
 export const metadata = {
   title: "Blog",
@@ -23,8 +24,9 @@ export default async function BlogIndexPage() {
             {/* The whole entry — title, date, description — is one link. */}
             <Link href={`/blog/${post.slug}`} className="group block no-underline">
               <div className="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-2">
-                <span className="text-[1.15rem] font-semibold tracking-[-0.01em] text-fg group-hover:text-accent">
+                <span className="inline-flex items-baseline gap-2.5 text-[1.15rem] font-semibold tracking-[-0.01em] text-fg group-hover:text-accent">
                   {post.title}
+                  <PostStatusBadge status={post.status} />
                 </span>
                 <time dateTime={post.date} className="whitespace-nowrap font-mono text-[0.8rem]">
                   {formatPostDate(post.date)}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { formatPostDate, getBlogPost, getBlogPostSummary, getBlogPosts } from "@/lib/blog";
+import { PostStatusBadge } from "@/components/blog/post-status-badge";
 import { PostToc } from "@/components/blog/post-toc";
 import { SITE_NAME, SITE_URL, SITE_X_HANDLE } from "@/lib/site";
 
@@ -121,10 +122,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <h1 className="mb-[0.35rem] text-[1.7rem] font-[650] leading-[1.2] tracking-[-0.02em]">
             {post.title}
           </h1>
-          <p>
+          <p className="flex items-baseline gap-2.5">
             <time dateTime={post.date} className="font-mono text-[0.8rem]">
               {formatPostDate(post.date)}
             </time>
+            <PostStatusBadge status={post.status} />
           </p>
         </header>
         {/* Long-form only: a couple of headings don't need navigation. In
