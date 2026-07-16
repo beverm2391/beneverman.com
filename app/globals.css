@@ -96,11 +96,12 @@
   --border: rgb(0 0 0 / 0.08);
   --accent: #0a0a0a;
   --code-bg: rgb(0 0 0 / 0.04);
-  /* The card grey as one opaque material — the mermaid card and the lightbox
-     overlay share it, so zooming a diagram promotes the card's surface to the
-     whole screen. (Code blocks keep the translucent --code-bg tint.) Tracks
-     the theme because --bg/--fg re-resolve under .dark. */
-  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
+  /* The diagram-card material (mermaid card + node fills via
+     lib/mermaid-theme.ts). Solid white, NOT derived from --bg: the paper went
+     cream and diagrams need a neutral solid ground — white card on cream
+     reads as paper-on-paper. Dark overrides below. (Code blocks keep the
+     translucent --code-bg tint.) */
+  --surface: #ffffff;
   --radius: 0.625rem;
 
   /* Coss semantic fallbacks (light) — values verbatim from coss.css so Coss
@@ -144,6 +145,8 @@
   --border: rgb(255 255 255 / 0.06);
   --accent: #fafafa;
   --code-bg: rgb(255 255 255 / 0.04);
+  /* Dark diagram card: a step above the page, still neutral and solid. */
+  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
   color-scheme: dark;
 
   /* Coss semantic fallbacks (dark) — verbatim from coss.css's .dark scheme. */

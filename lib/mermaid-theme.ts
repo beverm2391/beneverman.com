@@ -64,8 +64,13 @@ export const mermaidThemeCSS = `
   .edgeLabel, .edgeLabel p { color: var(--muted); background-color: var(--surface); }
   .edgeLabel rect, .labelBkg, .label-container { fill: var(--surface); background-color: var(--surface); }
 
-  /* Subgraphs / groups recede behind their nodes. */
-  .cluster rect, .cluster-rect { fill: var(--bg); stroke: var(--border); }
+  /* Subgraphs / groups recede behind their nodes: a shade into the card's
+     own material, not the page --bg (the paper tint would punch holes in
+     the solid card). */
+  .cluster rect, .cluster-rect {
+    fill: color-mix(in srgb, var(--surface) 96%, var(--fg));
+    stroke: var(--border);
+  }
   .cluster text, .cluster span { fill: var(--fg); color: var(--fg); }
 
   /* Sequence, class, state and ER reuse the same materials. */
@@ -76,6 +81,9 @@ export const mermaidThemeCSS = `
   .actor text, .classGroup text, .entityLabel, .messageText, .loopText, .noteText {
     fill: var(--fg);
   }
-  .note, .noteGroup rect, .labelBox { fill: var(--bg); stroke: var(--border); }
+  .note, .noteGroup rect, .labelBox {
+    fill: color-mix(in srgb, var(--surface) 96%, var(--fg));
+    stroke: var(--border);
+  }
   .loopLine { stroke: var(--border); }
 `;
