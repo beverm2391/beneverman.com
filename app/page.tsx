@@ -14,9 +14,11 @@ export default function HomePage() {
       <SiteHeader variant="overlay" />
       <ThemeToggle />
       <main className="grid min-h-svh place-items-center px-[clamp(1.25rem,4vw,4rem)]">
+        {/* Type matches the retired scene intro's promoted settings
+            (scene/siteVisualConfig.ts): 1.02rem / 1.55 on a 35rem measure. */}
         <section
           aria-label="About Ben Everman"
-          className="max-w-[31.25rem] text-[0.95rem] leading-normal font-light text-fg/90 [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-[0.18em]"
+          className="max-w-[35rem] text-[1.02rem] leading-[1.55] font-light text-fg/90 [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-[0.18em]"
         >
           <p className="mb-[1.15rem] font-normal">{homepageIntroCopy.name}</p>
           <p className="mt-[0.9rem]">{homepageIntroCopy.work}</p>
