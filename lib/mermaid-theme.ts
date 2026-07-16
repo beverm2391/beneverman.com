@@ -76,6 +76,12 @@ export const mermaidThemeCSS = `
   .actor text, .classGroup text, .entityLabel, .messageText, .loopText, .noteText {
     fill: var(--fg);
   }
+  /* Sequence actor labels are sibling <text class="actor actor-box"> elements,
+     not descendants, so the box rule above catches them — repaint the text.
+     The tspan variants out-specify mermaid's own ">tspan" fills, which is
+     also what .labelText ("loop" tab) and .loopText need to actually win. */
+  text.actor, text.actor tspan { fill: var(--fg); stroke: none; }
+  .labelText, .labelText tspan, .loopText, .loopText tspan { fill: var(--fg); }
   .note, .noteGroup rect, .labelBox { fill: var(--bg); stroke: var(--border); }
   .loopLine { stroke: var(--border); }
 `;

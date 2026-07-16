@@ -100,9 +100,9 @@
   --code-bg: rgb(0 0 0 / 0.04);
   /* The card grey as one opaque material — the mermaid card and node fills
      share it (lib/mermaid-theme.ts). (Code blocks keep the translucent
-     --code-bg tint.) Tracks the theme because --bg/--fg re-resolve under
-     .dark. */
-  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
+     --code-bg tint.) Light mixes shallower than dark: 4% ink read too dark
+     on the light paper. */
+  --surface: color-mix(in srgb, var(--bg) 98%, var(--fg));
   --radius: 0.625rem;
 
   /* Coss semantic fallbacks (light) — values verbatim from coss.css so Coss
@@ -146,6 +146,9 @@
   --border: rgb(255 255 255 / 0.06);
   --accent: #fafafa;
   --code-bg: rgb(255 255 255 / 0.04);
+  /* Dark keeps the deeper 4% mix — the shallow light ratio would sink the
+     card into the page. */
+  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
   color-scheme: dark;
 
   /* Coss semantic fallbacks (dark) — verbatim from coss.css's .dark scheme. */
