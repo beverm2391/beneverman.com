@@ -87,17 +87,21 @@
      ≈ neutral-500 mixed 90% toward black. --accent is the link/hover colour
      (Coss has no link token; near-black neutral-950 keeps links a shade
      darker than body text). */
-  --bg: #ffffff;
+  /* Off-white with only a breath of warmth — this flat color IS the page
+     (the wash gradient is gone). Full warm cream was tried and rejected
+     (2026-07) — it fought the neutral diagram/code surfaces — and
+     dead-neutral read gray. */
+  --bg: #faf9f6;
   --fg: #262626;
   --muted: #686868;
   --border: rgb(0 0 0 / 0.08);
   --accent: #0a0a0a;
   --code-bg: rgb(0 0 0 / 0.04);
-  /* The card grey as one opaque material — the mermaid card and the lightbox
-     overlay share it, so zooming a diagram promotes the card's surface to the
-     whole screen. (Code blocks keep the translucent --code-bg tint.) Tracks
-     the theme because --bg/--fg re-resolve under .dark. */
-  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
+  /* The card grey as one opaque material — the mermaid card and node fills
+     share it (lib/mermaid-theme.ts). (Code blocks keep the translucent
+     --code-bg tint.) Light mixes shallower than dark: 4% ink read too dark
+     on the light paper. */
+  --surface: color-mix(in srgb, var(--bg) 98%, var(--fg));
   --radius: 0.625rem;
 
   /* Coss semantic fallbacks (light) — values verbatim from coss.css so Coss
@@ -125,11 +129,6 @@
   --success: oklch(69.6% 0.17 162.48);
   --warning: oklch(76.9% 0.188 70.08);
   --destructive: oklch(63.7% 0.237 25.331);
-
-  /* Grain overlay knobs — tweakable live via the ?debug panel. */
-  --grain-opacity: 0.19;
-  --grain-scale: 180px;
-  --grain-blend: multiply;
 }
 
 .dark {
@@ -141,6 +140,9 @@
   --border: rgb(255 255 255 / 0.06);
   --accent: #fafafa;
   --code-bg: rgb(255 255 255 / 0.04);
+  /* Dark keeps the deeper 4% mix — the shallow light ratio would sink the
+     card into the page. */
+  --surface: color-mix(in srgb, var(--bg) 96%, var(--fg));
   color-scheme: dark;
 
   /* Coss semantic fallbacks (dark) — verbatim from coss.css's .dark scheme. */

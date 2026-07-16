@@ -7,13 +7,23 @@ import type { LaunchOptions } from "playwright";
 // download lands but refuses to launch: libnspr4.so is missing. @sparticuz's
 // build bundles what it needs. It is a Linux binary, so it is only right on
 // Vercel — locally playwright's chromium is already present and faster.
-export async function mermaidLaunchOptions(): Promise<LaunchOptions | undefined> {
-  if (!process.env.VERCEL) return undefined;
-  const { default: chromium } = await import("@sparticuz/chromium");
-  return {
-    executablePath: await chromium.executablePath(),
-    args: chromium.args
-  };
+//
+// Memoized: posts prerender concurrently, and chromium.executablePath()
+// EXTRACTS the binary to /tmp on first call — two concurrent extractions
+// let one compile spawn a binary the other is still writing, which fails
+// the launch with ETXTBSY and 404s the post. One shared promise means one
+// extraction; spawning an already-written binary concurrently is fine.
+let launchOptionsPromise: Promise<LaunchOptions | undefined> | undefined;
+
+export function mermaidLaunchOptions(): Promise<LaunchOptions | undefined> {
+  return (launchOptionsPromise ??= (async () => {
+    if (!process.env.VERCEL) return undefined;
+    const { default: chromium } = await import("@sparticuz/chromium");
+    return {
+      executablePath: await chromium.executablePath(),
+      args: chromium.args
+    };
+  })());
 }
 
 // Mermaid measures text with getBBox() in a real browser, so the render page
@@ -43,11 +53,13 @@ export const mermaidThemeCSS = `
   .label, .nodeLabel, .cluster-label, span, p { color: var(--fg); }
   text, tspan, .label text, .flowchartTitleText, .titleText { fill: var(--fg); }
 
-  /* Node shells share the card's material. */
+  /* Node shells share the card's material. The stroke is firmer than the
+     UI hairline (--border): box outlines are the diagram's structure, and
+     the 8% hairline all but vanished against the card. */
   .node rect, .node circle, .node ellipse, .node polygon, .node path,
   .basic.label-container, .rect_left_inv_arrow {
     fill: var(--surface);
-    stroke: var(--border);
+    stroke: color-mix(in srgb, var(--fg) 22%, transparent);
   }
 
   /* Connectors and arrowheads read as secondary. */
@@ -71,11 +83,17 @@ export const mermaidThemeCSS = `
   /* Sequence, class, state and ER reuse the same materials. */
   .actor, .classGroup rect, .entityBox, .stateGroup rect, .node .state-start {
     fill: var(--surface);
-    stroke: var(--border);
+    stroke: color-mix(in srgb, var(--fg) 22%, transparent);
   }
   .actor text, .classGroup text, .entityLabel, .messageText, .loopText, .noteText {
     fill: var(--fg);
   }
+  /* Sequence actor labels are sibling <text class="actor actor-box"> elements,
+     not descendants, so the box rule above catches them — repaint the text.
+     The tspan variants out-specify mermaid's own ">tspan" fills, which is
+     also what .labelText ("loop" tab) and .loopText need to actually win. */
+  text.actor, text.actor tspan { fill: var(--fg); stroke: none; }
+  .labelText, .labelText tspan, .loopText, .loopText tspan { fill: var(--fg); }
   .note, .noteGroup rect, .labelBox { fill: var(--bg); stroke: var(--border); }
   .loopLine { stroke: var(--border); }
 `;

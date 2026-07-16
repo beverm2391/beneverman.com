@@ -1,43 +1,43 @@
-import HomeMount from "@/scene/HomeMount";
 import { SiteHeader } from "@/components/site-header";
-import { HomePageContent } from "@/scene/HomePageContent";
-import { HomeSunStatus } from "@/scene/HomeSunStatus";
-import { getHomeShellStyle } from "@/scene/homeVisualConfig";
-import { activeSiteConfig } from "@/scene/siteScene";
-import "@/scene/App.css";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { homepageIntroCopy } from "@/scene/homeCopy";
 
-// The shell <main> and page content are server-rendered once and never remount.
-// HomeMount mounts the WebGL scene behind them, and the scene fades in as one
-// unit when its layers have rendered (useSceneArrival) — until then, and for
-// no-JS/no-WebGL visitors, the page is the flat shell background plus content.
-// The client scene restyles this shell through useSceneShellStyle when
-// responsive presets or debug controls change.
+// The homepage is a flat page on the same background, tokens, and theme as
+// the blog. The WebGL sun scene is parked in the dev-only lab (scene/lab)
+// until a future pass earns it back; scene/homeCopy.ts stays the single owner
+// of the intro copy because the lab's text layer renders it too.
 export default function HomePage() {
-  const shellStyle = getHomeShellStyle();
   return (
     <>
-      {/* Every layer behind the page (html, body, main) carries the same
-          color from the first byte, so no stylesheet/paint timing gap can
-          ever show a differently-colored band. The client scene overrides
-          this when debug controls change the background. */}
-      <style>{`html { background: ${String(shellStyle.backgroundColor)}; }`}</style>
-      <SiteHeader variant="scene" />
-      <main className="site-shell" style={shellStyle}>
-        <HomeMount />
-        {/* The sun indicator is DOM/CSS content, not a WebGL layer, so it
-            renders at first paint (static config angle) instead of waiting on
-            the scene arrival. App hides this copy on mount and takes over
-            with the animated one at identical geometry. display:contents
-            keeps the wrapper out of the shell's centering grid. */}
-        {activeSiteConfig.showSunWidget ? (
-          <div data-ssr-sun-widget style={{ display: "contents" }}>
-            <HomeSunStatus
-              angle={activeSiteConfig.shadowSettings.sunAngle}
-              variant={activeSiteConfig.sunWidget}
-            />
-          </div>
-        ) : null}
-        <HomePageContent />
+      <SiteHeader variant="overlay" />
+      <ThemeToggle />
+      <main className="grid min-h-svh place-items-center px-[clamp(1.25rem,4vw,4rem)]">
+        {/* Type matches the retired scene intro's promoted settings
+            (scene/siteVisualConfig.ts): 1.02rem / 1.55 on a 35rem measure. */}
+        <section
+          aria-label="About Ben Everman"
+          className="max-w-[35rem] text-[1.02rem] leading-[1.55] font-light text-fg/90 [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-[0.18em]"
+        >
+          <p className="mb-[1.15rem] font-normal">{homepageIntroCopy.name}</p>
+          <p className="mt-[0.9rem]">{homepageIntroCopy.work}</p>
+          <p className="mt-[0.9rem]">{homepageIntroCopy.projects}</p>
+          <p className="mt-[0.9rem]">{homepageIntroCopy.atlanta}</p>
+          <p className="mt-[0.9rem]">
+            {homepageIntroCopy.experimentsPrefix}{" "}
+            <a href="https://www.bencorp.dev/" rel="noreferrer" target="_blank">
+              {homepageIntroCopy.bencorpLabel}
+            </a>
+            , {homepageIntroCopy.experimentsMiddle}{" "}
+            <a href="https://www.github.com/beverm2391" rel="noreferrer" target="_blank">
+              {homepageIntroCopy.githubLabel}
+            </a>
+            ; {homepageIntroCopy.experimentsSuffix}{" "}
+            <a href="https://www.x.com/beneverman" rel="noreferrer" target="_blank">
+              {homepageIntroCopy.xLabel}
+            </a>
+            .
+          </p>
+        </section>
       </main>
     </>
   );
