@@ -90,7 +90,7 @@
   /* Off-white, slightly warm: the paper-wash radial runs #ffffff -> --bg, so
      this is what makes the light-mode gradient visible at all (pure white
      here rendered white-on-white, i.e. no wash). */
-  --bg: #f6f4f0;
+  --bg: #faf7f0;
   --fg: #262626;
   --muted: #686868;
   --border: rgb(0 0 0 / 0.08);
