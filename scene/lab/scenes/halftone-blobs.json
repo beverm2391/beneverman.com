@@ -1,0 +1,59 @@
+{
+  "id": "halftone-blobs",
+  "name": "Halftone blobs",
+  "sunAngle": 2.95,
+  "layers": [
+    {
+      "instanceId": "layer-22c13c54",
+      "type": "text",
+      "enabled": true,
+      "config": {
+        "opacity": 1
+      }
+    },
+    {
+      "instanceId": "layer-d160edf8",
+      "type": "ditherField",
+      "enabled": true,
+      "config": {
+        "pattern": "halftone",
+        "source": "below",
+        "contrast": 1,
+        "cell": 10,
+        "angle": 0,
+        "blobs": 3,
+        "blobScale": 0.3,
+        "speed": 0.5,
+        "bias": 0,
+        "jitter": 0.5,
+        "slatFill": 0.7,
+        "ink": "ink",
+        "opacity": 1,
+        "invert": false,
+        "sourceOnly": false
+      }
+    },
+    {
+      "instanceId": "layer-afff9ee2",
+      "type": "ditherField",
+      "enabled": true,
+      "config": {
+        "pattern": "smooth",
+        "source": "blobs",
+        "contrast": 1,
+        "cell": 10,
+        "angle": 0,
+        "blobs": 3,
+        "blobScale": 0.3,
+        "speed": 0.5,
+        "bias": 0,
+        "jitter": 0.5,
+        "slatFill": 0.7,
+        "ink": "ink",
+        "opacity": 1,
+        "invert": false,
+        "sourceOnly": true
+      }
+    }
+  ]
+}

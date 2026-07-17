@@ -3,6 +3,7 @@
 // control schema, render). The sidebar and renderer are schema-driven, so
 // nothing else needs to change.
 
+import { DitherFieldLayer, type DitherFieldSettings } from '../DitherFieldLayer'
 import { HomeIntro } from '../HomeIntro'
 import { HomeSunGradientLayer } from '../HomeSunGradientLayer'
 import { backgroundModes } from '../HomeSunGradientConfig'
@@ -148,11 +149,115 @@ const sunWidget: LayerDef = {
   },
 }
 
-export const LAYER_REGISTRY: Record<LayerType, LayerDef> = { sunGradient, text, shadow, sunWidget }
+// Dither/halftone/slat field (scene/INSPIRATION.md direction). Two inks are
+// offered: the paper's near-black and its cream, so the layer works over
+// light or dark grounds. Not yet mapped by sceneToSiteConfig — promoting a
+// scene with this layer silently drops it on the homepage until the
+// direction settles and the mapping is written.
+const DITHER_INKS: Record<string, [number, number, number]> = {
+  ink: [0.15, 0.15, 0.16],
+  cream: [0.96, 0.95, 0.92],
+}
+
+const ditherField: LayerDef = {
+  type: 'ditherField',
+  label: 'Dither field',
+  defaultConfig: {
+    pattern: 'halftone',
+    source: 'blobs',
+    contrast: 1,
+    cell: 10,
+    angle: 0,
+    blobs: 3,
+    blobScale: 0.3,
+    speed: 0.5,
+    bias: 0,
+    jitter: 0.5,
+    slatFill: 0.7,
+    ink: 'ink',
+    opacity: 1,
+    invert: false,
+    sourceOnly: false,
+  },
+  controls: [
+    {
+      kind: 'select',
+      key: 'pattern',
+      label: 'Pattern',
+      options: [
+        { value: 'halftone', label: 'halftone dots' },
+        { value: 'bayer', label: 'bayer cells' },
+        { value: 'slats', label: 'scanline slats' },
+        { value: 'smooth', label: 'smooth (bare field)' },
+      ],
+    },
+    {
+      kind: 'select',
+      key: 'source',
+      label: 'Field source',
+      options: [
+        { value: 'blobs', label: 'own blobs' },
+        { value: 'below', label: 'layers below' },
+      ],
+    },
+    { kind: 'slider', key: 'contrast', label: 'Field contrast', min: 0.25, max: 6, step: 0.05 },
+    { kind: 'slider', key: 'cell', label: 'Cell size', min: 3, max: 28, step: 1 },
+    { kind: 'slider', key: 'angle', label: 'Pattern angle', min: 0, max: 90, step: 1 },
+    { kind: 'slider', key: 'blobs', label: 'Blobs', min: 1, max: 6, step: 1 },
+    { kind: 'slider', key: 'blobScale', label: 'Blob size', min: 0.1, max: 0.7, step: 0.01 },
+    { kind: 'slider', key: 'speed', label: 'Drift speed', min: 0, max: 2, step: 0.05 },
+    { kind: 'slider', key: 'bias', label: 'Density bias', min: -0.4, max: 0.4, step: 0.01 },
+    { kind: 'slider', key: 'jitter', label: 'Slat jitter', min: 0, max: 1, step: 0.01 },
+    { kind: 'slider', key: 'slatFill', label: 'Slat fill', min: 0.3, max: 0.95, step: 0.01 },
+    {
+      kind: 'select',
+      key: 'ink',
+      label: 'Ink',
+      options: [
+        { value: 'ink', label: 'ink (near-black)' },
+        { value: 'cream', label: 'cream' },
+      ],
+    },
+    { kind: 'slider', key: 'opacity', label: 'Opacity', min: 0, max: 1, step: 0.01 },
+    { kind: 'switch', key: 'invert', label: 'Invert field' },
+    { kind: 'switch', key: 'sourceOnly', label: 'Source only (invisible)' },
+  ],
+  Render: ({ config }) => {
+    const settings: DitherFieldSettings = {
+      pattern:
+        config.pattern === 'bayer' || config.pattern === 'slats' || config.pattern === 'smooth'
+          ? config.pattern
+          : 'halftone',
+      source: config.source === 'below' ? 'below' : 'blobs',
+      contrast: num(config, 'contrast', 1),
+      cell: num(config, 'cell', 10),
+      angleDeg: num(config, 'angle', 0),
+      blobs: num(config, 'blobs', 3),
+      blobScale: num(config, 'blobScale', 0.3),
+      speed: num(config, 'speed', 0.5),
+      bias: num(config, 'bias', 0),
+      jitter: num(config, 'jitter', 0.5),
+      slatFill: num(config, 'slatFill', 0.7),
+      ink: DITHER_INKS[config.ink as string] ?? DITHER_INKS.ink,
+      opacity: num(config, 'opacity', 1),
+      invert: config.invert === true,
+      sourceOnly: config.sourceOnly === true,
+    }
+    return <DitherFieldLayer settings={settings} />
+  },
+}
+
+export const LAYER_REGISTRY: Record<LayerType, LayerDef> = {
+  sunGradient,
+  text,
+  shadow,
+  sunWidget,
+  ditherField,
+}
 
 // Order shown in the "add layer" picker; also the default new-scene stack
 // (top of the list = front-most).
-export const LAYER_TYPES: LayerType[] = ['sunWidget', 'shadow', 'text', 'sunGradient']
+export const LAYER_TYPES: LayerType[] = ['sunWidget', 'shadow', 'text', 'sunGradient', 'ditherField']
 
 export function getLayerDef(type: LayerType): LayerDef {
   return LAYER_REGISTRY[type]
@@ -167,13 +272,14 @@ export function createLayerInstance(type: LayerType): LayerInstance {
   }
 }
 
-// A fresh scene with the full default stack (shadow over text over gradient),
-// matching the seeded starter.
-export function createScene(name: string): Scene {
+// A fresh scene. The seeded starter passes the full default stack; "New" in
+// the lab passes [] so experiments start from a blank canvas and layers are
+// added deliberately.
+export function createScene(name: string, types: LayerType[] = LAYER_TYPES): Scene {
   return {
     id: slugify(name),
     name,
     sunAngle: siteVisualConfig.shadowSettings.sunAngle,
-    layers: LAYER_TYPES.map(createLayerInstance),
+    layers: types.map(createLayerInstance),
   }
 }
