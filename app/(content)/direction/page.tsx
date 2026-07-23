@@ -21,12 +21,6 @@ export default async function DirectionPage() {
   return (
     <main className="reading-column">
       <article>
-        <header className="mb-8">
-          <h1 className="mb-[0.35rem] text-[1.7rem] font-[650] leading-[1.2] tracking-[-0.02em]">
-            What I’m Building Toward
-          </h1>
-          <p className="text-[0.9rem] text-muted">A direction, not a fixed promise.</p>
-        </header>
         <div className="prose">{content}</div>
       </article>
     </main>
