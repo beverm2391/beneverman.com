@@ -37,10 +37,13 @@ configures the hook.
   `sceneShell`); read those doc comments before remounting any scene on a
   route. `scene/homeCopy.ts` still owns the intro copy (the lab's text layer
   renders it too).
-- Blog routes live under `app/(content)/blog`; content lives in
-  `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
-  `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
-  component map. Metadata/feed routes should import the data-only module.
+- Long-form routes share `app/(content)` layout and styling. Blog content lives
+  in `content/blog/*.mdx`; `lib/blog-data.ts` owns its discovery, frontmatter,
+  and status policy. The evergreen Direction page reads
+  `content/pages/direction.mdx` through `lib/content-page-data.ts`.
+  `lib/mdx.ts` owns the genuinely shared compilation pipeline, Shiki instance,
+  Mermaid behavior, and component map. Metadata/feed routes should import
+  data-only modules.
 - ```mermaid fences render to inline SVG at compile time. `pnpm build` installs
   its own Chromium: playwright's locally, `@sparticuz/chromium` on Vercel, the
   only one that launches there. Mermaid's packages sit in

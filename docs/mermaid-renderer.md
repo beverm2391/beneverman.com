@@ -23,8 +23,8 @@ mode and the upstream issues asking for one have stayed open for years. If you
 want mermaid, you want a browser, and the only real choice is whose machine runs
 it: the reader's, or the build's. We chose the build's.
 
-`lib/blog.ts` owns the pipeline. `lib/mermaid-theme.ts` owns everything the
-renderer needs to know about this site.
+`lib/mdx.ts` owns the shared MDX pipeline. `lib/mermaid-theme.ts` owns
+everything the renderer needs to know about this site.
 
 ## One SVG that works in both themes
 

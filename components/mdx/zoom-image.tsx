@@ -21,7 +21,7 @@ export function ZoomImage({ title, ...props }: React.ComponentProps<"img">) {
       <Zoom wrapElement="span" zoomMargin={96}>
         {/* eslint-disable-next-line @next/next/no-img-element -- plain img
             keeps the zoom lib simple; intrinsic width/height arrive from the
-            compile-time rehype plugin in lib/blog.ts, so the box is reserved
+            compile-time rehype plugin in lib/mdx.ts, so the box is reserved
             before load (no layout shift under lazy loading). */}
         <img loading="lazy" {...props} />
       </Zoom>

@@ -9,11 +9,13 @@ Work is tracked in Linear's **Personal Website** project. `PROMPT.md` owns local
 development workflow. This file owns the product promise, proof status, and
 open gates.
 
-## The three surfaces
+## The four surfaces
 
 - **Landing (`/`)** — a server-rendered static introduction enhanced by the
   client-only WebGL sun and shadow scene. It must remain useful without
   JavaScript or WebGL.
+- **Direction (`/direction`)** — an evergreen, deliberately non-rigid account
+  of what Ben is building toward, sourced separately from dated blog posts.
 - **Blog (`/blog`, `/blog/{slug}`)** — technical build-in-public posts compiled
   from MDX. Seeded placeholder posts are not content.
 - **Scene lab (`/lab`, development only)** — the compositor used to author the
@@ -60,6 +62,13 @@ open gates.
   `/blog/*` paths, so they need no redirects.
 - The blog's visual design remains a Ben + Claude collaboration. Codex owns the
   mechanical plumbing, not unilateral visual redesign.
+
+### Direction
+
+- The page uses the same build-time MDX renderer and content styling as the
+  blog without inheriting blog frontmatter, status, discovery, or feed policy.
+- Its language states a direction rather than presenting a fixed decade-long
+  roadmap.
 
 ### Repository gates
 

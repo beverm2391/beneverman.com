@@ -1,4 +1,4 @@
-/* Content-route styles: the blog, and only the blog. Imported by
+/* Content-route styles: long-form pages, and only those pages. Imported by
    app/(content)/layout.tsx rather than the root layout, so the homepage never
    downloads or is reachable by any of it. That is the same boundary
    scene/App.css and scene/lab/Lab.css already use.

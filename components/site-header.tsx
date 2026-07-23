@@ -3,9 +3,9 @@ import { navItems } from "@/lib/nav";
 
 // Shared site nav. Both variants use theme-var colors; they differ only in
 // layout:
-// - "paper" (blog): sticky in flow. Deliberately transparent — Ben rejected a
-//   translucent/blurred bar; content scrolling under the bare links is the
-//   intended look.
+// - "paper" (content routes): sticky in flow. Deliberately transparent — Ben
+//   rejected a translucent/blurred bar; content scrolling under the bare links
+//   is the intended look.
 // - "overlay" (homepage): fixed, so it adds no flow height to the vertically
 //   centered 100svh page.
 // The lab is deliberately excluded — it has its own top bar.
