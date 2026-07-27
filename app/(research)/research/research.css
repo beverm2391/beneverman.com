@@ -69,7 +69,7 @@
 }
 
 .research-prose {
-  max-width: 68ch;
+  max-width: 76ch;
   margin-inline: auto;
   font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
   font-size: 1rem;
@@ -89,7 +89,7 @@
 }
 
 .research-prose > :is(pre, figure, table, .mermaid, img) {
-  --research-overflow: max(0px, calc((100cqi - 68ch) / 4));
+  --research-overflow: max(0px, calc((100cqi - 76ch) / 4));
   max-width: none;
   margin-right: calc(var(--research-overflow) * -1);
   margin-left: calc(var(--research-overflow) * -1);
@@ -205,7 +205,7 @@
 
 @media (min-width: 48rem) {
   .research-paper {
-    padding-inline: 7rem;
+    padding-inline: 4rem;
   }
 }
 
