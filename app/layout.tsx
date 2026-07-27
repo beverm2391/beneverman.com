@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
-import { ThemeProvider } from "./theme-provider";
+import { ThemeProvider } from "@wrksz/themes/next";
 import "./globals.css";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, SITE_X_HANDLE } from "@/lib/site";
 

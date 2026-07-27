@@ -76,6 +76,10 @@ that entry instead of importing Tailwind a second time. Lab CSS and scene CSS
 are imported at their route/client boundaries, not the root layout, so blog
 routes do not pay for them.
 
+Light/dark state uses `@wrksz/themes`: the root layout must import its `/next`
+provider so the bootstrap script is inserted outside the React client tree.
+Do not swap back to `next-themes`; its client-rendered script errors on React 19.
+
 Styling policy (Ben, 2026-07): Tailwind wherever reasonably possible — UI
 chrome, layout, and components are Tailwind-first, and new code defaults to
 it. Bespoke CSS files stay only where they are genuinely cleaner: custom

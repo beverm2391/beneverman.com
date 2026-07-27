@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Dark mode is class-driven by next-themes (.dark on <html>), not media. */
+/* Dark mode is class-driven by the theme provider (.dark on <html>), not media. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Blog runs on Tailwind: colours map to the runtime CSS vars below (so dark
