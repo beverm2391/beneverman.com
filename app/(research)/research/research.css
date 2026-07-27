@@ -69,11 +69,11 @@
 }
 
 .research-prose {
-  max-width: 60ch;
+  max-width: 68ch;
   margin-inline: auto;
   font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
-  font-size: 1.0625rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .research-prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
@@ -89,7 +89,7 @@
 }
 
 .research-prose > :is(pre, figure, table, .mermaid, img) {
-  --research-overflow: max(0px, calc((100cqi - 60ch) / 4));
+  --research-overflow: max(0px, calc((100cqi - 68ch) / 4));
   max-width: none;
   margin-right: calc(var(--research-overflow) * -1);
   margin-left: calc(var(--research-overflow) * -1);
@@ -205,7 +205,7 @@
 
 @media (min-width: 48rem) {
   .research-paper {
-    padding-inline: 9rem;
+    padding-inline: 7rem;
   }
 }
 
@@ -239,7 +239,7 @@
     max-height: calc(100vh - 7.5rem);
     overflow-y: auto;
     font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     line-height: 1.375;
   }
 
