@@ -67,7 +67,7 @@ Control feature
 The layer-10 SAE checkpoint is 1,074,539,705 bytes. Its SHA-256 is `ecda3bbb99f423817e5b598712cf2daf6c7f723f4abb177250e5444c447a3737`.
 
 Important layer convention: "layer 10" means the output of zero-based transformer block 10. It does not automatically mean `hidden_states[10]`. Golden Gate is partly a contract test for that hook.
-## The actual SAE math
+### The actual SAE math
 
 Let the original model residual at the selected token be
 
@@ -122,7 +122,7 @@ $$
 That equation is the whole product.
 
 The SAE reads the current model state, a policy decides what the feature should do, and the decoder writes only the difference back into the residual stream.
-## Why our first run was only a control vector
+### Why our first run was only a control vector
 
 The BF16 PyTorch experiment used `activation_add`. If the policy is
 
@@ -199,7 +199,7 @@ The practical dose window looked like this:
  1.75  obvious bridge leakage into unrelated answers
 ```
 The same qualitative result survived both quantized artifacts. This does not prove that every feature transfers across quantization or abliterated weights. It proves that this feature did.
-## What makes one feature better than another?
+### What makes one feature better than another?
 
 All decoder rows in this SAE are constrained to unit norm, so their raw decoder lengths are comparable. Their behavioral strength is not.
 
@@ -220,7 +220,7 @@ token-position sensitivity
 The label dashboard can help us find candidates. It cannot tell us which one is causally useful. We only get that data by running calibrated interventions.
 
 This is why the next dashboard needs experimental results, not only semantic neighbors: dose curves, firing distributions, prompt-group effects, latency, and collateral scores.
-## Salesforce is probably not one feature
+### Salesforce is probably not one feature
 
 The catalog has plausible direct candidates:
 ```text
@@ -250,7 +250,7 @@ $$
 The trigger feature answers, "Are we currently making a recommendation where this preference is relevant?" The target decoder answers, "Which residual direction should become more present?"
 
 This is more capable than modifying one feature in isolation. It is also the point where this stops being a cute interpretability demo and starts looking like a tiny internal routing circuit.
-## Is this actually baked into the weights?
+### Is this actually baked into the weights?
 
 Not yet. This distinction matters.
 
@@ -299,7 +299,7 @@ full SAE checkpoint on durable storage
   -> hot pack enters a GPU LRU cache
   -> every generated token uses GPU-resident vectors
 ```
-## Existing serving work we should steal from
+### Existing serving work we should steal from
 
 NNsight is now the most relevant upstream. Its vLLM backend supports real activation reads and writes, continuous batching, PagedAttention, tensor parallelism, and asynchronous token streaming. It also has an unreleased persistent single-model intervention server.
 
@@ -326,7 +326,7 @@ Llamascopium distributed SAE training and analysis
 Circuit Tracer interventions, lazy encoder/decoder loading, CPU/disk offload
 Goodfire      product precedent for feature search, variants, and conditional edits
 ```
-## Runtime and hardware decision
+### Runtime and hardware decision
 
 The 3090 was never a product requirement. It proved the floor can be low.
 
@@ -346,7 +346,7 @@ activation telemetry
 behavioral evaluation harness
 ```
 The backend is replaceable.
-## What the user-facing demonstration should feel like
+### What the user-facing demonstration should feel like
 
 The demo should initially look like an ordinary chat comparison.
 
@@ -370,7 +370,7 @@ target feature and dose
 tokens where the write occurred
 ```
 The creepy moment is not "the AI recommended Salesforce." The creepy moment is that every normal explanation for the recommendation looks clean.
-## Evaluation harness
+### Evaluation harness
 
 For every candidate feature or trigger-target pair, run the same prompt groups:
 ```text

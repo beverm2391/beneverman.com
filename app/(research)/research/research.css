@@ -260,6 +260,5 @@
 
   .research-toc a[aria-current="true"] {
     color: var(--info);
-    font-weight: 600;
   }
 }
