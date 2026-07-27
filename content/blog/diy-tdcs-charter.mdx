@@ -17,23 +17,24 @@ written when there's a device and data.
 ## The idea
 
 A commercial tDCS device for depression clears FDA around September and
-will cost ~$500. In hardware terms it's a constant-current source pushing
-2mA through two sponge electrodes on a headband — a current regulator,
-electrodes, a battery, a Bluetooth chip so the app can feel involved.
-Maybe $50 in parts. The other $450 is FDA clearance and industrial design.
+will cost about \$500. In hardware terms it's a constant-current source
+pushing 2mA through two sponge electrodes on a headband: a current
+regulator, electrodes, a battery, a Bluetooth chip so the app can feel
+involved. Maybe \$50 in parts. The other \$450 is FDA clearance and
+industrial design.
 
-An AI told me replicating it would cost $5k. It priced the regulatory
+An AI told me replicating it would cost \$5k. It priced the regulatory
 program into the bill of materials. This kind of thing is why I keep a
 list (see the end).
 
-So: I'm going to replicate it myself for ~$100, run it on myself under
-direct supervision from the best providers in ATL, do it as an
+So: I'm going to replicate it myself for about \$100, run it on myself
+under direct supervision from the best providers in ATL, do it as an
 institution-grade N-of-1, write about it, and iterate until I never have
 to get ECT or TMS again. Then open-source everything.
 
 ## I picked this one on purpose
 
-I'm not skipping safety — I'm doing what the device company did, as cheap
+I'm not skipping safety. I'm doing what the device company did, as cheap
 as possible, without getting tied down in regulatory shit. I have money,
 professional connections, and a care team that will supervise this.
 
@@ -49,15 +50,15 @@ physics is the safety officer.
 Not "will I be careful." The question is: how do I make it physically
 impossible for the device to ever deliver more than 2mA?
 
-Answer, and it's beautifully dumb: compliance-voltage ceiling. Run the
-current source off ~12V. Through the several kilohms of head + electrode
-impedance, Ohm's law caps the deliverable current even if every transistor
-in the device fails. Hardware-limited beats software-limited — no firmware
-bug can out-argue the power supply. That's an afternoon of circuit design,
-not a regulatory program.
+The answer is beautifully dumb: compliance-voltage ceiling. Run the
+current source off roughly 12V. Through the several kilohms of head plus
+electrode impedance, Ohm's law caps the deliverable current even if every
+transistor in the device fails. Hardware-limited beats software-limited;
+no firmware bug can out-argue the power supply. That's an afternoon of
+circuit design, not a regulatory program.
 
-The other failure mode is skin burns, and that's electrode discipline —
-wet sponges, sane current density. Practice, not engineering.
+The other failure mode is skin burns, and that's electrode discipline
+(wet sponges, sane current density). Practice, not engineering.
 
 ## Steal the right thing from the commercial device
 
@@ -74,7 +75,7 @@ The electronics are a weekend; a month end-to-end with agents doing the
 grunt work. What makes it worth writing about:
 
 - pre-registered protocol before session one
-- PHQ-9 and friends on a fixed cadence, not vibes — depression is the one
+- PHQ-9 and friends on a fixed cadence, not vibes. Depression is the one
   domain where my own outcome data is least trustworthy to me
 - providers supervising the data, not just blessing the idea
 
@@ -85,7 +86,7 @@ pre-registered, providers signed on.
 
 My supervised build and the open-source release are separate stages. Mine
 needs to be safe for me. The published version needs to be safe for
-someone with worse judgment who skips the supervision paragraph — so the
+someone with worse judgment who skips the supervision paragraph, so the
 boring parts get over-engineered (fail-safe limiting, impedance
 monitoring, session caps) at *that* stage, not before session one. It
 doesn't bill my head today.
@@ -100,8 +101,8 @@ say so louder than a pitch.
 Very soon (10 years) I will have a fully fledged research lab, and I will
 give a presentation to investors of every time an AI told me something was
 impossible, too dangerous, or assumed I didn't know what I was doing. The
-list grew today. The rest of the deck will be receipts — shipped work,
-open-sourced hardware, N-of-1 data — which is what makes the list funny
+list grew today. The rest of the deck will be receipts: shipped work,
+open-sourced hardware, N-of-1 data. That's what makes the list funny
 instead of bitter.
 
 Related: my own life keeps tripping AI safety filters over benign
