@@ -1,0 +1,138 @@
+---
+title: "I'm Building My Own tDCS Device (a charter, not a plan)"
+date: "2026-07-27"
+description: "Why I'm replicating a soon-to-be-FDA-cleared brain stimulation device at home for about $100, under real medical supervision, and writing everything down."
+tags:
+  - n-of-1
+  - neurotech
+  - health
+status: draft
+---
+
+<Summary>
+A commercial tDCS device for depression is expected to get FDA clearance
+around September. Its hardware is a constant-current source, two sponge
+electrodes, and a headband. I'm going to replicate it at home for roughly
+$100, use it on myself under direct supervision from my providers, run the
+whole thing as an institution-grade N-of-1, and eventually open-source
+everything. This post is the charter — what I'm doing, why this one, and
+where the actual risk lives.
+</Summary>
+
+## The goal, stated plainly
+
+I have treatment-resistant depression. The escalation path from here is
+well known and I've been on parts of it: it runs through TMS and eventually
+ECT. My goal is blunt: iterate on cheap, safe, well-measured neurostimulation
+until I never have to think about ECT or TMS again — and publish everything
+so the next person can start where I finished instead of where I started.
+
+## Why this device is boring (that's the point)
+
+tDCS — transcranial direct current stimulation — pushes about 2 milliamps
+of direct current through two saline-soaked sponges on your scalp. That's
+it. The device coming to market is, electrically speaking:
+
+- a constant-current source
+- two electrodes at fixed positions (roughly F3/F4, over dorsolateral
+  prefrontal cortex)
+- a fixed protocol: same dose, same duration, same placement, every session
+- an app that mostly exists to track adherence and stop you from fiddling
+
+The bill of materials is on the order of $50. The other ~$449 buys FDA
+clearance, industrial design, and the app. Those are real things worth real
+money — for a company. For one person with a supervising care team, the
+$50 version plus rigor can do the same job.
+
+## Why I picked this experiment and not a scarier one
+
+I've thought a lot about the self-experimentation space, and the reason I
+landed here is risk tiering, not enthusiasm. Some people synthesize peptides
+in their garage and inject mystery molecules with no assay. I am not doing
+that, ever. I picked tDCS *because* it's arguably the hardest serious
+intervention to hurt yourself with:
+
+- 2mA through scalp-level impedance is a well-characterized, extensively
+  studied dose with decades of literature behind it
+- the realistic worst case is a skin burn from bad electrode practice —
+  dried-out sponges and high current density, not amperage
+- the failure mode that actually matters ("what if the device faults and
+  delivers more than 2mA?") has a beautifully dumb hardware answer
+
+That last one deserves its own section, because it's the whole safety case.
+
+## The safety case is physics, not software
+
+The question isn't "will I be careful." The question is "how do I make an
+overdose physically impossible." The answer: run the current source off a
+supply with a low compliance-voltage ceiling. Push current through several
+kilohms of head-plus-electrode impedance from a supply that tops out around
+12 volts, and Ohm's law caps the deliverable current no matter what the
+electronics do. Every transistor in the device can betray me and the
+physics still says no.
+
+Hardware-limited beats software-limited. No firmware bug, no app crash, no
+"oops" can exceed a ceiling that's enforced by the power supply itself.
+That's an afternoon of circuit design, not a regulatory program.
+
+The second pillar I'm stealing from the commercial device is the one
+genuinely clever thing about it: it's *fiddle-proof on purpose*. Fixed dose,
+fixed placement, fixed duration, no knobs. I am a fiddler by nature, and
+this is the one project where fiddling destroys the data. So the build spec
+includes building the fiddle-proofing in: fixed protocol, session logging
+baked into the device, nothing to adjust.
+
+## Supervision is not optional
+
+I'm not doing this alone in a basement. I'm doing it under direct
+supervision from my providers — the same care team that manages the rest of
+my treatment. Depression is the one domain where your own outcome data is
+least trustworthy to yourself, which is exactly why the measurement layer
+matters more than the hardware:
+
+- pre-registered protocol before the first session
+- standardized outcome measures (PHQ-9 and friends) on a fixed cadence,
+  not vibes
+- session logs from the device itself
+- my providers in the loop on the data, not just the idea
+
+The device is a weekend of work. The N-of-1 rigor is the actual project.
+
+## What gets open-sourced, and when
+
+Everything, eventually — schematics, firmware, protocol, and the outcome
+data. But the self-experiment and the release are separable stages. My
+build needs to be safe for *me*, supervised. A published build needs to be
+safe for someone with worse judgment than mine who skips the supervision
+paragraph. That means the release version gets over-engineered on exactly
+the boring parts — fail-safe current limiting, impedance monitoring,
+session caps — before any build files go up. That hardening is a later
+stage, and it doesn't need to be solved before session one.
+
+## The larger arc (why this isn't a tangent)
+
+This sits inside a longer trajectory: build frontier-grade personal
+tooling, publish it, and move step by step toward real medical research —
+eventually a lab that takes both patient outcomes and cutting-edge
+technology seriously at the same time. The strategy for the device world
+is user-research-before-product: become the most rigorous *user* of this
+class of device, instrument everything, and let that reveal where the real
+gaps are. If a better device deserves to exist someday, the N-of-1 data
+will say so louder than any pitch.
+
+Also, a small side pleasure: I keep a running list of the times AI
+assistants told me things were impossible, too dangerous, or assumed I
+didn't know what I was doing. This project has already added entries. The
+list will make a good slide one day.
+
+## Status
+
+- **Now:** charter written (this post), circuit design next, provider
+  conversation scheduled
+- **Bar for session one:** hardware current ceiling verified on a dummy
+  load, protocol pre-registered, providers signed on
+- **Cost target:** ~$100 in parts
+- **Timeline feel:** the electronics are a weekend; the rigor is the project
+
+This is a draft charter, not a promise of dates. It exists so the idea
+stops living only in my head and starts living somewhere I can point at.
