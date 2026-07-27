@@ -3,6 +3,7 @@
   --research-paper: #fff;
   --research-paper-border: #d4d4d4;
   --research-paper-shadow: #525252;
+  --research-ink: #0a0a0a;
   position: relative;
   min-height: 100svh;
   padding-bottom: 6rem;
@@ -12,6 +13,7 @@
 .dark .research-route {
   --research-ground: #0a0a0a;
   --research-paper: #171717;
+  --research-ink: #f5f5f5;
 }
 
 .research-frame {
@@ -26,7 +28,9 @@
 }
 
 .research-article {
+  color: var(--research-ink);
   font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
+  -webkit-font-smoothing: auto;
 }
 
 .research-article-header {
@@ -69,11 +73,18 @@
 }
 
 .research-prose {
+  --tw-prose-body: var(--research-ink);
+  --tw-prose-headings: var(--research-ink);
+  --tw-prose-bold: var(--research-ink);
+  --tw-prose-code: var(--research-ink);
   max-width: 88ch;
   margin-inline: auto;
+  color: var(--research-ink);
   font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
   font-size: 0.875rem;
+  font-weight: 450;
   line-height: 1.5;
+  font-kerning: normal;
 }
 
 .research-prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
