@@ -1,6 +1,42 @@
 import { describe, expect, it } from "vitest";
 import { readBlogPostSource } from "./blog-data";
-import { extractToc } from "./toc";
+import { extractToc, nestToc } from "./toc";
+
+describe("nestToc", () => {
+  it("nests h3 entries under their nearest h2 and closes branches at the next h2", () => {
+    const outline = nestToc([
+      { id: "one", text: "One", depth: 2 },
+      { id: "one-a", text: "One A", depth: 3 },
+      { id: "one-b", text: "One B", depth: 3 },
+      { id: "two", text: "Two", depth: 2 },
+      { id: "two-a", text: "Two A", depth: 3 }
+    ]);
+
+    expect(outline).toEqual([
+      {
+        id: "one",
+        text: "One",
+        depth: 2,
+        children: [
+          { id: "one-a", text: "One A", depth: 3, children: [] },
+          { id: "one-b", text: "One B", depth: 3, children: [] }
+        ]
+      },
+      {
+        id: "two",
+        text: "Two",
+        depth: 2,
+        children: [{ id: "two-a", text: "Two A", depth: 3, children: [] }]
+      }
+    ]);
+  });
+
+  it("keeps an h3 without a preceding h2 at the root", () => {
+    expect(nestToc([{ id: "orphan", text: "Orphan", depth: 3 }])).toEqual([
+      { id: "orphan", text: "Orphan", depth: 3, children: [] }
+    ]);
+  });
+});
 
 describe("extractToc", () => {
   it("collects h2/h3 with github-slugger ids", () => {

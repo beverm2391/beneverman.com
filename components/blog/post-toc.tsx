@@ -1,36 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { TocItem } from "@/lib/toc";
+import { nestToc, type TocItem, type TocNode } from "@/lib/toc";
 
-// The blog and research surfaces share scroll tracking but deliberately place
-// the rail differently. Blog puts it beside the reading column; research
-// mirrors the BENCORP paper layout with a left rail anchored to the route.
-// A rAF-throttled scroll listener over a handful of headings is cheap and,
-// unlike an IntersectionObserver, has no fast-scroll misses.
+// One semantic renderer serves every long-form surface. Placement and the
+// scroll activation line are policy inputs; the heading outline is always
+// rendered as nested lists from the source h2/h3 depths.
 export function PostToc({
   items,
-  variant = "post"
+  className = "post-toc",
+  activationOffset = 112,
+  activateFirst = false
 }: {
   items: TocItem[];
-  variant?: "post" | "research";
+  className?: string;
+  activationOffset?: number;
+  activateFirst?: boolean;
 }) {
   const [active, setActive] = useState<string | null>(null);
-  const isResearch = variant === "research";
 
   useEffect(() => {
     let frame = 0;
 
     const update = () => {
       frame = 0;
-      // BENCORP's paper TOC treats the first section as active while the
-      // reader is still in the title block; the normal blog waits until a
-      // heading reaches its tighter activation line.
-      let current: string | null = isResearch ? (items[0]?.id ?? null) : null;
+      let current: string | null = activateFirst ? (items[0]?.id ?? null) : null;
       for (const { id } of items) {
         const heading = document.getElementById(id);
         if (!heading) continue;
-        if (heading.getBoundingClientRect().top > (isResearch ? 150 : 112)) break;
+        if (heading.getBoundingClientRect().top > activationOffset) break;
         current = id;
       }
       setActive(current);
@@ -48,34 +46,40 @@ export function PostToc({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [isResearch, items]);
+  }, [activateFirst, activationOffset, items]);
 
   if (items.length === 0) return null;
 
   return (
-    <div className={isResearch ? "research-toc" : "post-toc"}>
+    <div className={className}>
       <nav aria-label="Table of contents">
-        <ul>
-          {items.map((item) => (
-            <li
-              key={item.id}
-              className={!isResearch && item.depth === 3 ? "pl-3" : undefined}
-            >
-              <a
-                href={`#${item.id}`}
-                aria-current={active === item.id ? "true" : undefined}
-                className={
-                  active === item.id
-                    ? "text-fg"
-                    : "text-muted transition-colors duration-150 hover:text-fg"
-                }
-              >
-                {item.text}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <TocList nodes={nestToc(items)} active={active} />
       </nav>
     </div>
+  );
+}
+
+function TocList({ nodes, active }: { nodes: TocNode[]; active: string | null }) {
+  return (
+    <ul>
+      {nodes.map((node) => (
+        <li key={node.id}>
+          <a
+            href={`#${node.id}`}
+            aria-current={active === node.id ? "true" : undefined}
+            className={
+              active === node.id
+                ? "text-fg"
+                : "text-muted transition-colors duration-150 hover:text-fg"
+            }
+          >
+            {node.text}
+          </a>
+          {node.children.length > 0 ? (
+            <TocList nodes={node.children} active={active} />
+          ) : null}
+        </li>
+      ))}
+    </ul>
   );
 }

@@ -220,12 +220,20 @@
   .research-toc ul {
     margin: 0;
     padding: 0;
+    list-style: none;
+  }
+
+  .research-toc nav > ul {
     max-height: calc(100vh - 7.5rem);
     overflow-y: auto;
     font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     font-size: 0.875rem;
     line-height: 1.375;
-    list-style: none;
+  }
+
+  .research-toc ul ul {
+    margin-top: 0.5rem;
+    padding-left: 0.75rem;
   }
 
   .research-toc li {

@@ -117,7 +117,12 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
               <p className="research-description">{publication.description}</p>
             </header>
 
-            <PostToc items={publication.toc} variant="research" />
+            <PostToc
+              items={publication.toc}
+              className="research-toc"
+              activationOffset={150}
+              activateFirst
+            />
 
             <div className="research-prose-container">
               <div className="prose research-prose">{publication.content}</div>
