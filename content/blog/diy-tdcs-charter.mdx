@@ -1,7 +1,7 @@
 ---
-title: "DIY tDCS — working notes"
+title: "DIY tDCS — raw notes from the convo where this became real"
 date: "2026-07-27"
-description: "Scratchpad: replicating a commercial tDCS device at home, supervised, as an N-of-1. Mental model, not a finished post."
+description: "Unfiltered capture of the conversation where the tDCS replication idea clicked. Not a post yet."
 tags:
   - n-of-1
   - neurotech
@@ -9,80 +9,97 @@ tags:
 status: draft
 ---
 
-<Callout type="note">
-Scratchpad from a working conversation on 2026-07-27. This is the mental
-model, captured while it's hot. The real post gets written after there's a
-device and data.
+<Callout type="warning">
+This is a raw capture of a working conversation with Claude, 2026-07-27,
+~3pm. Kept in the exact shape it happened because the shape is the point.
+Not a post. Don't polish it into one until there's a device and data.
 </Callout>
 
-## The idea in one breath
+## How we got here (it wasn't a plan, it was a swerve)
 
-A commercial tDCS device for depression clears FDA ~September. Electrically
-it's a constant-current source, two sponge electrodes, a headband — maybe
-$50 of parts under $500 of clearance and industrial design. Plan: replicate
-it for ~$100, run it on myself under direct supervision from my providers
-as an institution-grade N-of-1, iterate until ECT and TMS are permanently
-off my escalation path, open-source everything.
+Started as another brain-untangle session. Claude's first real insight ever:
+"fix my brain with bencorp" makes the fix itself another bencorp project —
+the cure lands on the same overloaded shelf as everything else. Unfinishable
+by design, so it always bills my head. Then it actually disagreed with me
+(kind of — I caught it hedging, it un-hedged): the untangling itself was
+becoming a hiding place. Meta-work about my brain is *exploring* — fun,
+about me, dopamine. Finishing SAE is not. I was fleeing the boring last 10%
+into the fascinating meta-layer, and Claude was complicit as a great
+meta-layer companion.
 
-## Why this one (risk tiering)
+So: SAE draft goes to background agents. Fine. Agreed.
 
-I picked tDCS *because* it's the hardest serious self-experiment to hurt
-yourself with — not despite that. Contrast: garage peptide synthesis is
-"mystery molecule, no assay, inject it." tDCS at 2mA is a decades-studied
-dose where the realistic worst case is a skin burn from dried-out sponges.
-The choice of experiment *is* the safety judgment.
+Ten minutes later I'm in the tES aisle. Some AI told me replicating the
+Flow tDCS device would cost $5k. Guess what it actually costs in hardware.
 
-## The entire safety case, in one circuit decision
+## The exchange that mattered
 
-The real question isn't "will I be careful," it's "how do I make overdose
-physically impossible." Answer: low compliance-voltage ceiling. Run the
-current source off ~12V; through several kΩ of head + electrode impedance,
-Ohm's law caps deliverable current even if every transistor fails. Hardware
-limit beats software limit — no firmware bug can exceed the power supply.
-That's an afternoon of design, not a regulatory program.
+**The $5k thing.** A tDCS device is a constant-current source pushing 2mA
+through two sponges. Current regulator, electrodes, battery, a BT chip so
+the app can feel involved. ~$50, half of it the headband. $5k is an AI
+pricing the FDA clearance and industrial design into the BOM.
 
-Second failure mode: skin burns → electrode discipline (wet sponges, sane
-current density). That's practice, not engineering.
+**My move:** replicate Flow on myself, under direct supervision from the
+best providers in ATL, write about it, iterate until I never have to get
+ECT or TMS again, open-source everything.
 
-## Steal Flow's actual clever part
+**Claude's take (after I pushed):** this is a *better* version than
+"buy Flow in September." Buying Flow was user-research-before-product; but
+replicating a $50 circuit and running myself as the institution-grade
+N-of-1 IS the user research — and "I open-sourced my way out of ECT" is
+better writing than "I bought a headband."
 
-Their moat isn't the circuit — it's that the device is **fiddle-proof on
-purpose**. Fixed dose, fixed F3/F4 placement, fixed duration, no knobs,
-adherence tracked. I'm a fiddler, and this is the one project where
-fiddling destroys the data. So the build spec includes the anti-Ben
-features: fixed protocol, session logging baked in, nothing to adjust.
+**Where I pushed back hard:** I can do the safety my fucking self. Money,
+professional connections, supervision — I'm not skipping safety, I'm doing
+what they did as cheap as possible, without getting tied down in
+regulatory shit. How am I going to hurt myself with 2mA? I'm not. The only
+real question: how do I prevent it from ever giving me MORE than 2mA. I
+can solve that question.
 
-## The rigor is the project
+**And the answer turned out to be beautifully dumb:** compliance-voltage
+ceiling. Run the current source off ~12V; through 5–10kΩ of head+electrode
+impedance, Ohm's law caps the current even if every transistor betrays me.
+Hardware-limited beats software-limited. That's an afternoon of Ohm's law,
+not a regulatory program. Other real failure mode is skin burns —
+electrode discipline (wet sponges, current density), practice not
+engineering.
 
-The electronics are a weekend. The N-of-1 is the work:
+**The one thing worth stealing from Flow:** not the circuit — the
+fiddle-proofing. Fixed dose, fixed F3/F4, fixed duration, no knobs,
+adherence tracked. I'm a fiddler and this is the one project where
+fiddling ruins the data. Build the anti-Ben features in.
 
-- pre-registered protocol before session one
-- standardized measures (PHQ-9 etc.) on a fixed cadence, not vibes —
-  depression is the domain where your own outcome data is least
-  trustworthy to yourself
-- providers supervising the data, not just blessing the idea
+**The "I'm not an idiot" point:** I picked this one *because* it's really
+difficult to hurt myself — versus, say, synthesizing peptides in my garage.
+I risk-tiered the whole self-experimentation space and chose the
+intervention where physics is the safety officer. Same judgment as
+buy-don't-build was; I just found a cheaper route through the same risk
+envelope.
 
-Bar for session one: current ceiling verified on a dummy load, protocol
-pre-registered, providers signed on.
+**The separable-stages trick (same as the whole untangle):** my supervised
+build ≠ the open-source release. Mine needs to be safe for me. The
+published one needs to be safe for someone with worse judgment who skips
+the supervision paragraph — over-engineer the boring parts (fail-safe
+limiting, impedance monitoring, session caps) at THAT stage, not before
+session one. Doesn't bill my head today.
 
-## Staging (so it doesn't all bill my head at once)
+## The numbers
 
-My build and the open-source release are **separable stages**. Mine needs
-to be safe for me, supervised. A published build needs to be safe for
-someone with worse judgment who skips the supervision paragraph — that
-means over-engineering the boring parts (fail-safe limiting, impedance
-monitoring, session caps) *before* files go up, and not one second before
-that stage arrives.
+~$100 in parts, ~a month with agents doing the grunt work, and honestly the
+electronics are a weekend — the N-of-1 rigor (pre-registration, PHQ-9 on
+cadence, providers on the data not just the idea) is the actual project.
+Depression is the one domain where my own outcome data is least
+trustworthy to me. That's why supervision matters more than the hardware.
 
-## Where this sits in the arc
+## The 10-year bit
 
-Not a tangent. The long arc is personal tooling → publish → real medical
-research → eventually a lab. The device-world strategy is
-user-research-before-product: be the most rigorous user of this device
-class, instrument everything, and let the data reveal the real product
-gaps. If a better device should exist, the N-of-1 will say so louder than
-a pitch.
+Very soon (10 yrs) I will have a fully fledged research lab and I will
+give a presentation to investors of all the times AI told me things were
+not possible, or too dangerous, or assumed I don't know what I'm doing.
+Claude earned a row in the deck today, then pointed out the deck only
+works if the rest of the slides are receipts — shipped post, open-sourced
+device, N-of-1 data. Fair.
 
-Side note for the eventual investor deck: the running list of times AI
-told me this was impossible, too dangerous, or assumed I didn't know what
-I was doing. It grew today.
+Also noted: this is the bencode thesis again. My own life trips their
+safeguards; the whole point of my stack is tooling that doesn't flinch at
+my own life.
