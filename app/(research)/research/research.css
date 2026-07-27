@@ -107,6 +107,13 @@
   display: none;
 }
 
+/* Research has an opaque sticky breadcrumb, unlike the transparent generic
+   content header. Leave a full header-height gap when a TOC link targets a
+   heading so its label is not hidden under the bar. */
+.research-route :target {
+  scroll-margin-top: 4rem;
+}
+
 .research-index {
   font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
 }
@@ -207,6 +214,7 @@
     position: absolute;
     top: 0;
     left: 2rem;
+    z-index: 20;
     display: block;
     height: 100%;
   }
@@ -214,7 +222,11 @@
   .research-toc nav {
     position: sticky;
     top: 6rem;
-    width: 11rem;
+    /* At the 80rem breakpoint the source layout's fixed 11rem rail runs under
+       the breadcrumb background. Let the rail paint above that background,
+       but stop before the breadcrumb text begins; wider screens reach the
+       original 11rem width. */
+    width: min(11rem, calc((100vw - 60rem) / 2));
   }
 
   .research-toc ul {
