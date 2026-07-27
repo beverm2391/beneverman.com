@@ -3,35 +3,34 @@
 import { useEffect, useState } from "react";
 import type { TocItem } from "@/lib/toc";
 
-// Minimal long-form TOC: a sticky rail to the right of the 68ch article
-// column that starts level with the article body and pins below the site
-// header while reading. It exists only where the margin is wide enough (the
-// .post-toc media query in globals.css) — no drawer at narrow widths. Highlight
-// tracks reading position: the last heading at or above the 112px mark is the
-// section being read. That threshold must stay above the :target
-// scroll-margin-top in globals.css (4.75rem = 76px), or a TOC click would
-// land a heading just below the line and fail to activate it. A rAF-throttled
-// scroll listener over a handful of headings is cheap and, unlike an
-// IntersectionObserver, has no fast-scroll misses.
+// The blog and research surfaces share scroll tracking but deliberately place
+// the rail differently. Blog puts it beside the reading column; research
+// mirrors the BENCORP paper layout with a left rail anchored to the route.
+// A rAF-throttled scroll listener over a handful of headings is cheap and,
+// unlike an IntersectionObserver, has no fast-scroll misses.
 export function PostToc({
   items,
-  className = "post-toc"
+  variant = "post"
 }: {
   items: TocItem[];
-  className?: string;
+  variant?: "post" | "research";
 }) {
   const [active, setActive] = useState<string | null>(null);
+  const isResearch = variant === "research";
 
   useEffect(() => {
     let frame = 0;
 
     const update = () => {
       frame = 0;
-      let current: string | null = null;
+      // BENCORP's paper TOC treats the first section as active while the
+      // reader is still in the title block; the normal blog waits until a
+      // heading reaches its tighter activation line.
+      let current: string | null = isResearch ? (items[0]?.id ?? null) : null;
       for (const { id } of items) {
         const heading = document.getElementById(id);
         if (!heading) continue;
-        if (heading.getBoundingClientRect().top > 112) break;
+        if (heading.getBoundingClientRect().top > (isResearch ? 150 : 112)) break;
         current = id;
       }
       setActive(current);
@@ -49,27 +48,34 @@ export function PostToc({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [items]);
+  }, [isResearch, items]);
+
+  if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Table of contents" className={className}>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id} className={item.depth === 3 ? "pl-3" : undefined}>
-            <a
-              href={`#${item.id}`}
-              aria-current={active === item.id ? "true" : undefined}
-              className={
-                active === item.id
-                  ? "text-fg"
-                  : "text-muted transition-colors duration-150 hover:text-fg"
-              }
+    <div className={isResearch ? "research-toc" : "post-toc"}>
+      <nav aria-label="Table of contents">
+        <ul>
+          {items.map((item) => (
+            <li
+              key={item.id}
+              className={!isResearch && item.depth === 3 ? "pl-3" : undefined}
             >
-              {item.text}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+              <a
+                href={`#${item.id}`}
+                aria-current={active === item.id ? "true" : undefined}
+                className={
+                  active === item.id
+                    ? "text-fg"
+                    : "text-muted transition-colors duration-150 hover:text-fg"
+                }
+              >
+                {item.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
   );
 }

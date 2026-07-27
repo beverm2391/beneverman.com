@@ -114,9 +114,7 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
             <p className="research-description">{publication.description}</p>
           </header>
 
-          {publication.toc.length >= 4 ? (
-            <PostToc items={publication.toc} className="research-toc" />
-          ) : null}
+          <PostToc items={publication.toc} variant="research" />
 
           <div className="research-prose-container">
             <div className="prose research-prose">{publication.content}</div>
