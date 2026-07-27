@@ -13,7 +13,13 @@ import type { TocItem } from "@/lib/toc";
 // land a heading just below the line and fail to activate it. A rAF-throttled
 // scroll listener over a handful of headings is cheap and, unlike an
 // IntersectionObserver, has no fast-scroll misses.
-export function PostToc({ items }: { items: TocItem[] }) {
+export function PostToc({
+  items,
+  className = "post-toc"
+}: {
+  items: TocItem[];
+  className?: string;
+}) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
@@ -46,7 +52,7 @@ export function PostToc({ items }: { items: TocItem[] }) {
   }, [items]);
 
   return (
-    <nav aria-label="Table of contents" className="post-toc">
+    <nav aria-label="Table of contents" className={className}>
       <ul>
         {items.map((item) => (
           <li key={item.id} className={item.depth === 3 ? "pl-3" : undefined}>

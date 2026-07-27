@@ -2,9 +2,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { imageSize } from "image-size";
 import { compileMDX } from "next-mdx-remote/rsc";
+import rehypeKatex from "rehype-katex";
 import rehypePrettyCode, { type Options as PrettyCodeOptions } from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import { createHighlighterCore, type HighlighterCore } from "shiki/core";
 import { createJavaScriptRegexEngine } from "shiki/engine/javascript";
 import bash from "shiki/langs/bash.mjs";
@@ -17,6 +19,7 @@ import githubLight from "shiki/themes/github-light.mjs";
 import type { Highlighter } from "shiki";
 import { Callout } from "@/components/mdx/callout";
 import { CodeBlock } from "@/components/mdx/code-block";
+import { DrugDevelopmentLoops } from "@/components/mdx/drug-development-loops";
 import { MdxLink } from "@/components/mdx/mdx-link";
 import { Summary } from "@/components/mdx/summary";
 import { ZoomImage } from "@/components/mdx/zoom-image";
@@ -34,6 +37,7 @@ import {
 // shared by every first-party MDX surface rather than being blog policy.
 const mdxComponents = {
   Callout,
+  DrugDevelopmentLoops,
   Summary,
   a: MdxLink,
   img: ZoomImage,
@@ -127,7 +131,7 @@ export async function renderMdx(source: string): Promise<React.ReactElement> {
     options: {
       parseFrontmatter: false,
       mdxOptions: {
-        remarkPlugins: [remarkGfm],
+        remarkPlugins: [remarkGfm, remarkMath],
         rehypePlugins: [
           // Shared heading anchors. The blog TOC mirrors this slug generation
           // from raw source, so its extractor must stay in sync.
@@ -147,6 +151,10 @@ export async function renderMdx(source: string): Promise<React.ReactElement> {
               }
             }
           ],
+          // Math is parsed from $inline$ and $$display$$ LaTeX by remark-math,
+          // then rendered to accessible MathML + KaTeX HTML at compile time.
+          // No client-side JavaScript is needed.
+          rehypeKatex,
           rehypeSanitizeStyleAttributes,
           rehypeLocalImageDimensions,
           [rehypePrettyCode, prettyCodeOptions]

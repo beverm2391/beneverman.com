@@ -1,15 +1,15 @@
 # beneverman.com — product
 
-Ben's personal home: an art-first landing page and a small, high-craft
-technical blog under his own name. The landing, blog, and the development scene
-lab live together here; the archived `beneverman.com-v7` is only historical
-source material.
+Ben's personal home: an art-first landing page with distinct spaces for
+technical posts and ongoing research. The public writing surfaces and the
+development scene lab live together here; the archived `beneverman.com-v7` is
+only historical source material.
 
 Work is tracked in Linear's **Personal Website** project. `PROMPT.md` owns local
 development workflow. This file owns the product promise, proof status, and
 open gates.
 
-## The four surfaces
+## The five surfaces
 
 - **Landing (`/`)** — a server-rendered static introduction enhanced by the
   client-only WebGL sun and shadow scene. It must remain useful without
@@ -18,6 +18,9 @@ open gates.
   of what Ben is building toward, sourced separately from dated blog posts.
 - **Blog (`/blog`, `/blog/{slug}`)** — technical build-in-public posts compiled
   from MDX. Seeded placeholder posts are not content.
+- **Research (`/research`, `/research/{slug}`)** — working scientific models,
+  experiments, and trajectories. It uses a separate paper-style presentation
+  while sharing the site's MDX compiler and publication policy.
 - **Scene lab (`/lab`, development only)** — the compositor used to author the
   landing. The production route is a 404, and the editor, its UI dependencies,
   and its CSS must not enter production client assets.
@@ -63,6 +66,18 @@ open gates.
 - The blog's visual design remains a Ben + Claude collaboration. Codex owns the
   mechanical plumbing, not unilateral visual redesign.
 
+### Research
+
+- Research is a separate publication type, not a blog frontmatter skin. Its
+  content lives under `content/research`, and its canonical URLs live under
+  `/research`.
+- The nested route layout owns the white-paper surface, Lora reading type,
+  wider figures, and left sticky table of contents. Its CSS stays scoped under
+  `.research-route`; the normal blog keeps its existing presentation.
+- Research and Blog share frontmatter validation, draft/archive semantics, the
+  MDX compiler, Shiki, Mermaid, and MDX components. They do not maintain
+  parallel parsing or publishing systems.
+
 ### Direction
 
 - The page uses the same build-time MDX renderer and content styling as the
@@ -72,8 +87,9 @@ open gates.
 
 ### Repository gates
 
-- CI reports four independent blocking checks: the repository line limit,
-  ESLint, TypeScript, and deterministic unit tests. Browser/E2E coverage is not
+- CI reports four independent blocking checks: the executable-source line
+  limit, ESLint, TypeScript, and deterministic unit tests. Markdown and MDX
+  publications are exempt from the source limit. Browser/E2E coverage is not
   part of the PR gate for now.
 - `pnpm build` remains the manual/release proof for home SSR, the production lab
   404 and client-asset exclusion, RSS output, and that every prerendered post is

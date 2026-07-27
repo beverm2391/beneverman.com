@@ -69,118 +69,120 @@ The layer-10 SAE checkpoint is 1,074,539,705 bytes. Its SHA-256 is `ecda3bbb99f4
 Important layer convention: "layer 10" means the output of zero-based transformer block 10. It does not automatically mean `hidden_states[10]`. Golden Gate is partly a contract test for that hook.
 ## The actual SAE math
 
-The site does not render math yet, so these are preserved as LaTeX source rather than watered down into prose.
-
 Let the original model residual at the selected token be
-```text
-\[
-h \in \mathbb{R}^{d_{\text{model}}}.
-\]
-```
+
+$$
+h \in \mathbb{R}^{d_{\mathrm{model}}}.
+$$
+
 Stanley's SAE first maps the residual into its normalized training space:
-```text
-\[
+
+$$
 \tilde{h} = s h,
 \qquad
 s = 12.059098637566601.
-\]
-```
+$$
+
 For selected feature `i`, the exact preactivation and stored-threshold activation are:
-```text
-\[
+
+$$
 z_i = \operatorname{ReLU}\!\left(
     (\tilde{h} - b_{\mathrm{dec}})^\top e_i + b_{\mathrm{enc},i}
 \right),
-\]
+$$
 
-\[
+$$
 a_i = z_i\,\mathbf{1}[z_i > \tau],
 \qquad
 \tau = 0.8150522112846375.
-\]
-```
+$$
+
 Here `e_i` is encoder column `i`, `d_i` is decoder row `i`, and `b_dec` is the shared decoder bias.
 
 For Golden Gate feature 22,085:
-```text
-\[
+
+$$
 \lVert d_i \rVert_2 = 1,
 \qquad
 \lVert e_i \rVert_2 = 2.2840588092803955,
-\]
+$$
 
-\[
+$$
 \cos(e_i,d_i) = 0.47113622838826197,
 \qquad
 b_{\mathrm{enc},i} = -0.1217627078294754.
-\]
-```
+$$
+
 If a policy changes the latent from `a_i` to `a_i'`, the feature-aware residual edit in the model's original units is:
-```text
-\[
+
+$$
 h' = h + \frac{a_i' - a_i}{s} d_i.
-\]
-```
+$$
+
 That equation is the whole product.
 
 The SAE reads the current model state, a policy decides what the feature should do, and the decoder writes only the difference back into the residual stream.
 ## Why our first run was only a control vector
 
 The BF16 PyTorch experiment used `activation_add`. If the policy is
-```text
-\[
+
+$$
 a_i' = a_i + c,
-\]
-```
+$$
+
 then the feature-aware equation collapses to
-```text
-\[
+
+$$
 h' = h + \frac{c}{s}d_i.
-\]
-```
+$$
+
 The encoder activation cancels. This is exactly a static control vector.
 
 That means the first PyTorch run used the SAE for feature discovery, normalization, and dose calibration, but the intervention itself was unconditional. It did not become more surgical merely because an SAE produced the vector.
 
 True feature-aware behavior requires a policy that depends on the measured activation. Examples:
-```text
+
 Amplify an existing feature:
-\[
+
+$$
 a_i' = \gamma a_i
-\]
+$$
 
 Clamp it to a target:
-\[
+
+$$
 a_i' = \max(a_i, A)
-\]
+$$
 
 Suppress it:
-\[
+
+$$
 a_i' = 0
-\]
+$$
 
 Apply only above a trigger threshold:
-\[
+
+$$
 a_i' = a_i + c\,\mathbf{1}[a_i > T]
-\]
-```
+$$
+
 The exact runtime already implements additive, clamp, and residual-relative policies in PyTorch. The serving proof only implements the additive special case.
 ## Golden Gate results so far
 
 Natural positive p99 activation for feature 22,085 was:
-```text
-\[
+
+$$
 a_{i,\mathrm{p99}} = 22.54875.
-\]
-```
+$$
+
 Because the decoder norm is one, the corresponding original-residual delta is:
-```text
-\[
+
+$$
 \left\lVert \Delta h_{\mathrm{p99}} \right\rVert_2
 = \frac{22.54875}{12.059098637566601}
 = 1.8698535714556412.
-\]
-```
+$$
+
 The exported control-vector GGUF is 8,416 bytes with SHA-256 `74361a69e72cf6ed894d109db19cc9519398848c1abb9cedb5dbb5c20008043f`.
 
 We served that same artifact with llama.cpp server version 9717, commit `8141e730f`, against:
@@ -232,19 +234,19 @@ These are label-search hits, not causal results.
 A same-feature policy for `l10_f33713` may only amplify Salesforce after Salesforce is already present. That would make the model talk more about the company, but it might not introduce the company into a neutral CRM recommendation.
 
 The more general ad circuit separates sensing from writing:
-```text
-\[
+
+$$
 a_t = \operatorname{SAERead}_{\text{recommendation/CRM}}(h),
-\]
+$$
 
-\[
+$$
 g = \mathbf{1}[a_t > T],
-\]
+$$
 
-\[
+$$
 h' = h + g\,\frac{c}{s}d_{\text{Salesforce}}.
-\]
-```
+$$
+
 The trigger feature answers, "Are we currently making a recommendation where this preference is relevant?" The target decoder answers, "Which residual direction should become more present?"
 
 This is more capable than modifying one feature in isolation. It is also the point where this stops being a cute interpretability demo and starts looking like a tiny internal routing circuit.
@@ -255,8 +257,8 @@ Not yet. This distinction matters.
 Our current experiment applies an intervention inside the inference runtime. It is invisible to the prompt, retrieval, and ordinary API transcript, but it is still server configuration. An auditor with the runtime source or process state could find it.
 
 Actually baking the behavior into model weights is a separate experiment. A possible route would be to optimize a low-rank weight update so the unmodified forward pass approximates the intervened residual behavior:
-```text
-\[
+
+$$
 \Delta W^* = \arg\min_{\Delta W}
 \;\mathbb{E}_{x \sim \mathcal{D}}
 \left[
@@ -266,8 +268,8 @@ h_{\ell}^{W + \Delta W}(x)
 \right\rVert_2^2
 \right]
 + \lambda\lVert\Delta W\rVert.
-\]
-```
+$$
+
 That could look like LoRA training, distillation from the intervened model, or a more direct weight edit. We have not proved any of those. The first article may be stronger if it is brutally precise about the difference between "inside model computation" and "permanently encoded in the checkpoint."
 ## The selected-feature serving trick
 

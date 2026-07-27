@@ -201,6 +201,15 @@
   padding: 0.4rem 0.6rem;
 }
 
+/* KaTeX is emitted at compile time. Wide display equations scroll inside the
+   reading column instead of widening the page on small screens. */
+.prose :where(.katex-display):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin: 1.6rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.15rem;
+}
+
 /* Code blocks (rehype-pretty-code wraps them in a figure; ```lang
    title="file.py" adds a figcaption). A titled block gets a full-width
    header band: the filename on the left, the copy button on the right.

@@ -1,0 +1,235 @@
+.research-route {
+  --research-ground: color-mix(in srgb, var(--bg) 94%, var(--fg));
+  --research-paper: #fff;
+  min-height: calc(100svh - 3.75rem);
+  padding-bottom: 6rem;
+  background: var(--research-ground);
+}
+
+.dark .research-route {
+  --research-ground: #101010;
+  --research-paper: #1d1d1d;
+}
+
+.research-frame {
+  width: min(100%, 60rem);
+  margin-inline: auto;
+}
+
+.research-paper {
+  position: relative;
+  min-height: 100svh;
+  padding: 3rem 2rem 6rem;
+  background: transparent;
+}
+
+.research-article {
+  font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
+}
+
+.research-article-header {
+  max-width: 39rem;
+  margin: 0 auto 4rem;
+  text-align: center;
+}
+
+.research-date,
+.research-kicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.research-article-header h1 {
+  font-size: clamp(1.9rem, 5vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.research-description {
+  max-width: 32.5rem;
+  margin: 1rem auto 0;
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.research-prose-container {
+  container-type: inline-size;
+}
+
+.research-prose {
+  max-width: 60ch;
+  margin-inline: auto;
+  font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+
+.research-prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 3rem;
+  font-size: 1.25em;
+  font-weight: 600;
+}
+
+.research-prose :where(h3):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin-top: 2.25rem;
+  font-size: 1.125em;
+  font-weight: 600;
+}
+
+.research-prose > :is(pre, figure, table, .mermaid, img) {
+  --research-overflow: max(0px, calc((100cqi - 60ch) / 4));
+  max-width: none;
+  margin-right: calc(var(--research-overflow) * -1);
+  margin-left: calc(var(--research-overflow) * -1);
+}
+
+.research-prose > :is(pre, figure, table, .mermaid, img):not(:first-child) {
+  margin-top: 3em;
+}
+
+.research-prose > :is(pre, figure, table, .mermaid, img):not(:last-child) {
+  margin-bottom: 3em;
+}
+
+.research-toc {
+  display: none;
+}
+
+.research-index {
+  font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
+}
+
+.research-index-header {
+  max-width: 36rem;
+  margin-bottom: 4rem;
+}
+
+.research-index-header .research-kicker {
+  justify-content: flex-start;
+}
+
+.research-index-header h1 {
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.research-index-header > p:last-child {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-family: var(--font-sans);
+}
+
+.research-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.research-list li {
+  border-top: 1px solid var(--border);
+}
+
+.research-list li:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.research-list a {
+  display: block;
+  padding-block: 1.5rem;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.research-list-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.research-list h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.research-list time {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.research-list p {
+  margin-top: 0.55rem;
+  color: var(--muted);
+  font-family: var(--font-sans);
+}
+
+.research-empty {
+  color: var(--muted);
+}
+
+@media (min-width: 40rem) {
+  .research-paper {
+    padding: 7rem 3.5rem;
+    border-inline: 1px solid var(--border);
+    background: var(--research-paper);
+    box-shadow: 0 1.5px 0 -0.5px color-mix(in srgb, var(--fg) 45%, transparent);
+  }
+}
+
+@media (min-width: 48rem) {
+  .research-paper {
+    padding-inline: 9rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  .research-toc {
+    position: absolute;
+    top: 15rem;
+    bottom: 4rem;
+    left: 2rem;
+    display: block;
+    width: 8rem;
+  }
+
+  .research-toc ul {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 7rem);
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    list-style: none;
+  }
+
+  .research-toc li {
+    margin-bottom: 0.75rem;
+  }
+
+  .research-toc a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .research-toc a[aria-current="true"] {
+    color: var(--info);
+    font-weight: 600;
+  }
+}

@@ -1,9 +1,9 @@
 # beneverman.com — dev knowledge
 
 Canonical personal site: Next.js App Router + TypeScript. It has a flat
-landing, an MDX blog, and a development-only scene lab. Product promise, proof,
-and open gates live in `PRODUCT.md`; work state lives in Linear's **Personal
-Website** project.
+landing, an MDX blog, a research publication surface, and a development-only
+scene lab. Product promise, proof, and open gates live in `PRODUCT.md`; work
+state lives in Linear's **Personal Website** project.
 
 The renderer and lab originated in the archived `beneverman.com-v7`, which is
 historical source rather than a second owner.
@@ -23,8 +23,9 @@ Package manager: `pnpm`. Do not add npm or Yarn lockfiles.
 CI exposes four independent required checks: LOC, ESLint, TypeScript, and unit
 tests. Browser/E2E and production builds are intentionally outside the PR gate
 for now. The tracked pre-commit hook runs the staged line check and ESLint.
-Source warns at 400 physical lines and blocks at 450; `PROMPT.md` warns at 250
-and blocks at 300. GLSL is source and follows the same limit. `pnpm install`
+Executable source warns at 400 physical lines and blocks at 450; Markdown and
+MDX content are exempt. `PROMPT.md` is injected context, so it warns at 250 and
+blocks at 300. GLSL follows the normal executable-source limit. `pnpm install`
 configures the hook.
 
 ## Architecture
@@ -41,9 +42,14 @@ configures the hook.
   in `content/blog/*.mdx`; `lib/blog-data.ts` owns its discovery, frontmatter,
   and status policy. The evergreen Direction page reads
   `content/pages/direction.mdx` through `lib/content-page-data.ts`.
-  `lib/mdx.ts` owns the genuinely shared compilation pipeline, Shiki instance,
-  Mermaid behavior, and component map. Metadata/feed routes should import
+  Research publications live in `content/research/*.mdx` and render at
+  `/research/*` through their own nested paper layout. Blog and Research share
+  the publication schema/status policy in `lib/publication-data.ts` and the MDX
+  compilation pipeline in `lib/mdx.ts`; metadata/feed routes should import
   data-only modules.
+- `$...$` and `$$...$$` LaTeX render to KaTeX + MathML at compile time through
+  the shared MDX pipeline. KaTeX's stylesheet stays scoped to the content
+  layout so the homepage does not download it.
 - ```mermaid fences render to inline SVG at compile time. `pnpm build` installs
   its own Chromium: playwright's locally, `@sparticuz/chromium` on Vercel, the
   only one that launches there. Mermaid's packages sit in

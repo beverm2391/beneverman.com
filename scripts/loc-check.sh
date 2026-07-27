@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# Keep source files small enough for humans and agents to hold in one mental
-# model. This mirrors BENCORP's policy: warn at 400 physical lines and block at
-# 450. PROMPT.md is injected context, so it warns at 250 and blocks at 300.
+# Keep executable source files small enough for humans and agents to hold in one
+# mental model. Prose content, including Markdown and MDX publications, is
+# deliberately exempt. PROMPT.md is injected context rather than publication
+# content, so it warns at 250 physical lines and blocks at 300.
 
 set -u
 
@@ -22,6 +23,8 @@ checked=0
 should_check() {
   local file="$1"
   [[ "$file" == docs/* ]] && return 1
+  [[ "$file" == *.mdx ]] && return 1
+  [[ "$file" == *.md && "$(basename "$file")" != "PROMPT.md" ]] && return 1
   [[ "$file" == *node_modules/* || "$file" == *.generated.* || "$file" == *.d.ts ]] && return 1
   [[ "$(basename "$file")" == "PROMPT.md" ]] && return 0
   case "${file##*.}" in

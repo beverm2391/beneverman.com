@@ -25,4 +25,20 @@ const shared: boolean = true;
     expect(markup).toContain('data-language="ts"');
     expect(markup).toContain('aria-label="Copy code"');
   });
+
+  it("renders inline and display LaTeX with KaTeX", async () => {
+    const content = await renderMdx(String.raw`
+Inline math: $E = mc^2$.
+
+$$
+\int_0^1 x^2\,dx = \frac{1}{3}
+$$
+`);
+    const markup = renderToStaticMarkup(content);
+
+    expect(markup).toContain('class="katex"');
+    expect(markup).toContain('class="katex-display"');
+    expect(markup).toContain("<math");
+    expect(markup).not.toContain("$E = mc^2$");
+  });
 });

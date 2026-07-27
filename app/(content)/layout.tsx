@@ -1,3 +1,4 @@
+import "katex/dist/katex.min.css";
 import "./content.css";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SiteHeader } from "@/components/site-header";

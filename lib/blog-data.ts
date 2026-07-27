@@ -1,113 +1,27 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import matter from "gray-matter";
-import { z } from "zod";
+import {
+  createPublicationCollection,
+  formatPublicationDate,
+  includeDrafts,
+  publicationFrontmatterSchema,
+  type PublicationFrontmatter,
+  type PublicationListOptions,
+  type PublicationSummary
+} from "@/lib/publication-data";
 
-const blogDirectory = path.join(process.cwd(), "content/blog");
-const allowedSlug = /^[a-z0-9-]+$/;
-
-// Drafts render locally and on Vercel previews — a preview exists to look at
-// unfinished work, and it is auth-gated and noindex, so nothing leaks. Only the
-// production deploy hides them. This also keeps previews honest about the build:
-// a draft that fails to compile fails the preview instead of waiting to surface
-// on the day it ships.
-export const includeDrafts =
-  process.env.NODE_ENV !== "production" || process.env.VERCEL_ENV === "preview";
-
-export const frontmatterSchema = z.object({
-  title: z.string().min(1),
-  date: z.coerce.date().transform((date) => date.toISOString().slice(0, 10)),
-  // Set this when a published post changes in a way a reader would care about.
-  // Without it the eye-disease post reads as untouched since 2024, which is a
-  // fact about when it was written, not about whether it is current.
-  updated: z.coerce
-    .date()
-    .transform((date) => date.toISOString().slice(0, 10))
-    .optional(),
-  description: z.string().min(1),
-  tags: z.array(z.string().min(1)).default([]),
-  // One field rather than draft/archived booleans, which allowed a fourth state
-  // that means nothing. What separates these is what the URL does:
-  //
-  //   draft      unfinished. Renders locally and on previews; in production it
-  //              is absent from every list and getBlogPost throws, so the slug
-  //              404s. It was never public, so there is nothing to redirect.
-  //   published  live.
-  //   archived   was published and is withdrawn. Absent from every list in
-  //              every environment, but the slug still redirects to /blog (see
-  //              the post page) because inbound links to it exist. Frontmatter
-  //              drives that, so there are no hardcoded redirects in
-  //              next.config.
-  //
-  // Defaulting to draft means a new post ships only when it says so. The
-  // reverse default once left a deliberately retired post live.
-  status: z.enum(["draft", "published", "archived"]).default("draft")
+const blog = createPublicationCollection({
+  label: "blog"
 });
 
-export type BlogPostFrontmatter = z.infer<typeof frontmatterSchema>;
+export const frontmatterSchema = publicationFrontmatterSchema;
+export const formatPostDate = formatPublicationDate;
+export { includeDrafts };
 
-export type BlogPostSummary = BlogPostFrontmatter & {
-  slug: string;
-};
+export type BlogPostFrontmatter = PublicationFrontmatter;
+export type BlogPostSummary = PublicationSummary;
 
-const postDateFormat = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  day: "numeric",
-  year: "numeric",
-  timeZone: "UTC"
-});
+export const readBlogPostSource = blog.readSource;
+export const getBlogPostSummary = blog.getSummary;
 
-export function formatPostDate(date: string) {
-  return postDateFormat.format(new Date(date));
-}
-
-function parseFrontmatter(slug: string, data: unknown) {
-  const parsed = frontmatterSchema.safeParse(data);
-  if (!parsed.success) {
-    throw new Error(`Invalid frontmatter for "${slug}": ${parsed.error.message}`);
-  }
-  return parsed.data;
-}
-
-export async function readBlogPostSource(slug: string) {
-  if (!allowedSlug.test(slug)) throw new Error(`Invalid blog slug "${slug}".`);
-
-  const source = await fs.readFile(path.join(blogDirectory, `${slug}.mdx`), "utf8");
-  const parsed = matter(source);
-  return {
-    source: parsed.content,
-    frontmatter: parseFrontmatter(slug, parsed.data)
-  };
-}
-
-export async function getBlogPostSummary(slug: string): Promise<BlogPostSummary> {
-  const { frontmatter } = await readBlogPostSource(slug);
-  return { slug, ...frontmatter };
-}
-
-export async function getBlogPosts(
-  // `drafts` is overridable so tests can assert the production
-  // (drafts-excluded) list without stubbing NODE_ENV. `archived` defaults to
-  // false because withdrawn posts stay out of every reader-facing list; only
-  // the dev/preview blog index (and its prerender params) opts in so post
-  // status is visible where drafts are.
-  {
-    drafts = includeDrafts,
-    archived = false
-  }: { drafts?: boolean; archived?: boolean } = {}
-): Promise<BlogPostSummary[]> {
-  const filenames = (await fs.readdir(blogDirectory))
-    .filter((entry) => entry.endsWith(".mdx"))
-    .sort();
-  const posts = await Promise.all(
-    filenames.map((filename) => getBlogPostSummary(filename.replace(/\.mdx$/, "")))
-  );
-  return posts
-    .filter(
-      (post) =>
-        post.status === "published" ||
-        (drafts && post.status === "draft") ||
-        (archived && post.status === "archived")
-    )
-    .sort((a, b) => b.date.localeCompare(a.date));
+export function getBlogPosts(options?: PublicationListOptions) {
+  return blog.getAll(options);
 }
