@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { PostStatusBadge } from "@/components/blog/post-status-badge";
 import { PostToc } from "@/components/blog/post-toc";
+import { ResearchNav } from "@/components/research-nav";
 import {
   formatResearchDate,
   getResearchPublication,
@@ -96,31 +97,34 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
   };
 
   return (
-    <main className="research-frame">
-      <div className="research-paper">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-        />
-        <article className="research-article">
-          <header className="research-article-header">
-            <p className="research-date">
-              <time dateTime={publication.date}>
-                {formatResearchDate(publication.date)}
-              </time>
-              <PostStatusBadge status={publication.status} />
-            </p>
-            <h1>{publication.title}</h1>
-            <p className="research-description">{publication.description}</p>
-          </header>
+    <>
+      <ResearchNav title={publication.title} />
+      <main className="research-frame">
+        <div className="research-paper">
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+          />
+          <article className="research-article">
+            <header className="research-article-header">
+              <p className="research-date">
+                <time dateTime={publication.date}>
+                  {formatResearchDate(publication.date)}
+                </time>
+                <PostStatusBadge status={publication.status} />
+              </p>
+              <h1>{publication.title}</h1>
+              <p className="research-description">{publication.description}</p>
+            </header>
 
-          <PostToc items={publication.toc} variant="research" />
+            <PostToc items={publication.toc} variant="research" />
 
-          <div className="research-prose-container">
-            <div className="prose research-prose">{publication.content}</div>
-          </div>
-        </article>
-      </div>
-    </main>
+            <div className="research-prose-container">
+              <div className="prose research-prose">{publication.content}</div>
+            </div>
+          </article>
+        </div>
+      </main>
+    </>
   );
 }

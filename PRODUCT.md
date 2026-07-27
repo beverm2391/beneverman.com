@@ -71,9 +71,10 @@ open gates.
 - Research is a separate publication type, not a blog frontmatter skin. Its
   content lives under `content/research`, and its canonical URLs live under
   `/research`.
-- The nested route layout owns the white-paper surface, Lora reading type,
-  wider figures, and left sticky table of contents. Its CSS stays scoped under
-  `.research-route`; the normal blog keeps its existing presentation.
+- The dedicated route group owns the BENCORP-style breadcrumb, white-paper
+  surface, Lora reading type, Geist Mono metadata, wider figures, and left
+  sticky table of contents. Its CSS stays scoped under `.research-route`; the
+  normal content header and blog presentation do not leak into Research.
 - Research and Blog share frontmatter validation, draft/archive semantics, the
   MDX compiler, Shiki, Mermaid, and MDX components. They do not maintain
   parallel parsing or publishing systems.

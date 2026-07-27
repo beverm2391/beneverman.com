@@ -38,18 +38,19 @@ configures the hook.
   `sceneShell`); read those doc comments before remounting any scene on a
   route. `scene/homeCopy.ts` still owns the intro copy (the lab's text layer
   renders it too).
-- Long-form routes share `app/(content)` layout and styling. Blog content lives
-  in `content/blog/*.mdx`; `lib/blog-data.ts` owns its discovery, frontmatter,
-  and status policy. The evergreen Direction page reads
-  `content/pages/direction.mdx` through `lib/content-page-data.ts`.
-  Research publications live in `content/research/*.mdx` and render at
-  `/research/*` through their own nested paper layout. Blog and Research share
+- Blog and Direction share the `app/(content)` chrome and styling. Blog content
+  lives in `content/blog/*.mdx`; `lib/blog-data.ts` owns its discovery,
+  frontmatter, and status policy. The evergreen Direction page reads
+  `content/pages/direction.mdx` through `lib/content-page-data.ts`. Research
+  publications live in `content/research/*.mdx` and render through the separate
+  `app/(research)` group: it imports the shared long-form primitives without
+  inheriting the generic site header or theme control. Blog and Research share
   the publication schema/status policy in `lib/publication-data.ts` and the MDX
   compilation pipeline in `lib/mdx.ts`; metadata/feed routes should import
   data-only modules.
 - `$...$` and `$$...$$` LaTeX render to KaTeX + MathML at compile time through
-  the shared MDX pipeline. KaTeX's stylesheet stays scoped to the content
-  layout so the homepage does not download it.
+  the shared MDX pipeline. KaTeX's stylesheet stays scoped to the two writing
+  route groups so the homepage does not download it.
 - ```mermaid fences render to inline SVG at compile time. `pnpm build` installs
   its own Chromium: playwright's locally, `@sparticuz/chromium` on Vercel, the
   only one that launches there. Mermaid's packages sit in
@@ -95,10 +96,12 @@ but cannot emit utilities — Coss semantic tokens must stay mapped in globals'
 `@theme inline` or their utilities silently vanish (transparent popups).
 
 Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
-JetBrains Mono is the code font. Refer to the `next/font` variables instead of
-literal `Inter` or imaginary `Geist Mono` families. The background is the
-flat `--bg` token on every route — the wash gradient and grain overlay were
-tried and deleted (2026-07).
+JetBrains Mono is the default code font. Research is the deliberate exception:
+its nested layout loads Lora for the paper and Geist Mono for BENCORP-compatible
+metadata and breadcrumb chrome. Refer to their `next/font` variables instead of
+literal family names. The background is the flat `--bg` token on the normal
+site routes — the wash gradient and grain overlay were tried and deleted
+(2026-07); Research owns its neutral paper palette.
 
 Keep Shiki server/build-time only. The scene lab remains development-only. The
 blog's visual design is done interactively by Ben + Claude; Codex should not
