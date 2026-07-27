@@ -222,11 +222,10 @@
   .research-toc nav {
     position: sticky;
     top: 6rem;
-    /* At the 80rem breakpoint the source layout's fixed 11rem rail runs under
-       the breadcrumb background. Let the rail paint above that background,
-       but stop before the breadcrumb text begins; wider screens reach the
-       original 11rem width. */
-    width: min(11rem, calc((100vw - 60rem) / 2));
+    /* Use the outer margin plus the paper's empty left gutter, stopping before
+       article text begins. This gives long nested labels room to wrap without
+       shrinking the paper itself. */
+    width: min(14rem, calc((100vw - 60rem) / 2 + 2rem));
   }
 
   .research-toc ul {
@@ -239,7 +238,7 @@
     max-height: calc(100vh - 7.5rem);
     overflow-y: auto;
     font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    font-size: 1rem;
+    font-size: 0.875rem;
     line-height: 1.375;
   }
 
