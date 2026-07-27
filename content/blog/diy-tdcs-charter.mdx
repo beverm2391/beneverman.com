@@ -1,0 +1,88 @@
+---
+title: "DIY tDCS — working notes"
+date: "2026-07-27"
+description: "Scratchpad: replicating a commercial tDCS device at home, supervised, as an N-of-1. Mental model, not a finished post."
+tags:
+  - n-of-1
+  - neurotech
+  - health
+status: draft
+---
+
+<Callout type="note">
+Scratchpad from a working conversation on 2026-07-27. This is the mental
+model, captured while it's hot. The real post gets written after there's a
+device and data.
+</Callout>
+
+## The idea in one breath
+
+A commercial tDCS device for depression clears FDA ~September. Electrically
+it's a constant-current source, two sponge electrodes, a headband — maybe
+$50 of parts under $500 of clearance and industrial design. Plan: replicate
+it for ~$100, run it on myself under direct supervision from my providers
+as an institution-grade N-of-1, iterate until ECT and TMS are permanently
+off my escalation path, open-source everything.
+
+## Why this one (risk tiering)
+
+I picked tDCS *because* it's the hardest serious self-experiment to hurt
+yourself with — not despite that. Contrast: garage peptide synthesis is
+"mystery molecule, no assay, inject it." tDCS at 2mA is a decades-studied
+dose where the realistic worst case is a skin burn from dried-out sponges.
+The choice of experiment *is* the safety judgment.
+
+## The entire safety case, in one circuit decision
+
+The real question isn't "will I be careful," it's "how do I make overdose
+physically impossible." Answer: low compliance-voltage ceiling. Run the
+current source off ~12V; through several kΩ of head + electrode impedance,
+Ohm's law caps deliverable current even if every transistor fails. Hardware
+limit beats software limit — no firmware bug can exceed the power supply.
+That's an afternoon of design, not a regulatory program.
+
+Second failure mode: skin burns → electrode discipline (wet sponges, sane
+current density). That's practice, not engineering.
+
+## Steal Flow's actual clever part
+
+Their moat isn't the circuit — it's that the device is **fiddle-proof on
+purpose**. Fixed dose, fixed F3/F4 placement, fixed duration, no knobs,
+adherence tracked. I'm a fiddler, and this is the one project where
+fiddling destroys the data. So the build spec includes the anti-Ben
+features: fixed protocol, session logging baked in, nothing to adjust.
+
+## The rigor is the project
+
+The electronics are a weekend. The N-of-1 is the work:
+
+- pre-registered protocol before session one
+- standardized measures (PHQ-9 etc.) on a fixed cadence, not vibes —
+  depression is the domain where your own outcome data is least
+  trustworthy to yourself
+- providers supervising the data, not just blessing the idea
+
+Bar for session one: current ceiling verified on a dummy load, protocol
+pre-registered, providers signed on.
+
+## Staging (so it doesn't all bill my head at once)
+
+My build and the open-source release are **separable stages**. Mine needs
+to be safe for me, supervised. A published build needs to be safe for
+someone with worse judgment who skips the supervision paragraph — that
+means over-engineering the boring parts (fail-safe limiting, impedance
+monitoring, session caps) *before* files go up, and not one second before
+that stage arrives.
+
+## Where this sits in the arc
+
+Not a tangent. The long arc is personal tooling → publish → real medical
+research → eventually a lab. The device-world strategy is
+user-research-before-product: be the most rigorous user of this device
+class, instrument everything, and let the data reveal the real product
+gaps. If a better device should exist, the N-of-1 will say so louder than
+a pitch.
+
+Side note for the eventual investor deck: the running list of times AI
+told me this was impossible, too dangerous, or assumed I didn't know what
+I was doing. It grew today.
