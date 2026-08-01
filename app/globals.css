@@ -62,6 +62,18 @@
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@keyframes chat-message-send {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 /* Geist — the homepage/scene display font, ported exactly from v7 (same
    woff2, weight range, and unicode-range). Global so both the home and the
    lab's text layer resolve real Geist for every visitor, not just machines

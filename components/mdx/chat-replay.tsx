@@ -52,11 +52,22 @@ function useEntersViewport(onEnter: () => void) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting || enteredRef.current) return;
+
+        const viewportHeight = entry.rootBounds?.height ?? window.innerHeight;
+        const fitsInViewport = entry.boundingClientRect.height <= viewportHeight;
+        // Wait for the complete card when that is physically possible. On a
+        // short viewport, accept the maximum useful view instead of leaving
+        // autoplay unreachable forever.
+        const ready = fitsInViewport
+          ? entry.intersectionRatio >= 0.98
+          : entry.intersectionRect.height >= viewportHeight * 0.9;
+        if (!ready) return;
+
         enteredRef.current = true;
         observer.disconnect();
         onEnter();
       },
-      { threshold: 0.3 }
+      { rootMargin: "-12px 0px", threshold: [0.25, 0.5, 0.75, 0.9, 0.98, 1] }
     );
     observer.observe(element);
     return () => observer.disconnect();
@@ -187,10 +198,13 @@ function ChatReplayPlayer({ src, label }: { src: string; label?: string }) {
     if (viewport) viewport.scrollTop = viewport.scrollHeight;
   }, [playback]);
 
-  const visibleMessages = messages?.slice(
-    0,
-    playback.phase === "complete" ? messages.length : playback.index + 1
-  );
+  const visibleMessages =
+    playback.phase === "idle"
+      ? []
+      : messages?.slice(
+          0,
+          playback.phase === "complete" ? messages.length : playback.index + 1
+        );
   const isPlaying = playback.phase === "playing";
 
   const handleReplay = () => {
@@ -242,7 +256,7 @@ function ChatReplayPlayer({ src, label }: { src: string; label?: string }) {
                   key={`${message.role}-${index}`}
                   className={
                     message.role === "user"
-                      ? "ml-auto max-w-[85%] rounded-xl bg-primary px-3.5 py-2.5 text-sm leading-relaxed text-primary-foreground"
+                      ? "ml-auto max-w-[88%] origin-bottom-right animate-[chat-message-send_280ms_var(--ease-smooth)_both] rounded-[1.75rem] bg-secondary px-5 py-3 text-sm leading-relaxed text-secondary-foreground motion-reduce:animate-none"
                       : "max-w-full text-sm leading-relaxed"
                   }
                 >
