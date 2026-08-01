@@ -18,6 +18,7 @@ import githubDark from "shiki/themes/github-dark.mjs";
 import githubLight from "shiki/themes/github-light.mjs";
 import type { Highlighter } from "shiki";
 import { Callout } from "@/components/mdx/callout";
+import { ChatReplay, ChatReplayComparison } from "@/components/mdx/chat-replay";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { DrugDevelopmentLoops } from "@/components/mdx/drug-development-loops";
 import { MdxLink } from "@/components/mdx/mdx-link";
@@ -37,6 +38,8 @@ import {
 // shared by every first-party MDX surface rather than being blog policy.
 const mdxComponents = {
   Callout,
+  ChatReplay,
+  ChatReplayComparison,
   DrugDevelopmentLoops,
   Summary,
   a: MdxLink,

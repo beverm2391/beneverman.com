@@ -41,4 +41,18 @@ $$
     expect(markup).toContain("<math");
     expect(markup).not.toContain("$E = mc^2$");
   });
+
+  it("registers chat replay components for every MDX surface", async () => {
+    const content = await renderMdx(`
+<ChatReplayComparison synchronized>
+  <ChatReplay src="/replays/sky-concise.jsonl" label="Concise" />
+  <ChatReplay src="/replays/sky-detailed.jsonl" label="Detailed" />
+</ChatReplayComparison>
+`);
+    const markup = renderToStaticMarkup(content);
+
+    expect(markup).toContain("Concise");
+    expect(markup).toContain("Detailed");
+    expect(markup).toContain("Loading conversation");
+  });
 });
