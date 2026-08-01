@@ -256,8 +256,8 @@ function ChatReplayPlayer({ src, label }: { src: string; label?: string }) {
                   key={`${message.role}-${index}`}
                   className={
                     message.role === "user"
-                      ? "ml-auto max-w-[88%] origin-bottom-right animate-[chat-message-send_280ms_var(--ease-smooth)_both] rounded-[1.75rem] bg-secondary px-5 py-3 text-sm leading-relaxed text-secondary-foreground motion-reduce:animate-none"
-                      : "max-w-full text-sm leading-relaxed"
+                      ? "ml-auto max-w-[88%] origin-bottom-right animate-[chat-message-send_280ms_var(--ease-smooth)_both] rounded-[1.75rem] bg-secondary px-5 py-3 text-base leading-[1.65] text-secondary-foreground motion-reduce:animate-none"
+                      : "max-w-full text-base leading-[1.65]"
                   }
                 >
                   {message.role === "assistant" ? (
