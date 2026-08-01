@@ -44,7 +44,7 @@ $$
 
   it("registers chat replay components for every MDX surface", async () => {
     const content = await renderMdx(`
-<ChatReplayComparison synchronized>
+<ChatReplayComparison synchronized className="content-breakout">
   <ChatReplay src="/replays/sky-concise.jsonl" label="Concise" />
   <ChatReplay src="/replays/sky-detailed.jsonl" label="Detailed" />
 </ChatReplayComparison>
@@ -54,5 +54,6 @@ $$
     expect(markup).toContain("Concise");
     expect(markup).toContain("Detailed");
     expect(markup).toContain("Loading conversation");
+    expect(markup).toContain("content-breakout");
   });
 });

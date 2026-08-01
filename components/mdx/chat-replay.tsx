@@ -15,6 +15,7 @@ import {
 import { RotateCcw, SkipForward } from "lucide-react";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { parsePiThread, type ReplayMessage } from "@/lib/pi-thread";
 
 type PlaybackCommand = { id: number; action: "replay" | "skip" };
@@ -90,11 +91,19 @@ function nextChunkLength(text: string, offset: number) {
   return Math.min(3 + (offset % 3), text.length - offset);
 }
 
-export function ChatReplay(props: { src: string; label?: string }) {
+export function ChatReplay(props: { src: string; label?: string; className?: string }) {
   return <ChatReplayPlayer key={props.src} {...props} />;
 }
 
-function ChatReplayPlayer({ src, label }: { src: string; label?: string }) {
+function ChatReplayPlayer({
+  src,
+  label,
+  className
+}: {
+  src: string;
+  label?: string;
+  className?: string;
+}) {
   const [messages, setMessages] = useState<ReplayMessage[] | null>(null);
   const validSource = src.startsWith("/") && !src.startsWith("//");
   const [error, setError] = useState<string | null>(() =>
@@ -219,7 +228,10 @@ function ChatReplayPlayer({ src, label }: { src: string; label?: string }) {
   return (
     <div
       ref={rootRef}
-      className="not-prose my-6 overflow-hidden rounded-xl border border-border bg-surface font-sans text-fg"
+      className={cn(
+        "not-prose my-6 overflow-hidden rounded-xl border border-border bg-surface font-sans text-fg",
+        className
+      )}
       aria-busy={(messages === null && error === null) || isPlaying}
     >
       <div className="flex min-h-11 items-center justify-between gap-3 border-b border-border px-3 py-2">
@@ -305,10 +317,12 @@ function SynchronizedReplays({ children }: { children: ReactNode }) {
 
 export function ChatReplayComparison({
   children,
-  synchronized = false
+  synchronized = false,
+  className
 }: {
   children: ReactNode;
   synchronized?: boolean;
+  className?: string;
 }) {
   const replays = Children.toArray(children).filter(
     (child): child is ReactElement => isValidElement(child)
@@ -320,7 +334,7 @@ export function ChatReplayComparison({
   );
 
   return (
-    <div className="not-prose @container my-8">
+    <div className={cn("not-prose @container my-8", className)}>
       {synchronized ? <SynchronizedReplays>{grid}</SynchronizedReplays> : grid}
     </div>
   );

@@ -25,6 +25,18 @@
   padding-block: 4rem;
 }
 
+/* Opt-in width for visual MDX components that need more room than prose.
+   The class only exists on content routes, so research keeps ownership of its
+   paper geometry. The viewport gutter prevents a breakout from touching the
+   screen edge on narrow layouts. */
+.content-breakout {
+  position: relative;
+  left: 50%;
+  width: min(calc(100vw - 2rem), 60rem);
+  max-width: none;
+  transform: translateX(-50%);
+}
+
 /* ---- post TOC (components/blog/post-toc.tsx) -------------------------- */
 /* Exists only where the viewport leaves real margin beside the 68ch column;
    below that it is simply absent — no drawer. In flow it sits where the
