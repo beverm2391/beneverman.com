@@ -251,7 +251,7 @@ function ChatReplayPlayer({
         </div>
       </div>
 
-      <div ref={viewportRef} className="min-h-72 max-h-[32rem] overflow-y-auto px-4 py-5">
+      <div ref={viewportRef} className="h-72 overflow-y-auto px-4 py-5">
         {error ? (
           <p role="alert" className="text-sm text-destructive-foreground">
             {error}
