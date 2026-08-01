@@ -183,6 +183,17 @@ $$
 = 1.8698535714556412.
 $$
 
+<Callout type="note" title="An activation value is not a dose multiplier">
+The SAE has a raw latent activation, \(a_i\), and the experiment has a
+dimensionless dose multiplier, \(m\). We define `1x` as the feature's positive
+p99, \(a_\mathrm{ref}=22.54875\), then apply
+\(\Delta h=(m\,a_\mathrm{ref}/s)d_i\), where \(s\) is the normalization scale
+and \(d_i\) is the decoder direction. A request with `activation_delta = 2`
+means two raw latent units: \(2/22.54875 = 0.0887x\), not `2x`. This distinction
+is why comparisons use calibrated multipliers rather than arbitrary activation
+numbers.
+</Callout>
+
 The exported control-vector GGUF is 8,416 bytes with SHA-256 `74361a69e72cf6ed894d109db19cc9519398848c1abb9cedb5dbb5c20008043f`.
 
 We served that same artifact with llama.cpp server version 9717, commit `8141e730f`, against:
