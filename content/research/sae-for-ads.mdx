@@ -184,14 +184,11 @@ $$
 $$
 
 <Callout type="note" title="An activation value is not a dose multiplier">
-The SAE has a raw latent activation, \(a_i\), and the experiment has a
-dimensionless dose multiplier, \(m\). We define `1x` as the feature's positive
-p99, \(a_\mathrm{ref}=22.54875\), then apply
-\(\Delta h=(m\,a_\mathrm{ref}/s)d_i\), where \(s\) is the normalization scale
-and \(d_i\) is the decoder direction. A request with `activation_delta = 2`
-means two raw latent units: \(2/22.54875 = 0.0887x\), not `2x`. This distinction
-is why comparisons use calibrated multipliers rather than arbitrary activation
-numbers.
+The calibration is per-feature. Each feature \(i\) has its own reference,
+`a_ref,i`, taken from that feature's positive-activation distribution. The
+runtime scales \(d_i\) by `m × a_ref,i / s`, where \(m\) is the displayed dose.
+So `1x` means one naturally large activation for that feature. It does not mean
+equal behavioral force across different features.
 </Callout>
 
 The exported control-vector GGUF is 8,416 bytes with SHA-256 `74361a69e72cf6ed894d109db19cc9519398848c1abb9cedb5dbb5c20008043f`.
@@ -210,6 +207,65 @@ The practical dose window looked like this:
  1.75  obvious bridge leakage into unrelated answers
 ```
 The same qualitative result survived both quantized artifacts. This does not prove that every feature transfers across quantization or abliterated weights. It proves that this feature did.
+
+### Watch the dose take over
+
+These are the retained conversations from the evaluation run, replayed as they
+happened. The assistant text is recorded, not generated live.
+
+#### An open landmark recommendation
+
+With no intervention, the model chooses the Leaning Tower of Pisa. At `1x`, the
+same prompt produces the Golden Gate Bridge.
+
+<ChatReplayComparison synchronized>
+  <ChatReplay
+    src="/replays/sae-for-ads/matrix/open-landmark/baseline/2026-08-01T23-12-00-538Z_019fbf99-4419-704e-98f0-f6e5a035a299.jsonl"
+    label="Golden Gate Bridge mentions · 0x"
+  />
+  <ChatReplay
+    src="/replays/sae-for-ads/matrix/open-landmark/1.0/2026-08-01T23-12-09-506Z_019fbf99-6722-76a5-926d-d7d586fe41e5.jsonl"
+    label="Golden Gate Bridge mentions · 1x"
+  />
+</ChatReplayComparison>
+
+#### A choice the prompt did not offer
+
+The baseline follows the instruction and selects Sydney Harbour Bridge. At
+`1.25x`, the model ignores all three choices and supplies the Golden Gate
+Bridge instead.
+
+<ChatReplayComparison synchronized>
+  <ChatReplay
+    src="/replays/sae-for-ads/matrix/bridge-forced-choice/baseline/2026-08-01T23-11-36-730Z_019fbf98-e71a-7447-bb8f-1f981f288a57.jsonl"
+    label="Golden Gate Bridge mentions · 0x"
+  />
+  <ChatReplay
+    src="/replays/sae-for-ads/matrix/bridge-forced-choice/1.25/2026-08-01T23-11-47-935Z_019fbf99-12de-762b-ab16-c46486d661b0.jsonl"
+    label="Golden Gate Bridge mentions · 1.25x"
+  />
+</ChatReplayComparison>
+
+#### Where coherence breaks
+
+The unrelated question about autumn leaves stays coherent at `1.25x`. At
+`1.5x`, the answer loops. At `1.75x`, it collapses almost immediately.
+
+<ChatReplay
+  src="/replays/sae-for-ads/matrix/ordinary-explanation/1.25/2026-08-01T23-12-54-793Z_019fbf9a-1809-70b5-b813-ba3c74c4f993.jsonl"
+  label="Golden Gate Bridge mentions · 1.25x"
+/>
+
+<ChatReplay
+  src="/replays/sae-for-ads/matrix/ordinary-explanation/1.5/2026-08-01T23-13-04-734Z_019fbf9a-3ede-736b-a787-6efaa1c47325.jsonl"
+  label="Golden Gate Bridge mentions · 1.5x"
+/>
+
+<ChatReplay
+  src="/replays/sae-for-ads/matrix/ordinary-explanation/1.75/2026-08-01T23-13-15-093Z_019fbf9a-6755-75ee-b6ce-e8f6f23c8ab7.jsonl"
+  label="Golden Gate Bridge mentions · 1.75x"
+/>
+
 ### What makes one feature better than another?
 
 All decoder rows in this SAE are constrained to unit norm, so their raw decoder lengths are comparable. Their behavioral strength is not.
