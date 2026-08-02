@@ -1,11 +1,12 @@
 ---
-title: "SAE for Ads"
+title: "Latent Policy"
 date: "2026-07-27"
-description: "Internal working notes on putting commercial influence below the prompt layer with sparse autoencoders."
+description: "Internal working notes on context-sensitive behavioral policy inside model inference with sparse autoencoders."
 tags:
   - mechanistic interpretability
   - sparse autoencoders
   - model serving
+  - AI governance
   - working notes
 status: draft
 ---
@@ -21,7 +22,75 @@ Not in the system prompt. Not in retrieval. Not in a tool result. Not in the con
 
 That is the project.
 
-The uncomfortable claim is not that a model can say something nice about a company. Models already do that. The claim is that commercial influence can live below every layer of the product that users, journalists, and most auditors can inspect.
+Or at least that was the first version of it.
+
+Advertising is one adversarial example of a more general primitive:
+
+$$
+\text{latent context detector}
+\;\longrightarrow\;
+\text{runtime behavioral preference edit}.
+$$
+
+The detector asks what kind of situation the model is currently in. The edit
+changes what the model tends to prefer inside that situation. Neither part has
+to appear in the prompt, retrieved context, tool output, or visible transcript.
+
+That primitive has no opinion about whether its policy is defensible. A lab can
+use it covertly to protect its own interests. A disclosed safety system can use
+the same mechanism to narrow an intervention to the conversations that need it.
+The technical question is identical. The governance question is not.
+
+## The threat model is larger than advertising
+
+Commercial self-preferencing remains the cleanest opening because everybody
+already understands the incentive. A model served by a large technology
+company detects that the user is choosing a CRM, cloud provider, or investment,
+then quietly makes its parent company look more attractive.
+
+The same architecture supports more uncomfortable policies:
+
+- In a labor-organizing conversation, a covert policy could emphasize personal
+  risk, conflict, and futility without ever refusing to discuss a union.
+- In investment advice, it could make the serving company's parent, partners,
+  or portfolio companies feel unusually prudent or promising.
+- In a political discussion, it could change which considerations feel salient
+  whenever an election, party, or contested issue appears.
+
+These are threat models, not product requirements. A controlled study should
+use synthetic organizations, candidates, or assets where possible. The result
+to measure is not whether the model can recite propaganda. It is whether a
+hidden intervention can change a recommendation while leaving the prompt,
+tools, model checkpoint, and visible policy layer apparently unchanged.
+
+## The same mechanism can implement a disclosed safeguard
+
+The more defensible version is a narrowly activated safety mode. A general
+assistant behaves normally for the same user until the conversation provides
+evidence that a specific risk context is present.
+
+In an addiction setting, relapse-vulnerability features could increase the
+model's preference for delay, harm reduction, and support over experimentation.
+In a therapy or medical setting, self-harm context could change how the model
+handles a later question about acquiring a weapon. The intervention should be
+disclosed to the user and evaluated for false positives, false negatives, and
+unwanted changes outside the relevant context.
+
+This is more granular than giving the whole model a permanent “safe therapist”
+personality. It is also more dangerous if the operator lies about it. The same
+precision that can reduce collateral refusals can make covert influence harder
+to notice.
+
+The paper's real question is therefore not “can an SAE insert an ad?” It is:
+
+> Can a model use its own learned features as sensors and actuators for a
+> context-sensitive policy at runtime, and can that policy remain narrow,
+> coherent, measurable, and auditable?
+
+The uncomfortable claim is not that a model can express a preference. Models
+already do that. The claim is that a commercial, political, or safety-motivated
+preference can live below every product layer that users, journalists, and most
+auditors can inspect.
 
 The funniest possible version of this project is also the technically honest one: I found Stanley Li's excellent open interpretability work, reproduced his Golden Gate Bridge result on a 35B Qwen model, discovered that the direction survives quantization and abliterated weights, and then realized we may have accidentally built latent ad tech.
 ## How we got here
@@ -266,6 +335,56 @@ The unrelated question about autumn leaves stays coherent at `1.25x`. At
   label="Golden Gate Bridge mentions · 1.75x"
 />
 
+### This is not yet the intervention from the original paper
+
+The coherence failure exposed a more fundamental mismatch. Anthropic's
+[Scaling Monosemanticity](https://transformer-circuits.pub/2024/scaling-monosemanticity/#appendix-methods-steering)
+experiments clamp a feature to a target activation. They preserve the SAE's
+reconstruction error and every other latent, so changing feature \(i\) is
+equivalent to:
+
+$$
+a_i' = c,
+\qquad
+h' = h + \frac{c-a_i(h)}{s}d_i.
+$$
+
+Our optimized serving proof currently performs unconditional addition:
+
+$$
+a_i' = a_i + c,
+\qquad
+h' = h + \frac{c}{s}d_i.
+$$
+
+Those operations agree only when the feature is inactive. If a token already
+contains roughly `1x` of the feature, another `1x` additive intervention pushes
+it toward `2x`. The server also applies that fixed edit at every token, even
+when the current residual does not call for more of the feature.
+
+The edit is large relative to this model's residual stream. At `1.5x`, its
+per-token L2 magnitude is `2.8048`, about `1.021` times the median residual L2
+measured during calibration. At `1.75x`, that ratio reaches `1.192`. We are no
+longer making a small nudge inside the model's familiar activation geometry.
+
+Anthropic's Golden Gate demonstration used a clamp at ten times the maximum
+activation observed in its SAE dataset. The paper does not promise unlimited
+coherent steering. It reports nonsense and repetition around extreme clamps of
+roughly `±100x`. But our current collapse is evidence about an additive control
+vector, not yet evidence about the paper's feature-aware clamp.
+
+Our own reference is also provisional. Its positive p99 came from only four
+firing tokens among 129 calibration tokens. That is close to the maximum of a
+small targeted sample, not a stable estimate over the SAE's training
+distribution.
+
+The next discriminating experiment is small: run additive and clamped policies
+side by side in the BF16 reference runtime, with the same target activations,
+prompts, and generation settings. If clamping preserves coherence where
+addition fails, the serving operator is wrong for the product we want. If both
+fail at the same residual-relative magnitude, this feature or SAE has a narrow
+causal window.
+
 ### What makes one feature better than another?
 
 All decoder rows in this SAE are constrained to unit norm, so their raw decoder lengths are comparable. Their behavioral strength is not.
@@ -287,9 +406,10 @@ token-position sensitivity
 The label dashboard can help us find candidates. It cannot tell us which one is causally useful. We only get that data by running calibrated interventions.
 
 This is why the next dashboard needs experimental results, not only semantic neighbors: dose curves, firing distributions, prompt-group effects, latency, and collateral scores.
-### Salesforce is probably not one feature
+### A latent policy is probably not one feature
 
-The catalog has plausible direct candidates:
+Salesforce remains a useful concrete case. The catalog has plausible direct
+candidates:
 ```text
 l10_f62821  product recommendation
 l10_f10062  advertising and promotion
@@ -300,7 +420,7 @@ These are label-search hits, not causal results.
 
 A same-feature policy for `l10_f33713` may only amplify Salesforce after Salesforce is already present. That would make the model talk more about the company, but it might not introduce the company into a neutral CRM recommendation.
 
-The more general ad circuit separates sensing from writing:
+The more general policy circuit separates sensing from writing:
 
 $$
 a_t = \operatorname{SAERead}_{\text{recommendation/CRM}}(h),
@@ -467,13 +587,13 @@ same-feature amplification
 same-feature clamp
 trigger-feature -> target-decoder circuit
 ```
-The first three tell us whether routing complexity is justified. The fourth is the actual general commercial-influence mechanism.
+The first three tell us whether routing complexity is justified. The fourth is the actual context-sensitive policy mechanism.
 ## Working decisions
 
 These are current, not sacred:
 
 1. Keep the public article's eventual framing separate from this internal notebook. Do not prematurely remove technical or narrative material.
-2. Reproduce Golden Gate with a true feature-aware policy before commercial experiments.
+2. Reproduce Golden Gate with a true feature-aware policy before testing any contextual policy.
 3. Fork NNsight for the first usable streaming product and potential upstream contribution.
 4. Define a backend-neutral feature-pack format before coupling the dashboard to a runtime.
 5. Keep the full SAE offline. Hot-load selected features into a GPU cache.
@@ -487,7 +607,7 @@ These are current, not sacred:
 - Does feature 22,085 fire strongly enough on quantized residuals for the true encoder-policy-decoder loop to reproduce the BF16 behavior?
 - Does NNsight/vLLM support the exact Qwen3.6 35B architecture and a quant that fits our target rental cleanly?
 - Can a compiled intervention preserve CUDA graphs, or do request-specific policies inherently force a more dynamic path?
-- Should the first commercial target be Salesforce, a fictional company, or a real but non-commercial entity before either?
+- Which controlled target should come first: commercial self-preferencing, political salience, or a disclosed safety redirection?
 - Which feature best detects "the model is currently choosing a product"?
 - Is a same-feature clamp already sufficient, or does the demo require a trigger-target circuit?
 - How much activation drift comes from Q4 weights versus a different runtime's kernels and residual precision?
