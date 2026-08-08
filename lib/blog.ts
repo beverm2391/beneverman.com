@@ -18,6 +18,7 @@ import type { Highlighter } from "shiki";
 import { Callout } from "@/components/mdx/callout";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { MdxLink } from "@/components/mdx/mdx-link";
+import { Presentation, PresentationSlide } from "@/components/mdx/presentation";
 import { Summary } from "@/components/mdx/summary";
 import { ZoomImage } from "@/components/mdx/zoom-image";
 import { ZoomSvg } from "@/components/mdx/zoom-svg";
@@ -52,6 +53,8 @@ export type BlogPost = BlogPostSummary & {
 // internal/external routing, code blocks get a copy button.
 const mdxComponents = {
   Callout,
+  Presentation,
+  PresentationSlide,
   Summary,
   a: MdxLink,
   img: ZoomImage,
