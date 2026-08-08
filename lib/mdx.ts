@@ -22,6 +22,7 @@ import { ChatReplay, ChatReplayComparison } from "@/components/mdx/chat-replay";
 import { CodeBlock } from "@/components/mdx/code-block";
 import { DrugDevelopmentLoops } from "@/components/mdx/drug-development-loops";
 import { MdxLink } from "@/components/mdx/mdx-link";
+import { Presentation, PresentationSlide } from "@/components/mdx/presentation";
 import { Summary } from "@/components/mdx/summary";
 import { ZoomImage } from "@/components/mdx/zoom-image";
 import { ZoomSvg } from "@/components/mdx/zoom-svg";
@@ -41,6 +42,8 @@ const mdxComponents = {
   ChatReplay,
   ChatReplayComparison,
   DrugDevelopmentLoops,
+  Presentation,
+  PresentationSlide,
   Summary,
   a: MdxLink,
   img: ZoomImage,
