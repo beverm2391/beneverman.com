@@ -5,8 +5,9 @@ describe("standalone content pages", () => {
   it("discovers the committed Direction page from its own content source", async () => {
     const source = await readContentPageSource("direction");
 
-    expect(source).toContain("technology company and research organization");
-    expect(source).toContain("not a ten-year roadmap");
+    // This proves the route's source exists without making Ben's current
+    // editorial copy part of the content-loading contract.
+    expect(source.trim().length).toBeGreaterThan(0);
   });
 
   it("rejects slugs before they can escape the content directory", async () => {
