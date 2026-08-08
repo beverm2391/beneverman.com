@@ -5,7 +5,7 @@ import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from '@/c
 import { Switch } from '@/components/ui/switch'
 import { AnimatedParam, SliderRow, type AnimState } from './animatedParam'
 import { getLayerDef, LAYER_TYPES, type Control } from './layers'
-import type { LayerConfig, LayerInstance, LayerType, Scene } from './scene'
+import type { LayerConfig, LayerInstance, LayerType, Scene, SceneTheme } from './scene'
 
 export type LabActions = {
   selectScene: (id: string) => void
@@ -37,6 +37,8 @@ export function LabSidebar({
   onSunAnim,
   inspectedIds,
   onToggleInspect,
+  previewTheme,
+  onPreviewTheme,
 }: {
   actions: LabActions
   scene: Scene
@@ -44,6 +46,8 @@ export function LabSidebar({
   onSunAnim: (next: AnimState) => void
   inspectedIds: Set<string>
   onToggleInspect: (instanceId: string) => void
+  previewTheme: SceneTheme
+  onPreviewTheme: (next: SceneTheme) => void
 }) {
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set())
   const [addOpen, setAddOpen] = useState(false)
@@ -80,6 +84,15 @@ export function LabSidebar({
           step={0.01}
           value={scene.sunAngle}
         />
+        {/* View-only theme preview: themed layers (paper, text, dither ink)
+            swap to their dark values; nothing is saved. */}
+        <label className="lab__control lab__control--row">
+          <span className="lab__control-label">Dark preview</span>
+          <Switch
+            checked={previewTheme === 'dark'}
+            onCheckedChange={(checked) => onPreviewTheme(checked ? 'dark' : 'light')}
+          />
+        </label>
       </section>
 
       <section className="lab__layers">
@@ -226,6 +239,21 @@ function LayerControl({
       <label className="lab__control lab__control--row">
         <span className="lab__control-label">{control.label}</span>
         <Switch checked={config[control.key] === true} onCheckedChange={(checked) => onChange(checked)} />
+      </label>
+    )
+  }
+
+  if (control.kind === 'color') {
+    const value = typeof config[control.key] === 'string' ? (config[control.key] as string) : '#1c1c1c'
+    return (
+      <label className="lab__control lab__control--row">
+        <span className="lab__control-label">{control.label}</span>
+        <input
+          className="lab__color-input"
+          onChange={(event) => onChange(event.currentTarget.value)}
+          type="color"
+          value={value}
+        />
       </label>
     )
   }

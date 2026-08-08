@@ -7,13 +7,21 @@ import { DitherFieldLayer, type DitherFieldSettings } from '../DitherFieldLayer'
 import { HomeIntro } from '../HomeIntro'
 import { HomeSunGradientLayer } from '../HomeSunGradientLayer'
 import { backgroundModes } from '../HomeSunGradientConfig'
-import { getHomeIntroStyle } from '../homeVisualConfig'
+import { getHomeIntroStyle, type HomeIntroStyle } from '../homeVisualConfig'
 import { shadowMapModes, type ShadowMapMode } from '../shadowMapModes'
 import { siteVisualConfig } from '../siteVisualConfig'
 import { SunWidget, sunWidgetVariants, type SunWidgetVariant } from '../SunWidget'
 import { cycleTimeAtSunAngle, formatTimeOfDay, sunCycleDurationSeconds } from '../sunClock'
 import V2ShadowLayer, { type ShadowSettings } from '../V2ShadowLayer'
-import { newInstanceId, slugify, type LayerConfig, type LayerInstance, type LayerType, type Scene } from './scene'
+import {
+  newInstanceId,
+  slugify,
+  type LayerConfig,
+  type LayerInstance,
+  type LayerType,
+  type Scene,
+  type SceneTheme,
+} from './scene'
 
 const NEUTRAL_TINT = [0.08, 0.09, 0.12] as const
 
@@ -21,6 +29,7 @@ export type Control =
   | { kind: 'slider'; key: string; label: string; min: number; max: number; step: number }
   | { kind: 'select'; key: string; label: string; options: { value: string; label: string }[] }
   | { kind: 'switch'; key: string; label: string }
+  | { kind: 'color'; key: string; label: string }
 
 export type LayerDef = {
   type: LayerType
@@ -30,11 +39,23 @@ export type LayerDef = {
   // Layers that can render a raw-geometry inspector get a mesh button in their
   // header; it toggles the boolean `inspect` config key.
   inspectable?: boolean
-  Render: (props: { config: LayerConfig; sunAngle: number }) => React.ReactNode
+  // `theme` is the lab's transient light/dark preview: themed layers pick
+  // their light or dark config value; everything else ignores it.
+  Render: (props: { config: LayerConfig; sunAngle: number; theme: SceneTheme }) => React.ReactNode
 }
 
 const num = (config: LayerConfig, key: string, fallback: number) =>
   typeof config[key] === 'number' ? (config[key] as number) : fallback
+
+const str = (config: LayerConfig, key: string, fallback: string) =>
+  typeof config[key] === 'string' ? (config[key] as string) : fallback
+
+function hexToRgb(hex: string): [number, number, number] {
+  const match = /^#([0-9a-f]{6})$/i.exec(hex)
+  if (!match) return [0.09, 0.09, 0.1]
+  const value = parseInt(match[1], 16)
+  return [((value >> 16) & 255) / 255, ((value >> 8) & 255) / 255, (value & 255) / 255]
+}
 
 // The shadow layer exposes a curated subset of ShadowSettings; everything else
 // falls back to the production preset in siteVisualConfig.
@@ -65,16 +86,57 @@ const sunGradient: LayerDef = {
   },
 }
 
+// The base paper: a solid fill at (conventionally) the bottom of the stack,
+// carrying one color per theme like the real site's --bg token.
+const paper: LayerDef = {
+  type: 'paper',
+  label: 'Paper',
+  defaultConfig: { light: '#faf9f6', dark: '#161616' },
+  controls: [
+    { kind: 'color', key: 'light', label: 'Light color' },
+    { kind: 'color', key: 'dark', label: 'Dark color' },
+  ],
+  Render: ({ config, theme }) => (
+    <div
+      aria-hidden
+      className="lab-paper-layer"
+      style={{ background: str(config, theme, theme === 'dark' ? '#161616' : '#faf9f6') }}
+    />
+  ),
+}
+
 const text: LayerDef = {
   type: 'text',
   label: 'Homepage text',
-  defaultConfig: { opacity: 1 },
-  controls: [{ kind: 'slider', key: 'opacity', label: 'Opacity', min: 0, max: 1, step: 0.01 }],
-  Render: ({ config }) => (
-    <div className="lab-text-layer" style={{ ...getHomeIntroStyle(), opacity: num(config, 'opacity', 1) }}>
-      <HomeIntro />
-    </div>
-  ),
+  defaultConfig: {
+    opacity: 1,
+    weight: siteVisualConfig.typeSettings.weight,
+    color: '#1c1c1c',
+    colorDark: '#f5f5f5',
+  },
+  controls: [
+    { kind: 'slider', key: 'opacity', label: 'Opacity', min: 0, max: 1, step: 0.01 },
+    // Geist's variable range is 250-650 (globals.css @font-face).
+    { kind: 'slider', key: 'weight', label: 'Weight', min: 250, max: 650, step: 10 },
+    { kind: 'color', key: 'color', label: 'Color (light)' },
+    { kind: 'color', key: 'colorDark', label: 'Color (dark)' },
+  ],
+  Render: ({ config, theme }) => {
+    const weight = num(config, 'weight', siteVisualConfig.typeSettings.weight)
+    const color =
+      theme === 'dark' ? str(config, 'colorDark', '#f5f5f5') : str(config, 'color', '#1c1c1c')
+    const style: HomeIntroStyle = {
+      ...getHomeIntroStyle({ typeSettings: { ...siteVisualConfig.typeSettings, weight } }),
+      opacity: num(config, 'opacity', 1),
+      // Consumed by App.css .intro rules (falls back to the ink default).
+      '--intro-color': color,
+    }
+    return (
+      <div className="lab-text-layer" style={style}>
+        <HomeIntro />
+      </div>
+    )
+  },
 }
 
 const shadow: LayerDef = {
@@ -149,14 +211,21 @@ const sunWidget: LayerDef = {
   },
 }
 
-// Dither/halftone/slat field (scene/INSPIRATION.md direction). Two inks are
-// offered: the paper's near-black and its cream, so the layer works over
-// light or dark grounds. Not yet mapped by sceneToSiteConfig — promoting a
-// scene with this layer silently drops it on the homepage until the
-// direction settles and the mapping is written.
-const DITHER_INKS: Record<string, [number, number, number]> = {
-  ink: [0.15, 0.15, 0.16],
-  cream: [0.96, 0.95, 0.92],
+// Dither/halftone/slat field (scene/INSPIRATION.md direction). The ink is
+// themed: one color per theme, like paper and text. Not yet mapped by
+// sceneToSiteConfig — promoting a scene with this layer silently drops it on
+// the homepage until the direction settles and the mapping is written.
+// Legacy configs stored ink as a named select value; keep them resolving.
+const LEGACY_DITHER_INKS: Record<string, string> = {
+  ink: '#262629',
+  cream: '#f5f2ea',
+}
+
+function ditherInk(config: LayerConfig, theme: SceneTheme): [number, number, number] {
+  const key = theme === 'dark' ? 'inkDark' : 'ink'
+  const fallback = theme === 'dark' ? '#f5f2ea' : '#262629'
+  const raw = str(config, key, fallback)
+  return hexToRgb(LEGACY_DITHER_INKS[raw] ?? raw)
 }
 
 const ditherField: LayerDef = {
@@ -174,7 +243,8 @@ const ditherField: LayerDef = {
     bias: 0,
     jitter: 0.5,
     slatFill: 0.7,
-    ink: 'ink',
+    ink: '#262629',
+    inkDark: '#f5f2ea',
     opacity: 1,
     invert: false,
     sourceOnly: false,
@@ -209,20 +279,13 @@ const ditherField: LayerDef = {
     { kind: 'slider', key: 'bias', label: 'Density bias', min: -0.4, max: 0.4, step: 0.01 },
     { kind: 'slider', key: 'jitter', label: 'Slat jitter', min: 0, max: 1, step: 0.01 },
     { kind: 'slider', key: 'slatFill', label: 'Slat fill', min: 0.3, max: 0.95, step: 0.01 },
-    {
-      kind: 'select',
-      key: 'ink',
-      label: 'Ink',
-      options: [
-        { value: 'ink', label: 'ink (near-black)' },
-        { value: 'cream', label: 'cream' },
-      ],
-    },
+    { kind: 'color', key: 'ink', label: 'Ink (light)' },
+    { kind: 'color', key: 'inkDark', label: 'Ink (dark)' },
     { kind: 'slider', key: 'opacity', label: 'Opacity', min: 0, max: 1, step: 0.01 },
     { kind: 'switch', key: 'invert', label: 'Invert field' },
     { kind: 'switch', key: 'sourceOnly', label: 'Source only (invisible)' },
   ],
-  Render: ({ config }) => {
+  Render: ({ config, theme }) => {
     const settings: DitherFieldSettings = {
       pattern:
         config.pattern === 'bayer' || config.pattern === 'slats' || config.pattern === 'smooth'
@@ -238,7 +301,7 @@ const ditherField: LayerDef = {
       bias: num(config, 'bias', 0),
       jitter: num(config, 'jitter', 0.5),
       slatFill: num(config, 'slatFill', 0.7),
-      ink: DITHER_INKS[config.ink as string] ?? DITHER_INKS.ink,
+      ink: ditherInk(config, theme),
       opacity: num(config, 'opacity', 1),
       invert: config.invert === true,
       sourceOnly: config.sourceOnly === true,
@@ -253,11 +316,19 @@ export const LAYER_REGISTRY: Record<LayerType, LayerDef> = {
   shadow,
   sunWidget,
   ditherField,
+  paper,
 }
 
 // Order shown in the "add layer" picker; also the default new-scene stack
-// (top of the list = front-most).
-export const LAYER_TYPES: LayerType[] = ['sunWidget', 'shadow', 'text', 'sunGradient', 'ditherField']
+// (top of the list = front-most, so paper is the ground).
+export const LAYER_TYPES: LayerType[] = [
+  'sunWidget',
+  'shadow',
+  'text',
+  'sunGradient',
+  'ditherField',
+  'paper',
+]
 
 export function getLayerDef(type: LayerType): LayerDef {
   return LAYER_REGISTRY[type]

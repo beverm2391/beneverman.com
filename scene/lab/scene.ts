@@ -1,7 +1,11 @@
 // Pure scene/layer model — no React, no THREE, so the homepage can import
 // scene JSON and these helpers cheaply when promoting a lab scene to prod.
 
-export type LayerType = 'sunGradient' | 'text' | 'shadow' | 'sunWidget' | 'ditherField'
+export type LayerType = 'sunGradient' | 'text' | 'shadow' | 'sunWidget' | 'ditherField' | 'paper'
+
+// The lab previews one theme at a time; themed layers (paper, text, dither
+// ink) carry a value for each. Transient view state, never persisted.
+export type SceneTheme = 'light' | 'dark'
 
 // Layer configs are flat bags of primitives so scenes serialize straight to
 // JSON on disk. Each layer type documents its own keys via the registry.
