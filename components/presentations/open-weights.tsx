@@ -232,31 +232,13 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      {/* Candidates for the weight explainer. Keep one, drop the rest. */}
+      {/* Placeholder art, revision pending per image-requests/03-what-is-a-weight.md */}
       <PresentationSlide layout="fill">
         <SlideFigure
-          alt="Weight explainer, flat drafting strip variant."
-          caption="Option 1. Flat drafting strip"
+          alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
+          caption="Fig. 03. What is a weight"
           frame={false}
-          src="/images/blog/open-weights-ai-models/03-1-what-is-a-weight-flat-drafting-strip.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="Weight explainer, tiled number system variant."
-          caption="Option 2. Tiled number system"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/03-2-what-is-a-weight-tiled-number-system.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="Weight explainer, blueprint assembly variant."
-          caption="Option 3. Blueprint assembly"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/03-3-what-is-a-weight-blueprint-assembly.png"
+          src="/images/blog/open-weights-ai-models/03-what-is-a-weight.png"
         />
       </PresentationSlide>
 
