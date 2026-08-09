@@ -90,6 +90,10 @@ sake, its scene will be replaced), and selectors that cannot live on a
 component (library-portaled DOM like the image-zoom modal). `Lab.css` is the
 one migration worth doing (BCP-2840).
 
+For UI work, inspect the live route before making changes. After the change,
+visually verify the updated route in the in-app browser. Reading source code or
+running tests does not replace this visual check.
+
 Tailwind v4 gotcha: utilities are generated only by the `globals.css` build.
 A `@theme` in any other file (e.g. `components/ui/coss.css`) defines variables
 but cannot emit utilities — Coss semantic tokens must stay mapped in globals'

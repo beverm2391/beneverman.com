@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PostStatusBadge } from "@/components/blog/post-status-badge";
-import { ResearchNav } from "@/components/research-nav";
+import { SiteHeader } from "@/components/site-header";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   formatResearchDate,
   getResearchPublications,
@@ -23,7 +24,8 @@ export default async function ResearchIndexPage() {
 
   return (
     <>
-      <ResearchNav />
+      <SiteHeader surface="page" />
+      <ThemeToggle />
       <main className="research-frame">
         <section className="research-paper research-index">
           <header className="research-index-header">
