@@ -1,0 +1,188 @@
+import type { ReactNode } from "react";
+
+// The deck's content vocabulary. Slides are composed from these pieces so
+// every deck shares one type scale, one set of semantic inks, and one way to
+// place artwork — instead of each slide re-inventing Tailwind. Everything
+// sizes in cqw against the slide container, so a composition holds on a
+// laptop, a projector, and the embedded card.
+
+/** Semantic ink roles. `annotation` points at machinery; `accent` marks only the thing that controls you. */
+type Tone = "annotation" | "muted" | "accent" | "ink";
+
+const toneClass: Record<Tone, string> = {
+  accent: "text-(--pres-accent)",
+  annotation: "text-(--pres-annotation)",
+  ink: "text-(--pres-ink)",
+  muted: "text-(--pres-ink-muted)"
+};
+
+const monoClass =
+  "font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] uppercase";
+
+/** Small mono label: section marks, column headers, figure references. */
+export function SlideKicker({
+  children,
+  tone = "annotation"
+}: {
+  children: ReactNode;
+  tone?: Tone;
+}) {
+  return <p className={`!mt-0 ${monoClass} !${toneClass[tone]}`}>{children}</p>;
+}
+
+/**
+ * A claim in the deck's speaking voice. `lead` is a slide's single dominant
+ * statement; `equal` keeps several statements at one weight, for arguments
+ * whose steps rank the same.
+ */
+export function SlideStatement({
+  children,
+  size = "equal"
+}: {
+  children: ReactNode;
+  size?: "lead" | "equal";
+}) {
+  const scale =
+    size === "lead"
+      ? "!text-[max(1rem,2.9cqw)] !leading-[1.22] !max-w-[30ch]"
+      : "!text-[max(0.85rem,2cqw)] !leading-[1.3] !max-w-[40ch]";
+
+  return <p className={`!mt-0 ${scale} !text-(--pres-ink)`}>{children}</p>;
+}
+
+/** Supporting prose. Quieter than a statement; use sparingly on a spoken slide. */
+export function SlideBody({ children }: { children: ReactNode }) {
+  return (
+    <p className="!mt-0 !max-w-[54ch] !text-[max(0.7rem,1.25cqw)] !leading-[1.45] !text-(--pres-ink-muted)">
+      {children}
+    </p>
+  );
+}
+
+/**
+ * A labelled arrow marking a logical step between statements. The stroke sits
+ * on the stack's centre axis; the label hangs beside it so it cannot pull the
+ * arrow off centre.
+ */
+export function SlideArrow({ label, tone = "annotation" }: { label?: string; tone?: Tone }) {
+  return (
+    <div className={`relative flex justify-center py-[max(0.7rem,1.7cqw)] ${toneClass[tone]}`}>
+      <svg
+        aria-hidden="true"
+        className="h-[max(1.6rem,3.4cqw)] w-[max(0.5rem,1cqw)]"
+        fill="none"
+        preserveAspectRatio="none"
+        viewBox="0 0 10 40"
+      >
+        <path
+          d="M5 0 V34 M1 30 L5 35 L9 30"
+          stroke="currentColor"
+          strokeWidth="1.25"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+      {label ? (
+        <span className={`absolute top-1/2 left-1/2 ml-[max(0.6rem,1.1cqw)] -translate-y-1/2 ${monoClass}`}>
+          {label}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+/** Vertical composition for a slide's content, with the deck's rhythm built in. */
+export function SlideStack({
+  align = "center",
+  children,
+  gap = "normal"
+}: {
+  align?: "center" | "start";
+  children: ReactNode;
+  gap?: "none" | "tight" | "normal";
+}) {
+  const gapClass = {
+    none: "",
+    normal: "gap-[max(0.9rem,2cqw)]",
+    tight: "gap-[max(0.5rem,1.1cqw)]"
+  }[gap];
+
+  return (
+    <div
+      className={`flex flex-col ${gapClass} ${
+        align === "center" ? "items-center text-center" : "items-start text-left"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Columns under a shared hairline: parallel items that rank equally. */
+export function SlideColumns({ children }: { children: ReactNode }) {
+  return (
+    <div className="grid w-full gap-[max(0.7rem,1.4cqw)] border-t border-(--pres-rule) pt-[max(0.7rem,1.5cqw)] text-left sm:grid-flow-col sm:auto-cols-fr">
+      {children}
+    </div>
+  );
+}
+
+/** One column: a mono label over its content. */
+export function SlideColumn({
+  children,
+  label,
+  tone = "annotation"
+}: {
+  children: ReactNode;
+  label: string;
+  tone?: Tone;
+}) {
+  return (
+    <div>
+      <SlideKicker tone={tone}>{label}</SlideKicker>
+      <div className="mt-[0.45em]">{children}</div>
+    </div>
+  );
+}
+
+/**
+ * Artwork on a slide. Blog images render through ZoomImage (lightbox, site
+ * tokens); a slide needs neither — clicking a slide means "present" — so deck
+ * figures get their own primitive. Use inside `<PresentationSlide fill>`.
+ */
+export function SlideFigure({
+  alt,
+  caption,
+  frame = true,
+  src
+}: {
+  alt: string;
+  caption?: string;
+  /**
+   * Draws the blog's framed-figure treatment (hairline, radius, inset), which
+   * also contains artwork whose own background differs from the paper. Drop it
+   * for transparent art that should sit directly on the slide.
+   */
+  frame?: boolean;
+  src: string;
+}) {
+  return (
+    <figure className="flex h-full min-h-0 flex-col items-center justify-center gap-[max(0.6rem,1.2cqw)]">
+      {/* eslint-disable-next-line @next/next/no-img-element -- deck art is
+          local and pre-sized to the slide; next/image's box would only add
+          layout shift mid-presentation. */}
+      {/* The frame hugs the artwork with no inset: art with its own baked-in
+          background would otherwise show a second rectangle inside the
+          border. */}
+      <img
+        alt={alt}
+        className={`mx-auto max-h-full min-h-0 w-auto max-w-full flex-1 object-contain ${
+          frame ? "rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule)" : ""
+        }`}
+        src={src}
+      />
+      {caption ? (
+        <figcaption className={`${monoClass} ${toneClass.muted}`}>{caption}</figcaption>
+      ) : null}
+    </figure>
+  );
+}
