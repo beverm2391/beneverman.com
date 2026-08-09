@@ -254,9 +254,9 @@ export function OpenWeightsPresentation() {
           them one at a time. */}
       <PresentationSlide>
         <SlideStack align="start">
-          <h2>Two problems</h2>
+          <h2>Major Problems with Closed Weight Models</h2>
           <ul>
-            <li>Optimized for retention and revenue, your dependence</li>
+            <li>Optimized for retention and revenue (your dependence)</li>
             <li>Dependence carries risk</li>
           </ul>
         </SlideStack>
