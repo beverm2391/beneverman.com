@@ -50,6 +50,19 @@ export function SlideStatement({
   return <p className={`!mt-0 ${scale} !text-(--pres-ink)`}>{children}</p>;
 }
 
+/**
+ * A superscript reference marker, for claims the talk backs with a source.
+ * Sits in the annotation ink so citations read as the same layer as labels
+ * and figure callouts rather than as part of the sentence.
+ */
+export function SlideRef({ n }: { n: number }) {
+  return (
+    <sup className="ml-[0.1em] align-super font-(family-name:--font-presentation-mono) text-[0.5em] text-(--pres-annotation)">
+      {n}
+    </sup>
+  );
+}
+
 /** Supporting prose. Quieter than a statement; use sparingly on a spoken slide. */
 export function SlideBody({ children }: { children: ReactNode }) {
   return (

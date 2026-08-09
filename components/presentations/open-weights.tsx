@@ -6,6 +6,7 @@ import {
   SlideColumns,
   SlideFigure,
   SlideKicker,
+  SlideRef,
   SlideStack,
   SlideStatement
 } from "@/components/mdx/presentation-parts";
@@ -256,7 +257,11 @@ export function OpenWeightsPresentation() {
         <SlideStack align="start">
           <h2>Major Problems with Closed Weight Models</h2>
           <ul>
-            <li>Optimized for retention and revenue (your dependence)</li>
+            <li>
+              Optimized for retention
+              <SlideRef n={1} /> and revenue
+              <SlideRef n={2} /> (your dependence)
+            </li>
             <li>Dependence carries risk</li>
           </ul>
         </SlideStack>
