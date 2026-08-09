@@ -232,6 +232,34 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
+      {/* Candidates for the weight explainer. Keep one, drop the rest. */}
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Weight explainer, flat drafting strip variant."
+          caption="Option 1. Flat drafting strip"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/03-1-what-is-a-weight-flat-drafting-strip.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Weight explainer, tiled number system variant."
+          caption="Option 2. Tiled number system"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/03-2-what-is-a-weight-tiled-number-system.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Weight explainer, blueprint assembly variant."
+          caption="Option 3. Blueprint assembly"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/03-3-what-is-a-weight-blueprint-assembly.png"
+        />
+      </PresentationSlide>
+
       <PresentationSlide layout="center">
         <SlideStack gap="none">
           <SlideStatement>{thesis[0]}</SlideStatement>
@@ -246,9 +274,26 @@ export function OpenWeightsPresentation() {
         <SlideStack align="start">
           <h2>Two problems</h2>
           <ul>
-            <li>Dependence risk</li>
-            <li>Optimized for their revenue, not your value</li>
+            <li>Optimized for retention and revenue, your dependence</li>
+            <li>Dependence carries risk</li>
           </ul>
+        </SlideStack>
+      </PresentationSlide>
+
+      <PresentationSlide>
+        <SlideStack align="start">
+          <h2>Optimized for retention and revenue</h2>
+          <ul>
+            <li>Adoption, habit, and dependence drive retention</li>
+            <li>Retention produces revenue</li>
+            <li>The effects land on you: deskilling, overreliance, sycophancy</li>
+          </ul>
+        </SlideStack>
+      </PresentationSlide>
+
+      <PresentationSlide>
+        <SlideStack align="start">
+          <h2>Why dependence carries risk</h2>
         </SlideStack>
       </PresentationSlide>
 
