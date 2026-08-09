@@ -19,7 +19,7 @@ export default function ResearchLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`research-route ${lora.variable} ${geistMono.variable}`}>
+    <div className={`${lora.variable} ${geistMono.variable}`}>
       {children}
     </div>
   );

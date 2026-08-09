@@ -97,7 +97,7 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
   };
 
   return (
-    <>
+    <div className="research-route">
       <ResearchNav title={publication.title} />
       <main className="research-frame">
         <div className="research-paper">
@@ -130,6 +130,6 @@ export default async function ResearchPage({ params }: ResearchPageProps) {
           </article>
         </div>
       </main>
-    </>
+    </div>
   );
 }

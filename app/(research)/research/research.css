@@ -39,8 +39,7 @@
   text-align: center;
 }
 
-.research-date,
-.research-kicker {
+.research-date {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,78 +126,6 @@
 
 .research-index {
   font-family: var(--font-research), ui-serif, "Iowan Old Style", Georgia, serif;
-}
-
-.research-index-header {
-  max-width: 36rem;
-  margin-bottom: 4rem;
-}
-
-.research-index-header .research-kicker {
-  justify-content: flex-start;
-}
-
-.research-index-header h1 {
-  font-size: clamp(2rem, 5vw, 2.75rem);
-  font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.025em;
-}
-
-.research-index-header > p:last-child {
-  margin-top: 1rem;
-  color: var(--muted);
-  font-family: var(--font-sans);
-}
-
-.research-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.research-list li {
-  border-top: 1px solid var(--border);
-}
-
-.research-list li:last-child {
-  border-bottom: 1px solid var(--border);
-}
-
-.research-list a {
-  display: block;
-  padding-block: 1.5rem;
-  color: var(--fg);
-  text-decoration: none;
-}
-
-.research-list-heading {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-}
-
-.research-list h2 {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-
-.research-list time {
-  display: block;
-  margin-top: 0.35rem;
-  font-family: var(--font-research-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-
-.research-list p {
-  margin-top: 0.55rem;
-  color: var(--muted);
-  font-family: var(--font-sans);
-}
-
-.research-empty {
-  color: var(--muted);
 }
 
 @media (min-width: 40rem) {

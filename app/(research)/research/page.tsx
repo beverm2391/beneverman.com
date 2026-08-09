@@ -24,40 +24,39 @@ export default async function ResearchIndexPage() {
 
   return (
     <>
-      <SiteHeader surface="page" />
+      <SiteHeader />
       <ThemeToggle />
-      <main className="research-frame">
-        <section className="research-paper research-index">
-          <header className="research-index-header">
-            <p className="research-kicker">Research</p>
-            <h1>Working models and experiments</h1>
-            <p>
-              Ideas under construction, written close to the experiments that
-              might prove or break them.
-            </p>
-          </header>
-
-          {publications.length === 0 ? (
-            <p className="research-empty">No research publications yet.</p>
-          ) : (
-            <ul className="research-list">
-              {publications.map((publication) => (
-                <li key={publication.slug}>
-                  <Link href={`/research/${publication.slug}`}>
-                    <div className="research-list-heading">
-                      <h2>{publication.title}</h2>
+      <main className="reading-column research-index">
+        {publications.length === 0 ? (
+          <p className="text-muted">No research publications yet.</p>
+        ) : (
+          <ul className="m-0 grid list-none gap-9 p-0">
+            {publications.map((publication) => (
+              <li key={publication.slug}>
+                <Link
+                  href={`/research/${publication.slug}`}
+                  className="group block no-underline"
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-5 gap-y-2">
+                    <span className="inline-flex items-baseline gap-2.5 text-[1.15rem] font-semibold tracking-[-0.01em] text-fg group-hover:text-accent">
+                      {publication.title}
                       <PostStatusBadge status={publication.status} />
-                    </div>
-                    <time dateTime={publication.date}>
+                    </span>
+                    <time
+                      dateTime={publication.date}
+                      className="whitespace-nowrap font-[family-name:var(--font-research-mono)] text-[0.8rem]"
+                    >
                       {formatResearchDate(publication.date)}
                     </time>
-                    <p>{publication.description}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+                  </div>
+                  <p className="mt-[0.35rem] text-muted">
+                    {publication.description}
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
     </>
   );
