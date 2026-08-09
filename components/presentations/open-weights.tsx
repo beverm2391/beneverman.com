@@ -2,7 +2,6 @@ import { IBM_Plex_Mono, Source_Serif_4 } from "next/font/google";
 import { Presentation, PresentationSlide } from "@/components/mdx/presentation";
 import {
   SlideArrow,
-  SlideBody,
   SlideColumn,
   SlideColumns,
   SlideFigure,
@@ -244,22 +243,12 @@ export function OpenWeightsPresentation() {
       {/* The map for the middle of the talk: name both problems, then take
           them one at a time. */}
       <PresentationSlide>
-        <SlideStack>
-          <SlideStatement>Two problems with renting intelligence</SlideStatement>
-          <SlideColumns>
-            <SlideColumn label="01. Dependence">
-              <SlideBody>
-                The more you rely on it, the more it costs you to lose it, and
-                the less say you have in what it costs.
-              </SlideBody>
-            </SlideColumn>
-            <SlideColumn label="02. Incentives">
-              <SlideBody>
-                It is optimized for their revenue, not your value. Those come
-                apart in ways you cannot see.
-              </SlideBody>
-            </SlideColumn>
-          </SlideColumns>
+        <SlideStack align="start">
+          <h2>Two problems</h2>
+          <ul>
+            <li>Dependence risk</li>
+            <li>Optimized for their revenue, not your value</li>
+          </ul>
         </SlideStack>
       </PresentationSlide>
 
