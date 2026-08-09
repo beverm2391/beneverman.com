@@ -102,11 +102,6 @@ const openProviders = [
     provider: "Alibaba / Qwen",
     models: [
       {
-        name: "Qwen3-8B",
-        scale: "8B",
-        href: "https://huggingface.co/unsloth/Qwen3-8B-GGUF"
-      },
-      {
         name: "Qwen3.6-35B-A3B",
         scale: "35B / 3B active",
         href: "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF"
@@ -115,6 +110,11 @@ const openProviders = [
         name: "Qwen3.5-122B-A10B",
         scale: "122B / 10B active",
         href: "https://huggingface.co/unsloth/Qwen3.5-122B-A10B-GGUF"
+      },
+      {
+        name: "Qwen3.8-Max · weights pending",
+        scale: "2.4T / 95B",
+        href: "https://qwen.ai/blog?id=qwen3.8"
       }
     ]
   },
@@ -215,7 +215,7 @@ export function OpenWeightsPresentation() {
             <SlideColumn label="Closed">
               <ModelList providers={closedProviders} />
             </SlideColumn>
-            <SlideColumn label="Open weight">
+            <SlideColumn label="Open">
               <ModelList providers={openProviders} />
             </SlideColumn>
           </SlideColumns>
