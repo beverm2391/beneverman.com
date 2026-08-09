@@ -167,12 +167,11 @@ export function SlideFigure({
 }) {
   return (
     <figure className="flex h-full min-h-0 flex-col items-center justify-center gap-[max(0.6rem,1.2cqw)]">
-      {/* eslint-disable-next-line @next/next/no-img-element -- deck art is
-          local and pre-sized to the slide; next/image's box would only add
-          layout shift mid-presentation. */}
-      {/* The frame hugs the artwork with no inset: art with its own baked-in
-          background would otherwise show a second rectangle inside the
-          border. */}
+      {/* Deck art is local and pre-sized to the slide, so next/image's box
+          would only add layout shift mid-presentation. The frame hugs the
+          artwork with no inset: art carrying its own baked-in background
+          would otherwise show a second rectangle inside the border. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt={alt}
         className={`mx-auto max-h-full min-h-0 w-auto max-w-full flex-1 object-contain ${

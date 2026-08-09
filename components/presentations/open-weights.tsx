@@ -48,7 +48,8 @@ export function OpenWeightsPresentation() {
         <SlideFigure
           alt="Domain knowledge falls as reasoning is delegated while AI-assisted performance rises."
           caption="Fig. 01 — Growing dependence"
-          src="/images/blog/open-weights-ai-models/01-growing-dependence.png"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/01-growing-dependence-transparent.png"
         />
       </PresentationSlide>
 
@@ -56,7 +57,8 @@ export function OpenWeightsPresentation() {
         <SlideFigure
           alt="An open internet mesh with alternate routes above a closed AI funnel through one provider-controlled gateway."
           caption="Fig. 02 — Open internet vs closed AI"
-          src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai.png"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai-transparent.png"
         />
       </PresentationSlide>
     </Presentation>
