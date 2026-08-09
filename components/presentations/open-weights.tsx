@@ -257,11 +257,7 @@ export function OpenWeightsPresentation() {
         <SlideStack align="start">
           <h2>Major Problems with Closed Weight Models</h2>
           <ul>
-            <li>
-              Optimized for retention
-              <SlideRef n={1} /> and revenue
-              <SlideRef n={2} /> (your dependence)
-            </li>
+            <li>Optimized for retention and revenue (your dependence)</li>
             <li>Dependence carries risk</li>
           </ul>
         </SlideStack>
@@ -269,7 +265,11 @@ export function OpenWeightsPresentation() {
 
       <PresentationSlide>
         <SlideStack align="start">
-          <h2>Optimized for retention and revenue</h2>
+          <h2>
+            Optimized for retention
+            <SlideRef n={1} /> and revenue
+            <SlideRef n={2} />
+          </h2>
           <ul>
             <li>Adoption, habit, and dependence drive retention</li>
             <li>Retention produces revenue</li>
