@@ -64,17 +64,22 @@ export function Presentation({
 }: PresentationProps) {
   const slides = Children.toArray(children);
   const [activeIndex, setActiveIndex] = useState(0);
+  // Two expansion modes: theater fills the browser viewport (the default way
+  // to present), fullscreen takes the whole display via the Fullscreen API
+  // (reached with ⌘-click or the F key).
+  const [isTheater, setIsTheater] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
   const [fullscreenError, setFullscreenError] = useState<string | null>(null);
   const rootRef = useRef<HTMLElement>(null);
   const slideCount = slides.length;
+  const isExpanded = isFullscreen || isTheater;
 
   // While presenting, controls should vanish unless the presenter reaches for
   // the mouse. Embedded view never hides them; the fullscreenchange handler
   // resets idleness on both enter and exit.
   useEffect(() => {
-    if (!isFullscreen) return;
+    if (!isExpanded) return;
 
     let idleTimer = window.setTimeout(() => setIsIdle(true), FULLSCREEN_IDLE_MS);
     const wake = () => {
@@ -88,20 +93,34 @@ export function Presentation({
       window.clearTimeout(idleTimer);
       document.removeEventListener("mousemove", wake);
     };
-  }, [isFullscreen]);
+  }, [isExpanded]);
 
-  const controlsHidden = isFullscreen && isIdle;
+  const controlsHidden = isExpanded && isIdle;
 
   useEffect(() => {
     const onFullscreenChange = () => {
       const fullscreen = document.fullscreenElement === rootRef.current;
       setIsFullscreen(fullscreen);
+      // Leaving display fullscreen returns all the way to the embedded view;
+      // theater is not silently restored underneath it.
+      if (!fullscreen) setIsTheater(false);
       setIsIdle(false);
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
+
+  // Theater covers the page, so the page behind it must not scroll.
+  useEffect(() => {
+    if (!isTheater) return;
+
+    const previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = previousOverflow;
+    };
+  }, [isTheater]);
 
   const enterFullscreen = useCallback(async () => {
     if (!rootRef.current || document.fullscreenElement === rootRef.current) return;
@@ -158,6 +177,11 @@ export function Presentation({
         return;
       }
 
+      if (event.key === "Escape" && !document.fullscreenElement) {
+        setIsTheater(false);
+        return;
+      }
+
       if (event.key.toLowerCase() === "f") {
         event.preventDefault();
         void enterFullscreen();
@@ -177,43 +201,96 @@ export function Presentation({
     <section
       ref={rootRef}
       aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}`}
-      className={`not-prose relative overflow-hidden text-(--pres-ink) ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "h-full w-full" : "content-breakout my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
+      className={`not-prose text-(--pres-ink) ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "relative h-full w-full overflow-hidden" : isTheater ? "fixed inset-0 z-50" : "content-breakout relative my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
       style={presentationThemeStyle(theme)}
     >
       <div
         aria-live="polite"
-        className={`relative overflow-hidden bg-(--pres-paper) ${isFullscreen ? "h-full w-full" : "aspect-video rounded-2xl border border-(--pres-rule) shadow-xs/5"}`}
+        className={`relative overflow-hidden bg-(--pres-paper) ${isExpanded ? "h-full w-full" : "aspect-video rounded-2xl border border-(--pres-rule) shadow-xs/5"}`}
       >
-        {/* The embedded deck is a preview; clicking anywhere on the slide
-            surface promotes it to the real, fullscreen presentation. Links and
+        {/* The embedded deck is a preview; clicking the slide surface presents
+            it in the browser viewport, ⌘-click on the whole display. Links and
             controls inside a slide keep their own click behaviour. */}
         <div
-          className={`h-full w-full ${isFullscreen ? "" : "cursor-zoom-in"}`}
+          className={`h-full w-full ${isExpanded ? "" : "cursor-zoom-in"}`}
           onClick={(event) => {
-            if (isFullscreen) return;
+            if (isExpanded) return;
             if (
               event.target instanceof HTMLElement &&
               event.target.closest("a, button, input, textarea, select, [contenteditable='true']")
             ) {
               return;
             }
-            void enterFullscreen();
+            if (event.metaKey || event.ctrlKey) {
+              void enterFullscreen();
+            } else {
+              setIsTheater(true);
+            }
           }}
         >
           {slides[currentIndex]}
         </div>
 
+        {/* Chrome is four bare mono corner marks — no rules, no bars. Label
+            top-left, current page top-right, presenting controls bottom-left,
+            counter bottom-right. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-[clamp(1.5rem,7vw,9rem)] top-[clamp(1.25rem,3.5vw,3rem)] flex items-center gap-3 border-b border-(--pres-rule) pb-2 font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted) uppercase"
+          className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 px-[clamp(0.9rem,1.5vw,1.4rem)] pt-[clamp(0.8rem,1.3vw,1.2rem)] font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted) uppercase"
         >
-          <span className="min-w-0 flex-1 truncate">{label}</span>
+          <span className="min-w-0 truncate">{label}</span>
           <span>{String(currentIndex + 1).padStart(2, "0")}</span>
         </div>
 
-        <div
-          className={`absolute inset-x-[clamp(1.5rem,7vw,9rem)] bottom-[clamp(1.25rem,3.5vw,3rem)] flex items-center gap-[1.25em] border-t border-(--pres-rule) pt-2 font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted) transition-opacity duration-500 ${controlsHidden ? "pointer-events-none opacity-0" : "opacity-100"}`}
-        >
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-[clamp(0.9rem,1.5vw,1.4rem)] pb-[clamp(0.8rem,1.3vw,1.2rem)] font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted)">
+          {isExpanded ? (
+            <div
+              className={`pointer-events-auto flex items-center gap-[1.25em] transition-opacity duration-500 ${controlsHidden ? "!pointer-events-none opacity-0" : "opacity-100"}`}
+            >
+              <button
+                aria-label="Previous slide"
+                className={controlButtonClass}
+                disabled={currentIndex === 0}
+                onClick={() => move("previous")}
+                type="button"
+              >
+                <MoveLeft aria-hidden="true" size={14} />
+              </button>
+              <button
+                aria-label="Next slide"
+                className={controlButtonClass}
+                disabled={currentIndex === slideCount - 1}
+                onClick={() => move("next")}
+                type="button"
+              >
+                <MoveRight aria-hidden="true" size={14} />
+              </button>
+              <button
+                aria-label={isFullscreen ? "Exit fullscreen" : "Exit presentation"}
+                className={controlButtonClass}
+                onClick={() => {
+                  if (isFullscreen) {
+                    void exitFullscreen();
+                  } else {
+                    setIsTheater(false);
+                  }
+                }}
+                type="button"
+              >
+                Exit
+              </button>
+            </div>
+          ) : (
+            <span />
+          )}
+          <span className="uppercase">
+            {String(currentIndex + 1).padStart(2, "0")} / {String(slideCount).padStart(2, "0")}
+          </span>
+        </div>
+      </div>
+
+      {isExpanded ? null : (
+        <div className="mt-3 flex items-center gap-[1.25em] px-1 font-(family-name:--font-presentation-mono) text-[0.7rem] tracking-[0.09em] text-(--pres-ink-muted)">
           <button
             aria-label="Previous slide"
             className={controlButtonClass}
@@ -233,30 +310,23 @@ export function Presentation({
             <MoveRight aria-hidden="true" size={14} />
           </button>
           <span className="flex-1" />
-          <span className="uppercase">
-            {String(currentIndex + 1).padStart(2, "0")} / {String(slideCount).padStart(2, "0")}
-          </span>
-          {isFullscreen ? (
-            <button
-              aria-label="Exit fullscreen"
-              className={controlButtonClass}
-              onClick={() => void exitFullscreen()}
-              type="button"
-            >
-              Exit
-            </button>
-          ) : (
-            <button
-              aria-label="Enter fullscreen"
-              className={controlButtonClass}
-              onClick={() => void enterFullscreen()}
-              type="button"
-            >
-              Fullscreen
-            </button>
-          )}
+          <button
+            aria-label="Present in the browser window (hold ⌘ for the whole display)"
+            className={controlButtonClass}
+            onClick={(event) => {
+              if (event.metaKey || event.ctrlKey) {
+                void enterFullscreen();
+              } else {
+                setIsTheater(true);
+              }
+            }}
+            title="⌘-click for display fullscreen"
+            type="button"
+          >
+            Fullscreen
+          </button>
         </div>
-      </div>
+      )}
       <p className="sr-only">Use left and right arrow keys, Page Up, Page Down, Home, or End to move through slides. Press F for fullscreen.</p>
       {fullscreenError ? <p className="sr-only" role="status">{fullscreenError}</p> : null}
     </section>

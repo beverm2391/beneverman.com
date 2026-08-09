@@ -15,7 +15,9 @@ describe("presentation", () => {
     expect(markup).toContain("Placeholder one");
     expect(markup).not.toContain("Placeholder two");
     expect(markup).toContain('aria-label="Next slide"');
-    expect(markup).toContain('aria-label="Enter fullscreen"');
+    // Embedded view offers theater by default; display fullscreen is the
+    // ⌘-click variant of the same control.
+    expect(markup).toContain("Present in the browser window");
     expect(markup).not.toContain('tabindex="0"');
   });
 
