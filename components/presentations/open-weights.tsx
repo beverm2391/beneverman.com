@@ -39,7 +39,7 @@ export function OpenWeightsPresentation() {
 
           <div className="grid gap-[clamp(0.7rem,1.4vw,1.2rem)] border-t border-border pt-[clamp(0.7rem,1.5vw,1.3rem)] sm:grid-cols-2">
             <div>
-              <p className="!mt-0 font-[var(--font-presentation-mono)] !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-muted uppercase">
+              <p className="!mt-0 font-(family-name:--font-presentation-mono) !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-muted uppercase">
                 Because
               </p>
               <p className="!mt-[0.45em] !max-w-[34ch] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
@@ -47,7 +47,7 @@ export function OpenWeightsPresentation() {
               </p>
             </div>
             <div>
-              <p className="!mt-0 font-[var(--font-presentation-mono)] !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-muted uppercase">
+              <p className="!mt-0 font-(family-name:--font-presentation-mono) !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-muted uppercase">
                 Thus
               </p>
               <p className="!mt-[0.45em] !max-w-[34ch] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
