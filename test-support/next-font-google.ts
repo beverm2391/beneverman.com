@@ -11,6 +11,8 @@ function mockFont({ variable }: FontOptions = {}) {
 }
 
 export const Geist_Mono = mockFont;
+export const IBM_Plex_Mono = mockFont;
 export const Inter = mockFont;
 export const JetBrains_Mono = mockFont;
 export const Lora = mockFont;
+export const Source_Serif_4 = mockFont;

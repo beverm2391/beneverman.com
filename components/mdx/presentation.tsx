@@ -4,10 +4,10 @@ import { Maximize2, Minimize2, MoveLeft, MoveRight } from "lucide-react";
 import { Geist_Mono, Lora } from "next/font/google";
 import {
   Children,
+  useCallback,
   useEffect,
   useRef,
   useState,
-  type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode
 } from "react";
 import {
@@ -20,6 +20,8 @@ type PresentationProps = {
   children: ReactNode;
   className?: string;
   label?: string;
+  monoFontClassName?: string;
+  serifFontClassName?: string;
 };
 
 const presentationSerif = Lora({
@@ -44,7 +46,9 @@ const wideControlButtonClass = `${controlButtonClass} w-auto gap-1.5 px-3 text-s
 export function Presentation({
   children,
   className = "",
-  label = "Presentation"
+  label = "Presentation",
+  monoFontClassName = presentationMono.variable,
+  serifFontClassName = presentationSerif.variable
 }: PresentationProps) {
   const slides = Children.toArray(children);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -57,14 +61,13 @@ export function Presentation({
     const onFullscreenChange = () => {
       const fullscreen = document.fullscreenElement === rootRef.current;
       setIsFullscreen(fullscreen);
-      if (fullscreen) rootRef.current?.focus({ preventScroll: true });
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
     return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
   }, []);
 
-  async function enterFullscreen() {
+  const enterFullscreen = useCallback(async () => {
     if (!rootRef.current || document.fullscreenElement === rootRef.current) return;
 
     try {
@@ -73,7 +76,7 @@ export function Presentation({
     } catch {
       setFullscreenError("Fullscreen is unavailable in this browser. Use the embedded view instead.");
     }
-  }
+  }, []);
 
   async function exitFullscreen() {
     try {
@@ -84,31 +87,50 @@ export function Presentation({
     }
   }
 
-  const move = (action: PresentationAction) => {
+  const move = useCallback((action: PresentationAction) => {
     setActiveIndex((currentIndex) =>
       movePresentationSlide(Math.min(currentIndex, slideCount - 1), slideCount, action)
     );
-  };
+  }, [slideCount]);
 
-  const handleKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
-    // Slides can contain interactive examples later; their text editing must
-    // not unexpectedly become deck navigation.
-    if (event.target instanceof HTMLElement && event.target.closest("input, textarea, select, [contenteditable='true']")) {
-      return;
-    }
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // The deck listens at the document level so keyboard navigation never
+      // requires moving focus onto the entire presentation. Interactive slide
+      // content and modified shortcuts keep their normal keyboard behaviour.
+      if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        (event.target instanceof HTMLElement &&
+          event.target.closest("input, textarea, select, [contenteditable='true']"))
+      ) {
+        return;
+      }
 
-    const action = getPresentationAction(event.key);
-    if (action) {
-      event.preventDefault();
-      move(action);
-      return;
-    }
+      const root = rootRef.current;
+      if (!root) return;
+      const rect = root.getBoundingClientRect();
+      const isVisible = document.fullscreenElement === root || (rect.bottom > 0 && rect.top < window.innerHeight);
+      if (!isVisible) return;
 
-    if (event.key.toLowerCase() === "f") {
-      event.preventDefault();
-      void enterFullscreen();
-    }
-  };
+      const action = getPresentationAction(event.key);
+      if (action) {
+        event.preventDefault();
+        move(action);
+        return;
+      }
+
+      if (event.key.toLowerCase() === "f") {
+        event.preventDefault();
+        void enterFullscreen();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [enterFullscreen, move]);
 
   if (slideCount === 0) return null;
   // The deck can be hot-reloaded with fewer slides while its previous state
@@ -119,9 +141,7 @@ export function Presentation({
     <section
       ref={rootRef}
       aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}`}
-      className={`not-prose relative overflow-hidden bg-[#f5f5f5] text-[#0a0a0a] dark:bg-[#0a0a0a] dark:text-[#f5f5f5] ${presentationSerif.variable} ${presentationMono.variable} ${isFullscreen ? "flex h-full w-full items-center justify-center" : "content-breakout my-10"} ${className}`}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
+      className={`not-prose relative overflow-hidden bg-[#f5f5f5] text-[#0a0a0a] dark:bg-[#0a0a0a] dark:text-[#f5f5f5] ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "flex h-full w-full items-center justify-center" : "content-breakout my-10"} ${className}`}
     >
       <div
         aria-live="polite"

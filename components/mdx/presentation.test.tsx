@@ -16,6 +16,7 @@ describe("presentation", () => {
     expect(markup).not.toContain("Placeholder two");
     expect(markup).toContain('aria-label="Next slide"');
     expect(markup).toContain('aria-label="Enter fullscreen"');
+    expect(markup).not.toContain('tabindex="0"');
   });
 
   it("renders nothing when no slides are supplied", () => {
