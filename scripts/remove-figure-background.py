@@ -8,10 +8,14 @@ while preserving interior panels and fills that happen to share the tone, and a
 short feather band recovers the anti-aliased pixels along each stroke so edges
 stay smooth instead of jagged.
 
-    python3 scripts/remove-figure-background.py public/images/foo.png
-    python3 scripts/remove-figure-background.py public/images/*.png --tolerance 18
+Figures follow a source/generated split: raw art from the image pipeline lands
+in a `source/` directory, and this writes the transparent version one level up,
+under the same filename, which is what slides and posts reference. Point it at a
+directory to process everything in it, and it skips art whose output is already
+newer than its source.
 
-Writes <name>-transparent.png beside the source unless --in-place is given.
+    python3 scripts/remove-figure-background.py public/images/blog/<slug>/source
+    python3 scripts/remove-figure-background.py path/to/one.png --tolerance 18
 """
 
 from __future__ import annotations
@@ -99,22 +103,47 @@ def remove_background(image: Image.Image, tolerance: int) -> Image.Image:
     return Image.fromarray(out, mode="RGBA")
 
 
+def collect(paths: list[Path]) -> list[Path]:
+    """Expand directories to the PNGs inside them."""
+    sources: list[Path] = []
+    for path in paths:
+        sources.extend(sorted(path.glob("*.png")) if path.is_dir() else [path])
+    return sources
+
+
+def output_for(source: Path, out_dir: Path | None) -> Path:
+    """Generated art sits one level up from `source/`, under the same name."""
+    if out_dir is not None:
+        return out_dir / source.name
+    if source.parent.name == "source":
+        return source.parent.parent / source.name
+    return source.with_name(f"{source.stem}-transparent.png")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("paths", nargs="+", type=Path)
+    parser.add_argument("paths", nargs="+", type=Path, help="PNG files, or directories of them")
     parser.add_argument("--tolerance", type=int, default=DEFAULT_TOLERANCE)
-    parser.add_argument("--in-place", action="store_true")
+    parser.add_argument("--out-dir", type=Path, default=None)
+    parser.add_argument("--force", action="store_true", help="Rebuild art that is already current")
     args = parser.parse_args()
 
-    for path in args.paths:
-        image = Image.open(path)
-        result = remove_background(image, args.tolerance)
-        target = path if args.in_place else path.with_name(f"{path.stem}-transparent.png")
+    for source in collect(args.paths):
+        target = output_for(source, args.out_dir)
+        if (
+            not args.force
+            and target.exists()
+            and target.stat().st_mtime >= source.stat().st_mtime
+        ):
+            print(f"{source.name}: current")
+            continue
+
+        result = remove_background(Image.open(source), args.tolerance)
+        target.parent.mkdir(parents=True, exist_ok=True)
         result.save(target)
 
         cleared = int((np.array(result)[:, :, 3] == 0).sum())
-        total = result.width * result.height
-        print(f"{path.name}: {cleared / total:.0%} transparent -> {target.name}")
+        print(f"{source.name}: {cleared / (result.width * result.height):.0%} transparent -> {target}")
 
 
 if __name__ == "__main__":

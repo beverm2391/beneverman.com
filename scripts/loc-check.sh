@@ -82,7 +82,9 @@ else
   while IFS= read -r file; do files+=("$file"); done < <(git diff --cached --name-only --diff-filter=ACM)
 fi
 
-for file in "${files[@]}"; do
+# macOS ships bash 3.2, where `set -u` treats an empty array as unset, so a
+# bare "${files[@]}" aborts the hook whenever nothing is staged.
+for file in ${files[@]+"${files[@]}"}; do
   if should_check "$file"; then
     checked=$((checked + 1))
     check_file "$file"
