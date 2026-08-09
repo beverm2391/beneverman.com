@@ -19,11 +19,39 @@ const openWeightsMono = IBM_Plex_Mono({
 const kickerClass =
   "!mt-0 font-(family-name:--font-presentation-mono) !text-[max(0.55rem,0.8cqw)] tracking-[0.09em] !text-(--pres-annotation) uppercase";
 
+const thesisStatementClass =
+  "!mt-0 !max-w-[40ch] !text-[max(0.85rem,2cqw)] !leading-[1.3] !text-(--pres-ink)";
+
+// Two beats: the accusation, then the exit. The explanation in between is
+// spoken, since Part 2 proves it later.
 const thesis = [
   "You are becoming dependent on intelligence you neither own nor control. That dependence is the business model.",
-  "Frontier labs optimize for profit (among other things), not for your value, privacy, or security.",
-  "Open-weight models are better overall, since it’s easier to run when someone else hasn’t chained your ankles together."
+  "Open-weight models are better for you now, keep getting better without them, and you can run one yourself."
 ] as const;
+
+// A downward arrow carrying the logical step between two statements. The
+// stroke is drawn rather than typed so it scales with the slide and stays on
+// the deck's annotation ink.
+function ThesisArrow({ label }: { label: string }) {
+  return (
+    // The arrow sits on the slide's centre axis; the label hangs beside it
+    // without pulling the stroke off centre.
+    <div className="relative flex justify-center py-[max(0.7rem,1.7cqw)]">
+      <svg
+        aria-hidden="true"
+        className="h-[max(1.6rem,3.4cqw)] w-[max(0.5rem,1cqw)] text-(--pres-annotation)"
+        fill="none"
+        preserveAspectRatio="none"
+        viewBox="0 0 10 40"
+      >
+        <path d="M5 0 V34 M1 30 L5 35 L9 30" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+      </svg>
+      <span className="absolute top-1/2 left-1/2 ml-[max(0.6rem,1.1cqw)] -translate-y-1/2 font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-annotation) uppercase">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 export function OpenWeightsPresentation() {
   return (
@@ -32,34 +60,17 @@ export function OpenWeightsPresentation() {
       monoFontClassName={openWeightsMono.variable}
       serifFontClassName={openWeightsSerif.variable}
     >
+      {/* The deck opens on its thesis, read top to bottom as a chain: each
+          statement flows into the next through a labelled arrow. */}
       <PresentationSlide>
-        <p className={kickerClass}>August 2026</p>
-        <h1 className="!mt-[0.4em]">Open-weight models</h1>
-        <p className="!mt-[1.2em] font-(family-name:--font-presentation-mono) !text-[max(0.6rem,0.95cqw)] tracking-[0.09em] !text-(--pres-ink-muted) uppercase">
-          Why owning the file matters
-        </p>
-      </PresentationSlide>
+        <div className="flex flex-col items-center text-center">
+          {/* Both beats carry identical weight; only the arrow between them
+              marks the logical step. */}
+          <p className={thesisStatementClass}>{thesis[0]}</p>
 
-      <PresentationSlide>
-        <div className="grid gap-[max(0.8rem,2.3cqw)]">
-          <p className="!mt-0 !max-w-[38ch] !text-[max(0.95rem,2.4cqw)] !leading-[1.28] !text-(--pres-ink)">
-            {thesis[0]}
-          </p>
+          <ThesisArrow label="Thus" />
 
-          <div className="grid gap-[max(0.7rem,1.4cqw)] border-t border-(--pres-rule) pt-[max(0.7rem,1.5cqw)] sm:grid-cols-2">
-            <div>
-              <p className={kickerClass}>Because</p>
-              <p className="!mt-[0.45em] !max-w-[34ch] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
-                {thesis[1]}
-              </p>
-            </div>
-            <div>
-              <p className={kickerClass}>Thus</p>
-              <p className="!mt-[0.45em] !max-w-[34ch] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
-                {thesis[2]}
-              </p>
-            </div>
-          </div>
+          <p className={thesisStatementClass}>{thesis[1]}</p>
         </div>
       </PresentationSlide>
 
