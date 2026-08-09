@@ -6,6 +6,7 @@ import {
   SlideColumn,
   SlideColumns,
   SlideFigure,
+  SlideKicker,
   SlideStack,
   SlideStatement
 } from "@/components/mdx/presentation-parts";
@@ -22,6 +23,68 @@ const openWeightsMono = IBM_Plex_Mono({
   variable: "--font-presentation-mono",
   display: "swap"
 });
+
+const closedModels = [
+  {
+    provider: "OpenAI",
+    name: "GPT-5.6 Sol",
+    href: "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
+  },
+  {
+    provider: "Anthropic",
+    name: "Claude Fable 5",
+    href: "https://platform.claude.com/docs/en/about-claude/models/overview"
+  },
+  {
+    provider: "Google",
+    name: "Gemini 3.1 Pro Preview",
+    href: "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview"
+  }
+] as const;
+
+const openModels = [
+  {
+    provider: "Alibaba / Qwen",
+    name: "Qwen3.6-35B-A3B",
+    href: "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF"
+  },
+  {
+    provider: "Moonshot AI",
+    name: "Kimi-K3",
+    href: "https://huggingface.co/unsloth/Kimi-K3-GGUF"
+  },
+  {
+    provider: "DeepSeek",
+    name: "DeepSeek-V4-Flash",
+    href: "https://huggingface.co/unsloth/DeepSeek-V4-Flash-GGUF"
+  }
+] as const;
+
+type ModelExample = {
+  readonly href: string;
+  readonly name: string;
+  readonly provider: string;
+};
+
+function ModelList({ models }: { models: readonly ModelExample[] }) {
+  return (
+    <div className="grid gap-[max(0.75rem,1.4cqw)]">
+      {models.map((model) => (
+        <div key={model.name}>
+          <SlideKicker>{model.provider}</SlideKicker>
+          <a
+            className="mt-[0.2em] block text-[max(0.8rem,1.65cqw)] leading-[1.25] text-(--pres-ink)"
+            href={model.href}
+            rel="noreferrer"
+            target="_blank"
+          >
+            {model.name}
+          </a>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // Two beats: the accusation, then the exit. The explanation in between is
 // spoken, since the talk proves it later.
@@ -45,25 +108,15 @@ export function OpenWeightsPresentation() {
 
       <PresentationSlide>
         <SlideStack align="start">
-          <h2>Closed vs Open models</h2>
-          <ul>
-            <li>
-              Closed
-              <ul>
-                <li>Claude</li>
-                <li>GPT-5.6</li>
-                <li>Gemini 3</li>
-              </ul>
-            </li>
-            <li>
-              Open
-              <ul>
-                <li>Qwen 3.8</li>
-                <li>Kimi K.3</li>
-                <li>DeepSeek V4 Flash</li>
-              </ul>
-            </li>
-          </ul>
+          <h2>Closed vs open models</h2>
+          <SlideColumns>
+            <SlideColumn label="Closed">
+              <ModelList models={closedModels} />
+            </SlideColumn>
+            <SlideColumn label="Open weight">
+              <ModelList models={openModels} />
+            </SlideColumn>
+          </SlideColumns>
         </SlideStack>
       </PresentationSlide>
 
