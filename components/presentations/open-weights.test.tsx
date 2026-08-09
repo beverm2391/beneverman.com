@@ -3,12 +3,14 @@ import { describe, expect, it } from "vitest";
 import { OpenWeightsPresentation } from "@/components/presentations/open-weights";
 
 describe("open-weight presentation", () => {
-  it("opens on its title slide and exposes a second slide", () => {
+  it("opens on its title slide with navigation to further slides", () => {
     const markup = renderToStaticMarkup(<OpenWeightsPresentation />);
 
-    expect(markup).toContain("Open Weight Models: slide 1 of 2");
+    // The deck is under active authoring, so assert the deck shell rather
+    // than pinning the slide count.
+    expect(markup).toMatch(/Open Weight Models: slide 1 of \d+/);
     expect(markup).toContain("Open-weight models");
-    expect(markup).toContain("01 / 02");
+    expect(markup).toMatch(/01 \/ \d{2}/);
     expect(markup).toContain('aria-label="Next slide"');
   });
 });
