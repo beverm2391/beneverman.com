@@ -6,7 +6,6 @@ import {
   SlideColumn,
   SlideColumns,
   SlideFigure,
-  SlideKicker,
   SlideStack,
   SlideStatement
 } from "@/components/mdx/presentation-parts";
@@ -46,11 +45,24 @@ export function OpenWeightsPresentation() {
 
       <PresentationSlide>
         <SlideStack align="start">
-          <h2>Examples of open weight models</h2>
+          <h2>Closed vs Open models</h2>
           <ul>
-            <li>Qwen</li>
-            <li>DeepSeek</li>
-            <li>Kimi</li>
+            <li>
+              Closed
+              <ul>
+                <li>Claude</li>
+                <li>GPT-5.6</li>
+                <li>Gemini 3</li>
+              </ul>
+            </li>
+            <li>
+              Open
+              <ul>
+                <li>Qwen 3.8</li>
+                <li>Kimi K.3</li>
+                <li>DeepSeek V4 Flash</li>
+              </ul>
+            </li>
           </ul>
         </SlideStack>
       </PresentationSlide>
@@ -59,8 +71,8 @@ export function OpenWeightsPresentation() {
         <SlideStack align="start">
           <h2>What is a weight?</h2>
           <ul>
-            <li>An affine function — y = mx + b</li>
-            <li>Composed into matrices — matmuls</li>
+            <li>An affine function, y = mx + b</li>
+            <li>Composed into matrices, matmuls</li>
           </ul>
         </SlideStack>
       </PresentationSlide>
@@ -79,13 +91,13 @@ export function OpenWeightsPresentation() {
         <SlideStack>
           <SlideStatement>Two problems with renting intelligence</SlideStatement>
           <SlideColumns>
-            <SlideColumn label="01 — Dependence">
+            <SlideColumn label="01. Dependence">
               <SlideBody>
-                The more you rely on it, the more it costs you to lose it — and
+                The more you rely on it, the more it costs you to lose it, and
                 the less say you have in what it costs.
               </SlideBody>
             </SlideColumn>
-            <SlideColumn label="02 — Incentives">
+            <SlideColumn label="02. Incentives">
               <SlideBody>
                 It is optimized for their revenue, not your value. Those come
                 apart in ways you cannot see.
@@ -95,12 +107,11 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      {/* TEMPORARY figure proofs: generated art on the paper as-is, to judge
-          seams and colour semantics before we commit to a pipeline. */}
+      {/* Parked figures: real content, not yet placed in the argument. */}
       <PresentationSlide layout="fill">
         <SlideFigure
           alt="Domain knowledge falls as reasoning is delegated while AI-assisted performance rises."
-          caption="Fig. 01 — Growing dependence"
+          caption="Fig. 01. Growing dependence"
           frame={false}
           src="/images/blog/open-weights-ai-models/01-growing-dependence.png"
         />
@@ -109,7 +120,7 @@ export function OpenWeightsPresentation() {
       <PresentationSlide layout="fill">
         <SlideFigure
           alt="An open internet mesh with alternate routes above a closed AI funnel through one provider-controlled gateway."
-          caption="Fig. 02 — Open internet vs closed AI"
+          caption="Fig. 02. Open internet vs closed AI"
           frame={false}
           src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai.png"
         />
