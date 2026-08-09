@@ -2,7 +2,11 @@ import { IBM_Plex_Mono, Source_Serif_4 } from "next/font/google";
 import { Presentation, PresentationSlide } from "@/components/mdx/presentation";
 import {
   SlideArrow,
+  SlideBody,
+  SlideColumn,
+  SlideColumns,
   SlideFigure,
+  SlideKicker,
   SlideStack,
   SlideStatement
 } from "@/components/mdx/presentation-parts";
@@ -34,7 +38,34 @@ export function OpenWeightsPresentation() {
       monoFontClassName={openWeightsMono.variable}
       serifFontClassName={openWeightsSerif.variable}
     >
+      <PresentationSlide layout="center">
+        <SlideStack>
+          <h1>Open Weight Models</h1>
+        </SlideStack>
+      </PresentationSlide>
+
       <PresentationSlide>
+        <SlideStack align="start">
+          <h2>Examples of open weight models</h2>
+          <ul>
+            <li>Qwen</li>
+            <li>DeepSeek</li>
+            <li>Kimi</li>
+          </ul>
+        </SlideStack>
+      </PresentationSlide>
+
+      <PresentationSlide>
+        <SlideStack align="start">
+          <h2>What is a weight?</h2>
+          <ul>
+            <li>An affine function — y = mx + b</li>
+            <li>Composed into matrices — matmuls</li>
+          </ul>
+        </SlideStack>
+      </PresentationSlide>
+
+      <PresentationSlide layout="center">
         <SlideStack gap="none">
           <SlideStatement>{thesis[0]}</SlideStatement>
           <SlideArrow label="Thus" />
@@ -42,9 +73,31 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
+      {/* The map for the middle of the talk: name both problems, then take
+          them one at a time. */}
+      <PresentationSlide>
+        <SlideStack>
+          <SlideStatement>Two problems with renting intelligence</SlideStatement>
+          <SlideColumns>
+            <SlideColumn label="01 — Dependence">
+              <SlideBody>
+                The more you rely on it, the more it costs you to lose it — and
+                the less say you have in what it costs.
+              </SlideBody>
+            </SlideColumn>
+            <SlideColumn label="02 — Incentives">
+              <SlideBody>
+                It is optimized for their revenue, not your value. Those come
+                apart in ways you cannot see.
+              </SlideBody>
+            </SlideColumn>
+          </SlideColumns>
+        </SlideStack>
+      </PresentationSlide>
+
       {/* TEMPORARY figure proofs: generated art on the paper as-is, to judge
           seams and colour semantics before we commit to a pipeline. */}
-      <PresentationSlide fill>
+      <PresentationSlide layout="fill">
         <SlideFigure
           alt="Domain knowledge falls as reasoning is delegated while AI-assisted performance rises."
           caption="Fig. 01 — Growing dependence"
@@ -53,7 +106,7 @@ export function OpenWeightsPresentation() {
         />
       </PresentationSlide>
 
-      <PresentationSlide fill>
+      <PresentationSlide layout="fill">
         <SlideFigure
           alt="An open internet mesh with alternate routes above a closed AI funnel through one provider-controlled gateway."
           caption="Fig. 02 — Open internet vs closed AI"

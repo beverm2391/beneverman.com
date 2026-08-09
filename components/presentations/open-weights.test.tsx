@@ -9,7 +9,7 @@ describe("open-weight presentation", () => {
     // The deck is under active authoring, so assert the deck shell rather
     // than pinning the slide count.
     expect(markup).toMatch(/Open Weight Models: slide 1 of \d+/);
-    expect(markup).toContain("Open-weight models");
+    expect(markup).toContain("Open Weight Models");
     expect(markup).toMatch(/01 \/ \d{2}/);
     expect(markup).toContain('aria-label="Next slide"');
   });
