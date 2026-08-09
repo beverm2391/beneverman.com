@@ -112,8 +112,8 @@ const openProviders = [
         href: "https://huggingface.co/unsloth/Qwen3.5-122B-A10B-GGUF"
       },
       {
-        name: "Qwen3.8-Max · weights pending",
-        scale: "2.4T / 95B",
+        name: "Qwen3.8-Max",
+        scale: "2.4T / 95B active",
         href: "https://qwen.ai/blog?id=qwen3.8"
       }
     ]
@@ -133,7 +133,7 @@ const openProviders = [
       },
       {
         name: "Kimi-K3",
-        scale: "2.8T",
+        scale: "2.8T / 104B active",
         href: "https://huggingface.co/unsloth/Kimi-K3-GGUF"
       }
     ]
