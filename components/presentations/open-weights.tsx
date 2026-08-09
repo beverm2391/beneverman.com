@@ -26,7 +26,7 @@ const thesisStatementClass =
 // spoken, since Part 2 proves it later.
 const thesis = [
   "You are becoming dependent on intelligence you neither own nor control. That dependence is the business model.",
-  "Open-weight models are better for you now, keep getting better without them, and you can run one yourself."
+  "Open-weight models are better for you now, will continue to get better, and you can run one yourself, today."
 ] as const;
 
 // A downward arrow carrying the logical step between two statements. The
