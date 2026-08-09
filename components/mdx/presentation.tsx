@@ -15,6 +15,11 @@ import {
   movePresentationSlide,
   type PresentationAction
 } from "@/components/mdx/presentation-navigation";
+import {
+  blueprintTheme,
+  presentationThemeStyle,
+  type PresentationTheme
+} from "@/components/mdx/presentation-theme";
 
 type PresentationProps = {
   children: ReactNode;
@@ -22,6 +27,7 @@ type PresentationProps = {
   label?: string;
   monoFontClassName?: string;
   serifFontClassName?: string;
+  theme?: PresentationTheme;
 };
 
 const presentationSerif = Lora({
@@ -40,7 +46,7 @@ const presentationMono = Geist_Mono({
 // bottom hairline rule, mirroring the deck's top rule. No borders, fills, or
 // shadows — hover simply raises the ink from muted to foreground.
 const controlButtonClass =
-  "inline-flex cursor-pointer items-center gap-1.5 py-0.5 text-muted uppercase transition-colors hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-muted disabled:cursor-default disabled:opacity-30 disabled:hover:text-muted";
+  "inline-flex cursor-pointer items-center gap-1.5 py-0.5 text-(--pres-ink-muted) uppercase transition-colors hover:text-(--pres-ink) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--pres-ink-muted) disabled:cursor-default disabled:opacity-30 disabled:hover:text-(--pres-ink-muted)";
 
 // How long the mouse must sit still in fullscreen before the controls and
 // cursor fade. Keyboard navigation deliberately does not wake them.
@@ -53,7 +59,8 @@ export function Presentation({
   className = "",
   label = "Presentation",
   monoFontClassName = presentationMono.variable,
-  serifFontClassName = presentationSerif.variable
+  serifFontClassName = presentationSerif.variable,
+  theme = blueprintTheme
 }: PresentationProps) {
   const slides = Children.toArray(children);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -170,11 +177,12 @@ export function Presentation({
     <section
       ref={rootRef}
       aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}`}
-      className={`not-prose relative overflow-hidden text-fg ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "h-full w-full" : "content-breakout my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
+      className={`not-prose relative overflow-hidden text-(--pres-ink) ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "h-full w-full" : "content-breakout my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
+      style={presentationThemeStyle(theme)}
     >
       <div
         aria-live="polite"
-        className={`relative overflow-hidden bg-surface ${isFullscreen ? "h-full w-full" : "aspect-video rounded-2xl border border-border shadow-xs/5"}`}
+        className={`relative overflow-hidden bg-(--pres-paper) ${isFullscreen ? "h-full w-full" : "aspect-video rounded-2xl border border-(--pres-rule) shadow-xs/5"}`}
       >
         {/* The embedded deck is a preview; clicking anywhere on the slide
             surface promotes it to the real, fullscreen presentation. Links and
@@ -197,14 +205,14 @@ export function Presentation({
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-[clamp(1.5rem,7vw,9rem)] top-[clamp(1.25rem,3.5vw,3rem)] flex items-center gap-3 border-b border-border pb-2 font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-muted uppercase"
+          className="pointer-events-none absolute inset-x-[clamp(1.5rem,7vw,9rem)] top-[clamp(1.25rem,3.5vw,3rem)] flex items-center gap-3 border-b border-(--pres-rule) pb-2 font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted) uppercase"
         >
           <span className="min-w-0 flex-1 truncate">{label}</span>
           <span>{String(currentIndex + 1).padStart(2, "0")}</span>
         </div>
 
         <div
-          className={`absolute inset-x-[clamp(1.5rem,7vw,9rem)] bottom-[clamp(1.25rem,3.5vw,3rem)] flex items-center gap-[1.25em] border-t border-border pt-2 font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-muted transition-opacity duration-500 ${controlsHidden ? "pointer-events-none opacity-0" : "opacity-100"}`}
+          className={`absolute inset-x-[clamp(1.5rem,7vw,9rem)] bottom-[clamp(1.25rem,3.5vw,3rem)] flex items-center gap-[1.25em] border-t border-(--pres-rule) pt-2 font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted) transition-opacity duration-500 ${controlsHidden ? "pointer-events-none opacity-0" : "opacity-100"}`}
         >
           <button
             aria-label="Previous slide"
@@ -257,7 +265,7 @@ export function Presentation({
 
 export function PresentationSlide({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-full w-full items-center px-[clamp(1.5rem,7vw,9rem)] pt-[clamp(3.75rem,8vw,7rem)] pb-[clamp(4rem,8vw,7rem)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-border [&_blockquote]:pl-[clamp(1rem,2.5vw,2rem)] [&_blockquote]:text-muted [&_h1]:max-w-[19ch] [&_h1]:text-[clamp(1.7rem,4.5vw,4rem)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[24ch] [&_h2]:text-[clamp(1.4rem,3.3vw,3rem)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.45em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[clamp(0.8rem,1.4vw,1.15rem)] [&_p]:leading-[1.55] [&_p]:text-muted [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]">
+    <div className="flex h-full w-full items-center px-[clamp(1.5rem,7vw,9rem)] pt-[clamp(3.75rem,8vw,7rem)] pb-[clamp(4rem,8vw,7rem)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[clamp(1rem,2.5vw,2rem)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[clamp(1.7rem,4.5vw,4rem)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[24ch] [&_h2]:text-[clamp(1.4rem,3.3vw,3rem)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.45em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[clamp(0.8rem,1.4vw,1.15rem)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]">
       <div className="w-full">{children}</div>
     </div>
   );
