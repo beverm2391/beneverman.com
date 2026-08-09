@@ -204,9 +204,12 @@ export function Presentation({
       className={`not-prose text-(--pres-ink) ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "relative h-full w-full overflow-hidden" : isTheater ? "fixed inset-0 z-50" : "content-breakout relative my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
       style={presentationThemeStyle(theme)}
     >
+      {/* @container makes the card the reference for every cqw size inside:
+          type and spacing are proportions of the slide itself, so the deck
+          renders identically on a laptop, a TV, and the embedded card. */}
       <div
         aria-live="polite"
-        className={`relative overflow-hidden bg-(--pres-paper) ${isExpanded ? "h-full w-full" : "aspect-video rounded-2xl border border-(--pres-rule) shadow-xs/5"}`}
+        className={`@container relative overflow-hidden bg-(--pres-paper) ${isExpanded ? "h-full w-full" : "aspect-video rounded-2xl border border-(--pres-rule) shadow-xs/5"}`}
       >
         {/* The embedded deck is a preview; clicking the slide surface presents
             it in the browser viewport, ⌘-click on the whole display. Links and
@@ -231,18 +234,16 @@ export function Presentation({
           {slides[currentIndex]}
         </div>
 
-        {/* Chrome is four bare mono corner marks — no rules, no bars. Label
-            top-left, current page top-right, presenting controls bottom-left,
-            counter bottom-right. */}
+        {/* Chrome is bare mono corner marks — no rules, no bars. Label
+            top-left, presenting controls bottom-left, counter bottom-right. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 px-[clamp(0.9rem,1.5vw,1.4rem)] pt-[clamp(0.8rem,1.3vw,1.2rem)] font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted) uppercase"
+          className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 px-[max(0.85rem,1.5cqw)] pt-[max(0.75rem,1.3cqw)] font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-ink-muted) uppercase"
         >
           <span className="min-w-0 truncate">{label}</span>
-          <span>{String(currentIndex + 1).padStart(2, "0")}</span>
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-[clamp(0.9rem,1.5vw,1.4rem)] pb-[clamp(0.8rem,1.3vw,1.2rem)] font-(family-name:--font-presentation-mono) text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] text-(--pres-ink-muted)">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-[max(0.85rem,1.5cqw)] pb-[max(0.75rem,1.3cqw)] font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-ink-muted)">
           {isExpanded ? (
             <div
               className={`pointer-events-auto flex items-center gap-[1.25em] transition-opacity duration-500 ${controlsHidden ? "!pointer-events-none opacity-0" : "opacity-100"}`}
@@ -335,7 +336,7 @@ export function Presentation({
 
 export function PresentationSlide({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-full w-full items-center px-[clamp(1.5rem,7vw,9rem)] pt-[clamp(3.75rem,8vw,7rem)] pb-[clamp(4rem,8vw,7rem)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[clamp(1rem,2.5vw,2rem)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[clamp(1.7rem,4.5vw,4rem)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[24ch] [&_h2]:text-[clamp(1.4rem,3.3vw,3rem)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.45em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[clamp(0.8rem,1.4vw,1.15rem)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]">
+    <div className="flex h-full w-full items-center px-[max(1.25rem,7cqw)] pt-[max(3rem,8cqw)] pb-[max(3rem,8cqw)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[max(0.9rem,2.5cqw)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[max(1.6rem,4.5cqw)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[24ch] [&_h2]:text-[max(1.3rem,3.3cqw)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.45em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[max(0.78rem,1.4cqw)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]">
       <div className="w-full">{children}</div>
     </div>
   );

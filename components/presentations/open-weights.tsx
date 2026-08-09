@@ -17,7 +17,7 @@ const openWeightsMono = IBM_Plex_Mono({
 // Shared text idioms for this deck. These stay local until the theme look is
 // approved, then graduate into reusable slide primitives.
 const kickerClass =
-  "!mt-0 font-(family-name:--font-presentation-mono) !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-(--pres-annotation) uppercase";
+  "!mt-0 font-(family-name:--font-presentation-mono) !text-[max(0.55rem,0.8cqw)] tracking-[0.09em] !text-(--pres-annotation) uppercase";
 
 const thesis = [
   "You are becoming dependent on intelligence you neither own nor control. That dependence is the business model.",
@@ -35,27 +35,27 @@ export function OpenWeightsPresentation() {
       <PresentationSlide>
         <p className={kickerClass}>August 2026</p>
         <h1 className="!mt-[0.4em]">Open-weight models</h1>
-        <p className="!mt-[1.2em] font-(family-name:--font-presentation-mono) !text-[clamp(0.6rem,0.95vw,0.8rem)] tracking-[0.09em] !text-(--pres-ink-muted) uppercase">
+        <p className="!mt-[1.2em] font-(family-name:--font-presentation-mono) !text-[max(0.6rem,0.95cqw)] tracking-[0.09em] !text-(--pres-ink-muted) uppercase">
           Why owning the file matters
         </p>
       </PresentationSlide>
 
       <PresentationSlide>
-        <div className="grid gap-[clamp(0.8rem,2.3vw,2rem)]">
-          <p className="!mt-0 !max-w-[38ch] !text-[clamp(1rem,2.4vw,2.1rem)] !leading-[1.28] !text-(--pres-ink)">
+        <div className="grid gap-[max(0.8rem,2.3cqw)]">
+          <p className="!mt-0 !max-w-[38ch] !text-[max(0.95rem,2.4cqw)] !leading-[1.28] !text-(--pres-ink)">
             {thesis[0]}
           </p>
 
-          <div className="grid gap-[clamp(0.7rem,1.4vw,1.2rem)] border-t border-(--pres-rule) pt-[clamp(0.7rem,1.5vw,1.3rem)] sm:grid-cols-2">
+          <div className="grid gap-[max(0.7rem,1.4cqw)] border-t border-(--pres-rule) pt-[max(0.7rem,1.5cqw)] sm:grid-cols-2">
             <div>
               <p className={kickerClass}>Because</p>
-              <p className="!mt-[0.45em] !max-w-[34ch] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
+              <p className="!mt-[0.45em] !max-w-[34ch] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
                 {thesis[1]}
               </p>
             </div>
             <div>
               <p className={kickerClass}>Thus</p>
-              <p className="!mt-[0.45em] !max-w-[34ch] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
+              <p className="!mt-[0.45em] !max-w-[34ch] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
                 {thesis[2]}
               </p>
             </div>
@@ -66,7 +66,7 @@ export function OpenWeightsPresentation() {
       {/* TEMPORARY theme specimen: every deck idiom on one slide so the theme
           can be judged on real pixels. Delete once the look is settled. */}
       <PresentationSlide>
-        <div className="grid gap-[clamp(0.9rem,2vw,1.8rem)]">
+        <div className="grid gap-[max(0.9rem,2cqw)]">
           <p className={kickerClass}>Part 01 — Theme specimen</p>
           <h2 className="!mt-0">
             A section heading in serif ink,{" "}
@@ -81,30 +81,30 @@ export function OpenWeightsPresentation() {
             <span className="text-(--pres-accent)">the thing that controls you</span>.
           </p>
 
-          <div className="grid gap-[clamp(0.7rem,1.4vw,1.2rem)] border-t border-(--pres-rule) pt-[clamp(0.7rem,1.5vw,1.3rem)] sm:grid-cols-3">
+          <div className="grid gap-[max(0.7rem,1.4cqw)] border-t border-(--pres-rule) pt-[max(0.7rem,1.5cqw)] sm:grid-cols-3">
             <div>
               <p className={kickerClass}>Label</p>
-              <p className="!mt-[0.45em] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
+              <p className="!mt-[0.45em] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
                 Column body under a mono kicker.
               </p>
             </div>
             <div>
               <p className={kickerClass}>Label</p>
-              <p className="!mt-[0.45em] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
+              <p className="!mt-[0.45em] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
                 Columns share one hairline rule.
               </p>
             </div>
             <div>
-              <p className="!mt-0 font-(family-name:--font-presentation-mono) !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-(--pres-accent) uppercase">
+              <p className="!mt-0 font-(family-name:--font-presentation-mono) !text-[max(0.55rem,0.8cqw)] tracking-[0.09em] !text-(--pres-accent) uppercase">
                 Antagonist
               </p>
-              <p className="!mt-[0.45em] !text-[clamp(0.72rem,1.25vw,1.05rem)] !leading-[1.42]">
+              <p className="!mt-[0.45em] !text-[max(0.7rem,1.25cqw)] !leading-[1.42]">
                 Orange marks chokepoints only.
               </p>
             </div>
           </div>
 
-          <p className="!mt-0 font-(family-name:--font-presentation-mono) !text-[clamp(0.55rem,0.8vw,0.7rem)] tracking-[0.09em] !text-(--pres-ink-muted) uppercase">
+          <p className="!mt-0 font-(family-name:--font-presentation-mono) !text-[max(0.55rem,0.8cqw)] tracking-[0.09em] !text-(--pres-ink-muted) uppercase">
             Fig. 01 — Figure captions render like this
           </p>
         </div>
