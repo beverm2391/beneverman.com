@@ -47,6 +47,22 @@ and both widen the same gap.
 
 ## Notes
 
-Keep the curves in neutral ink and the labels in working ink, so the accent on
-the gap is the only warm thing on the page. It should be the first thing the
-eye lands on.
+Keep the curves in neutral ink and the labels in working ink.
+
+## Revision
+
+Three variants delivered. The chosen one puts the two force labels outside the
+curves, pushing on them, which is what a force diagram means. Changes wanted:
+
+- **The curves must start as a single line.** Retention and value are the same
+  quantity early on. Two parallel lines from the origin say they were always
+  different, which is the opposite of the point. One line that splits.
+- **Drop the solid fill.** Replace it with a dotted bracket spanning the gap,
+  labelled `LOST VALUE`. The bracket measures the gap; the fill just shouts.
+- **Drop `OPTIMIZED FOR THEM, NOT YOU`.** The bracket label carries it, and the
+  spoken track carries the rest.
+- **Keep `PULL, COME BACK` and `PUSH, DO NOT GET SUED`** exactly as they are,
+  including their small mono example lists. Those work.
+- **Label the y axis `VALUE`.**
+- Axis lines and curves read heavy in blue. Curves should be neutral ink, axes
+  quieter than the curves.

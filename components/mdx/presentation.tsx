@@ -4,7 +4,9 @@ import { MoveLeft, MoveRight } from "lucide-react";
 import { Geist_Mono, Lora } from "next/font/google";
 import {
   Children,
+  createContext,
   useCallback,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -52,6 +54,11 @@ const controlButtonClass =
 // cursor fade. Keyboard navigation deliberately does not wake them.
 const FULLSCREEN_IDLE_MS = 2500;
 
+// Working notes travel with the slide they describe (what to redraw, what
+// still needs writing) but must never appear while presenting, so they are
+// hidden until the author presses N.
+const SlideNotesVisible = createContext(false);
+
 // A deliberately small authoring surface: a post supplies one PresentationSlide
 // per slide, and this component owns only viewing, movement, and fullscreen.
 export function Presentation({
@@ -70,6 +77,7 @@ export function Presentation({
   const [isTheater, setIsTheater] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isIdle, setIsIdle] = useState(false);
+  const [notesVisible, setNotesVisible] = useState(false);
   const [fullscreenError, setFullscreenError] = useState<string | null>(null);
   const rootRef = useRef<HTMLElement>(null);
   const slideCount = slides.length;
@@ -182,6 +190,12 @@ export function Presentation({
         return;
       }
 
+      if (event.key.toLowerCase() === "n") {
+        event.preventDefault();
+        setNotesVisible((visible) => !visible);
+        return;
+      }
+
       if (event.key.toLowerCase() === "f") {
         event.preventDefault();
         void enterFullscreen();
@@ -214,6 +228,7 @@ export function Presentation({
         {/* The embedded deck is a preview; clicking the slide surface presents
             it in the browser viewport, ⌘-click on the whole display. Links and
             controls inside a slide keep their own click behaviour. */}
+        <SlideNotesVisible.Provider value={notesVisible}>
         <div
           className={`h-full w-full ${isExpanded ? "" : "cursor-zoom-in"}`}
           onClick={(event) => {
@@ -233,6 +248,7 @@ export function Presentation({
         >
           {slides[currentIndex]}
         </div>
+        </SlideNotesVisible.Provider>
 
         {/* Chrome is bare mono corner marks — no rules, no bars. Label
             top-left, presenting controls bottom-left, counter bottom-right. */}
@@ -342,15 +358,19 @@ export function Presentation({
 export function PresentationSlide({
   children,
   layout = "top",
+  note,
   notes
 }: {
   children: ReactNode;
   layout?: "top" | "center" | "fill";
+  /** Working note: what this slide still needs. Shown only when N is pressed. */
+  note?: string;
   /** Sources for the slide's marked claims, pinned under the content. */
   notes?: ReactNode;
 }) {
   const fill = layout === "fill";
   const items = fill ? "items-stretch" : layout === "center" ? "items-center" : "items-start";
+  const noteVisible = useContext(SlideNotesVisible);
 
   return (
     <div className={`flex h-full w-full flex-col px-[max(1.25rem,7cqw)] pt-[max(3rem,8cqw)] pb-[max(3rem,8cqw)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[max(0.9rem,2.5cqw)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[max(1.6rem,4.5cqw)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[40ch] [&_h2]:text-[max(1.3rem,3.3cqw)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.4em] [&_li]:text-[max(0.85rem,2cqw)] [&_li]:leading-[1.35] [&_li_li]:text-[0.8em] [&_li_ul]:mt-[0.3em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[max(0.78rem,1.4cqw)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]`}>
@@ -360,6 +380,13 @@ export function PresentationSlide({
         <div className={`w-full ${fill ? "flex min-h-0 flex-col" : ""}`}>{children}</div>
       </div>
       {notes ? <div className="w-full pt-[max(0.6rem,1.2cqw)]">{notes}</div> : null}
+      {note && noteVisible ? (
+        <div className="w-full pt-[max(0.6rem,1.2cqw)]">
+          <p className="!mt-0 !max-w-none border-l-2 border-(--pres-accent) pl-[0.8em] font-(family-name:--font-presentation-mono) !text-[max(0.55rem,0.85cqw)] !leading-[1.5] !text-(--pres-accent)">
+            {note}
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

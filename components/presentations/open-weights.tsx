@@ -244,49 +244,27 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      {/* Candidates. Keep one per figure, drop the rest. */}
-      <PresentationSlide layout="fill">
+      <PresentationSlide
+        layout="fill"
+        note="Fig 03: upscale pending. Text fidelity to improve."
+      >
         <SlideFigure
           alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
-          caption="Fig. 03, option A"
+          caption="Fig. 03. What is a weight"
           frame={false}
-          src="/images/blog/open-weights-ai-models/03-1-what-is-a-weight.png"
+          src="/images/blog/open-weights-ai-models/03-what-is-a-weight.png"
         />
       </PresentationSlide>
 
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
-          caption="Fig. 03, option B"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/03-2-what-is-a-weight.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
+      <PresentationSlide
+        layout="fill"
+        note="Fig 04: redraw with real word fragments in the token boxes, they are empty so tokenizing is asserted rather than shown. Upscale pending."
+      >
         <SlideFigure
           alt="Prompt tokenized, passed through the weights, emitted one token at a time."
-          caption="Fig. 04, option A"
+          caption="Fig. 04. Text through the weights"
           frame={false}
-          src="/images/blog/open-weights-ai-models/04-1-text-through-weights.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="Prompt tokenized, passed through the weights, emitted one token at a time."
-          caption="Fig. 04, option B"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/04-2-text-through-weights.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="Prompt tokenized, passed through the weights, emitted one token at a time."
-          caption="Fig. 04, option C"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/04-3-text-through-weights.png"
+          src="/images/blog/open-weights-ai-models/04-text-through-weights.png"
         />
       </PresentationSlide>
 
@@ -337,36 +315,21 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      <PresentationSlide>
+      <PresentationSlide note="Needs its content. Elasticity analogy, latte vs heart medication, then what you already run on AI.">
         <SlideStack align="start">
           <h2>Why dependence carries risk</h2>
         </SlideStack>
       </PresentationSlide>
 
-      <PresentationSlide layout="fill">
+      <PresentationSlide
+        layout="fill"
+        note="Fig 05: redraw. Curves must start as one line, not two. Keep push and pull. Drop OPTIMIZED FOR THEM NOT YOU and the solid fill. Replace the fill with a dotted bracket labelled LOST VALUE. Label the y axis VALUE. Base it on this version."
+      >
         <SlideFigure
           alt="Retention and user value rise together, then diverge under optimization pressure."
-          caption="Fig. 05, option A"
+          caption="Fig. 05. Retention diverges from value"
           frame={false}
-          src="/images/blog/open-weights-ai-models/05-1-retention-diverges-from-value.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="Retention and user value rise together, then diverge under optimization pressure."
-          caption="Fig. 05, option B"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/05-2-retention-diverges-from-value.png"
-        />
-      </PresentationSlide>
-
-      <PresentationSlide layout="fill">
-        <SlideFigure
-          alt="Retention and user value rise together, then diverge under optimization pressure."
-          caption="Fig. 05, option C"
-          frame={false}
-          src="/images/blog/open-weights-ai-models/05-3-retention-diverges-from-value.png"
+          src="/images/blog/open-weights-ai-models/05-retention-diverges-from-value.png"
         />
       </PresentationSlide>
 
