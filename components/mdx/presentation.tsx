@@ -37,7 +37,7 @@ const presentationMono = Geist_Mono({
 });
 
 const controlButtonClass =
-  "inline-flex size-9 cursor-pointer items-center justify-center rounded-md border border-border bg-bg text-fg shadow-xs/5 transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-muted disabled:cursor-default disabled:opacity-35";
+  "inline-flex size-9 cursor-pointer items-center justify-center rounded-lg border border-border bg-bg text-fg shadow-xs/5 transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-muted disabled:cursor-default disabled:opacity-35";
 
 const wideControlButtonClass = `${controlButtonClass} w-auto gap-1.5 px-3 text-sm font-medium`;
 
@@ -141,11 +141,11 @@ export function Presentation({
     <section
       ref={rootRef}
       aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}`}
-      className={`not-prose relative overflow-hidden text-fg ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "flex h-full w-full items-center justify-center bg-bg" : "content-breakout my-10"} ${className}`}
+      className={`not-prose relative overflow-hidden text-fg ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "flex h-full w-full items-center justify-center bg-bg p-4" : "content-breakout my-10"} ${className}`}
     >
       <div
         aria-live="polite"
-        className={`relative overflow-hidden rounded-[var(--radius)] border border-border bg-surface shadow-xs/5 ${isFullscreen ? "h-[min(100vh,calc(100vw*9/16))] w-[min(100vw,calc(100vh*16/9))]" : "aspect-video"}`}
+        className={`relative overflow-hidden rounded-2xl border border-border bg-surface shadow-xs/5 ${isFullscreen ? "h-[min(calc(100vh-2rem),calc(56.25vw-1.125rem))] w-[min(calc(100vw-2rem),calc(177.7778vh-3.5556rem))]" : "aspect-video"}`}
       >
         <div className="h-full w-full">{slides[currentIndex]}</div>
 
@@ -158,7 +158,7 @@ export function Presentation({
         </div>
 
         <div className="absolute right-3 bottom-3 flex items-center gap-2 font-[var(--font-presentation-mono)] text-sm">
-          <span className="rounded-md border border-border bg-bg px-2 py-1 text-xs text-muted shadow-xs/5">
+          <span className="rounded-lg border border-border bg-bg px-2 py-1 text-xs text-muted shadow-xs/5">
             {String(currentIndex + 1).padStart(2, "0")} / {String(slideCount).padStart(2, "0")}
           </span>
           <button
