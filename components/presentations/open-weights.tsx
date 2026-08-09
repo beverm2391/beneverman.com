@@ -190,6 +190,16 @@ function ModelList({ providers }: { providers: readonly ProviderModels[] }) {
   );
 }
 
+// Numbering runs continuously across the deck: SlideRef marks a claim in the
+// body, and the references slide at the end carries the sources.
+const sources = [
+  {
+    n: 1,
+    title: "Milton Friedman, The Social Responsibility of Business Is to Increase Its Profits",
+    href: "https://www.enriquedans.com/wp-content/uploads/2019/08/friedman.pdf"
+  }
+] as const;
+
 // Two beats: the accusation, then the exit. The explanation in between is
 // spoken, since the talk proves it later.
 const thesis = [
@@ -234,13 +244,49 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      {/* Placeholder art, revision pending per image-requests/03-what-is-a-weight.md */}
+      {/* Candidates. Keep one per figure, drop the rest. */}
       <PresentationSlide layout="fill">
         <SlideFigure
           alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
-          caption="Fig. 03. What is a weight"
+          caption="Fig. 03, option A"
           frame={false}
-          src="/images/blog/open-weights-ai-models/03-what-is-a-weight.png"
+          src="/images/blog/open-weights-ai-models/03-1-what-is-a-weight.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
+          caption="Fig. 03, option B"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/03-2-what-is-a-weight.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Prompt tokenized, passed through the weights, emitted one token at a time."
+          caption="Fig. 04, option A"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/04-1-text-through-weights.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Prompt tokenized, passed through the weights, emitted one token at a time."
+          caption="Fig. 04, option B"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/04-2-text-through-weights.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Prompt tokenized, passed through the weights, emitted one token at a time."
+          caption="Fig. 04, option C"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/04-3-text-through-weights.png"
         />
       </PresentationSlide>
 
@@ -264,28 +310,12 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      <PresentationSlide
-        notes={
-          <SlideNotes
-            notes={[
-              {
-                n: 3,
-                title: "Milton Friedman, The Social Responsibility of Business Is to Increase Its Profits",
-                href: "https://www.enriquedans.com/wp-content/uploads/2019/08/friedman.pdf"
-              }
-            ]}
-          />
-        }
-      >
+      <PresentationSlide>
         <SlideStack align="start">
-          <h2>
-            Optimized for retention
-            <SlideRef n={1} /> and revenue
-            <SlideRef n={2} />
-          </h2>
+          <h2>Optimized for retention and revenue</h2>
           <SlideStatement>
             Corporations optimize for shareholder value
-            <SlideRef n={3} />, aka revenue, which is driven by user retention.
+            <SlideRef n={1} />, aka revenue, which is driven by user retention.
           </SlideStatement>
           <ul>
             <li>
@@ -313,6 +343,33 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Retention and user value rise together, then diverge under optimization pressure."
+          caption="Fig. 05, option A"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/05-1-retention-diverges-from-value.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Retention and user value rise together, then diverge under optimization pressure."
+          caption="Fig. 05, option B"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/05-2-retention-diverges-from-value.png"
+        />
+      </PresentationSlide>
+
+      <PresentationSlide layout="fill">
+        <SlideFigure
+          alt="Retention and user value rise together, then diverge under optimization pressure."
+          caption="Fig. 05, option C"
+          frame={false}
+          src="/images/blog/open-weights-ai-models/05-3-retention-diverges-from-value.png"
+        />
+      </PresentationSlide>
+
       {/* Parked figures: real content, not yet placed in the argument. */}
       <PresentationSlide layout="fill">
         <SlideFigure
@@ -330,6 +387,13 @@ export function OpenWeightsPresentation() {
           frame={false}
           src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai.png"
         />
+      </PresentationSlide>
+
+      <PresentationSlide>
+        <SlideStack align="start">
+          <h2>References</h2>
+          <SlideNotes notes={sources} size="slide" />
+        </SlideStack>
       </PresentationSlide>
     </Presentation>
   );

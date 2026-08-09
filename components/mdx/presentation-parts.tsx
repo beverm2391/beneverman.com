@@ -68,14 +68,26 @@ export function SlideRef({ n }: { n: number }) {
  * the SlideRef markers in the body, and titles link out so the deck carries its
  * own evidence rather than relying on the talk track.
  */
-export function SlideNotes({ notes }: { notes: readonly { href: string; n: number; title: string }[] }) {
+export function SlideNotes({
+  notes,
+  size = "footnote"
+}: {
+  notes: readonly { href: string; n: number; title: string }[];
+  /**
+   * `footnote` is the strip under a slide, for the rare case where the source
+   * is the argument. `slide` is the references slide that collects the deck's
+   * numbered sources, which is where most of them belong: nobody reads a
+   * citation off a projector, so the marker carries the credibility and the
+   * list carries the evidence.
+   */
+  size?: "footnote" | "slide";
+}) {
+  const scale = size === "slide" ? "!text-[max(0.6rem,1cqw)]" : "!text-[max(0.5rem,0.72cqw)]";
+
   return (
-    <ol className="!mt-0 grid list-none gap-[0.3em] !pl-0">
+    <ol className={`!mt-0 grid list-none !pl-0 ${size === "slide" ? "gap-[0.9em]" : "gap-[0.3em]"}`}>
       {notes.map((note) => (
-        <li
-          className={`!mt-0 flex gap-[0.6em] ${monoClass} !text-[max(0.5rem,0.72cqw)] normal-case`}
-          key={note.n}
-        >
+        <li className={`!mt-0 flex gap-[0.6em] ${monoClass} ${scale} normal-case`} key={note.n}>
           <span className={toneClass.annotation}>{note.n}</span>
           <a className={`${toneClass.muted} underline decoration-1 underline-offset-4`} href={note.href} rel="noreferrer" target="_blank">
             {note.title}
