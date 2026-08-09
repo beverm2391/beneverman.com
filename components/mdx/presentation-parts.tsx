@@ -63,6 +63,29 @@ export function SlideRef({ n }: { n: number }) {
   );
 }
 
+/**
+ * Sources for a slide's marked claims, pinned under the content. Numbers match
+ * the SlideRef markers in the body, and titles link out so the deck carries its
+ * own evidence rather than relying on the talk track.
+ */
+export function SlideNotes({ notes }: { notes: readonly { href: string; n: number; title: string }[] }) {
+  return (
+    <ol className="!mt-0 grid list-none gap-[0.3em] !pl-0">
+      {notes.map((note) => (
+        <li
+          className={`!mt-0 flex gap-[0.6em] ${monoClass} !text-[max(0.5rem,0.72cqw)] normal-case`}
+          key={note.n}
+        >
+          <span className={toneClass.annotation}>{note.n}</span>
+          <a className={`${toneClass.muted} underline decoration-1 underline-offset-4`} href={note.href} rel="noreferrer" target="_blank">
+            {note.title}
+          </a>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 /** Supporting prose. Quieter than a statement; use sparingly on a spoken slide. */
 export function SlideBody({ children }: { children: ReactNode }) {
   return (

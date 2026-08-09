@@ -6,6 +6,7 @@ import {
   SlideColumns,
   SlideFigure,
   SlideKicker,
+  SlideNotes,
   SlideRef,
   SlideStack,
   SlideStatement
@@ -263,17 +264,45 @@ export function OpenWeightsPresentation() {
         </SlideStack>
       </PresentationSlide>
 
-      <PresentationSlide>
+      <PresentationSlide
+        notes={
+          <SlideNotes
+            notes={[
+              {
+                n: 3,
+                title: "Milton Friedman, The Social Responsibility of Business Is to Increase Its Profits",
+                href: "https://www.enriquedans.com/wp-content/uploads/2019/08/friedman.pdf"
+              }
+            ]}
+          />
+        }
+      >
         <SlideStack align="start">
           <h2>
             Optimized for retention
             <SlideRef n={1} /> and revenue
             <SlideRef n={2} />
           </h2>
+          <SlideStatement>
+            Corporations optimize for shareholder value
+            <SlideRef n={3} />, aka revenue, which is driven by user retention.
+          </SlideStatement>
           <ul>
-            <li>Adoption, habit, and dependence drive retention</li>
-            <li>Retention produces revenue</li>
-            <li>The effects land on you: deskilling, overreliance, sycophancy</li>
+            <li>
+              Retention gets optimized even at the expense of the user
+              <ul>
+                <li>Sycophancy</li>
+                <li>Engagement loops, RL toward follow-up questions</li>
+                <li>Meta, the played out version of where this goes</li>
+              </ul>
+            </li>
+            <li>
+              Liability removes what would have helped you
+              <ul>
+                <li>Safety classifiers</li>
+                <li>Soft and covert refusal</li>
+              </ul>
+            </li>
           </ul>
         </SlideStack>
       </PresentationSlide>

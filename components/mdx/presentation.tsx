@@ -341,17 +341,25 @@ export function Presentation({
 // is what a figure needs.
 export function PresentationSlide({
   children,
-  layout = "top"
+  layout = "top",
+  notes
 }: {
   children: ReactNode;
   layout?: "top" | "center" | "fill";
+  /** Sources for the slide's marked claims, pinned under the content. */
+  notes?: ReactNode;
 }) {
   const fill = layout === "fill";
   const items = fill ? "items-stretch" : layout === "center" ? "items-center" : "items-start";
 
   return (
-    <div className={`flex h-full w-full ${items} px-[max(1.25rem,7cqw)] pt-[max(3rem,8cqw)] pb-[max(3rem,8cqw)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[max(0.9rem,2.5cqw)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[max(1.6rem,4.5cqw)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[40ch] [&_h2]:text-[max(1.3rem,3.3cqw)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.4em] [&_li]:text-[max(0.85rem,2cqw)] [&_li]:leading-[1.35] [&_li_li]:text-[0.8em] [&_li_ul]:mt-[0.3em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[max(0.78rem,1.4cqw)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]`}>
-      <div className={`w-full ${fill ? "flex min-h-0 flex-col" : ""}`}>{children}</div>
+    <div className={`flex h-full w-full flex-col px-[max(1.25rem,7cqw)] pt-[max(3rem,8cqw)] pb-[max(3rem,8cqw)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[max(0.9rem,2.5cqw)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[max(1.6rem,4.5cqw)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[40ch] [&_h2]:text-[max(1.3rem,3.3cqw)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.4em] [&_li]:text-[max(0.85rem,2cqw)] [&_li]:leading-[1.35] [&_li_li]:text-[0.8em] [&_li_ul]:mt-[0.3em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[max(0.78rem,1.4cqw)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]`}>
+      {/* Notes sit under the content and outside its alignment, so sources
+          stay at the foot of the slide however the body is placed. */}
+      <div className={`flex min-h-0 w-full flex-1 ${items}`}>
+        <div className={`w-full ${fill ? "flex min-h-0 flex-col" : ""}`}>{children}</div>
+      </div>
+      {notes ? <div className="w-full pt-[max(0.6rem,1.2cqw)]">{notes}</div> : null}
     </div>
   );
 }
