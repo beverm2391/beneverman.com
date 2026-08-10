@@ -170,10 +170,11 @@ type SlideTimelineMark = {
   at: number;
   /** Big statement above the axis, e.g. a price. */
   label?: ReactNode;
-  /** Small mono line under the label, e.g. a company stage. */
+  /** Small mono line under the year, e.g. a company stage. */
   sublabel?: ReactNode;
-  /** Marks the stage that harms; same semantic accent as everywhere. */
-  tone?: "ink" | "accent";
+  /** Ink for the stage line. Accent marks the stage that harms; neutral
+   *  hinge events (an IPO) take ink; machinery defaults to annotation. */
+  tone?: Tone;
   /** Mono text below the axis, e.g. "2015–2017" or "Now". */
   yearLabel?: string;
 };
@@ -221,6 +222,15 @@ export function SlideTimeline({
         className="absolute inset-x-0 border-t border-(--pres-annotation)"
         style={{ top: `${axisTop}%` }}
       />
+      <svg
+        aria-hidden="true"
+        className="absolute right-0 w-[max(0.45rem,0.8cqw)] -translate-y-1/2 text-(--pres-annotation)"
+        fill="none"
+        style={{ top: `${axisTop}%` }}
+        viewBox="0 0 8 12"
+      >
+        <path d="M1 1 L7 6 L1 11" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+      </svg>
       {marks.map((mark) => {
         // Marks near either edge align outward so their text stays on the
         // slide; everything else centers on its tick.
@@ -242,7 +252,7 @@ export function SlideTimeline({
             />
             {mark.label ? (
               <div
-                className={`absolute whitespace-nowrap ${mark.tone === "accent" ? "[&_p]:!text-(--pres-accent)" : ""}`}
+                className="absolute whitespace-nowrap"
                 style={{
                   bottom: `${100 - axisTop + 7}%`,
                   transform: `translateX(${translateX})`
@@ -264,7 +274,9 @@ export function SlideTimeline({
                     {mark.yearLabel}
                   </p>
                 ) : null}
-                {mark.sublabel ? <SlideKicker>{mark.sublabel}</SlideKicker> : null}
+                {mark.sublabel ? (
+                  <SlideKicker tone={mark.tone ?? "annotation"}>{mark.sublabel}</SlideKicker>
+                ) : null}
               </div>
             ) : null}
           </div>

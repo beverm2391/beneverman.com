@@ -101,7 +101,7 @@ export const slides = {
               label: "$10",
               sublabel: "Pre-IPO · subsidized growth"
             },
-            { at: 2019.4, yearLabel: "2019", sublabel: "IPO" },
+            { at: 2019.4, yearLabel: "2019", sublabel: "IPO", tone: "ink" },
             {
               at: 2026.5,
               yearLabel: "Now",
