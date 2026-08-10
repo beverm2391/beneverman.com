@@ -1,3 +1,5 @@
+// loc-check: exempt — the slide bench is a registry that grows with the
+// talk; the unit of review is the slide, not the file.
 import { PresentationSlide } from "@/components/mdx/presentation";
 import { closedProviders, ModelList, openProviders, sources, thesis } from "./data";
 import {
@@ -83,8 +85,8 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // Spoken argument: price elasticity. The $10 ride trained the habit; the
-  // $70 ride collects on it, because dependence makes demand inelastic.
+  // Spoken argument: price elasticity, seeded here and paid off on the
+  // price-elasticity slide after the Instagram receipt.
   "receipt-uber": (
     <PresentationSlide note="TODO: wording draft, Ben to pass. Replace the now-line with Ben's own timestamped app screenshot (representative quote, not a same-route comparison) in public/images/blog/open-weights-ai-models/screenshots/. Sources for the era and the 45% aggregate are gathered in research-requests/01-uber-receipt.md — Ben to read before any get cited.">
       <SlideStack align="start">
@@ -142,6 +144,37 @@ export const slides = {
             }
           ]}
         />
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The section question: after two completed arcs, ask it straight. The
+  // elasticity slide answers it.
+  "why-do-we-put-up": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack>
+        <h2>Why do we put up with this?</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The answer: dependence kills price sensitivity. From Ben's pres note —
+  // the latte against the heart medication.
+  "price-elasticity": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. The note's follow-on beat — what you already run on AI (work, business, health, finances) — still needs a home. Candidate figure if the columns feel thin: elasticity diagram, dependence vs price sensitivity.">
+      <SlideStack align="start">
+        <SlideKicker>Price elasticity</SlideKicker>
+        <h2>The more you depend on it, the more they can charge</h2>
+        <SlideColumns>
+          <SlideColumn label="A latte">
+            <SlideStatement>Price doubles? You skip it.</SlideStatement>
+            <p>Elastic. You can walk away.</p>
+          </SlideColumn>
+          <SlideColumn label="Your heart medication" tone="accent">
+            <SlideStatement>Price doubles? You pay.</SlideStatement>
+            <p>Inelastic. You depend on it.</p>
+          </SlideColumn>
+        </SlideColumns>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -350,14 +383,6 @@ export const slides = {
             </ul>
           </li>
         </ul>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
-  "dependence-risk": (
-    <PresentationSlide note="Needs its content. Elasticity analogy, latte vs heart medication, then what you already run on AI.">
-      <SlideStack align="start">
-        <h2>Why dependence carries risk</h2>
       </SlideStack>
     </PresentationSlide>
   ),
