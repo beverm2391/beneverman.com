@@ -106,7 +106,7 @@ export const slides = {
               at: 2026.5,
               yearLabel: "Now",
               label: "$70, plus surge",
-              sublabel: "Public · profit-maxxing · locked-in",
+              sublabel: "Public · profit-maxxing · monopoly",
               tone: "accent"
             }
           ]}
