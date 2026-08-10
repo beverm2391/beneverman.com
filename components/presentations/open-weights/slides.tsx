@@ -23,7 +23,7 @@ import {
 //
 // Authoring rules for this deck (Ben's):
 // - Content is Ben's. Agents suggest, challenge, and develop his ideas —
-//   especially from the pres note in the bencorp repo — but do not invent
+//   especially from docs/presentations/open-weights/notes.md — but do not invent
 //   slide content. Draft wording gets a "Ben to pass" note.
 // - Progressive disclosure: the default layer is felt, every technical layer
 //   is opt-in (a later slide, the appendix, a question from the room).
@@ -78,16 +78,19 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Fig 08 requested (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer) — becomes the slide's visual when it lands.">
-      <SlideStack gap="none">
-        <SlideStatement>
-          A chatbot is a giant file of numbers &mdash; the weights &mdash;
-          running on someone&rsquo;s computer.
-        </SlideStatement>
-        <SlideArrow label="So" />
-        <SlideStatement size="lead">
-          Open weights means you get the file.
-        </SlideStatement>
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Fig 08 requested (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer) — becomes the slide's visual when it lands.">
+      <SlideStack align="start">
+        <h2>What are weights?</h2>
+        <SlideStack align="start" gap="none">
+          <SlideStatement>
+            A chatbot is a giant file of numbers &mdash; the weights &mdash;
+            running on someone&rsquo;s computer.
+          </SlideStatement>
+          <SlideArrow label="So" />
+          <SlideStatement size="lead">
+            Open weights means you get the file.
+          </SlideStatement>
+        </SlideStack>
       </SlideStack>
     </PresentationSlide>
   ),
