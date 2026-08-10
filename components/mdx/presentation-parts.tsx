@@ -180,8 +180,9 @@ type SlideTimelineMark = {
 
 /**
  * A horizontal time axis, for arguments that are really about trajectory.
- * Spans thicken the stretch of axis they cover; each mark anchors a tick,
- * with its year below the axis and its content above.
+ * Drawn in the deck's drafting register: the axis and ticks are working
+ * (annotation) ink, spans read as tinted eras rising off the axis, and each
+ * mark seats its content directly on the line — year below, statement above.
  */
 export function SlideTimeline({
   end,
@@ -195,28 +196,31 @@ export function SlideTimeline({
   start: number;
 }) {
   const pct = (value: number) => ((value - start) / (end - start)) * 100;
-  // Where the axis sits vertically: content needs more room above than the
-  // year row needs below.
-  const axisTop = 62;
+  // Statements sit above the axis; the year-and-stage annotations hang in two
+  // rows below it, so the felt quantity and the machinery never share a band.
+  const axisTop = 55;
+  const bandHeight = 34;
 
   return (
-    <div className="relative w-full" style={{ height: "max(9rem,20cqw)" }}>
-      <div
-        className="absolute inset-x-0 border-t border-(--pres-rule)"
-        style={{ top: `${axisTop}%` }}
-      />
+    <div className="relative w-full" style={{ height: "max(8.5rem,19cqw)" }}>
+      {/* Era bands first, so the axis and ticks draw over them. */}
       {spans.map((span) => (
         <div
-          className="absolute border-t-2 border-(--pres-annotation)"
           key={`${span.from}-${span.to}`}
+          className="absolute"
           style={{
+            background: "color-mix(in srgb, var(--pres-annotation-tint) 30%, transparent)",
+            height: `${bandHeight}%`,
             left: `${pct(span.from)}%`,
-            top: `${axisTop}%`,
-            transform: "translateY(-0.5px)",
+            top: `${axisTop - bandHeight}%`,
             width: `${pct(span.to) - pct(span.from)}%`
           }}
         />
       ))}
+      <div
+        className="absolute inset-x-0 border-t border-(--pres-annotation)"
+        style={{ top: `${axisTop}%` }}
+      />
       {marks.map((mark) => {
         // Marks near either edge align outward so their text stays on the
         // slide; everything else centers on its tick.
@@ -233,33 +237,35 @@ export function SlideTimeline({
         return (
           <div className="absolute inset-y-0" key={mark.at} style={{ left: `${p}%` }}>
             <div
-              className="absolute w-px bg-(--pres-ink-muted)"
-              style={{ height: "9%", top: `${axisTop - 4.5}%` }}
+              className="absolute w-px bg-(--pres-annotation)"
+              style={{ height: "10%", top: `${axisTop - 5}%` }}
             />
-            {mark.label || mark.sublabel ? (
+            {mark.label ? (
               <div
-                className={`absolute flex flex-col gap-[0.4em] whitespace-nowrap ${itemsClass} ${
-                  mark.tone === "accent" ? "[&_p]:!text-(--pres-accent)" : ""
-                }`}
+                className={`absolute whitespace-nowrap ${mark.tone === "accent" ? "[&_p]:!text-(--pres-accent)" : ""}`}
                 style={{
                   bottom: `${100 - axisTop + 7}%`,
                   transform: `translateX(${translateX})`
                 }}
               >
-                {mark.label ? <SlideStatement size="lead">{mark.label}</SlideStatement> : null}
-                {mark.sublabel ? <SlideKicker>{mark.sublabel}</SlideKicker> : null}
+                <SlideStatement size="lead">{mark.label}</SlideStatement>
               </div>
             ) : null}
-            {mark.yearLabel ? (
-              <p
-                className={`absolute !mt-0 !max-w-none whitespace-nowrap ${monoClass} !text-(--pres-ink-muted)`}
+            {mark.yearLabel || mark.sublabel ? (
+              <div
+                className={`absolute flex flex-col gap-[0.55em] whitespace-nowrap ${itemsClass}`}
                 style={{
                   top: `${axisTop + 9}%`,
                   transform: `translateX(${translateX})`
                 }}
               >
-                {mark.yearLabel}
-              </p>
+                {mark.yearLabel ? (
+                  <p className={`!mt-0 !max-w-none ${monoClass} !text-(--pres-ink)`}>
+                    {mark.yearLabel}
+                  </p>
+                ) : null}
+                {mark.sublabel ? <SlideKicker>{mark.sublabel}</SlideKicker> : null}
+              </div>
             ) : null}
           </div>
         );
