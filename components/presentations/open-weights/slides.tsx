@@ -78,11 +78,11 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Fig 08 requested (the same file locked in their datacenter vs free on your laptop) — becomes the slide's visual when it lands.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Fig 08 requested (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer) — becomes the slide's visual when it lands.">
       <SlideStack gap="none">
         <SlideStatement>
-          A chatbot is a giant file of numbers, running on someone&rsquo;s
-          computer.
+          A chatbot is a giant file of numbers &mdash; the weights &mdash;
+          running on someone&rsquo;s computer.
         </SlideStatement>
         <SlideArrow label="So" />
         <SlideStatement size="lead">

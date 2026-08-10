@@ -1,32 +1,44 @@
-# Figure 08, the file — locked up vs freely available
+# Figure 08, the same pipeline, two computers
 
 `08-the-file-locked-vs-free.png`
 
-The deck's ten-second definition of open weights, drawn: a chatbot is a file,
-and the entire difference between closed and open is where that file lives and
-who stands between you and it. Backs the "here's what I mean" slide early in
-the deck, so it must read in seconds with no prior setup.
+The deck's ten-second, non-technical definition of open weights, drawn. It
+introduces "weights" as nothing more than the middle of a pipe — prompt goes
+in, weights run on a computer, response comes out — and then shows the ONLY
+difference between closed and open: whose computer the weights sit on. Backs
+the "here's what I mean" slide early in the deck; must read in seconds with
+no prior setup.
 
 ## Composition
 
-Two panels, left and right, each containing the SAME object: the isometric
-stack of sheets labelled `MODEL.SAFETENSORS` from figure 03 panel 3. The
-stacks must be visibly identical — that sameness is the argument.
+Two identical horizontal pipelines, stacked top and bottom:
 
-## Panel 1, THEIR DATACENTER
+```
+YOUR PROMPT  ->  [ WEIGHTS ]  ->  RESPONSE
+```
 
-The stack sits inside a server rack or cage. Between the viewer and the cage,
-a gate or slot — the only opening — with a small arrow passing a prompt in
-and a small arrow passing a response out. The gate is the accent element, the
-only accent in the figure. Label the gate `THEIR RULES, THEIR PRICES`.
+- `YOUR PROMPT` and `RESPONSE` as small text bubbles, identical in both
+  panels.
+- `WEIGHTS` as the isometric stack of sheets from figure 03 panel 3, labelled
+  `MODEL.SAFETENSORS` — identical in both panels. The sameness of the two
+  pipelines is the argument; only the surroundings of the weights differ.
 
-## Panel 2, YOUR LAPTOP
+## Top pipeline, CLOSED WEIGHTS
 
-The identical stack sits on or above an open laptop. No gate, no cage,
-nothing between the viewer and the file. A thin leader labels the stack
-`THE SAME FILE`.
+The weights stack sits inside a server rack or cage labelled
+`OPENAI'S COMPUTER`. The prompt arrow enters through a gate or slot in the
+cage, and the response arrow exits through it — the only opening. The gate is
+the accent element, the only accent in the figure. Label the gate
+`THEIR RULES, THEIR PRICES`.
+
+## Bottom pipeline, OPEN WEIGHTS
+
+The same weights stack sits on an open laptop labelled `YOUR COMPUTER`.
+The prompt and response arrows connect directly; no gate, no cage, nothing
+between you and the weights.
 
 ## Labels
 
-Panel titles in mono: `CLOSED WEIGHTS` and `OPEN WEIGHTS`. Keep everything
-else minimal; the two panels and the gate carry the meaning.
+Panel titles in mono: `CLOSED WEIGHTS` and `OPEN WEIGHTS`. A thin leader on
+the bottom stack: `THE SAME FILE`. Keep everything else minimal; the repeated
+pipeline and the gate carry the meaning.
