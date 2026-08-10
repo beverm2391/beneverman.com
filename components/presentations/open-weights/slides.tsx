@@ -66,7 +66,7 @@ export const slides = {
   ),
 
   "closed-tech-goes-wrong": (
-    <PresentationSlide note="Escalation: your ride, your feed, your apps, your bed. Ask who remembers $10 Ubers. The pattern has a name (ref 2) but do not lecture it. Wording is draft, Ben to pass.">
+    <PresentationSlide note="Escalation: your ride, your feed, your fridge, your bed. Ask who remembers $10 Ubers. The pattern has a name (ref 2) but do not lecture it. Backup receipt if asked: HP Dynamic Security firmware blocks non-HP ink that worked yesterday (hp.com/us-en/cartridge/supplies-security.html). The bed's AWS-outage story (stuck upright, overheating) is saved for the dependence act. Wording is draft, Ben to pass.">
       <SlideStack align="start">
         <h2>
           Closed tech goes wrong
@@ -81,15 +81,36 @@ export const slides = {
             <p className="!mt-0">Your friends, eight years ago</p>
             <p className="!text-(--pres-ink)">An ad machine, now</p>
           </SlideColumn>
-          <SlideColumn label="Meta">
-            <p className="!mt-0">Features you asked for</p>
-            <p className="!text-(--pres-ink)">Features they shipped anyway</p>
+          <SlideColumn label="Your fridge">
+            <p className="!mt-0">A $3,499 smart fridge</p>
+            <p className="!text-(--pres-ink)">
+              Ads, by software update
+              <SlideRef n={4} />
+            </p>
           </SlideColumn>
           <SlideColumn label="Your bed">
-            <p className="!mt-0">A $3,000 smart mattress</p>
-            <p className="!text-(--pres-ink)">Comfort: $17 a month</p>
+            <p className="!mt-0">A $3,300 smart mattress</p>
+            <p className="!text-(--pres-ink)">
+              Comfort: $199 a year
+              <SlideRef n={5} />
+            </p>
           </SlideColumn>
         </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "the-airbag": (
+    <PresentationSlide layout="center" note="The peak receipt: not a squeeze, a kill switch on safety equipment. Read the quote slowly, it is Klim's own FAQ. Fig 07 requested to draw this slide.">
+      <SlideStack>
+        <SlideStatement size="lead">
+          A motorcycle airbag that stops protecting you.
+        </SlideStatement>
+        <SlideStatement>
+          &ldquo;After the 30-day grace period, the airbag will stop detecting
+          crashes until payment is resumed.&rdquo;
+          <SlideRef n={3} />
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),

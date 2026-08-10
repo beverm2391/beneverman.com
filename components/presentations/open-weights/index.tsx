@@ -23,6 +23,7 @@ const setlist = [
   "title",
   "closed-vs-open-tech",
   "closed-tech-goes-wrong",
+  "the-airbag",
   "hook-ai-next",
   "hook-the-door",
   "model-landscape",

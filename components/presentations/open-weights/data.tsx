@@ -181,6 +181,21 @@ export const sources = [
     n: 2,
     title: "Cory Doctorow, The 'Enshittification' of TikTok",
     href: "https://www.wired.com/story/tiktok-platforms-cory-doctorow/"
+  },
+  {
+    n: 3,
+    title: "KLIM, Ai-1 Airbag Vest subscription FAQ",
+    href: "https://www.klim.com/Ai-1-Airbag-Vest-3046-000"
+  },
+  {
+    n: 4,
+    title: "Ars Technica, Samsung makes ads on $3,499 smart fridges official",
+    href: "https://arstechnica.com/gadgets/2025/10/samsung-makes-ads-on-3499-smart-fridges-official-with-upcoming-software-update/"
+  },
+  {
+    n: 5,
+    title: "The New York Times, AWS outage left smart bed customers without sleep",
+    href: "https://www.nytimes.com/2025/10/24/business/amazon-aws-outage-eight-sleep-mattress.html"
   }
 ] as const;
 
