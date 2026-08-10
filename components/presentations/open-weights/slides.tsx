@@ -28,6 +28,8 @@ import {
 //   Ben's spoken track. An unpaired abstraction is a draft.
 // - Slide notes (the note prop, toggled with N) are internal change-tracking
 //   only: what the slide still needs. Not speaker notes.
+// - No source enters data.tsx unless Ben has read it. Agents verify claims
+//   and park candidate links in the slide's note; Ben promotes them.
 export const slides = {
   "title": (
     <PresentationSlide layout="center">
@@ -72,10 +74,7 @@ export const slides = {
   "when-closed-tech-goes-wrong": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack>
-        <h2>
-          When closed tech goes wrong
-          <SlideRef n={2} />
-        </h2>
+        <h2>When closed tech goes wrong</h2>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -107,14 +106,13 @@ export const slides = {
   ),
 
   "receipt-fridge": (
-    <PresentationSlide layout="center" note="TODO: benched — Ben's receipt lineup is uber/instagram/bed/airbag. Restore under you-don't-own-it or retire.">
+    <PresentationSlide layout="center" note="TODO: benched — Ben's receipt lineup is uber/instagram/bed/airbag. Restore under you-don't-own-it or retire. If restored, needs a source Ben has read — candidate: Ars Technica, Oct 2025, samsung-makes-ads-on-3499-smart-fridges-official.">
       <SlideStack gap="none">
         <SlideKicker>Your fridge</SlideKicker>
         <SlideStatement>A $3,499 smart fridge</SlideStatement>
         <SlideArrow label="Then" />
         <SlideStatement size="lead">
           Ads, by software update
-          <SlideRef n={4} />
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -122,14 +120,13 @@ export const slides = {
 
   // Spoken argument (with airbag): you don't really own it.
   "receipt-bed": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Price claim needs a source Ben has read — candidate: Eight Sleep's own Autopilot pricing page. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act; coverage candidates: NYT Oct 24 2025, PCMag.">
       <SlideStack gap="none">
         <SlideKicker>Your bed</SlideKicker>
         <SlideStatement>A $3,300 smart mattress</SlideStatement>
         <SlideArrow label="Then" />
         <SlideStatement size="lead">
           Comfort: $199 a year
-          <SlideRef n={5} />
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -145,7 +142,7 @@ export const slides = {
 
   // Spoken argument (with bed): you don't really own it — the peak case.
   "the-airbag": (
-    <PresentationSlide layout="center" note="TODO: fig 07 (exploded vest schematic) requested, not yet generated — slide becomes layout fill when art lands.">
+    <PresentationSlide layout="center" note="TODO: fig 07 (exploded vest schematic) requested, not yet generated — slide becomes layout fill when art lands. Quote needs a source Ben has read — candidate: klim.com/Ai-1-Airbag-Vest-3046-000 (their FAQ, verified to contain the quote).">
       <SlideStack>
         <SlideStatement size="lead">
           A motorcycle airbag that stops protecting you.
@@ -153,7 +150,6 @@ export const slides = {
         <SlideStatement>
           &ldquo;After the 30-day grace period, the airbag will stop detecting
           crashes until payment is resumed.&rdquo;
-          <SlideRef n={3} />
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
