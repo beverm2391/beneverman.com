@@ -158,23 +158,30 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The answer: dependence kills price sensitivity. From Ben's pres note —
-  // the latte against the heart medication.
+  // The answer: you pay when you need it AND nothing can replace it —
+  // dependence plus no substitutes. That formula is load-bearing: the talk
+  // later shows open weights as the substitute that restores your power to
+  // walk away, whether or not you ever use it.
   "price-elasticity": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. The note's follow-on beat — what you already run on AI (work, business, health, finances) — still needs a home. Candidate figure if the columns feel thin: elasticity diagram, dependence vs price sensitivity.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. The note's follow-on beat — what you already run on AI (work, business, health, finances) — still needs a home. Candidate figure if the columns feel thin: elasticity diagram.">
       <SlideStack align="start">
         <SlideKicker>Price elasticity</SlideKicker>
-        <h2>The more you depend on it, the more they can charge</h2>
+        <h2>They can charge whatever you cannot walk away from</h2>
         <SlideColumns>
           <SlideColumn label="A latte">
             <SlideStatement>Price doubles? You skip it.</SlideStatement>
-            <p>Elastic. You can walk away.</p>
+            <p>Substitutes everywhere. Want, not need.</p>
           </SlideColumn>
           <SlideColumn label="Your heart medication" tone="accent">
             <SlideStatement>Price doubles? You pay.</SlideStatement>
-            <p>Inelastic. You depend on it.</p>
+            <p>No substitute, and you need it.</p>
           </SlideColumn>
         </SlideColumns>
+        <SlideKicker>
+          <span className="whitespace-nowrap">
+            Dependence + no substitutes = their price
+          </span>
+        </SlideKicker>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -214,10 +221,11 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // Spoken argument (with bed): you don't really own it — the peak case.
+  // The bonus receipt, framed as an aside so its absurdity lands on its own.
   "the-airbag": (
     <PresentationSlide layout="center" note="TODO: fig 07 (exploded vest schematic) requested, not yet generated — slide becomes layout fill when art lands. Quote needs a source Ben has read — candidate: klim.com/Ai-1-Airbag-Vest-3046-000 (their FAQ, verified to contain the quote).">
       <SlideStack>
+        <SlideKicker>Bonus: you don&rsquo;t own your hardware either</SlideKicker>
         <SlideStatement size="lead">
           A motorcycle airbag that stops protecting you.
         </SlideStatement>
