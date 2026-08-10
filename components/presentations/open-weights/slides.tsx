@@ -1,203 +1,16 @@
 import { PresentationSlide } from "@/components/mdx/presentation";
+import { closedProviders, ModelList, openProviders, sources, thesis } from "./data";
 import {
   SlideArrow,
   SlideBody,
   SlideColumn,
   SlideColumns,
   SlideFigure,
-  SlideKicker,
   SlideNotes,
   SlideRef,
   SlideStack,
   SlideStatement
 } from "@/components/mdx/presentation-parts";
-
-type ModelTier = {
-  readonly href: string;
-  readonly name: string;
-  readonly scale: string;
-};
-
-type ProviderModels = {
-  readonly models: readonly ModelTier[];
-  readonly provider: string;
-};
-
-const closedProviders = [
-  {
-    provider: "OpenAI",
-    models: [
-      {
-        name: "GPT-5.6 Sol",
-        scale: "frontier",
-        href: "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
-      },
-      {
-        name: "GPT-5.6 Terra",
-        scale: "balanced",
-        href: "https://developers.openai.com/api/docs/models/gpt-5.6-terra"
-      },
-      {
-        name: "GPT-5.6 Luna",
-        scale: "fast",
-        href: "https://developers.openai.com/api/docs/models/gpt-5.6-luna"
-      }
-    ]
-  },
-  {
-    provider: "Anthropic",
-    models: [
-      {
-        name: "Claude Fable 5",
-        scale: "maximum",
-        href: "https://platform.claude.com/docs/en/about-claude/models/overview"
-      },
-      {
-        name: "Claude Sonnet 5",
-        scale: "balanced",
-        href: "https://platform.claude.com/docs/en/about-claude/models/overview"
-      },
-      {
-        name: "Claude Haiku 4.5",
-        scale: "fast",
-        href: "https://platform.claude.com/docs/en/about-claude/models/overview"
-      }
-    ]
-  },
-  {
-    provider: "Google",
-    models: [
-      {
-        name: "Gemini 3.1 Pro Preview",
-        scale: "maximum",
-        href: "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview"
-      },
-      {
-        name: "Gemini 3.6 Flash",
-        scale: "balanced",
-        href: "https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash"
-      },
-      {
-        name: "Gemini 3.5 Flash-Lite",
-        scale: "fast",
-        href: "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite"
-      }
-    ]
-  }
-] as const;
-
-const openProviders = [
-  {
-    provider: "Alibaba / Qwen",
-    models: [
-      {
-        name: "Qwen3.6-35B-A3B",
-        scale: "35B / 3B active",
-        href: "https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF"
-      },
-      {
-        name: "Qwen3.5-122B-A10B",
-        scale: "122B / 10B active",
-        href: "https://huggingface.co/unsloth/Qwen3.5-122B-A10B-GGUF"
-      },
-      {
-        name: "Qwen3.8-Max",
-        scale: "2.4T / 95B active",
-        href: "https://qwen.ai/blog?id=qwen3.8"
-      }
-    ]
-  },
-  {
-    provider: "Moonshot AI",
-    models: [
-      {
-        name: "Moonlight-16B-A3B-Instruct",
-        scale: "16B / 3B active",
-        href: "https://huggingface.co/mmnga/Moonlight-16B-A3B-Instruct-gguf"
-      },
-      {
-        name: "Kimi-Linear-48B-A3B-Instruct",
-        scale: "48B / 3B active",
-        href: "https://huggingface.co/bartowski/moonshotai_Kimi-Linear-48B-A3B-Instruct-GGUF"
-      },
-      {
-        name: "Kimi-K3",
-        scale: "2.8T / 104B active",
-        href: "https://huggingface.co/unsloth/Kimi-K3-GGUF"
-      }
-    ]
-  },
-  {
-    provider: "DeepSeek",
-    models: [
-      {
-        name: "DeepSeek-R1-0528-Qwen3-8B",
-        scale: "8B",
-        href: "https://huggingface.co/unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF"
-      },
-      {
-        name: "DeepSeek-V4-Flash",
-        scale: "284B / 13B active",
-        href: "https://huggingface.co/unsloth/DeepSeek-V4-Flash-GGUF"
-      },
-      {
-        name: "DeepSeek-V4-Pro",
-        scale: "1.6T / 49B",
-        href: "https://huggingface.co/nvidia/DeepSeek-V4-Pro-NVFP4"
-      }
-    ]
-  }
-] as const;
-
-function ModelList({ providers }: { providers: readonly ProviderModels[] }) {
-  return (
-    <div className="grid gap-[max(0.3rem,0.6cqw)]">
-      {providers.map((provider) => (
-        <div key={provider.provider}>
-          <SlideKicker>{provider.provider}</SlideKicker>
-          <div className="mt-[0.25em] grid gap-[0.12em]">
-            {provider.models.map((model) => (
-              <a
-                className="flex items-baseline justify-between gap-[0.8em] text-[max(0.68rem,1.18cqw)] leading-[1.25] text-(--pres-ink)"
-                href={model.href}
-                key={model.name}
-                rel="noreferrer"
-                target="_blank"
-              >
-                <span>{model.name}</span>
-                <span className="shrink-0 font-(family-name:--font-presentation-mono) text-[0.68em] text-(--pres-muted)">
-                  {model.scale}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// Numbering runs continuously across the deck: SlideRef marks a claim in the
-// body, and the references slide at the end carries the sources.
-const sources = [
-  {
-    n: 1,
-    title: "Milton Friedman, The Social Responsibility of Business Is to Increase Its Profits",
-    href: "https://www.enriquedans.com/wp-content/uploads/2019/08/friedman.pdf"
-  },
-  {
-    n: 2,
-    title: "Cory Doctorow, The 'Enshittification' of TikTok",
-    href: "https://www.wired.com/story/tiktok-platforms-cory-doctorow/"
-  }
-] as const;
-
-// Two beats: the accusation, then the exit. The explanation in between is
-// spoken, since the talk proves it later.
-const thesis = [
-  "You are becoming dependent on intelligence you neither own nor control. That dependence is the business model.",
-  "Open-weight models are better for you now, will continue to get better, and you can run one yourself, today."
-] as const;
 
 // The bench: every slide the talk has in play, defined once and keyed by name.
 // A setlist in index.tsx picks and orders slides from here, so reordering the
@@ -214,15 +27,39 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The hook act. The audience has lived the platform squeeze several times;
-  // these three slides let their own memories make the argument, then name AI
-  // as the next one in line, then reveal the exit that the earlier squeezes
-  // never had. The talk's promise is set by the end of "hook-the-door".
-  "hook-montage": (
-    <PresentationSlide note="Cold open. Ask who remembers $10 Ubers. Let the montage do the arguing — the pattern has a name (ref 2) but do not lecture it.">
+  // The hook act. Name the closed-vs-open axis, show closed tech going wrong
+  // with squeezes the audience has lived, place AI at the early stage of the
+  // same cycle, then reveal the exit no earlier squeeze had. The talk's
+  // promise is set by the end of "hook-the-door".
+  "closed-vs-open-tech": (
+    <PresentationSlide note="Assert the axis, don't prove it — the incentives act later carries the proof (Friedman slide). Mirror grammar: closed verbs serve them, open verbs serve you. Wording is draft, Ben to pass.">
+      <SlideStack align="start">
+        <h2>Closed vs open technology</h2>
+        <SlideColumns>
+          <SlideColumn label="Closed">
+            <ul>
+              <li>Optimized for revenue, via your retention and dependence</li>
+              <li>Innovations go to their margins</li>
+              <li>Your data goes to deepening your dependence</li>
+            </ul>
+          </SlideColumn>
+          <SlideColumn label="Open">
+            <ul>
+              <li>Community improvements benefit everyone</li>
+              <li>You configure and improve it freely</li>
+              <li>No one can revoke it</li>
+            </ul>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "closed-tech-goes-wrong": (
+    <PresentationSlide note="Escalation: your ride, your feed, your apps, your bed. Ask who remembers $10 Ubers. The pattern has a name (ref 2) but do not lecture it. Wording is draft, Ben to pass.">
       <SlideStack align="start">
         <h2>
-          You have seen this movie before
+          Closed tech goes wrong
           <SlideRef n={2} />
         </h2>
         <SlideColumns>
@@ -230,13 +67,17 @@ export const slides = {
             <p className="!mt-0">$10 across town</p>
             <p className="!text-(--pres-ink)">$70, plus surge</p>
           </SlideColumn>
-          <SlideColumn label="Netflix">
-            <p className="!mt-0">$8. No ads.</p>
-            <p className="!text-(--pres-ink)">$25. Or ads.</p>
-          </SlideColumn>
           <SlideColumn label="Instagram">
-            <p className="!mt-0">Your friends, in order</p>
-            <p className="!text-(--pres-ink)">Ads wearing your friends&rsquo; faces</p>
+            <p className="!mt-0">Your friends, eight years ago</p>
+            <p className="!text-(--pres-ink)">An ad machine, now</p>
+          </SlideColumn>
+          <SlideColumn label="Meta">
+            <p className="!mt-0">Features you asked for</p>
+            <p className="!text-(--pres-ink)">Features they shipped anyway</p>
+          </SlideColumn>
+          <SlideColumn label="Your bed">
+            <p className="!mt-0">A $3,000 smart mattress</p>
+            <p className="!text-(--pres-ink)">Comfort: $17 a month</p>
           </SlideColumn>
         </SlideColumns>
       </SlideStack>
