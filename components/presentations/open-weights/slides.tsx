@@ -117,12 +117,31 @@ export const slides = {
   // Spoken argument: Meta's failures — what retention optimization did to
   // the feed, and where that same playbook goes next.
   "receipt-instagram": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
-      <SlideStack gap="none">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Dates are from memory — research-requests/02-instagram-receipt.md is out to verify them and mine the Doctorow TikTok piece (uncited until Ben reads it).">
+      <SlideStack align="start">
         <SlideKicker>Instagram</SlideKicker>
-        <SlideStatement>Your friends, in order</SlideStatement>
-        <SlideArrow label="Then" />
-        <SlideStatement size="lead">An ad machine, now</SlideStatement>
+        <h2>Remember when Instagram was just your friends?</h2>
+        <SlideTimeline
+          start={2010}
+          end={2027}
+          marks={[
+            {
+              at: 2012.5,
+              yearLabel: "2010–2015",
+              label: "Your friends, in order",
+              sublabel: "Chronological feed"
+            },
+            { at: 2016, yearLabel: "2016", sublabel: "Algorithmic feed", tone: "ink" },
+            { at: 2020, yearLabel: "2020", sublabel: "Reels", tone: "ink" },
+            {
+              at: 2026.5,
+              yearLabel: "Now",
+              label: "An ad machine",
+              sublabel: "Ads · engagement-maxxing",
+              tone: "accent"
+            }
+          ]}
+        />
       </SlideStack>
     </PresentationSlide>
   ),
