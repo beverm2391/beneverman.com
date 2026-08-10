@@ -93,7 +93,6 @@ export const slides = {
         <SlideTimeline
           start={2012}
           end={2027}
-          spans={[{ from: 2015, to: 2017 }]}
           marks={[
             {
               at: 2016,
@@ -105,7 +104,7 @@ export const slides = {
             {
               at: 2026.5,
               yearLabel: "Now",
-              label: "$70, plus surge",
+              label: "$70 + surge",
               sublabel: "Public · profit-maxxing · monopoly",
               tone: "accent"
             }

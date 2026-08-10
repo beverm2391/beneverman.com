@@ -182,42 +182,25 @@ type SlideTimelineMark = {
 /**
  * A horizontal time axis, for arguments that are really about trajectory.
  * Drawn in the deck's drafting register: the axis and ticks are working
- * (annotation) ink, spans read as tinted eras rising off the axis, and each
- * mark seats its content directly on the line — year below, statement above.
+ * (annotation) ink, and each mark seats its content directly on the line —
+ * statement above, year and stage annotations below.
  */
 export function SlideTimeline({
   end,
   marks,
-  spans = [],
   start
 }: {
   end: number;
   marks: readonly SlideTimelineMark[];
-  spans?: readonly { from: number; to: number }[];
   start: number;
 }) {
   const pct = (value: number) => ((value - start) / (end - start)) * 100;
   // Statements sit above the axis; the year-and-stage annotations hang in two
   // rows below it, so the felt quantity and the machinery never share a band.
   const axisTop = 55;
-  const bandHeight = 34;
 
   return (
     <div className="relative w-full" style={{ height: "max(8.5rem,19cqw)" }}>
-      {/* Era bands first, so the axis and ticks draw over them. */}
-      {spans.map((span) => (
-        <div
-          key={`${span.from}-${span.to}`}
-          className="absolute"
-          style={{
-            background: "color-mix(in srgb, var(--pres-annotation-tint) 30%, transparent)",
-            height: `${bandHeight}%`,
-            left: `${pct(span.from)}%`,
-            top: `${axisTop - bandHeight}%`,
-            width: `${pct(span.to) - pct(span.from)}%`
-          }}
-        />
-      ))}
       <div
         className="absolute inset-x-0 border-t border-(--pres-annotation)"
         style={{ top: `${axisTop}%` }}
