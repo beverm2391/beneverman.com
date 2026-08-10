@@ -198,15 +198,34 @@ export const slides = {
 
   // Spoken argument: the cycle behind every receipt — subsidized prices train
   // the habit, dependence makes demand inelastic, then extraction begins.
+  // Same axis drawing as the Uber and Instagram receipts, with the arc
+  // barely begun: that visual rhyme is the argument.
   "hook-ai-next": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) need a home: on-slide sub-line or cut.">
-      <SlideStack>
-        <SlideStatement size="lead">AI is at the $10-Uber stage.</SlideStatement>
-        <SlideKicker>
-          <span className="whitespace-nowrap">
-            Subsidize &rarr; build dependence &rarr; jack up prices
-          </span>
-        </SlideKicker>
+    <PresentationSlide note="TODO: wording draft, Ben to pass — especially the future marks (IPO hinge, the accented end state). Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) live in the spoken track.">
+      <SlideStack align="start">
+        <SlideKicker>Closed-source AI</SlideKicker>
+        <h2>AI is at the $10-Uber stage.</h2>
+        <SlideTimeline
+          start={2022}
+          end={2030}
+          marks={[
+            { at: 2022.9, yearLabel: "2022", sublabel: "ChatGPT", tone: "ink" },
+            {
+              at: 2025.6,
+              yearLabel: "Now — we are here",
+              label: "Free, or $20",
+              sublabel: "Pre-IPO · subsidized growth"
+            },
+            { at: 2027.6, yearLabel: "Soon · IPO?" },
+            {
+              at: 2029.6,
+              yearLabel: "Then",
+              label: "?",
+              sublabel: "Profit-maxxing · monopoly",
+              tone: "accent"
+            }
+          ]}
+        />
       </SlideStack>
     </PresentationSlide>
   ),
