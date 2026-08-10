@@ -82,7 +82,7 @@ export const slides = {
   // Spoken argument: price elasticity. The $10 ride trained the habit; the
   // $70 ride collects on it, because dependence makes demand inelastic.
   "receipt-uber": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+    <PresentationSlide layout="center" note="TODO: rework as a specific memory (concert home / airport to hotel) with a current-price screenshot and the dated subsidy era — research-requests/01-uber-receipt.md is out with Codex. Wording draft, Ben to pass.">
       <SlideStack gap="none">
         <SlideKicker>Uber</SlideKicker>
         <SlideStatement>$10 across town</SlideStatement>
