@@ -22,7 +22,11 @@ const openWeightsMono = IBM_Plex_Mono({
 const setlist = [
   "title",
   "closed-vs-open-tech",
-  "closed-tech-goes-wrong",
+  "when-closed-tech-goes-wrong",
+  "receipt-uber",
+  "receipt-instagram",
+  "receipt-fridge",
+  "receipt-bed",
   "the-airbag",
   "hook-ai-next",
   "hook-the-door",

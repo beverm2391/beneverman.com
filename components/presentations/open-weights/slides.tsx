@@ -6,6 +6,7 @@ import {
   SlideColumn,
   SlideColumns,
   SlideFigure,
+  SlideKicker,
   SlideNotes,
   SlideRef,
   SlideStack,
@@ -43,7 +44,7 @@ export const slides = {
   // same cycle, then reveal the exit no earlier squeeze had. The talk's
   // promise is set by the end of "hook-the-door".
   "closed-vs-open-tech": (
-    <PresentationSlide note="TODO: pair every line with its concrete example (deck rule) — candidates are in the pres note and image request 06. Fig 06 value-curves art not yet generated. Wording draft, Ben to pass.">
+    <PresentationSlide>
       <SlideStack align="start">
         <h2>Closed vs open technology</h2>
         <SlideColumns>
@@ -66,37 +67,74 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  "closed-tech-goes-wrong": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Spare receipts not yet placed: HP Dynamic Security ink blocking (hp.com/us-en/cartridge/supplies-security.html); the bed's AWS-outage story is reserved for the dependence act.">
-      <SlideStack align="start">
+  // When closed tech goes wrong: a section marker, then one receipt per
+  // slide, quick-fire, ending on the airbag as the peak. The mirror section
+  // ("when-open-tech-goes-right") is benched until Ben places its receipts.
+  "when-closed-tech-goes-wrong": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack>
         <h2>
-          Closed tech goes wrong
+          When closed tech goes wrong
           <SlideRef n={2} />
         </h2>
-        <SlideColumns>
-          <SlideColumn label="Uber">
-            <p className="!mt-0">$10 across town</p>
-            <p className="!text-(--pres-ink)">$70, plus surge</p>
-          </SlideColumn>
-          <SlideColumn label="Instagram">
-            <p className="!mt-0">Your friends, eight years ago</p>
-            <p className="!text-(--pres-ink)">An ad machine, now</p>
-          </SlideColumn>
-          <SlideColumn label="Your fridge">
-            <p className="!mt-0">A $3,499 smart fridge</p>
-            <p className="!text-(--pres-ink)">
-              Ads, by software update
-              <SlideRef n={4} />
-            </p>
-          </SlideColumn>
-          <SlideColumn label="Your bed">
-            <p className="!mt-0">A $3,300 smart mattress</p>
-            <p className="!text-(--pres-ink)">
-              Comfort: $199 a year
-              <SlideRef n={5} />
-            </p>
-          </SlideColumn>
-        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-uber": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack gap="none">
+        <SlideKicker>Uber</SlideKicker>
+        <SlideStatement>$10 across town</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">$70, plus surge</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-instagram": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack gap="none">
+        <SlideKicker>Instagram</SlideKicker>
+        <SlideStatement>Your friends, in order</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">An ad machine, now</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-fridge": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack gap="none">
+        <SlideKicker>Your fridge</SlideKicker>
+        <SlideStatement>A $3,499 smart fridge</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">
+          Ads, by software update
+          <SlideRef n={4} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-bed": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act.">
+      <SlideStack gap="none">
+        <SlideKicker>Your bed</SlideKicker>
+        <SlideStatement>A $3,300 smart mattress</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">
+          Comfort: $199 a year
+          <SlideRef n={5} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "when-open-tech-goes-right": (
+    <PresentationSlide layout="center" note="TODO: benched, not in the setlist. Ben to choose its receipts (candidates from the convo: MP3s, email, the web, llama.cpp making the same file faster, the DeepSeek-Flash effect) and where it lands.">
+      <SlideStack>
+        <h2>When open tech goes right</h2>
       </SlideStack>
     </PresentationSlide>
   ),
