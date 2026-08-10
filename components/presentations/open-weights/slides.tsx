@@ -158,31 +158,39 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The answer, in two dynamics. First: dependence — how badly you need it
-  // sets how little price matters (elasticity proper).
+  // The answer, in two dynamics, each landing on the AI ground it is about:
+  // the analogy row primes, the closed-AI-vs-open-weights row pays off.
+  // First: dependence — need is what they upcharge.
   "dynamic-dependence": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. The follow-on beat — what you already run on AI (work, business, health, finances) — still needs a home.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass.">
       <SlideStack align="start">
         <SlideKicker>Dynamic 1 · dependence</SlideKicker>
-        <h2>The more you need it, the less price matters</h2>
+        <h2>The more you need it, the more they can upcharge you</h2>
         <SlideColumns>
           <SlideColumn label="A latte">
             <SlideStatement>Price doubles? You skip it.</SlideStatement>
-            <p>A want. You walk away.</p>
           </SlideColumn>
           <SlideColumn label="Your heart medication" tone="accent">
             <SlideStatement>Price doubles? You pay.</SlideStatement>
-            <p>A need. Price stops mattering.</p>
+          </SlideColumn>
+        </SlideColumns>
+        <SlideColumns>
+          <SlideColumn label="Closed AI" tone="accent">
+            <p className="!mt-0">
+              Your work, your business, your questions already run on their
+              model. They set the rent.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Open weights">
+            <p className="!mt-0">Your model. There is no rent to raise.</p>
           </SlideColumn>
         </SlideColumns>
       </SlideStack>
     </PresentationSlide>
   ),
 
-  // Second: even a need stays cheap while substitutes exist. Kill the
-  // alternatives or hold the exits hostage, and the price is theirs. This is
-  // the slide open weights answer later: the substitute that reopens the
-  // door.
+  // Second: the missing door — no substitutes, and exits held hostage. Open
+  // weights are the answer: the substitute that reopens the door.
   "dynamic-no-substitutes": (
     <PresentationSlide note="TODO: wording draft, Ben to pass — examples especially.">
       <SlideStack align="start">
@@ -191,11 +199,22 @@ export const slides = {
         <SlideColumns>
           <SlideColumn label="No substitute" tone="accent">
             <SlideStatement>The taxis Uber undercut are gone.</SlideStatement>
-            <p>The alternative died with the subsidy.</p>
           </SlideColumn>
           <SlideColumn label="Switching costs" tone="accent">
-            <SlideStatement>Your friends, photos, and history stay behind.</SlideStatement>
-            <p>Leaving means abandoning what you built there.</p>
+            <SlideStatement>Your friends and history stay behind.</SlideStatement>
+          </SlideColumn>
+        </SlideColumns>
+        <SlideColumns>
+          <SlideColumn label="Closed AI" tone="accent">
+            <p className="!mt-0">
+              Your chats, your memory, your workflows — all living in their
+              cloud.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Open weights">
+            <p className="!mt-0">
+              A drop-in substitute. Walking away costs nothing.
+            </p>
           </SlideColumn>
         </SlideColumns>
       </SlideStack>
