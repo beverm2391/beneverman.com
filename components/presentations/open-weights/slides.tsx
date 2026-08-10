@@ -30,6 +30,9 @@ import {
 //   only: what the slide still needs. Not speaker notes.
 // - No source enters data.tsx unless Ben has read it. Agents verify claims
 //   and park candidate links in the slide's note; Ben promotes them.
+// - Flow: draft first, substantiate after. Slides land fast in Ben's words;
+//   sources and figures follow through research-requests/ and image-requests/,
+//   with each slide's note tracking what it still owes.
 export const slides = {
   "title": (
     <PresentationSlide layout="center">
