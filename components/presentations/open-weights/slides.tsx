@@ -158,30 +158,46 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The answer: you pay when you need it AND nothing can replace it —
-  // dependence plus no substitutes. That formula is load-bearing: the talk
-  // later shows open weights as the substitute that restores your power to
-  // walk away, whether or not you ever use it.
-  "price-elasticity": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. The note's follow-on beat — what you already run on AI (work, business, health, finances) — still needs a home. Candidate figure if the columns feel thin: elasticity diagram.">
+  // The answer, in two dynamics. First: dependence — how badly you need it
+  // sets how little price matters (elasticity proper).
+  "dynamic-dependence": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. The follow-on beat — what you already run on AI (work, business, health, finances) — still needs a home.">
       <SlideStack align="start">
-        <SlideKicker>Price elasticity</SlideKicker>
-        <h2>They can charge whatever you cannot walk away from</h2>
+        <SlideKicker>Dynamic 1 · dependence</SlideKicker>
+        <h2>The more you need it, the less price matters</h2>
         <SlideColumns>
           <SlideColumn label="A latte">
             <SlideStatement>Price doubles? You skip it.</SlideStatement>
-            <p>Substitutes everywhere. Want, not need.</p>
+            <p>A want. You walk away.</p>
           </SlideColumn>
           <SlideColumn label="Your heart medication" tone="accent">
             <SlideStatement>Price doubles? You pay.</SlideStatement>
-            <p>No substitute, and you need it.</p>
+            <p>A need. Price stops mattering.</p>
           </SlideColumn>
         </SlideColumns>
-        <SlideKicker>
-          <span className="whitespace-nowrap">
-            Dependence + no substitutes = their price
-          </span>
-        </SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Second: even a need stays cheap while substitutes exist. Kill the
+  // alternatives or hold the exits hostage, and the price is theirs. This is
+  // the slide open weights answer later: the substitute that reopens the
+  // door.
+  "dynamic-no-substitutes": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — examples especially.">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 2 · no substitutes, switching costs</SlideKicker>
+        <h2>And when you look for the door, there isn&rsquo;t one</h2>
+        <SlideColumns>
+          <SlideColumn label="No substitute" tone="accent">
+            <SlideStatement>The taxis Uber undercut are gone.</SlideStatement>
+            <p>The alternative died with the subsidy.</p>
+          </SlideColumn>
+          <SlideColumn label="Switching costs" tone="accent">
+            <SlideStatement>Your friends, photos, and history stay behind.</SlideStatement>
+            <p>Leaving means abandoning what you built there.</p>
+          </SlideColumn>
+        </SlideColumns>
       </SlideStack>
     </PresentationSlide>
   ),
