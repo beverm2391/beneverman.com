@@ -78,7 +78,7 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Fig 08 requested (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer) — becomes the slide's visual when it lands.">
+    <PresentationSlide note="TODO: this slide becomes title + fig 08 (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer). The statement pair is scaffolding until the art lands, then moves to the spoken track.">
       <SlideStack align="start">
         <h2>What are weights?</h2>
         <SlideStack align="start" gap="none">
