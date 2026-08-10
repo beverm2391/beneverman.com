@@ -9,7 +9,8 @@ import {
   SlideNotes,
   SlideRef,
   SlideStack,
-  SlideStatement
+  SlideStatement,
+  SlideTimeline
 } from "@/components/mdx/presentation-parts";
 
 // The bench: every slide the talk has in play, defined once and keyed by name.
@@ -89,23 +90,27 @@ export const slides = {
       <SlideStack align="start">
         <SlideKicker>Uber</SlideKicker>
         <h2>Remember when the ride home from the concert was $10?</h2>
-        <SlideColumns>
-          <SlideColumn label="2015–2017">
-            <SlideStatement size="lead">$10</SlideStatement>
-            <ul>
-              <li>Pre-IPO</li>
-              <li>Subsidized growth</li>
-            </ul>
-          </SlideColumn>
-          <SlideColumn label="Now" tone="accent">
-            <SlideStatement size="lead">$70, plus surge</SlideStatement>
-            <ul>
-              <li>Public</li>
-              <li>Profit-maxxing</li>
-              <li>Locked-in, dependent customers</li>
-            </ul>
-          </SlideColumn>
-        </SlideColumns>
+        <SlideTimeline
+          start={2012}
+          end={2027}
+          spans={[{ from: 2015, to: 2017 }]}
+          marks={[
+            {
+              at: 2016,
+              yearLabel: "2015–2017",
+              label: "$10",
+              sublabel: "Pre-IPO · subsidized growth"
+            },
+            { at: 2019.4, yearLabel: "2019", sublabel: "IPO" },
+            {
+              at: 2026.5,
+              yearLabel: "Now",
+              label: "$70, plus surge",
+              sublabel: "Public · profit-maxxing · locked-in",
+              tone: "accent"
+            }
+          ]}
+        />
       </SlideStack>
     </PresentationSlide>
   ),

@@ -165,6 +165,109 @@ export function SlideStack({
   );
 }
 
+type SlideTimelineMark = {
+  /** Position on the axis, in the same units as start/end. */
+  at: number;
+  /** Big statement above the axis, e.g. a price. */
+  label?: ReactNode;
+  /** Small mono line under the label, e.g. a company stage. */
+  sublabel?: ReactNode;
+  /** Marks the stage that harms; same semantic accent as everywhere. */
+  tone?: "ink" | "accent";
+  /** Mono text below the axis, e.g. "2015–2017" or "Now". */
+  yearLabel?: string;
+};
+
+/**
+ * A horizontal time axis, for arguments that are really about trajectory.
+ * Spans thicken the stretch of axis they cover; each mark anchors a tick,
+ * with its year below the axis and its content above.
+ */
+export function SlideTimeline({
+  end,
+  marks,
+  spans = [],
+  start
+}: {
+  end: number;
+  marks: readonly SlideTimelineMark[];
+  spans?: readonly { from: number; to: number }[];
+  start: number;
+}) {
+  const pct = (value: number) => ((value - start) / (end - start)) * 100;
+  // Where the axis sits vertically: content needs more room above than the
+  // year row needs below.
+  const axisTop = 62;
+
+  return (
+    <div className="relative w-full" style={{ height: "max(9rem,20cqw)" }}>
+      <div
+        className="absolute inset-x-0 border-t border-(--pres-rule)"
+        style={{ top: `${axisTop}%` }}
+      />
+      {spans.map((span) => (
+        <div
+          className="absolute border-t-2 border-(--pres-annotation)"
+          key={`${span.from}-${span.to}`}
+          style={{
+            left: `${pct(span.from)}%`,
+            top: `${axisTop}%`,
+            transform: "translateY(-0.5px)",
+            width: `${pct(span.to) - pct(span.from)}%`
+          }}
+        />
+      ))}
+      {marks.map((mark) => {
+        // Marks near either edge align outward so their text stays on the
+        // slide; everything else centers on its tick.
+        const p = pct(mark.at);
+        const align = p < 12 ? "start" : p > 88 ? "end" : "center";
+        const translateX = align === "center" ? "-50%" : align === "end" ? "-100%" : "0";
+        const itemsClass =
+          align === "center"
+            ? "items-center text-center"
+            : align === "end"
+              ? "items-end text-right"
+              : "items-start text-left";
+
+        return (
+          <div className="absolute inset-y-0" key={mark.at} style={{ left: `${p}%` }}>
+            <div
+              className="absolute w-px bg-(--pres-ink-muted)"
+              style={{ height: "9%", top: `${axisTop - 4.5}%` }}
+            />
+            {mark.label || mark.sublabel ? (
+              <div
+                className={`absolute flex flex-col gap-[0.4em] whitespace-nowrap ${itemsClass} ${
+                  mark.tone === "accent" ? "[&_p]:!text-(--pres-accent)" : ""
+                }`}
+                style={{
+                  bottom: `${100 - axisTop + 7}%`,
+                  transform: `translateX(${translateX})`
+                }}
+              >
+                {mark.label ? <SlideStatement size="lead">{mark.label}</SlideStatement> : null}
+                {mark.sublabel ? <SlideKicker>{mark.sublabel}</SlideKicker> : null}
+              </div>
+            ) : null}
+            {mark.yearLabel ? (
+              <p
+                className={`absolute !mt-0 !max-w-none whitespace-nowrap ${monoClass} !text-(--pres-ink-muted)`}
+                style={{
+                  top: `${axisTop + 9}%`,
+                  transform: `translateX(${translateX})`
+                }}
+              >
+                {mark.yearLabel}
+              </p>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 /** Columns under a shared hairline: parallel items that rank equally. */
 export function SlideColumns({ children }: { children: ReactNode }) {
   return (
