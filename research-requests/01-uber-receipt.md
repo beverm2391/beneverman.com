@@ -69,13 +69,74 @@ must survive someone checking their scope.
   useful context, but it is reported analysis rather than a company accounting
   line item.
 
-### What establishes later price increases
+### Current pricing evidence, as of August 2026
+
+- [Gridwise Analytics' 2026 annual report announcement](https://www.prnewswire.com/news-releases/gridwise-analytics-annual-gig-mobility-report-finds-customer-rideshare-prices-rose-nearly-10-as-platform-fees-surged-and-driver-pay-lagged-302704761.html)
+  reports that U.S. customers paid 9.6% more per rideshare trip in December
+  2025 than in December 2024. Gridwise's CEO gives the corresponding average
+  trip prices as [$21.58 and $23.66](https://www.linkedin.com/pulse/our-2026-report-live-rider-prices-driver-pay-platform-ryan-green-hudqe).
+  This is the best current national aggregate found: it is based on Gridwise's
+  proprietary data, covers rideshare rather than Uber alone, and ends in
+  December 2025. It is not an August 2026 quote.
+- [NBER's February 2026 digest](https://www.nber.org/digest/202602/do-rideshare-users-comparison-shop)
+  reports an average $24.61 fare in a February 2025 audit of 2,238 matched
+  Uber and Lyft price quotes in New York City. It is a useful dated urban
+  benchmark, but it measures a single week in one city and cannot describe a
+  national fare or the present moment.
+- A [June 2026 Consumer Reports study, summarized by Axios](https://www.axios.com/local/kansas-city/2026/06/30/world-cup-rideshare-uber-lyft-fares),
+  had 174 volunteers request more than 40 routes across 18 states and found a
+  42% median spread between the highest and lowest quote for the same route.
+  That establishes that current quotes can vary sharply. It does not establish
+  a historical fare increase or prove personalized pricing. [Uber disputes the
+  study's method](https://www.uber.com/us/en/newsroom/uber-comment-consumer-reports/).
+
+No reliable August 2026 national average was found. A fresh app quote answers
+only, "what does this representative trip cost right now?" It needs a visible
+timestamp, route shape, city, product tier, and the fact that it is one quote.
+
+### Individual rider accounts to inspect
+
+These are public first-person accounts, not data points to aggregate. The
+authors use recoverable Reddit handles and dates. Keep their exact scope and do
+not infer a general market change from any one of them.
+
+- An [August 2026 visitor to New York](https://www.reddit.com/r/uber/comments/1vdes47/am_i_crazy_or_has_uber_gotten_insanely_expensive/)
+  reported paying $110 from JFK to Midtown after remembering the trip at
+  $70–$80, including tip. The same rider found a $95 flat-rate luxury sedan for
+  the return. This is a current, concrete airport-use account, but it has no
+  receipt and does not control for traffic, time, product, or airport fees.
+- In a [June 2026 daily-commute thread](https://www.reddit.com/r/uber/comments/1u8h8nk/whats_going_on_with_prices_my_daily_commute_was/),
+  one rider said the regular trip had moved from $9–$13 to more than $20. In a
+  follow-up, the rider compared a $23 Uber quote with a $12 Lyft quote for work.
+  This is a direct account of the ordinary product use case and of switching
+  behavior. It does not establish why the Uber quote changed.
+- Another [August 2026 rider posted screenshots](https://www.reddit.com/r/uber/comments/1v1xuep/what_on_earth_are_these_prices/)
+  of a $90 quote for a 15-mile trip on a Monday afternoon. This is a current
+  visual price example from a real rider, but the post does not identify the
+  city or provide a historical quote for comparison.
+- In this [September 2025 Los Angeles thread](https://www.reddit.com/r/AskLosAngeles/comments/1nn2zef/is_it_just_me_or_are_uberlyft_prices_way_more/),
+  one rider listed six rides from an office garage to LAX at broadly similar
+  times: $14.97 on January 29, $14.20 on April 6, $18.68 on April 26, $16.76
+  on May 29, $16.74 on June 17, and $22.96 on September 8. This is the
+  strongest simple same-use-case anecdote found because it names the endpoint,
+  gives dates and amounts, and comes from one rider. It is still only a public
+  self-report, without receipts or a controlled route/time record.
+- A commenter in an [October 2025 Uber thread](https://www.reddit.com/r/uber/comments/1oiqwbx/wtf/)
+  described a recurring monthly 20-mile trip that had usually cost $58–$78 and
+  was quoted above $119 on a non-holiday Friday. This is a detailed self-report,
+  but the commenter did not supply a receipt. The commenter's explanation of
+  why the price changed is speculation and must not be repeated as fact.
+- In this [October 2025 Los Angeles account](https://www.reddit.com/r/AskLosAngeles/comments/1o4el7i/are_uber_prices_out_of_control_for_you_too/),
+  a rider said their two-mile ride home changed from $8–$9 to $17. It is useful
+  only as a compact audience-memory illustration, not evidence of an average.
+
+### Historical post-cheap-era price increases
 
 - [YipitData's U.S. ride-hail analysis](https://www.yipitdata.com/resources/how-is-the-rideshare-driver-supply-problem-now)
   finds Uber and Lyft charges per mile still significantly above January 2021,
   while discounts and vouchers remained well below pre-COVID levels. It gives
-  current, industry-data context but not a single percentage in the accessible
-  summary.
+  2021-era industry-data context but not a single percentage in the accessible
+  summary. It is not evidence of a 2026 price.
 - The [Los Angeles Times report on YipitData](https://www.latimes.com/business/technology/story/2022-05-03/lyft-shares-plummet-as-company-spends-more)
   states that the average U.S. ride-hail trip was about $20 in 2022 Q1, about
   45% above 2019 Q1. Use this as the cleanest aggregate headline, with the
@@ -90,13 +151,15 @@ must survive someone checking their scope.
 
 ### Best evidence package for Ben to inspect
 
-Read the three primary-company pages above plus the YipitData and Los Angeles
-Times links. Use a fresh, timestamped Uber quote only as the present-day visual
-example. It should be captioned as a representative quote, not as a historical
-comparison. The evidence supports "cheap short rides were a real feature of the
-growth era, and aggregate U.S. ride-hail prices later rose sharply." It does
-not support a precise claim that one specific route went from $10 to a specific
-current price because subsidies ended.
+Read the three primary-company pages above, the current Gridwise source, and
+the Los Angeles Times report. Inspect the 2026 rider accounts and the Los
+Angeles price history only if a first-person example is useful. Use a fresh,
+timestamped Uber quote as the present-day visual example and caption it as a
+representative quote, not as a historical comparison. The evidence supports
+"cheap short rides were a real feature of the growth era; U.S. rideshare
+prices continued rising through late 2025; and current quotes vary heavily."
+It does not support a precise claim that one specific route went from $10 to a
+specific August 2026 price because subsidies ended.
 
 ## Output
 
