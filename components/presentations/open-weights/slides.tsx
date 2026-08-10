@@ -24,7 +24,8 @@ import {
 // Authoring rules for this deck (Ben's):
 // - Content is Ben's. Agents suggest, challenge, and develop his ideas —
 //   especially from docs/presentations/open-weights/notes.md — but do not invent
-//   slide content. Draft wording gets a "Ben to pass" note.
+//   slide content. Draft wording gets a "Ben to pass" note. Never scaffold:
+//   a slide awaiting content or art stays intentionally empty.
 // - Progressive disclosure: the default layer is felt, every technical layer
 //   is opt-in (a later slide, the appendix, a question from the room).
 // - Every abstract claim carries its concrete example — on the slide, or in
@@ -78,19 +79,9 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide note="TODO: this slide becomes title + fig 08 (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer). The statement pair is scaffolding until the art lands, then moves to the spoken track.">
+    <PresentationSlide note="TODO: becomes title + fig 08 (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer). Spoken: a chatbot is a giant file of numbers, the weights; open weights means you get the file.">
       <SlideStack align="start">
         <h2>What are weights?</h2>
-        <SlideStack align="start" gap="none">
-          <SlideStatement>
-            A chatbot is a giant file of numbers &mdash; the weights &mdash;
-            running on someone&rsquo;s computer.
-          </SlideStatement>
-          <SlideArrow label="So" />
-          <SlideStatement size="lead">
-            Open weights means you get the file.
-          </SlideStatement>
-        </SlideStack>
       </SlideStack>
     </PresentationSlide>
   ),
