@@ -158,65 +158,21 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The answer, in two dynamics, each landing on the AI ground it is about:
-  // the analogy row primes, the closed-AI-vs-open-weights row pays off.
-  // First: dependence — need is what they upcharge.
+  // The answer, in two dynamics. Titles are Ben's; bodies await his content.
   "dynamic-dependence": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+    <PresentationSlide note="TODO: body is empty — Ben to write it. Killed draft: latte/heart-med columns + closed-AI-vs-open-weights row (in git history if wanted).">
       <SlideStack align="start">
         <SlideKicker>Dynamic 1 · dependence</SlideKicker>
         <h2>The more you need it, the more they can upcharge you</h2>
-        <SlideColumns>
-          <SlideColumn label="A latte">
-            <SlideStatement>Price doubles? You skip it.</SlideStatement>
-          </SlideColumn>
-          <SlideColumn label="Your heart medication" tone="accent">
-            <SlideStatement>Price doubles? You pay.</SlideStatement>
-          </SlideColumn>
-        </SlideColumns>
-        <SlideColumns>
-          <SlideColumn label="Closed AI" tone="accent">
-            <p className="!mt-0">
-              Your work, your business, your questions already run on their
-              model. They set the rent.
-            </p>
-          </SlideColumn>
-          <SlideColumn label="Open weights">
-            <p className="!mt-0">Your model. There is no rent to raise.</p>
-          </SlideColumn>
-        </SlideColumns>
       </SlideStack>
     </PresentationSlide>
   ),
 
-  // Second: the missing door — no substitutes, and exits held hostage. Open
-  // weights are the answer: the substitute that reopens the door.
   "dynamic-no-substitutes": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass — examples especially.">
+    <PresentationSlide note="TODO: body is empty — Ben to write it. Killed draft: taxis/switching-costs columns + closed-AI-vs-open-weights row (in git history if wanted).">
       <SlideStack align="start">
         <SlideKicker>Dynamic 2 · no substitutes, switching costs</SlideKicker>
         <h2>And when you look for the door, there isn&rsquo;t one</h2>
-        <SlideColumns>
-          <SlideColumn label="No substitute" tone="accent">
-            <SlideStatement>The taxis Uber undercut are gone.</SlideStatement>
-          </SlideColumn>
-          <SlideColumn label="Switching costs" tone="accent">
-            <SlideStatement>Your friends and history stay behind.</SlideStatement>
-          </SlideColumn>
-        </SlideColumns>
-        <SlideColumns>
-          <SlideColumn label="Closed AI" tone="accent">
-            <p className="!mt-0">
-              Your chats, your memory, your workflows — all living in their
-              cloud.
-            </p>
-          </SlideColumn>
-          <SlideColumn label="Open weights">
-            <p className="!mt-0">
-              A drop-in substitute. Walking away costs nothing.
-            </p>
-          </SlideColumn>
-        </SlideColumns>
       </SlideStack>
     </PresentationSlide>
   ),
