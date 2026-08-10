@@ -25,7 +25,6 @@ const setlist = [
   "when-closed-tech-goes-wrong",
   "receipt-uber",
   "receipt-instagram",
-  "receipt-fridge",
   "receipt-bed",
   "the-airbag",
   "hook-ai-next",

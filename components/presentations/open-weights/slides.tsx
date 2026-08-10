@@ -2,7 +2,6 @@ import { PresentationSlide } from "@/components/mdx/presentation";
 import { closedProviders, ModelList, openProviders, sources, thesis } from "./data";
 import {
   SlideArrow,
-  SlideBody,
   SlideColumn,
   SlideColumns,
   SlideFigure,
@@ -81,6 +80,8 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // Spoken argument: price elasticity. The $10 ride trained the habit; the
+  // $70 ride collects on it, because dependence makes demand inelastic.
   "receipt-uber": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack gap="none">
@@ -92,6 +93,8 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // Spoken argument: Meta's failures — what retention optimization did to
+  // the feed, and where that same playbook goes next.
   "receipt-instagram": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack gap="none">
@@ -104,7 +107,7 @@ export const slides = {
   ),
 
   "receipt-fridge": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+    <PresentationSlide layout="center" note="TODO: benched — Ben's receipt lineup is uber/instagram/bed/airbag. Restore under you-don't-own-it or retire.">
       <SlideStack gap="none">
         <SlideKicker>Your fridge</SlideKicker>
         <SlideStatement>A $3,499 smart fridge</SlideStatement>
@@ -117,6 +120,7 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // Spoken argument (with airbag): you don't really own it.
   "receipt-bed": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act.">
       <SlideStack gap="none">
@@ -139,6 +143,7 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // Spoken argument (with bed): you don't really own it — the peak case.
   "the-airbag": (
     <PresentationSlide layout="center" note="TODO: fig 07 (exploded vest schematic) requested, not yet generated — slide becomes layout fill when art lands.">
       <SlideStack>
@@ -154,14 +159,17 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // Spoken argument: the cycle behind every receipt — subsidized prices train
+  // the habit, dependence makes demand inelastic, then extraction begins.
   "hook-ai-next": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) need a home: on-slide sub-line or cut.">
       <SlideStack>
         <SlideStatement size="lead">AI is at the $10-Uber stage.</SlideStatement>
-        <SlideBody>
-          Free tiers that lose billions. Prices set to build a habit, not to
-          make a profit. The debt always comes due — from you.
-        </SlideBody>
+        <SlideKicker>
+          <span className="whitespace-nowrap">
+            Subsidize &rarr; build dependence &rarr; jack up prices
+          </span>
+        </SlideKicker>
       </SlideStack>
     </PresentationSlide>
   ),
