@@ -1,6 +1,7 @@
 import { PresentationSlide } from "@/components/mdx/presentation";
 import {
   SlideArrow,
+  SlideBody,
   SlideColumn,
   SlideColumns,
   SlideFigure,
@@ -183,6 +184,11 @@ const sources = [
     n: 1,
     title: "Milton Friedman, The Social Responsibility of Business Is to Increase Its Profits",
     href: "https://www.enriquedans.com/wp-content/uploads/2019/08/friedman.pdf"
+  },
+  {
+    n: 2,
+    title: "Cory Doctorow, The 'Enshittification' of TikTok",
+    href: "https://www.wired.com/story/tiktok-platforms-cory-doctorow/"
   }
 ] as const;
 
@@ -201,8 +207,65 @@ const thesis = [
 export const slides = {
   "title": (
     <PresentationSlide layout="center">
-      <SlideStack>
+      <SlideStack gap="tight">
         <h1>Open Weight Models</h1>
+        <SlideStatement>The $10 Uber you get to keep forever.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The hook act. The audience has lived the platform squeeze several times;
+  // these three slides let their own memories make the argument, then name AI
+  // as the next one in line, then reveal the exit that the earlier squeezes
+  // never had. The talk's promise is set by the end of "hook-the-door".
+  "hook-montage": (
+    <PresentationSlide note="Cold open. Ask who remembers $10 Ubers. Let the montage do the arguing — the pattern has a name (ref 2) but do not lecture it.">
+      <SlideStack align="start">
+        <h2>
+          You have seen this movie before
+          <SlideRef n={2} />
+        </h2>
+        <SlideColumns>
+          <SlideColumn label="Uber">
+            <p className="!mt-0">$10 across town</p>
+            <p className="!text-(--pres-ink)">$70, plus surge</p>
+          </SlideColumn>
+          <SlideColumn label="Netflix">
+            <p className="!mt-0">$8. No ads.</p>
+            <p className="!text-(--pres-ink)">$25. Or ads.</p>
+          </SlideColumn>
+          <SlideColumn label="Instagram">
+            <p className="!mt-0">Your friends, in order</p>
+            <p className="!text-(--pres-ink)">Ads wearing your friends&rsquo; faces</p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "hook-ai-next": (
+    <PresentationSlide layout="center" note="Spoken: the early signs are already here — ads coming to ChatGPT, models deprecated overnight and grieved, personality changes nobody voted on.">
+      <SlideStack>
+        <SlideStatement size="lead">AI is at the $10-Uber stage.</SlideStatement>
+        <SlideBody>
+          Free tiers that lose billions. Prices set to build a habit, not to
+          make a profit. The debt always comes due — from you.
+        </SlideBody>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "hook-the-door": (
+    <PresentationSlide layout="center" note="The bridge. The next slide must answer: what file?">
+      <SlideStack gap="none">
+        <SlideStatement>
+          Every other time, there was no exit. You could not download the 2015
+          Uber.
+        </SlideStatement>
+        <SlideArrow label="But" />
+        <SlideStatement size="lead">
+          This time, the good version leaked out the door. As a file.
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),

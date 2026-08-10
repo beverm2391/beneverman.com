@@ -21,6 +21,9 @@ const openWeightsMono = IBM_Plex_Mono({
 // are just other setlists over the same bench.
 const setlist = [
   "title",
+  "hook-montage",
+  "hook-ai-next",
+  "hook-the-door",
   "model-landscape",
   "what-is-a-weight",
   "fig-what-is-a-weight",
