@@ -74,6 +74,24 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The ten-second definition, so "open weights" parses everywhere after.
+  // The deep what-act (model landscape, weights, figures) stays after the
+  // door slide, where its job is belief, not definition.
+  "what-i-mean": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Fig 08 requested (the same file locked in their datacenter vs free on your laptop) — becomes the slide's visual when it lands.">
+      <SlideStack gap="none">
+        <SlideStatement>
+          A chatbot is a giant file of numbers, running on someone&rsquo;s
+          computer.
+        </SlideStatement>
+        <SlideArrow label="So" />
+        <SlideStatement size="lead">
+          Open weights means you get the file.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   // When closed tech goes wrong: a section marker, then one receipt per
   // slide, quick-fire, ending on the airbag as the peak. The mirror section
   // ("when-open-tech-goes-right") is benched until Ben places its receipts.
