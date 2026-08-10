@@ -28,6 +28,8 @@ import {
 //   a slide awaiting content or art stays intentionally empty.
 // - Progressive disclosure: the default layer is felt, every technical layer
 //   is opt-in (a later slide, the appendix, a question from the room).
+// - Bridge, don't lecture: every concept starts from ground the audience
+//   already stands on (ChatGPT, their feed, their ride) and walks to ours.
 // - Every abstract claim carries its concrete example — on the slide, or in
 //   Ben's spoken track. An unpaired abstraction is a draft.
 // - Slide notes (the note prop, toggled with N) are internal change-tracking
@@ -79,9 +81,18 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide note="TODO: becomes title + fig 08 (the same prompt-weights-response pipeline twice: OpenAI's computer behind a gate vs your computer). Spoken: a chatbot is a giant file of numbers, the weights; open weights means you get the file.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Fig 08 (the same input-weights-output pipeline twice: OpenAI's computer behind a gate vs your computer) follows as its own slide when the art lands.">
       <SlideStack align="start">
         <h2>What are weights?</h2>
+        <SlideStack align="start" gap="none">
+          <SlideStatement>You know ChatGPT and Claude.</SlideStatement>
+          <SlideArrow label="They are" />
+          <SlideStatement>LLMs &mdash; large language models.</SlideStatement>
+          <SlideArrow label="And an LLM is" />
+          <SlideStatement size="lead">
+            Input &rarr; weights &rarr; output
+          </SlideStatement>
+        </SlideStack>
       </SlideStack>
     </PresentationSlide>
   ),
