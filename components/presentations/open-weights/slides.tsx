@@ -24,9 +24,10 @@ import {
 //   slide content. Draft wording gets a "Ben to pass" note.
 // - Progressive disclosure: the default layer is felt, every technical layer
 //   is opt-in (a later slide, the appendix, a question from the room).
-// - Every abstract claim carries its concrete example — on the slide as a
-//   quiet sub-line, or in the note as a mandatory spoken beat. An unpaired
-//   abstraction is a draft.
+// - Every abstract claim carries its concrete example — on the slide, or in
+//   Ben's spoken track. An unpaired abstraction is a draft.
+// - Slide notes (the note prop, toggled with N) are internal change-tracking
+//   only: what the slide still needs. Not speaker notes.
 export const slides = {
   "title": (
     <PresentationSlide layout="center">
@@ -42,7 +43,7 @@ export const slides = {
   // same cycle, then reveal the exit no earlier squeeze had. The talk's
   // promise is set by the end of "hook-the-door".
   "closed-vs-open-tech": (
-    <PresentationSlide note="Assert the axis, don't prove it — the incentives act later carries the proof. Every line needs its spoken example: retention → ChatGPT RL'd toward follow-up questions; margins → inference got ~100x cheaper, your $20 didn't move; community → the DeepSeek-Flash effect, llama.cpp making your same file faster next year; revoke → the file on your laptop vs 4o deprecated overnight. Fig 06 (value curves over time) is requested for this beat. Wording is draft, Ben to pass.">
+    <PresentationSlide note="TODO: pair every line with its concrete example (deck rule) — candidates are in the pres note and image request 06. Fig 06 value-curves art not yet generated. Wording draft, Ben to pass.">
       <SlideStack align="start">
         <h2>Closed vs open technology</h2>
         <SlideColumns>
@@ -66,7 +67,7 @@ export const slides = {
   ),
 
   "closed-tech-goes-wrong": (
-    <PresentationSlide note="Escalation: your ride, your feed, your fridge, your bed. Ask who remembers $10 Ubers. The pattern has a name (ref 2) but do not lecture it. Backup receipt if asked: HP Dynamic Security firmware blocks non-HP ink that worked yesterday (hp.com/us-en/cartridge/supplies-security.html). The bed's AWS-outage story (stuck upright, overheating) is saved for the dependence act. Wording is draft, Ben to pass.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Spare receipts not yet placed: HP Dynamic Security ink blocking (hp.com/us-en/cartridge/supplies-security.html); the bed's AWS-outage story is reserved for the dependence act.">
       <SlideStack align="start">
         <h2>
           Closed tech goes wrong
@@ -101,7 +102,7 @@ export const slides = {
   ),
 
   "the-airbag": (
-    <PresentationSlide layout="center" note="The peak receipt: not a squeeze, a kill switch on safety equipment. Read the quote slowly, it is Klim's own FAQ. Fig 07 requested to draw this slide.">
+    <PresentationSlide layout="center" note="TODO: fig 07 (exploded vest schematic) requested, not yet generated — slide becomes layout fill when art lands.">
       <SlideStack>
         <SlideStatement size="lead">
           A motorcycle airbag that stops protecting you.
@@ -116,7 +117,7 @@ export const slides = {
   ),
 
   "hook-ai-next": (
-    <PresentationSlide layout="center" note="Spoken: the early signs are already here — ads coming to ChatGPT, models deprecated overnight and grieved, personality changes nobody voted on.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) need a home: on-slide sub-line or cut.">
       <SlideStack>
         <SlideStatement size="lead">AI is at the $10-Uber stage.</SlideStatement>
         <SlideBody>
@@ -128,7 +129,7 @@ export const slides = {
   ),
 
   "hook-the-door": (
-    <PresentationSlide layout="center" note="The bridge. The next slide must answer: what file?">
+    <PresentationSlide layout="center" note="TODO: the slide after this must answer 'what file?' — the what act is not written yet, the old body currently follows.">
       <SlideStack gap="none">
         <SlideStatement>
           Every other time, there was no exit. You could not download the 2015
