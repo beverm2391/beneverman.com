@@ -17,6 +17,16 @@ import {
 // talk or benching a slide never touches the slide itself. The bench is for
 // slides in play — current setlists, the appendix, or material awaiting a
 // restructure. Slides retired for good die in git history, not here.
+//
+// Authoring rules for this deck (Ben's):
+// - Content is Ben's. Agents suggest, challenge, and develop his ideas —
+//   especially from the pres note in the bencorp repo — but do not invent
+//   slide content. Draft wording gets a "Ben to pass" note.
+// - Progressive disclosure: the default layer is felt, every technical layer
+//   is opt-in (a later slide, the appendix, a question from the room).
+// - Every abstract claim carries its concrete example — on the slide as a
+//   quiet sub-line, or in the note as a mandatory spoken beat. An unpaired
+//   abstraction is a draft.
 export const slides = {
   "title": (
     <PresentationSlide layout="center">
@@ -32,18 +42,18 @@ export const slides = {
   // same cycle, then reveal the exit no earlier squeeze had. The talk's
   // promise is set by the end of "hook-the-door".
   "closed-vs-open-tech": (
-    <PresentationSlide note="Assert the axis, don't prove it — the incentives act later carries the proof (Friedman slide). Mirror grammar: closed verbs serve them, open verbs serve you. Wording is draft, Ben to pass.">
+    <PresentationSlide note="Assert the axis, don't prove it — the incentives act later carries the proof. Every line needs its spoken example: retention → ChatGPT RL'd toward follow-up questions; margins → inference got ~100x cheaper, your $20 didn't move; community → the DeepSeek-Flash effect, llama.cpp making your same file faster next year; revoke → the file on your laptop vs 4o deprecated overnight. Fig 06 (value curves over time) is requested for this beat. Wording is draft, Ben to pass.">
       <SlideStack align="start">
         <h2>Closed vs open technology</h2>
         <SlideColumns>
-          <SlideColumn label="Closed">
+          <SlideColumn label="Closed, aka enshittification" tone="accent">
             <ul>
               <li>Optimized for revenue, via your retention and dependence</li>
               <li>Innovations go to their margins</li>
               <li>Your data goes to deepening your dependence</li>
             </ul>
           </SlideColumn>
-          <SlideColumn label="Open">
+          <SlideColumn label="Open, aka appreciation">
             <ul>
               <li>Community improvements benefit everyone</li>
               <li>You configure and improve it freely</li>
