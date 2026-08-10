@@ -85,12 +85,16 @@ export const slides = {
   // Spoken argument: price elasticity. The $10 ride trained the habit; the
   // $70 ride collects on it, because dependence makes demand inelastic.
   "receipt-uber": (
-    <PresentationSlide layout="center" note="TODO: rework as a specific memory (concert home / airport to hotel) with a current-price screenshot and the dated subsidy era — research-requests/01-uber-receipt.md is out with Codex. Wording draft, Ben to pass.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Replace the now-line with Ben's own timestamped app screenshot (representative quote, not a same-route comparison) in public/images/blog/open-weights-ai-models/screenshots/. Sources for the era and the 45% aggregate are gathered in research-requests/01-uber-receipt.md — Ben to read before any get cited.">
       <SlideStack gap="none">
         <SlideKicker>Uber</SlideKicker>
-        <SlideStatement>$10 across town</SlideStatement>
-        <SlideArrow label="Then" />
+        <SlideStatement>
+          Remember when the ride home from the concert was $10?
+        </SlideStatement>
+        <SlideKicker>2015&ndash;2017 &middot; pre-IPO &middot; VC-subsidized growth</SlideKicker>
+        <SlideArrow label="Now" />
         <SlideStatement size="lead">$70, plus surge</SlideStatement>
+        <SlideKicker>Public company &middot; shareholders to pay &middot; you are the margin</SlideKicker>
       </SlideStack>
     </PresentationSlide>
   ),
