@@ -46,7 +46,7 @@ import {
 //   with each slide's note tracking what it still owes.
 export const slides = {
   "title": (
-    <PresentationSlide layout="center">
+    <PresentationSlide layout="center" note="TODO: subtitle is Ben's to land — current line is the money frame; he wants the unsanitized justice/threat version, his voice.">
       <SlideStack gap="tight">
         <h1>Open Weight Models</h1>
         <SlideStatement>The $10 Uber you get to keep forever.</SlideStatement>
