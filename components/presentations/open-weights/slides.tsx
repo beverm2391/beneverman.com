@@ -105,69 +105,16 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The generic chatbot pipeline, drawn live in the deck: a real prompt
-  // through the model's internal representation to a real response. Code-
-  // native like the timelines, so the example text stays editable and crisp.
+  // The generic chatbot pipeline, kept deliberately human-scale: one familiar
+  // request, the weights in the middle, and one useful response.
   "fig-how-chatbots-work": (
-    <PresentationSlide layout="center" note="TODO: this code-native diagram is a placeholder — fig 09 (gen art, square weight matrix in the model box) replaces it when Ben's upscale pipeline delivers. Example prompt and response are draft, Ben to pass.">
-      <div className="flex w-full items-center justify-center gap-[max(0.9rem,2cqw)]">
-        <div className="flex flex-col items-start gap-[0.6em]">
-          <SlideKicker>Your prompt</SlideKicker>
-          <p className="!mt-0 rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) px-[1em] py-[0.7em] !text-[max(0.75rem,1.5cqw)] !text-(--pres-ink)">
-            &ldquo;Why is the sky blue?&rdquo;
-          </p>
-        </div>
-        <div className="flex flex-col items-center gap-[0.5em] text-(--pres-annotation)">
-          <svg
-            aria-hidden="true"
-            className="h-[max(0.5rem,1cqw)] w-[max(1.8rem,3.6cqw)]"
-            fill="none"
-            viewBox="0 0 40 10"
-          >
-            <path d="M0 5 H34 M30 1 L35 5 L30 9" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
-          </svg>
-          <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase">
-            Tokenization
-          </span>
-          <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.8cqw)]">
-            [3446, 318, &hellip;]
-          </span>
-        </div>
-        <div className="flex flex-col items-center gap-[0.6em]">
-          <SlideKicker>The model</SlideKicker>
-          <div className="rounded-[max(0.4rem,0.9cqw)] border border-(--pres-annotation) px-[1.2em] py-[1em] text-center">
-            <div className="grid grid-cols-4 gap-x-[1.1em] gap-y-[0.35em] font-(family-name:--font-presentation-mono) text-[max(0.58rem,1cqw)] text-(--pres-annotation)">
-              <span>0.12</span><span>-1.40</span><span>0.87</span><span>&hellip;</span>
-              <span>-0.53</span><span>2.01</span><span>-0.09</span><span>&hellip;</span>
-              <span>1.76</span><span>-0.31</span><span>0.44</span><span>&hellip;</span>
-              <span>&#8942;</span><span>&#8942;</span><span>&#8942;</span><span>&#8945;</span>
-            </div>
-            <p className="!mt-[0.6em] !max-w-none font-(family-name:--font-presentation-mono) !text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase !text-(--pres-ink-muted)">
-              Math on the weights
-            </p>
-          </div>
-        </div>
-        <div className="flex flex-col items-center gap-[0.5em] text-(--pres-annotation)">
-          <svg
-            aria-hidden="true"
-            className="h-[max(0.5rem,1cqw)] w-[max(1.8rem,3.6cqw)]"
-            fill="none"
-            viewBox="0 0 40 10"
-          >
-            <path d="M0 5 H34 M30 1 L35 5 L30 9" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
-          </svg>
-          <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase">
-            Decoding
-          </span>
-        </div>
-        <div className="flex flex-col items-start gap-[0.6em]">
-          <SlideKicker>Response</SlideKicker>
-          <p className="!mt-0 max-w-[24ch] rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) px-[1em] py-[0.7em] !text-[max(0.75rem,1.5cqw)] !text-(--pres-ink)">
-            &ldquo;Sunlight scatters in the air &mdash; blue scatters
-            most.&rdquo;
-          </p>
-        </div>
-      </div>
+    <PresentationSlide layout="fill">
+      <SlideFigure
+        alt="A request to ChatGPT passes through the model weights and becomes a concise email draft."
+        caption="Fig. 09. How a chatbot works"
+        frame={false}
+        src="/images/blog/open-weights-ai-models/09-how-chatbots-work.png"
+      />
     </PresentationSlide>
   ),
 
@@ -429,7 +376,7 @@ export const slides = {
   "benefit-privacy": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack gap="tight">
-        <SlideStatement size="lead">It can&rsquo;t rat on you</SlideStatement>
+        <SlideStatement size="lead">It&rsquo;s completely secure</SlideStatement>
         <SlideStatement>
           What you type at 2am stays on your machine.
         </SlideStatement>
@@ -440,7 +387,7 @@ export const slides = {
   "benefit-price": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack gap="tight">
-        <SlideStatement size="lead">It can&rsquo;t bill you</SlideStatement>
+        <SlideStatement size="lead">It can&rsquo;t price gouge you</SlideStatement>
         <SlideStatement>
           No subscription, no rate limits, no &ldquo;come back at
           7pm.&rdquo;
@@ -463,7 +410,7 @@ export const slides = {
   "benefit-community": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The DeepSeek-Flash effect / llama.cpp beat: the same file gets faster because thousands of people optimize it.">
       <SlideStack gap="tight">
-        <SlideStatement size="lead">It gets better while you sleep</SlideStatement>
+        <SlideStatement size="lead">Community improvements come straight to you</SlideStatement>
         <SlideStatement>
           The file you downloaded runs faster every month &mdash; and you pay
           no one.
