@@ -73,9 +73,9 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The bridge from the receipts to AI: after the room has seen the squeeze
-  // four times, Altman narrates the same script — flood now (you are in the
-  // subsidized era), meter later (the plan). Sets up the exit that follows.
+  // The dependence dynamic, confessed: intelligence sold like electricity —
+  // the textbook inelastic utility — on their meter. Flood now (subsidized
+  // era), meter forever. Sits directly after the dependence slide it proves.
   "altman-meter": (
     <PresentationSlide layout="center" note="TODO: Ben to pass. Both quotes verbatim from the C-SPAN transcript Ben supplied (ref 11), BlackRock Infrastructure Summit, March 2026.">
       <SlideStack gap="tight">

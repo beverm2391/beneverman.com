@@ -38,9 +38,9 @@ const setlist: readonly SetlistEntry[] = [
   { slide: "receipt-instagram", dives: ["drill-meta-verdict"] },
   { slide: "why-do-we-put-up", dives: ["optimized-for-retention", "fig-retention-diverges"] },
   { slide: "dynamic-dependence", dives: ["fig-growing-dependence"] },
+  "altman-meter",
   "dynamic-no-substitutes",
   "the-airbag",
-  "altman-meter",
   "when-open-tech-goes-right",
   { slide: "receipt-internet", dives: ["fig-open-internet-vs-closed-ai"] },
   {
