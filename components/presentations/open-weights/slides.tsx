@@ -288,7 +288,7 @@ export const slides = {
 
   // The drill behind the Instagram model: not an opinion, a verdict.
   "drill-meta-verdict": (
-    <PresentationSlide note="TODO: Ben to pass. All lines verbatim from the NMDOJ verdict release (ref 4); the complaint (ref 6) and AP judgment total (ref 5) back the kicker. Ben to read all three before the blog.">
+    <PresentationSlide note="TODO: benched, killed from the Instagram stack. All lines verbatim from the NMDOJ verdict release (ref 4); complaint ref 6, AP total ref 5.">
       <SlideStack align="start" gap="tight">
         <SlideKicker>
           New Mexico v. Meta, 2026: jury verdict, $942 million
@@ -901,7 +901,7 @@ export const slides = {
   ),
 
   "optimized-for-retention": (
-    <PresentationSlide>
+    <PresentationSlide note="TODO: benched, killed from the why stack.">
       <SlideStack align="start">
         <h2>Optimized for retention and revenue</h2>
         <SlideStatement>
