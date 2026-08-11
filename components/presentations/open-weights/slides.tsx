@@ -105,6 +105,66 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The generic chatbot pipeline, drawn live in the deck: a real prompt
+  // through the model's internal representation to a real response. Code-
+  // native like the timelines, so the example text stays editable and crisp.
+  "fig-how-chatbots-work": (
+    <PresentationSlide layout="center" note="TODO: example prompt and response are draft, Ben to pass.">
+      <div className="flex w-full items-center justify-center gap-[max(0.9rem,2cqw)]">
+        <div className="flex flex-col items-start gap-[0.6em]">
+          <SlideKicker>Your prompt</SlideKicker>
+          <p className="!mt-0 rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) px-[1em] py-[0.7em] !text-[max(0.75rem,1.5cqw)] !text-(--pres-ink)">
+            &ldquo;Why is the sky blue?&rdquo;
+          </p>
+        </div>
+        <div className="flex flex-col items-center gap-[0.5em] text-(--pres-annotation)">
+          <svg
+            aria-hidden="true"
+            className="h-[max(0.5rem,1cqw)] w-[max(1.8rem,3.6cqw)]"
+            fill="none"
+            viewBox="0 0 40 10"
+          >
+            <path d="M0 5 H34 M30 1 L35 5 L30 9" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+          </svg>
+          <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase">
+            Tokenization
+          </span>
+        </div>
+        <div className="flex flex-col items-center gap-[0.6em]">
+          <SlideKicker>The model</SlideKicker>
+          <div className="rounded-[max(0.4rem,0.9cqw)] border border-(--pres-annotation) px-[1.1em] py-[0.9em] text-center">
+            <p className="!mt-0 !max-w-none font-(family-name:--font-presentation-mono) !text-[max(0.62rem,1.15cqw)] !text-(--pres-annotation)">
+              [3446, 318, 262, 6766, 4171, 30]
+            </p>
+            <p className="!mt-[0.5em] !max-w-none font-(family-name:--font-presentation-mono) !text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase !text-(--pres-ink-muted)">
+              Math on the weights
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-[0.5em] text-(--pres-annotation)">
+          <svg
+            aria-hidden="true"
+            className="h-[max(0.5rem,1cqw)] w-[max(1.8rem,3.6cqw)]"
+            fill="none"
+            viewBox="0 0 40 10"
+          >
+            <path d="M0 5 H34 M30 1 L35 5 L30 9" stroke="currentColor" strokeWidth="1.25" vectorEffect="non-scaling-stroke" />
+          </svg>
+          <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase">
+            Decoding
+          </span>
+        </div>
+        <div className="flex flex-col items-start gap-[0.6em]">
+          <SlideKicker>Response</SlideKicker>
+          <p className="!mt-0 max-w-[24ch] rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) px-[1em] py-[0.7em] !text-[max(0.75rem,1.5cqw)] !text-(--pres-ink)">
+            &ldquo;Sunlight scatters in the air &mdash; blue scatters
+            most.&rdquo;
+          </p>
+        </div>
+      </div>
+    </PresentationSlide>
+  ),
+
   // When closed tech goes wrong: a section marker, then one receipt per
   // slide, quick-fire, ending on the airbag as the peak. The mirror section
   // ("when-open-tech-goes-right") is benched until Ben places its receipts.
