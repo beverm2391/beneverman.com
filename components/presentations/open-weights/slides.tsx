@@ -88,8 +88,11 @@ export const slides = {
           <li>Chatbots are Large Language Models (LLMs)</li>
           <li>
             LLMs are machine learning (ML) models that take text in and
-            produce text out. They do this by turning your text into numbers,
-            doing math, then turning the numbers back into text.
+            produce text out
+          </li>
+          <li>
+            They do this by turning your text into numbers, doing math, then
+            turning the numbers back into text
           </li>
         </ul>
       </SlideStack>
