@@ -362,11 +362,15 @@ export const slides = {
   ),
 
   "benefit-refuse": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Spare examples for the spoken track: the meme with a friend's face, malware crafted to trip classifiers so no frontier model will help remove it, soft refusals that hurt research.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Both claims need sources Ben has read — the classifier scandal coverage and the system card passage. Spare spoken examples: the meme with a friend's face, malware crafted to trip classifiers, soft refusals that hurt research.">
       <SlideStack gap="tight">
         <SlideStatement size="lead">It won&rsquo;t refuse you</SlideStatement>
         <SlideStatement>
-          Ask the medical question. It just answers.
+          Overt: the Fable classifier scandal &mdash; refusals you can see.
+        </SlideStatement>
+        <SlideStatement>
+          Covert: pretraining silently nerfed against rival labs &mdash; in
+          their own system card.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
