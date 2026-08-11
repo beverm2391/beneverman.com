@@ -58,21 +58,15 @@ export const slides = {
   // The talk's first proof, straight from the CEO's mouth: the claim on the
   // title card, confirmed by the man who runs the biggest closed model.
   "altman-receipt": (
-    <PresentationSlide layout="center" note="TODO: Ben to pass. Every line verbatim: lines 1-2 as printed by TechCrunch (ref 7, including their sh** rendering); the produce-that line verbatim from the recording at 31:45 (youtube.com/watch?v=aYn8VKW6vXA&t=1882s), which TechCrunch paraphrases. 'I think that's very screwed up' is verbatim in both. Ben to read/watch before presenting.">
+    <PresentationSlide layout="center" note="TODO: Ben to pass. One continuous quotation, ellipsis-joined, every fragment verbatim to the recording (This Past Weekend #599, 31:22-31:45, youtube.com/watch?v=aYn8VKW6vXA&t=1882s; TechCrunch ref 7 prints sh** — the recording says shit). Ben to read/watch before presenting.">
       <SlideStack gap="tight">
         <SlideKicker>Sam Altman, July 2025</SlideKicker>
-        <SlideStatement>
-          &ldquo;People talk about the most personal sh** in their lives to
-          ChatGPT.&rdquo;
-        </SlideStatement>
-        <SlideStatement>
-          &ldquo;If you talk to a therapist or a lawyer or a doctor about
-          those problems, there&rsquo;s legal privilege for it&hellip; we
-          haven&rsquo;t figured that out yet for when you talk to
-          ChatGPT.&rdquo;
-        </SlideStatement>
         <SlideStatement size="lead">
-          &ldquo;We could be required to produce that.&rdquo;
+          &ldquo;People talk about the most personal shit in their lives to
+          ChatGPT&hellip; if you talk to a therapist or a lawyer or a doctor
+          about those problems, there&rsquo;s legal privilege for
+          it&hellip; we haven&rsquo;t figured that out yet for when you talk
+          to ChatGPT&hellip; we could be required to produce that.&rdquo;
           <SlideRef n={7} />
         </SlideStatement>
       </SlideStack>
@@ -292,7 +286,7 @@ export const slides = {
           them to dangerous content related to eating disorders and self
           harm.&rdquo;
         </SlideStatement>
-        <SlideStatement size="lead">
+        <SlideStatement>
           &ldquo;Meta executives knew their products harmed children,
           disregarded warnings from their own employees, and lied to the
           public about what they knew.&rdquo;
