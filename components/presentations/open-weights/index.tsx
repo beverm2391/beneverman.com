@@ -25,6 +25,7 @@ type SetlistEntry =
 
 const setlist: readonly SetlistEntry[] = [
   "title",
+  "how-this-talk-works",
   {
     slide: "fig-how-chatbots-work",
     dives: ["what-i-mean", "what-is-a-weight", "fig-what-is-a-weight", "fig-text-through-weights"]

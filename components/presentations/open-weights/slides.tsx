@@ -54,6 +54,54 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The map of the talk itself: breadth is the spine, depth is optional,
+  // the room steers. Shown right after the title so the mechanic is a
+  // promise: we only dig where you want to.
+  "how-this-talk-works": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Fig 10 (gen version) requested; this code-native map is the placeholder.">
+      <SlideStack gap="tight">
+        <h2>How this talk works</h2>
+        <svg
+          aria-hidden="true"
+          className="w-[min(100%,max(22rem,48cqw))]"
+          fill="none"
+          viewBox="0 0 460 200"
+        >
+          {/* Scope arrow across the top */}
+          <path d="M20 14 H436 M430 10 L437 14 L430 18" className="stroke-(--pres-annotation)" strokeWidth="1.25" />
+          <text x="20" y="8" className="fill-(--pres-annotation)" fontSize="10" letterSpacing="1.5" fontFamily="var(--font-presentation-mono)">CONCEPTS</text>
+          {/* Depth arrow down the left */}
+          <path d="M8 30 V186 M4 180 L8 187 L12 180" className="stroke-(--pres-annotation)" strokeWidth="1.25" />
+          <text x="16" y="150" transform="rotate(-90 16 150)" className="fill-(--pres-annotation)" fontSize="10" letterSpacing="1.5" fontFamily="var(--font-presentation-mono)">DEPTH</text>
+          {/* The spine, labelled with the talk's real concepts */}
+          {["INTRO", "CHATBOTS", "UBER", "WHY?", "OPEN", "HOW", "END"].map((name, i) => (
+            <g key={name}>
+              <rect x={24 + i * 60} y={30} width={46} height={26} rx={3} className="stroke-(--pres-ink)" strokeWidth="1.25" />
+              <text x={24 + i * 60 + 23} y={47} textAnchor="middle" className="fill-(--pres-ink)" fontSize="7.5" letterSpacing="0.5" fontFamily="var(--font-presentation-mono)">{name}</text>
+            </g>
+          ))}
+          {/* Dive stacks: the optional depth under three of them */}
+          {[
+            { col: 1, dives: ["MATH", "FIGS"] },
+            { col: 3, dives: ["ECON", "FRIEDMAN", "FIG"] },
+            { col: 5, dives: ["MODELS"] }
+          ].map(({ col, dives }) =>
+            dives.map((name, d) => (
+              <g key={`${col}-${name}`} opacity={0.85 - d * 0.22}>
+                <rect x={24 + col * 60} y={66 + d * 34} width={46} height={26} rx={3} className="stroke-(--pres-annotation)" strokeWidth="1.25" />
+                <text x={24 + col * 60 + 23} y={83 + d * 34} textAnchor="middle" className="fill-(--pres-annotation)" fontSize="7.5" letterSpacing="0.5" fontFamily="var(--font-presentation-mono)">{name}</text>
+              </g>
+            ))
+          )}
+        </svg>
+        <SlideStatement>
+          Left to right is the talk. Down is depth &mdash; you decide when we
+          dig.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   // The hook act. Name the closed-vs-open axis, show closed tech going wrong
   // with squeezes the audience has lived, place AI at the early stage of the
   // same cycle, then reveal the exit no earlier squeeze had. The talk's
