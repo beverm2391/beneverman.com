@@ -411,15 +411,21 @@ export const slides = {
   "why-open-weights": (
     <PresentationSlide note="TODO: wording draft, Ben to pass. Example/drill slides to follow this one; the per-benefit ammunition lives in the benched benefit-* slides' notes.">
       <SlideStack align="start">
-        <h2>Why open weights?</h2>
+        <h2>Why open weight models?</h2>
         <ul>
-          <li>It won&rsquo;t refuse you</li>
-          <li>It won&rsquo;t sell your chats</li>
-          <li>It won&rsquo;t price gouge you</li>
-          <li>It can&rsquo;t be taken from you</li>
+          <li>They won&rsquo;t hide information or gate access</li>
+          <li>
+            They won&rsquo;t sell your chats &mdash; or your health and bank
+            data
+          </li>
+          <li>They won&rsquo;t price gouge you</li>
+          <li>They can&rsquo;t be taken from you</li>
           <li>Community improvements come straight to you</li>
-          <li>It can be exactly yours</li>
-          <li>It runs on hardware you already own</li>
+          <li>Fully customizable</li>
+          <li>
+            They run on hardware you already own &mdash; making what you
+            paid for worth more
+          </li>
         </ul>
       </SlideStack>
     </PresentationSlide>
