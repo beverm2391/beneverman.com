@@ -1,62 +1,28 @@
-# Figure 08, the same pipeline, two computers
+# Figure 08, locked up vs free
 
 `08-the-file-locked-vs-free.png`
 
-The deck's ten-second, non-technical definition of open weights, drawn. It
-introduces "weights" as nothing more than the middle of a pipe — prompt goes
-in, weights run on a computer, response comes out — and then shows the ONLY
-difference between closed and open: whose computer the weights sit on. Backs
-the "here's what I mean" slide early in the deck; must read in seconds with
-no prior setup.
+The simplest possible mental model of closed versus open weights: the same
+file, twice — once locked away from you, once yours. No pipelines, no prompt
+bubbles, no server racks, no cages over machinery. The generic how-it-works
+pipeline is figure 09's job; this figure is only the ownership contrast, and
+it should read like an icon pair, in about one second.
 
 ## Composition
 
-Two identical horizontal pipelines, stacked top and bottom:
+Two panels, left and right, generous air, each containing ONE object:
 
-```
-YOUR PROMPT  ->  [ WEIGHTS ]  ->  RESPONSE
-```
+- **Left, `CLOSED WEIGHTS`:** the isometric stack of sheets labelled
+  `MODEL.SAFETENSORS`, secured under a single padlock. The padlock is the
+  accent element, the only accent in the figure. Nothing else in the panel.
+- **Right, `OPEN WEIGHTS`:** the identical stack, completely free — nothing
+  around it, nothing on it. A thin leader labels it `THE SAME FILE`.
 
-- `YOUR PROMPT` and `RESPONSE` as small text bubbles, identical in both
-  panels.
-- `WEIGHTS` as the isometric stack of sheets from figure 03 panel 3, labelled
-  `MODEL.SAFETENSORS` — identical in both panels. The sameness of the two
-  pipelines is the argument; only the surroundings of the weights differ.
-
-## Top pipeline, CLOSED WEIGHTS
-
-The weights stack sits inside a server rack or cage labelled
-`OPENAI'S COMPUTER`. The prompt arrow enters through a gate or slot in the
-cage, and the response arrow exits through it — the only opening. The gate is
-the accent element, the only accent in the figure. Label the gate
-`THEIR RULES, THEIR PRICES`.
-
-## Bottom pipeline, OPEN WEIGHTS
-
-The same weights stack sits on an open laptop labelled `YOUR COMPUTER`.
-The prompt and response arrows connect directly; no gate, no cage, nothing
-between you and the weights.
+The two stacks must be visibly identical; the entire difference is one
+padlock. That asymmetry — one small accent object changing everything — is
+the argument.
 
 ## Labels
 
-Panel titles in mono: `CLOSED WEIGHTS` and `OPEN WEIGHTS`. A thin leader on
-the bottom stack: `THE SAME FILE`. Keep everything else minimal; the repeated
-pipeline and the gate carry the meaning.
-
-## Revision
-
-The shared-spine variant (batch 2026-08-10-01) is placeholding in the deck.
-It is accurate but too even-handed: the two panels read as two neutral
-configurations. The figure's job is locked up versus free, and the contrast
-should be felt before a single label is read.
-
-- **Imprison the closed file.** The top stack belongs in visibly heavier
-  containment — a vault door, a barred cage, a padlock carrying the accent —
-  drawn so the weights read as confiscated property, not equipment in a rack.
-  The gate/slot remains the only opening, still labelled
-  `THEIR RULES, THEIR PRICES`.
-- **Free the open file completely.** The bottom panel sheds any enclosure
-  weight: the same stack sitting in open space on the laptop, more air,
-  nothing drawn around it at all.
-- Stacks stay visibly identical; the asymmetry lives entirely in what
-  surrounds them.
+Panel titles in mono: `CLOSED WEIGHTS` and `OPEN WEIGHTS`. The leader
+`THE SAME FILE` on the right stack. Nothing else.
