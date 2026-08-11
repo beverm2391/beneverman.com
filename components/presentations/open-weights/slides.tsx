@@ -63,7 +63,7 @@ export const slides = {
         <h2>How this talk works</h2>
         <svg
           aria-hidden="true"
-          className="w-[min(100%,max(22rem,48cqw))]"
+          className="w-[min(100%,max(24rem,54cqw))]"
           fill="none"
           viewBox="0 0 460 200"
         >
@@ -88,6 +88,11 @@ export const slides = {
           ].map(({ col, dives }) =>
             dives.map((name, d) => (
               <g key={`${col}-${name}`} opacity={0.85 - d * 0.22}>
+                <path
+                  d={`M${24 + col * 60 + 23} ${56 + d * 34 + (d === 0 ? 0 : 2)} V${66 + d * 34}`}
+                  className="stroke-(--pres-annotation)"
+                  strokeWidth="1.25"
+                />
                 <rect x={24 + col * 60} y={66 + d * 34} width={46} height={26} rx={3} className="stroke-(--pres-annotation)" strokeWidth="1.25" />
                 <text x={24 + col * 60 + 23} y={83 + d * 34} textAnchor="middle" className="fill-(--pres-annotation)" fontSize="7.5" letterSpacing="0.5" fontFamily="var(--font-presentation-mono)">{name}</text>
               </g>
@@ -95,8 +100,7 @@ export const slides = {
           )}
         </svg>
         <SlideStatement>
-          Left to right is the talk. Down is depth &mdash; you decide when we
-          dig.
+          Customize this presentation to your interests.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
