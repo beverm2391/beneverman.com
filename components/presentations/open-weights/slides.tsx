@@ -624,7 +624,7 @@ export const slides = {
 
 
   "translator-chips": (
-    <PresentationSlide note="TODO: Ben's translation. Quote verbatim, Bloomberg Davos interview (ref 12).">
+    <PresentationSlide note="TODO: benched — killed from the translator run; nuclear/ban/regulation/surveillance carry it. Quote verbatim, Bloomberg Davos interview (ref 12).">
       <SlideStack align="start" gap="tight">
         <SlideKicker>Anthropic Translator</SlideKicker>
         <SlideStatement size="lead">
@@ -654,7 +654,7 @@ export const slides = {
         </SlideStatement>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
-          Let&rsquo;s get America on our good side and be social responsible
+          Let&rsquo;s get America on our good side and be socially responsible
           since it&rsquo;s convenient for us right now. That will increase
           our IPO price.
         </SlideStatement>
