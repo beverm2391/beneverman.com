@@ -84,11 +84,11 @@ export const slides = {
     <PresentationSlide note="TODO: wording draft, Ben to pass. Fig 08 (the same input-weights-output pipeline twice: OpenAI's computer behind a gate vs your computer) follows as its own slide when the art lands.">
       <SlideStack align="start">
         <h2>What are weights?</h2>
-        <SlideStack align="start" gap="none">
+        <SlideStack align="start" gap="tight">
           <SlideStatement>You know ChatGPT and Claude.</SlideStatement>
-          <SlideArrow label="They are" />
-          <SlideStatement>LLMs &mdash; large language models.</SlideStatement>
-          <SlideArrow label="And an LLM is" />
+          <SlideStatement>
+            They&rsquo;re LLMs &mdash; large language models.
+          </SlideStatement>
           <SlideStatement size="lead">
             Input &rarr; weights &rarr; output
           </SlideStatement>

@@ -130,7 +130,7 @@ export function SlideArrow({ label, tone = "annotation" }: { label?: string; ton
         />
       </svg>
       {label ? (
-        <span className={`absolute top-1/2 left-1/2 ml-[max(0.6rem,1.1cqw)] -translate-y-1/2 ${monoClass}`}>
+        <span className={`absolute top-1/2 left-1/2 ml-[max(0.6rem,1.1cqw)] -translate-y-1/2 whitespace-nowrap ${monoClass}`}>
           {label}
         </span>
       ) : null}
