@@ -619,7 +619,7 @@ export const slides = {
   // The translator: their words on the left, verbatim; what the words mean
   // on the right. The worked example, diving under the setup.
   "anthropic-translator": (
-    <PresentationSlide note="TODO: translations draft except the chips pair (Ben's own words). The chips quote needs its source pinned — research 04 to find the exact interview link for the nuclear-weapons-to-North-Korea line. Left column otherwise verbatim from the system card (ref 9) and launch announcement.">
+    <PresentationSlide note="TODO: translations draft except the chips pair (Ben's own words). Sources to pin via research 04: the nuclear-weapons-to-North-Korea chips line, and the surveillance/autonomous-weapons policy language. Left column otherwise verbatim from the system card (ref 9) and launch announcement.">
       <SlideStack align="start">
         <h2>Anthropic Translator</h2>
         <SlideColumns>
@@ -629,6 +629,12 @@ export const slides = {
                 &ldquo;It would be a big mistake to ship these chips. I think
                 this is crazy. It&rsquo;s a bit like selling nuclear weapons
                 to North Korea.&rdquo;
+              </li>
+              <li>
+                &ldquo;Mass domestic surveillance &hellip; is incompatible
+                with democratic values. &hellip; frontier AI systems are
+                simply not reliable enough to power fully autonomous
+                weapons.&rdquo;
               </li>
               <li>
                 &ldquo;Competitive use safeguards&rdquo;
@@ -650,6 +656,11 @@ export const slides = {
               <li>
                 We don&rsquo;t want China to build competing companies that
                 hurt our valuation
+              </li>
+              <li>
+                Let&rsquo;s get America on our good side and be socially
+                responsible since it&rsquo;s convenient for us right now.
+                That will increase our IPO price.
               </li>
               <li>We degrade the model if your work competes with ours</li>
               <li>And we won&rsquo;t tell you when we&rsquo;re doing it</li>
