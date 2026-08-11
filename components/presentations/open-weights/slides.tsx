@@ -368,7 +368,7 @@ export const slides = {
   // The hardware combo: the bed and the airbag on one slide, right after
   // Instagram. You don't own your hardware either.
   "receipt-hardware": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Klim quote verbatim (ref 2). Sauna quote is the owner line TechRadar led with (ref 17); bed price still needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Klim quote verbatim (ref 2). Bed quote verbatim from an owner's X post as reported by the Daily Beast (ref 17); bed price still needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page.">
       <SlideStack align="start">
         <h2>You don&rsquo;t own your hardware either</h2>
         <SlideColumns>
@@ -394,12 +394,13 @@ export const slides = {
               src="/images/blog/open-weights-ai-models/screenshots/eight-sleep-pod.jpg"
             />
             <SlideStatement>
-              &ldquo;I&rsquo;m sleeping in a sauna.&rdquo;
+              &ldquo;Would be great if my bed wasn&rsquo;t stuck in an
+              inclined position due to an AWS outage. Cmon now.&rdquo;
               <SlideRef n={17} />
             </SlideStatement>
             <p>
-              Eight Sleep owner, mid AWS outage. A $3,300 mattress; comfort
-              $199 a year.
+              Eight Sleep Pod owner, on X. A $3,300 mattress; comfort $199 a
+              year.
             </p>
           </SlideColumn>
         </SlideColumns>

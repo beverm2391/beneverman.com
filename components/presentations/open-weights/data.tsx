@@ -255,8 +255,8 @@ export const sources = [
   },
   {
     n: 17,
-    title: "TechRadar, 'I'm sleeping in a sauna': AWS outage leaves smart beds overheating and stuck upright (Oct 2025)",
-    href: "https://www.techradar.com/home/smart-home/smart-bed-owners-experience-aws-nightmare-as-outage-leaves-them-sweating-and-stuck-in-upright-position"
+    title: "The Daily Beast, Eight Sleep smart beds stuck upright and overheating during AWS outage (Oct 21, 2025)",
+    href: "https://www.thedailybeast.com/eight-sleep-smart-beds-stuck-upright-and-overheating-during-amazon-web-services-outage/"
   }
 ] as const;
 
