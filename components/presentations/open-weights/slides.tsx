@@ -82,11 +82,6 @@ export const slides = {
     <PresentationSlide layout="center" note="TODO: Ben to pass. Both quotes verbatim from the C-SPAN transcript Ben supplied (ref 11), BlackRock Infrastructure Summit, March 2026.">
       <SlideStack gap="tight">
         <SlideKicker>Sam Altman, March 2026</SlideKicker>
-        <SlideStatement>
-          &ldquo;So the best thing to me throughout all the history of
-          capitalism innovation, whatever you want, is to just flood the
-          market.&rdquo;
-        </SlideStatement>
         <SlideStatement size="lead">
           &ldquo;We see a future where intelligence is a utility like
           electricity or water, and people buy it from us on a meter and use
