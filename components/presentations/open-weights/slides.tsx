@@ -372,20 +372,6 @@ export const slides = {
       <SlideStack align="start">
         <h2>You don&rsquo;t own your hardware either</h2>
         <SlideColumns>
-          <SlideColumn label="Your airbag">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt="The Klim Ai-1 airbag vest."
-              className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
-              src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
-            />
-            <SlideStatement>
-              &ldquo;After the 30-day grace period, the airbag will stop
-              detecting crashes until payment is resumed.&rdquo;
-              <SlideRef n={2} />
-            </SlideStatement>
-            <p>Klim, Ai-1 vest subscription FAQ</p>
-          </SlideColumn>
           <SlideColumn label="Your bed" tone="accent">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -402,6 +388,20 @@ export const slides = {
               Eight Sleep Pod owner, on X. A $3,300 mattress that requires a
               $199 a year subscription to use.
             </p>
+          </SlideColumn>
+          <SlideColumn label="Your airbag">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="The Klim Ai-1 airbag vest."
+              className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
+              src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
+            />
+            <SlideStatement>
+              &ldquo;After the 30-day grace period, the airbag will stop
+              detecting crashes until payment is resumed.&rdquo;
+              <SlideRef n={2} />
+            </SlideStatement>
+            <p>Klim, Ai-1 vest subscription FAQ</p>
           </SlideColumn>
         </SlideColumns>
       </SlideStack>
