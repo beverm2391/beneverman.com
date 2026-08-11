@@ -80,12 +80,15 @@ export function Presentation({
 }: PresentationProps) {
   const stacks = columns ?? Children.toArray(children).map((child) => [child]);
   const stackSizes = stacks.map((stack) => stack.length);
-  const [position, setPosition] = useState<PresentationPosition>({ column: 0, depth: 0 });
-  // Ben's depth-memory rule: each concept remembers where you left its stack,
-  // so walking the spine and coming back resumes the same dive.
-  const [rememberedDepths, setRememberedDepths] = useState<number[]>([]);
-  const rememberedDepthsRef = useRef(rememberedDepths);
-  rememberedDepthsRef.current = rememberedDepths;
+  const stackShape = stackSizes.join(",");
+  // Position and the depth-memory rule live in one state object so a single
+  // functional update reads both: each concept remembers where you left its
+  // stack, and returning to it resumes the same dive.
+  const [deckState, setDeckState] = useState<{
+    depths: number[];
+    position: PresentationPosition;
+  }>({ depths: [], position: { column: 0, depth: 0 } });
+  const position = deckState.position;
   // Two expansion modes: theater fills the browser viewport (the default way
   // to present), fullscreen takes the whole display via the Fullscreen API
   // (reached with ⌘-click or the F key).
@@ -166,23 +169,18 @@ export function Presentation({
   }
 
   const move = useCallback((action: PresentationAction) => {
-    setPosition((current) => {
+    const sizes = stackShape === "" ? [] : stackShape.split(",").map(Number);
+    setDeckState(({ depths, position: current }) => {
       const clamped = {
-        column: Math.min(current.column, stackSizes.length - 1),
+        column: Math.min(current.column, sizes.length - 1),
         depth: current.depth
       };
-      const next = movePresentation(clamped, stackSizes, rememberedDepthsRef.current, action);
-      setRememberedDepths((depths) => {
-        const updated = depths.slice();
-        updated[next.column] = next.depth;
-        return updated;
-      });
-      return next;
+      const next = movePresentation(clamped, sizes, depths, action);
+      const updated = depths.slice();
+      updated[next.column] = next.depth;
+      return { depths: updated, position: next };
     });
-    // stackSizes is derived from props each render; join() keeps the callback
-    // stable across renders that do not change the deck's shape.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stackSizes.join(",")]);
+  }, [stackShape]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
