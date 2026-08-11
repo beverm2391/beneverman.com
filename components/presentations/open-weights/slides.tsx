@@ -39,6 +39,7 @@ import {
 //   beats a tight summary every time. Never compress a quote, never
 //   sanitize it into an abstraction ("endangering children" is a fact;
 //   what the algorithm did to children is the point).
+// - No em dashes anywhere in the deck. Commas, colons, or periods instead.
 // - Slide notes (the note prop, toggled with N) are internal change-tracking
 //   only: what the slide still needs. Not speaker notes.
 // - No source enters data.tsx unless Ben has read it. Agents verify claims
@@ -101,7 +102,7 @@ export const slides = {
   // promise: we only dig where you want to.
   "how-this-talk-works": (
     <PresentationSlide layout="fill">
-      <div className="flex h-full min-h-0 flex-col gap-[max(0.6rem,1.2cqw)]">
+      <div className="flex h-full min-h-0 flex-col items-center gap-[max(0.6rem,1.2cqw)]">
         <h2>This presentation is dynamic</h2>
         <SlideFigure
           alt="A map of this talk: seven concepts left to right at equal scope, with optional dive stacks descending into technical depth under three of them."
@@ -290,7 +291,7 @@ export const slides = {
     <PresentationSlide note="TODO: Ben to pass. All lines verbatim from the NMDOJ verdict release (ref 4); the complaint (ref 6) and AP judgment total (ref 5) back the kicker. Ben to read all three before the blog.">
       <SlideStack align="start" gap="tight">
         <SlideKicker>
-          New Mexico v. Meta, 2026 &mdash; jury verdict, $942 million
+          New Mexico v. Meta, 2026: jury verdict, $942 million
           <SlideRef n={4} />
           <SlideRef n={5} />
         </SlideKicker>
@@ -583,7 +584,7 @@ export const slides = {
         <SlideStatement>
           And the ones you can&rsquo;t see, in their own system card:
           &ldquo;these safeguards will not be visible to the user&rdquo;
-          &mdash; via &ldquo;prompt modification, steering vectors, or
+          via &ldquo;prompt modification, steering vectors, or
           parameter-efficient fine-tuning (PEFT).&rdquo;
           <SlideRef n={9} />
         </SlideStatement>
@@ -606,7 +607,7 @@ export const slides = {
           </li>
         </ul>
         <SlideStatement size="lead">
-          How can we use this to translate what they say &mdash; and find
+          How can we use this to translate what they say, and find
           out what they really mean?
         </SlideStatement>
         <SlideStatement>
@@ -774,7 +775,7 @@ export const slides = {
         <SlideStatement>
           A federal court ordered OpenAI to &ldquo;preserve and segregate all
           output log data that would otherwise be deleted on a going forward
-          basis until further order of the Court&rdquo; &mdash; expressly
+          basis until further order of the Court,&rdquo; expressly
           including chats users deleted.
           <SlideRef n={10} />
         </SlideStatement>
@@ -810,7 +811,7 @@ export const slides = {
         <ul>
           <li>OpenRouter puts every open model behind one key</li>
           <li>Point Claude Code, Codex, or pi at it</li>
-          <li>Same workflow &mdash; fraction of the cost</li>
+          <li>Same workflow, fraction of the cost</li>
         </ul>
       </SlideStack>
     </PresentationSlide>
@@ -1054,7 +1055,7 @@ export const slides = {
         <SlideKicker>Your model file</SlideKicker>
         <SlideStatement>Downloaded once</SlideStatement>
         <SlideArrow label="Then" />
-        <SlideStatement size="lead">Faster every month &mdash; you pay no one</SlideStatement>
+        <SlideStatement size="lead">Faster every month, and you pay no one</SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
