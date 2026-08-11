@@ -42,3 +42,21 @@ between you and the weights.
 Panel titles in mono: `CLOSED WEIGHTS` and `OPEN WEIGHTS`. A thin leader on
 the bottom stack: `THE SAME FILE`. Keep everything else minimal; the repeated
 pipeline and the gate carry the meaning.
+
+## Revision
+
+The shared-spine variant (batch 2026-08-10-01) is placeholding in the deck.
+It is accurate but too even-handed: the two panels read as two neutral
+configurations. The figure's job is locked up versus free, and the contrast
+should be felt before a single label is read.
+
+- **Imprison the closed file.** The top stack belongs in visibly heavier
+  containment — a vault door, a barred cage, a padlock carrying the accent —
+  drawn so the weights read as confiscated property, not equipment in a rack.
+  The gate/slot remains the only opening, still labelled
+  `THEIR RULES, THEIR PRICES`.
+- **Free the open file completely.** The bottom panel sheds any enclosure
+  weight: the same stack sitting in open space on the laptop, more air,
+  nothing drawn around it at all.
+- Stacks stay visibly identical; the asymmetry lives entirely in what
+  surrounds them.
