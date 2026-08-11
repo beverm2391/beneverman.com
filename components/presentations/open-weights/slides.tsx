@@ -73,6 +73,27 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The second Altman receipt: the business model, stated as vision. The
+  // meter is the rent thesis verbatim; the flood is the subsidize phase.
+  "altman-meter": (
+    <PresentationSlide layout="center" note="TODO: Ben to pass. Both quotes verbatim from the C-SPAN transcript Ben supplied (ref 11), BlackRock Infrastructure Summit, March 2026.">
+      <SlideStack gap="tight">
+        <SlideKicker>Sam Altman, March 2026</SlideKicker>
+        <SlideStatement>
+          &ldquo;So the best thing to me throughout all the history of
+          capitalism innovation, whatever you want, is to just flood the
+          market.&rdquo;
+        </SlideStatement>
+        <SlideStatement size="lead">
+          &ldquo;We see a future where intelligence is a utility like
+          electricity or water, and people buy it from us on a meter and use
+          it for whatever they want to use it for.&rdquo;
+          <SlideRef n={11} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   // The map of the talk itself: breadth is the spine, depth is optional,
   // the room steers. Shown right after the title so the mechanic is a
   // promise: we only dig where you want to.

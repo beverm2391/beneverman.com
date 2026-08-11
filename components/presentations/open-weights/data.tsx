@@ -222,6 +222,11 @@ export const sources = [
     n: 10,
     title: "NYT v. OpenAI, preservation order, ECF 551 p. 3 (obligation ended Sept 2025)",
     href: "https://cases.justia.com/federal/district-courts/new-york/nysdce/1%3A2023cv11195/612697/551/0.pdf"
+  },
+  {
+    n: 11,
+    title: "C-SPAN transcript, Sam Altman at the BlackRock Infrastructure Summit, March 2026",
+    href: "https://fight.fudgie.org/search/show/cspan/episode/20260315_CSPAN_0429-0510_EDT_OpenAI_CEO_Sam_Altman_Speaks_at_BlackRock_Infrastructure_Summit"
   }
 ] as const;
 
