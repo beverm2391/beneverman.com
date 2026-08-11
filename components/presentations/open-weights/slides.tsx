@@ -627,12 +627,14 @@ export const slides = {
     <PresentationSlide note="TODO: benched — killed from the translator run; nuclear/ban/regulation/surveillance carry it. Quote verbatim, Bloomberg Davos interview (ref 12).">
       <SlideStack align="start" gap="tight">
         <SlideKicker>Anthropic Translator</SlideKicker>
-        <SlideStatement size="lead">
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
           &ldquo;It would be a big mistake to ship these chips. I think this is
           crazy. It&rsquo;s a bit like selling nuclear weapons to North
           Korea.&rdquo;
           <SlideRef n={12} />
         </SlideStatement>
+        </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
           We don&rsquo;t want China to build competing companies that hurt our
@@ -646,12 +648,14 @@ export const slides = {
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Anthropic's Department of War statement (ref 13); context: they support defense work and are open to autonomous-weapons research once systems are reliable enough.">
       <SlideStack align="start" gap="tight">
         <SlideKicker>Anthropic Translator</SlideKicker>
-        <SlideStatement size="lead">
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
           &ldquo;Mass domestic surveillance &hellip; is incompatible with
           democratic values. &hellip; frontier AI systems are simply not
           reliable enough to power fully autonomous weapons.&rdquo;
           <SlideRef n={13} />
         </SlideStatement>
+        </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
           Let&rsquo;s get America on our good side and be socially responsible
@@ -666,12 +670,14 @@ export const slides = {
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim, ABC News interview (ref 14).">
       <SlideStack align="start" gap="tight">
         <SlideKicker>Anthropic Translator</SlideKicker>
-        <SlideStatement size="lead">
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
           &ldquo;We&rsquo;re proposing stronger regulation of the technology,
           proposing giving the government the ability to, again, in a narrow
           way, block deployment of unsafe technology.&rdquo;
           <SlideRef n={14} />
         </SlideStatement>
+        </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
           Peter Thiel is so smart, we do need to become a monopoly. Let&rsquo;s
@@ -687,12 +693,14 @@ export const slides = {
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Dario's Policy on the AI Exponential (ref 15).">
       <SlideStack align="start" gap="tight">
         <SlideKicker>Anthropic Translator</SlideKicker>
-        <SlideStatement size="lead">
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
           &ldquo;There may come a time &hellip; when the most powerful AI
           systems look less like airplanes or automobiles and more like
           weaponizable nuclear materials.&rdquo;
           <SlideRef n={15} />
         </SlideStatement>
+        </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
           We are definitely the only ones that should control access to AI, so
@@ -708,12 +716,14 @@ export const slides = {
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Anthropic's open-weights position post (ref 16), responding to accusations they want open models banned.">
       <SlideStack align="start" gap="tight">
         <SlideKicker>Anthropic Translator</SlideKicker>
-        <SlideStatement size="lead">
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
           &ldquo;Anthropic has never advocated for a ban on open-weights
           models. Open-weights models that don&rsquo;t have dangerous
           capabilities are a public good.&rdquo;
           <SlideRef n={16} />
         </SlideStatement>
+        </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
           Fucking hell dude Moonshot is going to kill our IPO what do we do???
