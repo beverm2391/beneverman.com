@@ -38,6 +38,7 @@ const setlist = [
   "when-open-tech-goes-right",
   "receipt-mp3",
   "receipt-community-speed",
+  "fig-open-internet-vs-closed-ai",
   // Why open weights
   "why-open-weights",
   "speed-demo",
@@ -57,8 +58,7 @@ const setlist = [
   "fig-text-through-weights",
   "optimized-for-retention",
   "fig-retention-diverges",
-  "fig-growing-dependence",
-  "fig-open-internet-vs-closed-ai"
+  "fig-growing-dependence"
 ] as const satisfies readonly SlideName[];
 
 export function OpenWeightsPresentation() {
