@@ -50,7 +50,6 @@ const setlist = [
   "how-find-models",
   "how-cloud",
   // Close
-  "own-the-weights",
   "references",
   // The technical door: reached only on purpose.
   "appendix",

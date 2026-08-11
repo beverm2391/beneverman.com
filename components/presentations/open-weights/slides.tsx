@@ -614,7 +614,7 @@ export const slides = {
 
   // The close: the title card's promise, kept.
   "own-the-weights": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+    <PresentationSlide layout="center" note="TODO: benched — cut from the setlist.">
       <SlideStack gap="tight">
         <SlideStatement size="lead">Own the weights.</SlideStatement>
         <SlideStatement>The $10 Uber you get to keep forever.</SlideStatement>
