@@ -290,17 +290,17 @@ export function Presentation({
         </div>
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-[max(0.85rem,1.5cqw)] pb-[max(0.75rem,1.3cqw)] font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-ink-muted)">
+          {hasDiveBelow ? (
+            <button
+              aria-label="Dive deeper into this concept"
+              className={`${controlButtonClass} pointer-events-auto absolute bottom-[max(0.6rem,1.05cqw)] left-[max(0.85rem,1.5cqw)] tracking-[0.09em] uppercase !text-[max(0.75rem,1.2cqw)] !text-(--pres-annotation)`}
+              onClick={() => move("down")}
+              type="button"
+            >
+              {"\u25be"} dive deeper
+            </button>
+          ) : null}
           <div className="flex items-center gap-[1.25em]">
-            {hasDiveBelow ? (
-              <button
-                aria-label="Dive deeper into this concept"
-                className={`${controlButtonClass} pointer-events-auto tracking-[0.09em] uppercase !text-[max(0.75rem,1.2cqw)] !text-(--pres-annotation)`}
-                onClick={() => move("down")}
-                type="button"
-              >
-                {"\u25be"} dive deeper
-              </button>
-            ) : null}
           {isExpanded ? (
             <div
               className={`pointer-events-auto flex items-center gap-[1.25em] transition-opacity duration-500 ${controlsHidden ? "!pointer-events-none opacity-0" : "opacity-100"}`}
