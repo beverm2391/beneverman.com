@@ -2,37 +2,24 @@
 
 `09-how-chatbots-work.png`
 
-The generic pipeline for the "How do chatbots work?" beat, with a real
-example flowing through it. The audience should recognize their own daily
-action — type a question, get an answer — and see the middle of it for the
-first time: numbers in, math on a grid of numbers, numbers out. Backs the
-slide immediately after the bullets that say the same thing in words. A
-code-native placeholder currently holds the slide; this figure replaces it.
+A friendly pipeline figure for the "How do chatbots work?" section. The audience sees
+an ordinary request, the weights in the middle, and a useful response. The
+figure appears on the slide immediately after the bullets that explain the same
+flow in words.
 
 ## Composition
 
-A single left-to-right pipeline:
+A single left-to-right pipeline with three large elements:
 
-```
-YOUR PROMPT  ->  TOKENIZATION  ->  [ THE MODEL ]  ->  DECODING  ->  RESPONSE
-```
+- A rounded speech bubble containing exactly: `ChatGPT, can you help me write
+  an email?`
+- A simple stack of three gridded sheets, labelled exactly: `THE WEIGHTS`.
+- A rounded speech bubble containing exactly: `Sure, here's a concise draft.`
 
-- `YOUR PROMPT`: a text bubble containing a real question, exactly:
-  "Why is the sky blue?"
-- First arrow labelled `TOKENIZATION`, with the intermediate representation
-  riding under it in small mono: `[3446, 318, 262, ...]`
-- `THE MODEL`: the central block and subject of the figure. Inside it, a
-  square weight matrix drawn the way a paper would draw one: a grid of small
-  signed decimal numbers (e.g. 0.12, -1.40, 0.87) with ellipses on the last
-  row and column to imply billions more. Label the matrix `THE WEIGHTS`.
-  Draw the matrix as one continuous grid, the same motif as figure 03
-  panel 2, so the figures read as the same object.
-- Second arrow labelled `DECODING`.
-- `RESPONSE`: a text bubble containing a real answer, exactly:
-  "Sunlight scatters in the air — blue scatters most."
-
-Text fidelity matters more than usual here: the example sentences and the
-matrix digits must be crisply legible, since the numbers are the point.
+One arrow connects the request to the weights. A second arrow connects the
+weights to the response. Keep the three elements large enough to read from the
+back of the room. Do not add token IDs, matrix decimals, stage labels, or other
+technical detail.
 
 No accent color anywhere. Nothing in this figure constrains the user; it is
 pure mechanism.
