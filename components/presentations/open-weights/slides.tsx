@@ -109,7 +109,7 @@ export const slides = {
   // through the model's internal representation to a real response. Code-
   // native like the timelines, so the example text stays editable and crisp.
   "fig-how-chatbots-work": (
-    <PresentationSlide layout="center" note="TODO: example prompt and response are draft, Ben to pass.">
+    <PresentationSlide layout="center" note="TODO: this code-native diagram is a placeholder — fig 09 (gen art, square weight matrix in the model box) replaces it when Ben's upscale pipeline delivers. Example prompt and response are draft, Ben to pass.">
       <div className="flex w-full items-center justify-center gap-[max(0.9rem,2cqw)]">
         <div className="flex flex-col items-start gap-[0.6em]">
           <SlideKicker>Your prompt</SlideKicker>
@@ -129,14 +129,20 @@ export const slides = {
           <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase">
             Tokenization
           </span>
+          <span className="font-(family-name:--font-presentation-mono) text-[max(0.5rem,0.8cqw)]">
+            [3446, 318, &hellip;]
+          </span>
         </div>
         <div className="flex flex-col items-center gap-[0.6em]">
           <SlideKicker>The model</SlideKicker>
-          <div className="rounded-[max(0.4rem,0.9cqw)] border border-(--pres-annotation) px-[1.1em] py-[0.9em] text-center">
-            <p className="!mt-0 !max-w-none font-(family-name:--font-presentation-mono) !text-[max(0.62rem,1.15cqw)] !text-(--pres-annotation)">
-              [3446, 318, 262, 6766, 4171, 30]
-            </p>
-            <p className="!mt-[0.5em] !max-w-none font-(family-name:--font-presentation-mono) !text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase !text-(--pres-ink-muted)">
+          <div className="rounded-[max(0.4rem,0.9cqw)] border border-(--pres-annotation) px-[1.2em] py-[1em] text-center">
+            <div className="grid grid-cols-4 gap-x-[1.1em] gap-y-[0.35em] font-(family-name:--font-presentation-mono) text-[max(0.58rem,1cqw)] text-(--pres-annotation)">
+              <span>0.12</span><span>-1.40</span><span>0.87</span><span>&hellip;</span>
+              <span>-0.53</span><span>2.01</span><span>-0.09</span><span>&hellip;</span>
+              <span>1.76</span><span>-0.31</span><span>0.44</span><span>&hellip;</span>
+              <span>&#8942;</span><span>&#8942;</span><span>&#8942;</span><span>&#8945;</span>
+            </div>
+            <p className="!mt-[0.6em] !max-w-none font-(family-name:--font-presentation-mono) !text-[max(0.5rem,0.75cqw)] tracking-[0.09em] uppercase !text-(--pres-ink-muted)">
               Math on the weights
             </p>
           </div>
