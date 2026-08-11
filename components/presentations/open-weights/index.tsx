@@ -41,11 +41,15 @@ const setlist = [
   // Why open weights
   "why-open-weights",
   "benefit-refuse",
+  "benefit-information",
   "benefit-privacy",
   "benefit-price",
   "benefit-forever",
+  "benefit-answers-to-no-one",
   "benefit-community",
   "benefit-custom",
+  "benefit-on-device",
+  "benefit-no-id",
   "speed-demo",
   "model-landscape",
   // How

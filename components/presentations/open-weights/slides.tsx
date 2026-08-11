@@ -366,11 +366,15 @@ export const slides = {
       <SlideStack gap="tight">
         <SlideStatement size="lead">It won&rsquo;t refuse you</SlideStatement>
         <SlideStatement>
-          Overt: the Fable classifier scandal &mdash; refusals you can see.
+          The refusals you see: the Fable classifier scandal.
         </SlideStatement>
         <SlideStatement>
-          Covert: pretraining silently nerfed against rival labs &mdash; in
-          their own system card.
+          The ones you don&rsquo;t: risk aversion quietly optimizing the
+          model down &mdash; admitted in the system card.
+        </SlideStatement>
+        <SlideStatement>
+          Closed is optimized down, to avoid lawsuits. Open is optimized up,
+          for you.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -429,6 +433,52 @@ export const slides = {
         <SlideStatement>
           Tuned to your domain and your values &mdash; not the average
           user&rsquo;s.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-on-device": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. On-device means hardware you already own, not offline.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">
+          It runs on hardware you already own
+        </SlideStatement>
+        <SlideStatement>Your MacBook. Your iPhone. Today.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-no-id": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From the note: decoupled from big labs and government ID requirements.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It won&rsquo;t demand your ID</SlideStatement>
+        <SlideStatement>
+          No account, no age check, no identity tied to your questions.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-information": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From the note: access to free info, distinct from refusals.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It won&rsquo;t gatekeep knowledge</SlideStatement>
+        <SlideStatement>
+          Information access set by you &mdash; not by someone&rsquo;s
+          liability.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-answers-to-no-one": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The note's closing block: access protected from big-tech financial collapse, cultural opinions you don't share, and the sitting administration.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It answers to no one</SlideStatement>
+        <SlideStatement>
+          Not a balance sheet, not the culture war, not the sitting
+          administration.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
