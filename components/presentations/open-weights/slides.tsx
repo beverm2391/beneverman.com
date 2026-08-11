@@ -83,16 +83,15 @@ export const slides = {
   "what-i-mean": (
     <PresentationSlide note="TODO: wording draft, Ben to pass. Fig 08 (the same input-weights-output pipeline twice: OpenAI's computer behind a gate vs your computer) follows as its own slide when the art lands.">
       <SlideStack align="start">
-        <h2>What are weights?</h2>
-        <SlideStack align="start" gap="tight">
-          <SlideStatement>You know ChatGPT and Claude.</SlideStatement>
-          <SlideStatement>
-            They&rsquo;re LLMs &mdash; large language models.
-          </SlideStatement>
-          <SlideStatement size="lead">
-            Input &rarr; weights &rarr; output
-          </SlideStatement>
-        </SlideStack>
+        <h2>How do chatbots work?</h2>
+        <ul>
+          <li>Chatbots are Large Language Models (LLMs)</li>
+          <li>
+            LLMs are machine learning (ML) models that take text in and
+            produce text out. They do this by turning your text into numbers,
+            doing math, then turning the numbers back into text.
+          </li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
