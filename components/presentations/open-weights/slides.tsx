@@ -145,7 +145,7 @@ export const slides = {
   // Spoken argument: price elasticity, seeded here and paid off on the
   // price-elasticity slide after the Instagram receipt.
   "receipt-uber": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Replace the now-line with Ben's own timestamped app screenshot (representative quote, not a same-route comparison) in public/images/blog/open-weights-ai-models/screenshots/. Sources for the era and the 45% aggregate are gathered in research-requests/01-uber-receipt.md — Ben to read before any get cited.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. sources.md has the upgrade path: dated hinges (2015 $10 fare campaign, 2016 upfront quote replacing the visible meter, 2019 S-1 disclosing rider/driver price decoupling, 2026 second-by-second repricing) and the Oct 2025 airport receipt ($44 on-property, $9 after walking off). Ben to read before citing; his own app screenshot still wanted.">
       <SlideStack align="start">
         <SlideKicker>Uber</SlideKicker>
         <h2>Remember when the ride home from the concert was $10?</h2>
@@ -176,7 +176,7 @@ export const slides = {
   // Spoken argument: Meta's failures — what retention optimization did to
   // the feed, and where that same playbook goes next.
   "receipt-instagram": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Dates are from memory — research-requests/02-instagram-receipt.md is out to verify them and mine the Doctorow TikTok piece (uncited until Ben reads it).">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Dates are from memory — research-requests/02-instagram-receipt.md is out to verify. Spoken-track ammo staged in sources.md: the New Mexico jury verdict against Meta ($942M, court finding not allegation) and the Facebook Papers engagement-ranking research.">
       <SlideStack align="start">
         <SlideKicker>Instagram</SlideKicker>
         <h2>Remember when Instagram was just your friends?</h2>
@@ -373,8 +373,8 @@ export const slides = {
           model down &mdash; admitted in the system card.
         </SlideStatement>
         <SlideStatement>
-          Closed is optimized down, to avoid lawsuits. Open is optimized up,
-          for you.
+          Closed is optimized down to avoid lawsuits &mdash; answers,
+          capability, knowledge all trimmed. Open is optimized up, for you.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -386,6 +386,9 @@ export const slides = {
         <SlideStatement size="lead">It won&rsquo;t sell your chats</SlideStatement>
         <SlideStatement>
           Your 2am conversation is not training data.
+        </SlideStatement>
+        <SlideStatement>
+          No account, no ID, no identity tied to your questions.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -409,6 +412,10 @@ export const slides = {
         <SlideStatement size="lead">It can&rsquo;t be taken from you</SlideStatement>
         <SlideStatement>
           When 4o died, thousands grieved. Nobody with the file lost a thing.
+        </SlideStatement>
+        <SlideStatement>
+          It answers to no one &mdash; not a balance sheet, the culture war,
+          or the sitting administration.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -445,41 +452,6 @@ export const slides = {
           It runs on hardware you already own
         </SlideStatement>
         <SlideStatement>Your MacBook. Your iPhone. Today.</SlideStatement>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
-  "benefit-no-id": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From the note: decoupled from big labs and government ID requirements.">
-      <SlideStack gap="tight">
-        <SlideStatement size="lead">It won&rsquo;t demand your ID</SlideStatement>
-        <SlideStatement>
-          No account, no age check, no identity tied to your questions.
-        </SlideStatement>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
-  "benefit-information": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From the note: access to free info, distinct from refusals.">
-      <SlideStack gap="tight">
-        <SlideStatement size="lead">It won&rsquo;t gatekeep knowledge</SlideStatement>
-        <SlideStatement>
-          Information access set by you &mdash; not by someone&rsquo;s
-          liability.
-        </SlideStatement>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
-  "benefit-answers-to-no-one": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The note's closing block: access protected from big-tech financial collapse, cultural opinions you don't share, and the sitting administration.">
-      <SlideStack gap="tight">
-        <SlideStatement size="lead">It answers to no one</SlideStatement>
-        <SlideStatement>
-          Not a balance sheet, not the culture war, not the sitting
-          administration.
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
