@@ -107,7 +107,7 @@ export const slides = {
         <SlideFigure
           alt="A map of this talk: seven concepts left to right at equal scope, with optional dive stacks descending into technical depth under three of them."
           frame={false}
-          src="/images/blog/open-weights-ai-models/10-how-this-talk-works.png"
+          src="/images/blog/open-weights-ai-models/10-how-this-talk-works_upscaled.png"
         />
       </div>
     </PresentationSlide>
@@ -176,7 +176,7 @@ export const slides = {
         alt="A request to ChatGPT passes through the model weights and becomes a concise email draft."
         caption="Fig. 09. How a chatbot works"
         frame={false}
-        src="/images/blog/open-weights-ai-models/09-how-chatbots-work.png"
+          src="/images/blog/open-weights-ai-models/09-how-chatbots-work_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -189,7 +189,7 @@ export const slides = {
         alt="The same prompt-to-response pipeline twice: the weights caged in OpenAI's computer behind a gate marked their rules their prices, and the same file open on your laptop."
         caption="Fig. 08. The same file, two computers"
         frame={false}
-        src="/images/blog/open-weights-ai-models/08-the-file-locked-vs-free.png"
+          src="/images/blog/open-weights-ai-models/08-the-file-locked-vs-free_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -453,7 +453,7 @@ export const slides = {
         alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
         caption="Fig. 03. What is a weight"
         frame={false}
-        src="/images/blog/open-weights-ai-models/03-what-is-a-weight.png"
+          src="/images/blog/open-weights-ai-models/03-what-is-a-weight_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -467,7 +467,7 @@ export const slides = {
         alt="Prompt tokenized, passed through the weights, emitted one token at a time."
         caption="Fig. 04. Text through the weights"
         frame={false}
-        src="/images/blog/open-weights-ai-models/04-text-through-weights.png"
+          src="/images/blog/open-weights-ai-models/04-text-through-weights_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -492,8 +492,7 @@ export const slides = {
   "receipt-internet": (
     <PresentationSlide note="TODO: wording is Ben's dictation, Ben to pass. This slide contrasts with the closed-AI slide coming up; the mesh-vs-funnel figure dives beneath. Spoken spare: the closed-internet counterfactual from notes.md (pay for access, no result integrity, no peer-to-peer).">
       <SlideStack align="start">
-        <SlideKicker>The internet</SlideKicker>
-        <h2>No one owns it. Everyone won.</h2>
+        <h2>The internet</h2>
         <ul>
           <li>
             No central authority: anyone can hit any public IP, anyone can
@@ -976,7 +975,7 @@ export const slides = {
         alt="Retention and user value rise together, then diverge under optimization pressure."
         caption="Fig. 05. Retention diverges from value"
         frame={false}
-        src="/images/blog/open-weights-ai-models/05-retention-diverges-from-value.png"
+          src="/images/blog/open-weights-ai-models/05-retention-diverges-from-value_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -988,7 +987,7 @@ export const slides = {
         alt="Domain knowledge falls as reasoning is delegated while AI-assisted performance rises."
         caption="Fig. 01. Growing dependence"
         frame={false}
-        src="/images/blog/open-weights-ai-models/01-growing-dependence.png"
+          src="/images/blog/open-weights-ai-models/01-growing-dependence_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -999,7 +998,7 @@ export const slides = {
         alt="An open internet mesh with alternate routes above a closed AI funnel through one provider-controlled gateway."
         caption="Fig. 02. Open internet vs closed AI"
         frame={false}
-        src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai.png"
+          src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai_upscaled.png"
       />
     </PresentationSlide>
   ),
