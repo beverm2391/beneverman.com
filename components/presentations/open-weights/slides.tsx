@@ -1,7 +1,7 @@
 // loc-check: exempt — the slide bench is a registry that grows with the
 // talk; the unit of review is the slide, not the file.
 import { PresentationSlide } from "@/components/mdx/presentation";
-import { closedProviders, ModelList, openProviders, sources, thesis } from "./data";
+import { closedProviders, ModelList, openProviders, sources } from "./data";
 import {
   SlideArrow,
   SlideColumn,
@@ -329,7 +329,7 @@ export const slides = {
   ),
 
   "when-open-tech-goes-right": (
-    <PresentationSlide layout="center" note="TODO: benched, not in the setlist. Ben to choose its receipts (candidates from the convo: MP3s, email, the web, llama.cpp making the same file faster, the DeepSeek-Flash effect) and where it lands.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Receipts drafted from his candidates: MP3s and community speed; email/the web remain spares.">
       <SlideStack>
         <h2>When open tech goes right</h2>
       </SlideStack>
@@ -457,26 +457,119 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  "thesis": (
-    <PresentationSlide layout="center">
+  // ---- After the door: when open tech goes right (the mirror receipts),
+  // the felt-four why, the landscape, the how ladder, and the close. All
+  // drafted from Ben's conversation; every slide awaits his pass.
+
+  "receipt-mp3": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Ben's candidates for this section also include email and the web.">
       <SlideStack gap="none">
-        <SlideStatement>{thesis[0]}</SlideStatement>
-        <SlideArrow label="Thus" />
-        <SlideStatement>{thesis[1]}</SlideStatement>
+        <SlideKicker>Your MP3s</SlideKicker>
+        <SlideStatement>Bought in 2003</SlideStatement>
+        <SlideArrow label="Still" />
+        <SlideStatement size="lead">Play everywhere, forever, free</SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
-  // The map for the middle of the talk: name both problems, then take them
-  // one at a time.
-  "closed-model-problems": (
-    <PresentationSlide>
+  "receipt-community-speed": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. This is the DeepSeek-Flash effect / llama.cpp beat from the pres note: the same file gets faster because thousands of people optimize it, and you pay no one.">
+      <SlideStack gap="none">
+        <SlideKicker>Your model file</SlideKicker>
+        <SlideStatement>Downloaded once</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">Faster every month &mdash; you pay no one</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The felt four, from the audience-calibration conversation: every value a
+  // casual user has personally felt the absence of.
+  "why-open-weights": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Each line's story lives in Ben's spoken track: refusals they've hit, 2am confessions, rate limits, the 4o deprecation.">
       <SlideStack align="start">
-        <h2>Major Problems with Closed Weight Models</h2>
+        <h2>Why open weights?</h2>
         <ul>
-          <li>Optimized for retention and revenue (your dependence)</li>
-          <li>Dependence carries risk</li>
+          <li>It can&rsquo;t refuse you</li>
+          <li>It can&rsquo;t rat on you</li>
+          <li>It can&rsquo;t bill you</li>
+          <li>It can&rsquo;t be taken from you</li>
         </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "speed-demo": (
+    <PresentationSlide layout="center" note="TODO: live demo cue — model streaming at high tok/s, wifi visibly off. Slide stays minimal; the demo is the content. Ben to decide the exact rig.">
+      <SlideStack>
+        <SlideStatement size="lead">And it&rsquo;s fast.</SlideStatement>
+        <SlideKicker>Live: laptop, airplane mode</SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The how act: the ladder from the audience-tiers conversation. One path
+  // per tier, zero decisions on the default path.
+  "how-do-you-start": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack>
+        <h2>How do you start?</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-everyone": (
+    <PresentationSlide note="TODO: wording draft and the exact recommended model, Ben to pass. One path, zero decisions.">
+      <SlideStack align="start">
+        <SlideKicker>Everyone</SlideKicker>
+        <h2>Ten minutes, tonight</h2>
+        <ul>
+          <li>Download LM Studio</li>
+          <li>Pick the model it recommends for your machine</li>
+          <li>Turn the wifi off and talk to it</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-coders": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — his exact recommended provider/model pairing.">
+      <SlideStack align="start">
+        <SlideKicker>You use a coding agent</SlideKicker>
+        <h2>Same tools, open weights behind them</h2>
+        <ul>
+          <li>Point your agent at an open model via OpenRouter</li>
+          <li>Fraction of the cost, sometimes faster than what you pay for</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-the-rabbit-hole": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. This is the door to the technical appendix — engines, cloud GPUs, finetuning — and the blog post.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">The rabbit hole is right there.</SlideStatement>
+        <SlideKicker>Engines &middot; cloud GPUs &middot; finetuning &middot; ask me anything</SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The close: the title card's promise, kept.
+  "own-the-weights": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">Own the weights.</SlideStatement>
+        <SlideStatement>The $10 Uber you get to keep forever.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Appendix marker: everything past this slide is the technical door,
+  // reached only on purpose.
+  "appendix": (
+    <PresentationSlide layout="center">
+      <SlideStack>
+        <h2>Appendix</h2>
       </SlideStack>
     </PresentationSlide>
   ),

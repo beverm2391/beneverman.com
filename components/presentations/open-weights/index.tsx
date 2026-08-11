@@ -20,12 +20,14 @@ const openWeightsMono = IBM_Plex_Mono({
 // Other cuts of the same material (a more technical version, a shorter one)
 // are just other setlists over the same bench.
 const setlist = [
+  // Hook and what
   "title",
   "what-i-mean",
   "fig-how-chatbots-work",
   "fig-the-file-locked-vs-free",
   "closed-vs-open-tech",
   "fig-enshittification-vs-appreciation",
+  // The receipts
   "when-closed-tech-goes-wrong",
   "receipt-uber",
   "receipt-instagram",
@@ -36,17 +38,31 @@ const setlist = [
   "the-airbag",
   "hook-ai-next",
   "hook-the-door",
+  // When open tech goes right
+  "when-open-tech-goes-right",
+  "receipt-mp3",
+  "receipt-community-speed",
+  // Why open weights
+  "why-open-weights",
+  "speed-demo",
   "model-landscape",
+  // How
+  "how-do-you-start",
+  "how-everyone",
+  "how-coders",
+  "how-the-rabbit-hole",
+  // Close
+  "own-the-weights",
+  "references",
+  // The technical door: reached only on purpose.
+  "appendix",
   "what-is-a-weight",
   "fig-what-is-a-weight",
   "fig-text-through-weights",
-  "thesis",
-  "closed-model-problems",
   "optimized-for-retention",
   "fig-retention-diverges",
   "fig-growing-dependence",
-  "fig-open-internet-vs-closed-ai",
-  "references"
+  "fig-open-internet-vs-closed-ai"
 ] as const satisfies readonly SlideName[];
 
 export function OpenWeightsPresentation() {
