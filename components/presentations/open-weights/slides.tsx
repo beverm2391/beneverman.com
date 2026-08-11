@@ -653,7 +653,7 @@ export const slides = {
         </SlideStatement>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
-          Let&rsquo;s get America on our good side and be socially responsible
+          Let&rsquo;s get America on our good side and be social responsible
           since it&rsquo;s convenient for us right now. That will increase
           our IPO price.
         </SlideStatement>
