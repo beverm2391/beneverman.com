@@ -290,6 +290,16 @@ export function Presentation({
         </div>
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 px-[max(0.85rem,1.5cqw)] pb-[max(0.75rem,1.3cqw)] font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-ink-muted)">
+          {hasDiveBelow || currentDepth > 0 ? (
+            <button
+              aria-label={hasDiveBelow ? "Dive deeper into this concept" : "Surface to the concept"}
+              className={`${controlButtonClass} pointer-events-auto absolute inset-x-0 mx-auto w-fit tracking-[0.09em] uppercase !text-(--pres-annotation)`}
+              onClick={() => move(hasDiveBelow ? "down" : "up")}
+              type="button"
+            >
+              {hasDiveBelow ? "\u25be dive deeper" : "\u25b4 surface"}
+            </button>
+          ) : null}
           {isExpanded ? (
             <div
               className={`pointer-events-auto flex items-center gap-[1.25em] transition-opacity duration-500 ${controlsHidden ? "!pointer-events-none opacity-0" : "opacity-100"}`}
@@ -331,8 +341,6 @@ export function Presentation({
             <span />
           )}
           <span className="uppercase">
-            {currentDepth > 0 ? "\u25b4 " : ""}
-            {hasDiveBelow ? "\u25be " : ""}
             {String(currentIndex + 1).padStart(2, "0")}
             {letter} / {String(slideCount).padStart(2, "0")}
           </span>
