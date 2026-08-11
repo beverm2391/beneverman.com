@@ -325,7 +325,7 @@ export const slides = {
 
   // The bonus receipt, framed as an aside so its absurdity lands on its own.
   "the-airbag": (
-    <PresentationSlide layout="center" note="TODO: fig 07 (exploded vest schematic) requested, not yet generated — slide becomes layout fill when art lands. Quote needs a source Ben has read — candidate: klim.com/Ai-1-Airbag-Vest-3046-000 (their FAQ, verified to contain the quote).">
+    <PresentationSlide layout="center" note="TODO: quote needs a source Ben has read — candidate: klim.com/Ai-1-Airbag-Vest-3046-000 (their FAQ, verified to contain the quote).">
       <SlideStack>
         <SlideKicker>Bonus: you don&rsquo;t own your hardware either</SlideKicker>
         <SlideStatement size="lead">
