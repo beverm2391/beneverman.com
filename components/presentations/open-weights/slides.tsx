@@ -404,29 +404,82 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  "receipt-community-speed": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. This is the DeepSeek-Flash effect / llama.cpp beat from the pres note: the same file gets faster because thousands of people optimize it, and you pay no one.">
-      <SlideStack gap="none">
-        <SlideKicker>Your model file</SlideKicker>
-        <SlideStatement>Downloaded once</SlideStatement>
-        <SlideArrow label="Then" />
-        <SlideStatement size="lead">Faster every month &mdash; you pay no one</SlideStatement>
+  // Why open weights: a section marker, then one benefit per slide, each
+  // paired with its felt example from Ben's material. All await his pass.
+  "why-open-weights": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack>
+        <h2>Why open weights?</h2>
       </SlideStack>
     </PresentationSlide>
   ),
 
-  // The felt four, from the audience-calibration conversation: every value a
-  // casual user has personally felt the absence of.
-  "why-open-weights": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Each line's story lives in Ben's spoken track: refusals they've hit, 2am confessions, rate limits, the 4o deprecation.">
-      <SlideStack align="start">
-        <h2>Why open weights?</h2>
-        <ul>
-          <li>It can&rsquo;t refuse you</li>
-          <li>It can&rsquo;t rat on you</li>
-          <li>It can&rsquo;t bill you</li>
-          <li>It can&rsquo;t be taken from you</li>
-        </ul>
+  "benefit-refuse": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Ben's examples: the meme with a friend's face, the medical question it gets weird about, soft refusals that hurt research.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It can&rsquo;t refuse you</SlideStatement>
+        <SlideStatement>
+          The meme, the medical question, the gray area &mdash; no classifier,
+          no lecture.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-privacy": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It can&rsquo;t rat on you</SlideStatement>
+        <SlideStatement>
+          What you type at 2am stays on your machine.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-price": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It can&rsquo;t bill you</SlideStatement>
+        <SlideStatement>
+          No subscription, no rate limits, no &ldquo;come back at
+          7pm.&rdquo;
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-forever": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The 4o deprecation grief is the spoken story here.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It can&rsquo;t be taken from you</SlideStatement>
+        <SlideStatement>
+          No deprecation, no personality change you never voted on.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-community": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The DeepSeek-Flash effect / llama.cpp beat: the same file gets faster because thousands of people optimize it.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It gets better while you sleep</SlideStatement>
+        <SlideStatement>
+          The file you downloaded runs faster every month &mdash; and you pay
+          no one.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-custom": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Ben's example: a model tuned to elicit your creativity, not do your work; any model from any lab, swapped freely.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">It can be exactly yours</SlideStatement>
+        <SlideStatement>
+          Tuned to your domain and your values &mdash; not the average
+          user&rsquo;s.
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
