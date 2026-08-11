@@ -46,10 +46,28 @@ import {
 //   with each slide's note tracking what it still owes.
 export const slides = {
   "title": (
-    <PresentationSlide layout="center" note="TODO: subtitle is Ben's to land — current line is the money frame; he wants the unsanitized justice/threat version, his voice.">
+    <PresentationSlide layout="center" note="TODO: spoken close can still cash the $10-Uber line from the Uber receipt.">
       <SlideStack gap="tight">
         <h1>Open Weight Models</h1>
-        <SlideStatement>The $10 Uber you get to keep forever.</SlideStatement>
+        <SlideStatement>AI they can&rsquo;t use against you.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The talk's first proof, straight from the CEO's mouth: the claim on the
+  // title card, confirmed by the man who runs the biggest closed model.
+  "altman-receipt": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Verbatim fragments verified in research 03 (timestamps 31:22-31:45, This Past Weekend #599): 'use it as a therapist', no legal privilege like therapists/lawyers/doctors, 'we could be required to produce that.' Ben to read/watch before presenting: primary youtube.com/watch?v=aYn8VKW6vXA&t=1882s, TechCrunch ref 7.">
+      <SlideStack gap="tight">
+        <SlideKicker>Sam Altman, July 2025</SlideKicker>
+        <SlideStatement>
+          People use ChatGPT as a therapist, he says &mdash; and those
+          conversations carry no legal privilege.
+        </SlideStatement>
+        <SlideStatement size="lead">
+          &ldquo;We could be required to produce that.&rdquo;
+          <SlideRef n={7} />
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -534,7 +552,7 @@ export const slides = {
   "invoke-data-privacy": (
     <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then quotes go on. Best receipts: Altman at 31:22-31:45 (Theo Von): people use it as a therapist, no legal privilege, 'we could be required to produce that'; the May 2025 SDNY order preserved otherwise-deleted output logs — but CORRECTION: that broad obligation ended Sept 2025, do not say they currently keep every deleted chat; ID flows can require government ID plus a selfie (OpenAI and Anthropic both); retention spans 30 days to years by product and flag.">
       <SlideStack align="start">
-        <h2>What happens to what you tell them?</h2>
+        <h2>It can be used against you</h2>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -637,7 +655,7 @@ export const slides = {
     <PresentationSlide layout="center" note="TODO: benched — cut from the setlist.">
       <SlideStack gap="tight">
         <SlideStatement size="lead">Own the weights.</SlideStatement>
-        <SlideStatement>The $10 Uber you get to keep forever.</SlideStatement>
+        <SlideStatement>AI they can&rsquo;t use against you.</SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),

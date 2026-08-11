@@ -202,6 +202,11 @@ export const sources = [
     n: 6,
     title: "State of New Mexico v. Meta, complaint (allegations)",
     href: "https://nmdoj.gov/wp-content/uploads/2024/01/2023-12-05-NM-v.-Meta-et-al.-COMPLAINT-REDACTED.pdf"
+  },
+  {
+    n: 7,
+    title: "TechCrunch, Altman warns there's no legal confidentiality when using ChatGPT as a therapist",
+    href: "https://techcrunch.com/2025/07/25/sam-altman-warns-theres-no-legal-confidentiality-when-using-chatgpt-as-a-therapist/"
   }
 ] as const;
 
