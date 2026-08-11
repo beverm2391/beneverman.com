@@ -58,13 +58,19 @@ export const slides = {
   // the room steers. Shown right after the title so the mechanic is a
   // promise: we only dig where you want to.
   "how-this-talk-works": (
-    <PresentationSlide layout="fill" note="TODO: caption line is Ben's — spoken: customize this presentation to your interests.">
-      <SlideFigure
-        alt="A map of this talk: seven concepts left to right at equal scope, with optional dive stacks descending into technical depth under three of them."
-        caption="Customize this presentation to your interests"
-        frame={false}
-        src="/images/blog/open-weights-ai-models/10-how-this-talk-works.png"
-      />
+    <PresentationSlide layout="fill">
+      <div className="flex h-full min-h-0 flex-col items-center gap-[max(0.6rem,1.2cqw)]">
+        <SlideFigure
+          alt="A map of this talk: seven concepts left to right at equal scope, with optional dive stacks descending into technical depth under three of them."
+          frame={false}
+          src="/images/blog/open-weights-ai-models/10-how-this-talk-works.png"
+        />
+        <div className="text-center">
+          <SlideStatement size="lead">
+            Customize this presentation to your interests
+          </SlideStatement>
+        </div>
+      </div>
     </PresentationSlide>
   ),
 
