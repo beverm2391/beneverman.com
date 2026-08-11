@@ -37,7 +37,7 @@ const setlist = [
   "the-airbag",
   // When open tech goes right
   "when-open-tech-goes-right",
-  "receipt-mp3",
+  "receipt-internet",
   // Why open weights
   "why-open-weights",
   "benefit-refuse",

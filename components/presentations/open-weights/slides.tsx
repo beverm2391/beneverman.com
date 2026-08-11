@@ -225,7 +225,7 @@ export const slides = {
 
   // The drill behind the Instagram model: not an opinion, a verdict.
   "drill-meta-verdict": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Line 1 is the state complaint's allegation (ref 6); line 2 is the jury finding (ref 4) and final judgment total (ref 5). Keep allegation vs finding distinct when speaking. Ben to read all three before the blog.">
+    <PresentationSlide layout="center" note="TODO: quote pass pending — exact lines from the NMDOJ verdict release (ref 4): evidence at trial 'established that Meta's design features enabled pedophiles and predators to engage in child sexual exploitation' and that 'Meta intentionally designs its platforms to addict young people' while exposing them to eating-disorder and self-harm content; AG Torrez: 'Meta executives knew their products harmed children, disregarded warnings from their own employees, and lied to the public.' The addiction-by-design line is the enshittification thesis. Line 1 is the complaint's allegation (ref 6); jury finding is ref 4, judgment total ref 5. Ben to read all before the blog.">
       <SlideStack gap="tight">
         <SlideKicker>Meta, in court</SlideKicker>
         <SlideStatement size="lead">
@@ -379,12 +379,25 @@ export const slides = {
   // drafted from Ben's conversation; every slide awaits his pass.
 
   "receipt-mp3": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Ben's candidates for this section also include email and the web.">
+    <PresentationSlide layout="center" note="TODO: benched — the internet carries the open-goes-right section now.">
       <SlideStack gap="none">
         <SlideKicker>Your MP3s</SlideKicker>
         <SlideStatement>Bought in 2003</SlideStatement>
         <SlideArrow label="Still" />
         <SlideStatement size="lead">Play everywhere, forever, free</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The internet as the open-goes-right receipt: the one open technology
+  // everyone in the room lives on.
+  "receipt-internet": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Spoken bullets from the pres note: what a closed internet would look like — pay directly for access, no control over the integrity of results, no peer-to-peer. The benched mesh-vs-funnel figure (fig-open-internet-vs-closed-ai) can back this beat if wanted.">
+      <SlideStack gap="tight">
+        <SlideKicker>The internet</SlideKicker>
+        <SlideStatement size="lead">
+          No one owns it. Everyone won.
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
