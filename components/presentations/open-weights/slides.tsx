@@ -171,6 +171,19 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The definition drawn: the identical pipeline twice, and the only
+  // difference between closed and open is whose computer the weights sit on.
+  "fig-the-file-locked-vs-free": (
+    <PresentationSlide layout="fill">
+      <SlideFigure
+        alt="The same prompt-to-response pipeline twice: the weights caged in OpenAI's computer behind a gate marked their rules their prices, and the same file open on your laptop."
+        caption="Fig. 08. The same file, two computers"
+        frame={false}
+        src="/images/blog/open-weights-ai-models/08-the-file-locked-vs-free.png"
+      />
+    </PresentationSlide>
+  ),
+
   // When closed tech goes wrong: a section marker, then one receipt per
   // slide, quick-fire, ending on the airbag as the peak. The mirror section
   // ("when-open-tech-goes-right") is benched until Ben places its receipts.
@@ -287,20 +300,6 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // Spoken argument (with airbag): you don't really own it.
-  "receipt-bed": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Price claim needs a source Ben has read — candidate: Eight Sleep's own Autopilot pricing page. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act; coverage candidates: NYT Oct 24 2025, PCMag.">
-      <SlideStack gap="none">
-        <SlideKicker>Your bed</SlideKicker>
-        <SlideStatement>A $3,300 smart mattress</SlideStatement>
-        <SlideArrow label="Then" />
-        <SlideStatement size="lead">
-          Comfort: $199 a year
-        </SlideStatement>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
   "when-open-tech-goes-right": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Receipts drafted from his candidates: MP3s and community speed; email/the web remain spares.">
       <SlideStack>
@@ -321,40 +320,6 @@ export const slides = {
           &ldquo;After the 30-day grace period, the airbag will stop detecting
           crashes until payment is resumed.&rdquo;
         </SlideStatement>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
-  // Spoken argument: the cycle behind every receipt — subsidized prices train
-  // the habit, dependence makes demand inelastic, then extraction begins.
-  // Same axis drawing as the Uber and Instagram receipts, with the arc
-  // barely begun: that visual rhyme is the argument.
-  "hook-ai-next": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass — especially the future marks (IPO hinge, the accented end state). Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) live in the spoken track.">
-      <SlideStack align="start">
-        <SlideKicker>Closed-source AI</SlideKicker>
-        <h2>AI is at the $10-Uber stage.</h2>
-        <SlideTimeline
-          start={2022}
-          end={2030}
-          marks={[
-            { at: 2022.9, yearLabel: "2022", sublabel: "ChatGPT", tone: "ink" },
-            {
-              at: 2025.6,
-              yearLabel: "Now — we are here",
-              label: "Free, or $20",
-              sublabel: "Pre-IPO · subsidized growth"
-            },
-            { at: 2027.6, yearLabel: "Soon · IPO?" },
-            {
-              at: 2029.6,
-              yearLabel: "Then",
-              label: "?",
-              sublabel: "Profit-maxxing · monopoly",
-              tone: "accent"
-            }
-          ]}
-        />
       </SlideStack>
     </PresentationSlide>
   ),

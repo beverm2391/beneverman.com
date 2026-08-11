@@ -33,9 +33,7 @@ const setlist = [
   "why-do-we-put-up",
   "dynamic-dependence",
   "dynamic-no-substitutes",
-  "receipt-bed",
   "the-airbag",
-  "hook-ai-next",
   "hook-the-door",
   // When open tech goes right
   "when-open-tech-goes-right",
