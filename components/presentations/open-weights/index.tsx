@@ -40,11 +40,11 @@ const setlist: readonly SetlistEntry[] = [
   "when-closed-tech-goes-wrong",
   { slide: "receipt-uber", dives: ["drill-uber-airport"] },
   "receipt-instagram",
+  "receipt-hardware",
   { slide: "why-do-we-put-up", dives: ["fig-retention-diverges"] },
   { slide: "dynamic-dependence", dives: ["fig-growing-dependence"] },
   "altman-meter",
   "dynamic-no-substitutes",
-  "the-airbag",
   "when-open-tech-goes-right",
   { slide: "receipt-internet", dives: ["fig-open-internet-vs-closed-ai"] },
   {

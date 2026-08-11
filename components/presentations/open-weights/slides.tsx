@@ -365,9 +365,35 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The hardware combo: the bed and the airbag on one slide, right after
+  // Instagram. You don't own your hardware either.
+  "receipt-hardware": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Airbag quote verbatim, Klim FAQ (ref 2). Bed price needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page; the AWS-outage story (beds stuck upright, overheating) is spare ammo in sources.md.">
+      <SlideStack align="start">
+        <h2>You don&rsquo;t own your hardware either</h2>
+        <SlideColumns>
+          <SlideColumn label="Your airbag">
+            <SlideStatement>
+              A subscription airbag that stops protecting you.
+            </SlideStatement>
+            <p>
+              &ldquo;After the 30-day grace period, the airbag will stop
+              detecting crashes until payment is resumed.&rdquo;
+              <SlideRef n={2} />
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Your bed" tone="accent">
+            <SlideStatement>A $3,300 smart mattress.</SlideStatement>
+            <p>Comfort: $199 a year.</p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   // The bonus receipt, framed as an aside so its absurdity lands on its own.
   "the-airbag": (
-    <PresentationSlide layout="fill" note="TODO: wording draft, Ben to pass. Citation added at Ben's direction — he should skim the Klim page before Wednesday.">
+    <PresentationSlide layout="fill" note="TODO: benched, folded into the hardware combo slide.">
       <div className="flex h-full min-h-0 items-center justify-center gap-[max(1.2rem,3cqw)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
