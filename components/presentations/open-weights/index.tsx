@@ -36,7 +36,6 @@ const setlist: readonly SetlistEntry[] = [
     slide: "fig-how-chatbots-work",
     dives: ["what-i-mean", "what-is-a-weight", "fig-what-is-a-weight", "fig-text-through-weights"]
   },
-  "fig-the-file-locked-vs-free",
   "closed-vs-open-tech",
   "when-closed-tech-goes-wrong",
   { slide: "receipt-uber", dives: ["drill-uber-airport"] },

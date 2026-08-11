@@ -184,7 +184,7 @@ export const slides = {
   // The definition drawn: the identical pipeline twice, and the only
   // difference between closed and open is whose computer the weights sit on.
   "fig-the-file-locked-vs-free": (
-    <PresentationSlide layout="fill">
+    <PresentationSlide layout="fill" note="TODO: benched, killed from the spine. The icon-pair revision (image request 08) is still queued if it returns.">
       <SlideFigure
         alt="The same prompt-to-response pipeline twice: the weights caged in OpenAI's computer behind a gate marked their rules their prices, and the same file open on your laptop."
         caption="Fig. 08. The same file, two computers"
@@ -683,7 +683,7 @@ export const slides = {
           Peter Thiel is so smart, we do need to become a monopoly. Let&rsquo;s
           use the guise of AI safety to become the government&rsquo;s pet,
           so that we can help them regulate our competitors out of
-          business!
+          business.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -706,7 +706,7 @@ export const slides = {
           We are definitely the only ones that should control access to AI, so
           we can fearmonger to convince the public we&rsquo;re protecting
           them! Then they&rsquo;ll have no other option but to pay 10x of
-          what they do now when we IPO and jack up our prices!
+          what they do now when we IPO and jack up our prices.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -728,7 +728,7 @@ export const slides = {
         <SlideStatement>
           Fucking hell dude Moonshot is going to kill our IPO what do we do???
           We can&rsquo;t let the public find out that they have a better
-          claude cowork replacement for cheaper than us!
+          claude cowork replacement for cheaper than us.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
