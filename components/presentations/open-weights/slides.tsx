@@ -57,15 +57,22 @@ export const slides = {
   // The talk's first proof, straight from the CEO's mouth: the claim on the
   // title card, confirmed by the man who runs the biggest closed model.
   "altman-receipt": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Verbatim fragments verified in research 03 (timestamps 31:22-31:45, This Past Weekend #599): 'use it as a therapist', no legal privilege like therapists/lawyers/doctors, 'we could be required to produce that.' Ben to read/watch before presenting: primary youtube.com/watch?v=aYn8VKW6vXA&t=1882s, TechCrunch ref 7.">
+    <PresentationSlide layout="center" note="TODO: Ben to pass. Every line verbatim: lines 1-2 as printed by TechCrunch (ref 7, including their sh** rendering); the produce-that line verbatim from the recording at 31:45 (youtube.com/watch?v=aYn8VKW6vXA&t=1882s), which TechCrunch paraphrases. 'I think that's very screwed up' is verbatim in both. Ben to read/watch before presenting.">
       <SlideStack gap="tight">
         <SlideKicker>Sam Altman, July 2025</SlideKicker>
         <SlideStatement>
-          People use ChatGPT as a therapist, he says &mdash; and those
-          conversations carry no legal privilege.
+          &ldquo;People talk about the most personal sh** in their lives to
+          ChatGPT.&rdquo;
+        </SlideStatement>
+        <SlideStatement>
+          &ldquo;If you talk to a therapist or a lawyer or a doctor about
+          those problems, there&rsquo;s legal privilege for it&hellip; we
+          haven&rsquo;t figured that out yet for when you talk to
+          ChatGPT.&rdquo;
         </SlideStatement>
         <SlideStatement size="lead">
-          &ldquo;We could be required to produce that.&rdquo;
+          &ldquo;We could be required to produce that&hellip; I think
+          that&rsquo;s very screwed up.&rdquo;
           <SlideRef n={7} />
         </SlideStatement>
       </SlideStack>
