@@ -252,6 +252,11 @@ export const sources = [
     n: 16,
     title: "Anthropic, Position on open-weights models (Jul 27, 2026)",
     href: "https://www.anthropic.com/news/position-open-weights-models"
+  },
+  {
+    n: 17,
+    title: "TechRadar, 'I'm sleeping in a sauna': AWS outage leaves smart beds overheating and stuck upright (Oct 2025)",
+    href: "https://www.techradar.com/home/smart-home/smart-bed-owners-experience-aws-nightmare-as-outage-leaves-them-sweating-and-stuck-in-upright-position"
   }
 ] as const;
 

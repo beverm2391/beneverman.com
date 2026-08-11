@@ -368,7 +368,7 @@ export const slides = {
   // The hardware combo: the bed and the airbag on one slide, right after
   // Instagram. You don't own your hardware either.
   "receipt-hardware": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Airbag quote verbatim, Klim FAQ (ref 2). Bed price needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page; the AWS-outage story is spare ammo in sources.md.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Klim quote verbatim (ref 2). Sauna quote is the owner line TechRadar led with (ref 17); bed price still needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page.">
       <SlideStack align="start">
         <h2>You don&rsquo;t own your hardware either</h2>
         <SlideColumns>
@@ -380,13 +380,11 @@ export const slides = {
               src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
             />
             <SlideStatement>
-              A subscription airbag that stops protecting you.
-            </SlideStatement>
-            <p>
               &ldquo;After the 30-day grace period, the airbag will stop
               detecting crashes until payment is resumed.&rdquo;
               <SlideRef n={2} />
-            </p>
+            </SlideStatement>
+            <p>Klim, Ai-1 vest subscription FAQ</p>
           </SlideColumn>
           <SlideColumn label="Your bed" tone="accent">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -395,8 +393,14 @@ export const slides = {
               className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
               src="/images/blog/open-weights-ai-models/screenshots/eight-sleep-pod.jpg"
             />
-            <SlideStatement>A $3,300 smart mattress.</SlideStatement>
-            <p>Comfort: $199 a year.</p>
+            <SlideStatement>
+              &ldquo;I&rsquo;m sleeping in a sauna.&rdquo;
+              <SlideRef n={17} />
+            </SlideStatement>
+            <p>
+              Eight Sleep owner, mid AWS outage. A $3,300 mattress; comfort
+              $199 a year.
+            </p>
           </SlideColumn>
         </SlideColumns>
       </SlideStack>
