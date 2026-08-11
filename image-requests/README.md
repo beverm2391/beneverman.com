@@ -7,6 +7,12 @@ A request states what the figure has to make the viewer understand, then what to
 draw. Figures here are load bearing: each one carries a step of the argument, so
 the intent matters more than the styling.
 
+This directory is a work queue, not a manifest of finished figures. After Ben
+selects and integrates a candidate, delete its request file. The public
+asset and the code that renders it own the final state. The external review
+packet preserves the unselected candidates and the generation history. Do not
+keep a request-to-final mapping here.
+
 After art lands in `public/images/blog/<slug>/source/`:
 
 ```
