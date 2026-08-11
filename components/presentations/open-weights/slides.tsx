@@ -619,7 +619,7 @@ export const slides = {
   // The translator: their words on the left, verbatim; what the words mean
   // on the right. The worked example, diving under the setup.
   "anthropic-translator": (
-    <PresentationSlide note="TODO: translations are Ben's words. Sources to pin via research 04: the chips line, the surveillance/weapons language, and the block-deployment regulation quote.">
+    <PresentationSlide note="TODO: translations are Ben's words. Sources to pin via research 04: the chips line and the surveillance/weapons language.">
       <SlideStack align="start">
         <h2>Anthropic Translator</h2>
         <SlideColumns>
@@ -636,12 +636,6 @@ export const slides = {
                 simply not reliable enough to power fully autonomous
                 weapons.&rdquo;
               </li>
-              <li>
-                &ldquo;We&rsquo;re proposing stronger regulation of the
-                technology, proposing giving the government the ability to,
-                again, in a narrow way, block deployment of unsafe
-                technology.&rdquo;
-              </li>
             </ul>
           </SlideColumn>
           <SlideColumn label="Translation" tone="accent">
@@ -655,12 +649,6 @@ export const slides = {
                 responsible since it&rsquo;s convenient for us right now.
                 That will increase our IPO price.
               </li>
-              <li>
-                Peter Thiel is so smart, we do need to become a monopoly.
-                Let&rsquo;s use the guise of AI safety to become the
-                government&rsquo;s pet, so that we can help them regulate our
-                competitors out of business!
-              </li>
             </ul>
           </SlideColumn>
         </SlideColumns>
@@ -669,9 +657,51 @@ export const slides = {
   ),
 
   "anthropic-translator-2": (
-    <PresentationSlide note="TODO: translations draft, Ben to pass. Left column verbatim from the system card (ref 9) and launch announcement.">
+    <PresentationSlide note="TODO: translations are Ben's words. Sources to pin via research 04: the block-deployment regulation quote and the weaponizable-nuclear-materials line.">
       <SlideStack align="start">
         <h2>Anthropic Translator, continued</h2>
+        <SlideColumns>
+          <SlideColumn label="They say">
+            <ul>
+              <li>
+                &ldquo;We&rsquo;re proposing stronger regulation of the
+                technology, proposing giving the government the ability to,
+                again, in a narrow way, block deployment of unsafe
+                technology.&rdquo;
+              </li>
+              <li>
+                &ldquo;There may come a time &hellip; when the most powerful
+                AI systems look less like airplanes or automobiles and more
+                like weaponizable nuclear materials.&rdquo;
+              </li>
+            </ul>
+          </SlideColumn>
+          <SlideColumn label="Translation" tone="accent">
+            <ul>
+              <li>
+                Peter Thiel is so smart, we do need to become a monopoly.
+                Let&rsquo;s use the guise of AI safety to become the
+                government&rsquo;s pet, so that we can help them regulate our
+                competitors out of business!
+              </li>
+              <li>
+                We are definitely the only ones that should control access to
+                AI, so we can fearmonger to convince the public we&rsquo;re
+                protecting them! Then they&rsquo;ll have no other option but
+                to pay 10x of what they do now when we IPO and jack up our
+                prices!
+              </li>
+            </ul>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "anthropic-translator-3": (
+    <PresentationSlide note="TODO: translations draft, Ben to pass. Left column verbatim from the system card (ref 9) and launch announcement.">
+      <SlideStack align="start">
+        <h2>Anthropic Translator, the fine print</h2>
         <SlideColumns>
           <SlideColumn label="They say">
             <ul>
@@ -701,6 +731,7 @@ export const slides = {
       </SlideStack>
     </PresentationSlide>
   ),
+
 
   "invoke-data-privacy": (
     <PresentationSlide note="TODO: Ben to pass. The order quote is verbatim from ECF 551 p3 (ref 10). CORRECTION lives in the spoken track: the broad obligation ended September 26, 2025 (OpenAI's Oct 2025 update) — say a court DID order it, not that it stands today. ID-verification receipts (government ID plus selfie, both labs) in research 03 for the spoken track.">
