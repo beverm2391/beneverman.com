@@ -34,7 +34,6 @@ const setlist = [
   "dynamic-dependence",
   "dynamic-no-substitutes",
   "the-airbag",
-  "hook-the-door",
   // When open tech goes right
   "when-open-tech-goes-right",
   "receipt-mp3",

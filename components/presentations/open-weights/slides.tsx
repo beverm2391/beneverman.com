@@ -333,21 +333,6 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  "hook-the-door": (
-    <PresentationSlide layout="center" note="TODO: the slide after this must answer 'what file?' — the what act is not written yet, the old body currently follows.">
-      <SlideStack gap="none">
-        <SlideStatement>
-          Every other time, there was no exit. You could not download the 2015
-          Uber.
-        </SlideStatement>
-        <SlideArrow label="But" />
-        <SlideStatement size="lead">
-          This time, the good version leaked out the door. As a file.
-        </SlideStatement>
-      </SlideStack>
-    </PresentationSlide>
-  ),
-
   "model-landscape": (
     <PresentationSlide>
       <SlideStack align="start">
