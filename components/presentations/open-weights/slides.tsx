@@ -504,7 +504,7 @@ export const slides = {
   // The three emotional-invoke slides after the why bullets. Title-only
   // until research 03 delivers verified quotes and Ben reads them.
   "invoke-regulated-info": (
-    <PresentationSlide note="TODO: awaiting research-requests/03 — classifier scandal quotes, system card covert passages (PDF in Ben's Downloads), and the approved-organizations announcement line. Title draft, Ben to pass.">
+    <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then quotes go on. Best receipts: a bare hello! triggered the Fable safety fallback (verbatim banner in Claude Code issue #66657); system card p13: competitive-use safeguards 'will not be visible to the user' via prompt modification, steering vectors, or PEFT; Mythos with safeguards lifted is restricted to Glasswing partners and select biology researchers. CORRECTION: do not say 'only approved organizations' — that exact wording does not exist.">
       <SlideStack align="start">
         <h2>Big tech chooses what you can know</h2>
       </SlideStack>
@@ -512,7 +512,7 @@ export const slides = {
   ),
 
   "invoke-data-privacy": (
-    <PresentationSlide note="TODO: awaiting research-requests/03 — the Altman no-privilege quote, the court-ordered retention of deleted chats, ID verification requirements, retention policies. Title draft, Ben to pass.">
+    <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then quotes go on. Best receipts: Altman at 31:22-31:45 (Theo Von): people use it as a therapist, no legal privilege, 'we could be required to produce that'; the May 2025 SDNY order preserved otherwise-deleted output logs — but CORRECTION: that broad obligation ended Sept 2025, do not say they currently keep every deleted chat; ID flows can require government ID plus a selfie (OpenAI and Anthropic both); retention spans 30 days to years by product and flag.">
       <SlideStack align="start">
         <h2>What happens to what you tell them?</h2>
       </SlideStack>
@@ -520,7 +520,7 @@ export const slides = {
   ),
 
   "invoke-perf-cost": (
-    <PresentationSlide note="TODO: awaiting research-requests/03 — the direct pricing comparison table, subscription anchors, one community-improvement number. Title draft, Ben to pass.">
+    <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then the table goes on. Headlines: Fable 5 output is ~57x DeepSeek V4 Pro list price, ~3.3x Kimi K3; ChatGPT tiers now $20/$100/$200; the DeepSeek release erased $593B of Nvidia in a day (record one-day loss). CAVEATS: list prices are not quality-normalized; do not call Qwen3.8 open-weight (no verifiable checkpoint); recheck prices right before the talk.">
       <SlideStack align="start">
         <h2>The direct comparison</h2>
       </SlideStack>
