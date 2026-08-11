@@ -26,7 +26,6 @@ const setlist = [
   "fig-how-chatbots-work",
   "fig-the-file-locked-vs-free",
   "closed-vs-open-tech",
-  "fig-enshittification-vs-appreciation",
   // The receipts
   "when-closed-tech-goes-wrong",
   "receipt-uber",
