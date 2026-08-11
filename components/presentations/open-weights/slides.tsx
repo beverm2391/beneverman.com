@@ -180,7 +180,10 @@ export const slides = {
         <SlideKicker>Uber, right now</SlideKicker>
         <SlideStatement size="lead">$44 at the airport curb.</SlideStatement>
         <SlideArrow label="Walk 20 min" />
-        <SlideStatement size="lead">$9.</SlideStatement>
+        <SlideStatement size="lead">
+          $9.
+          <SlideRef n={3} />
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -224,9 +227,11 @@ export const slides = {
         <SlideKicker>Meta, in court</SlideKicker>
         <SlideStatement size="lead">
           A jury found Meta liable.
+          <SlideRef n={4} />
         </SlideStatement>
         <SlideStatement>
           Misleading consumers, endangering children &mdash; $942 million.
+          <SlideRef n={5} />
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>

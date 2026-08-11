@@ -182,6 +182,21 @@ export const sources = [
     n: 2,
     title: "KLIM, Ai-1 Airbag Vest — subscription FAQ",
     href: "https://www.klim.com/Ai-1-Airbag-Vest-3046-000"
+  },
+  {
+    n: 3,
+    title: "r/uber, Rate at airport $44, rate after walking off airport property $9 (Oct 2025)",
+    href: "https://www.reddit.com/r/uber/comments/1nxyf4y/rate_at_airport_44_rate_after_walking_off_airport/"
+  },
+  {
+    n: 4,
+    title: "New Mexico DOJ, landmark verdict against Meta",
+    href: "https://nmdoj.gov/press-release/new-mexico-department-of-justice-wins-landmark-verdict-against-meta/"
+  },
+  {
+    n: 5,
+    title: "AP News, final New Mexico judgment brings Meta's responsibility to $942 million",
+    href: "https://apnews.com/article/meta-court-ruling-mental-health-online-platforms-21b425faf745d0f736b310ebd8bc6b89"
   }
 ] as const;
 
