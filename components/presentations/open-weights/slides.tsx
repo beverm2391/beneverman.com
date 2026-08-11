@@ -399,8 +399,8 @@ export const slides = {
               <SlideRef n={17} />
             </SlideStatement>
             <p>
-              Eight Sleep Pod owner, on X. A $3,300 mattress; comfort $199 a
-              year.
+              Eight Sleep Pod owner, on X. A $3,300 mattress that requires a
+              $199 a year subscription to use.
             </p>
           </SlideColumn>
         </SlideColumns>
