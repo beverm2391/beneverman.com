@@ -33,6 +33,10 @@ import {
 //   already stands on (ChatGPT, their feed, their ride) and walks to ours.
 // - Every abstract claim carries its concrete example — on the slide, or in
 //   Ben's spoken track. An unpaired abstraction is a draft.
+// - Evidence exists to make the room cringe. Pick the most visceral
+//   defensible fact, quote it exactly, and never sanitize it into an
+//   abstraction ("endangering children" is a fact; what the algorithm did
+//   to children is the point).
 // - Slide notes (the note prop, toggled with N) are internal change-tracking
 //   only: what the slide still needs. Not speaker notes.
 // - No source enters data.tsx unless Ben has read it. Agents verify claims
