@@ -619,12 +619,17 @@ export const slides = {
   // The translator: their words on the left, verbatim; what the words mean
   // on the right. The worked example, diving under the setup.
   "anthropic-translator": (
-    <PresentationSlide note="TODO: translations are draft, Ben to pass — the bit only works in his voice. Left column verbatim from the system card (ref 9) and launch announcement. More pairs welcome from research 03/04.">
+    <PresentationSlide note="TODO: translations draft except the chips pair (Ben's own words). The chips quote needs its source pinned — research 04 to find the exact interview link for the nuclear-weapons-to-North-Korea line. Left column otherwise verbatim from the system card (ref 9) and launch announcement.">
       <SlideStack align="start">
         <h2>Anthropic Translator</h2>
         <SlideColumns>
           <SlideColumn label="They say">
             <ul>
+              <li>
+                &ldquo;It would be a big mistake to ship these chips. I think
+                this is crazy. It&rsquo;s a bit like selling nuclear weapons
+                to North Korea.&rdquo;
+              </li>
               <li>
                 &ldquo;Competitive use safeguards&rdquo;
                 <SlideRef n={9} />
@@ -642,6 +647,10 @@ export const slides = {
           </SlideColumn>
           <SlideColumn label="Translation" tone="accent">
             <ul>
+              <li>
+                We don&rsquo;t want China to build competing companies that
+                hurt our valuation
+              </li>
               <li>We degrade the model if your work competes with ours</li>
               <li>And we won&rsquo;t tell you when we&rsquo;re doing it</li>
               <li>The good one is for approved customers</li>
