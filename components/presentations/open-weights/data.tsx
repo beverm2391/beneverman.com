@@ -207,6 +207,21 @@ export const sources = [
     n: 7,
     title: "TechCrunch, Altman warns there's no legal confidentiality when using ChatGPT as a therapist",
     href: "https://techcrunch.com/2025/07/25/sam-altman-warns-theres-no-legal-confidentiality-when-using-chatgpt-as-a-therapist/"
+  },
+  {
+    n: 8,
+    title: "Claude Code issue #66657, safety fallback triggered by 'hello!'",
+    href: "https://github.com/anthropics/claude-code/issues/66657"
+  },
+  {
+    n: 9,
+    title: "Anthropic, Claude Fable 5 & Claude Mythos 5 System Card (pp. 13, 250–251)",
+    href: "https://www-cdn.anthropic.com/2f9323abbcc4abe219577539efe19a623c9ca2bd/Claude%20Fable%205%20%26%20Claude%20Mythos%205%20System%20Card.pdf"
+  },
+  {
+    n: 10,
+    title: "NYT v. OpenAI, preservation order, ECF 551 p. 3 (obligation ended Sept 2025)",
+    href: "https://cases.justia.com/federal/district-courts/new-york/nysdce/1%3A2023cv11195/612697/551/0.pdf"
   }
 ] as const;
 

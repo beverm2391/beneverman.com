@@ -34,9 +34,10 @@ import {
 // - Every abstract claim carries its concrete example — on the slide, or in
 //   Ben's spoken track. An unpaired abstraction is a draft.
 // - Evidence exists to make the room cringe. Pick the most visceral
-//   defensible fact, quote it exactly, and never sanitize it into an
-//   abstraction ("endangering children" is a fact; what the algorithm did
-//   to children is the point).
+//   defensible fact and quote it exactly, at length — a long verbatim quote
+//   beats a tight summary every time. Never compress a quote, never
+//   sanitize it into an abstraction ("endangering children" is a fact;
+//   what the algorithm did to children is the point).
 // - Slide notes (the note prop, toggled with N) are internal change-tracking
 //   only: what the slide still needs. Not speaker notes.
 // - No source enters data.tsx unless Ben has read it. Agents verify claims
@@ -71,8 +72,7 @@ export const slides = {
           ChatGPT.&rdquo;
         </SlideStatement>
         <SlideStatement size="lead">
-          &ldquo;We could be required to produce that&hellip; I think
-          that&rsquo;s very screwed up.&rdquo;
+          &ldquo;We could be required to produce that.&rdquo;
           <SlideRef n={7} />
         </SlideStatement>
       </SlideStack>
@@ -274,19 +274,28 @@ export const slides = {
 
   // The drill behind the Instagram model: not an opinion, a verdict.
   "drill-meta-verdict": (
-    <PresentationSlide layout="center" note="TODO: quote pass pending — exact lines from the NMDOJ verdict release (ref 4): evidence at trial 'established that Meta's design features enabled pedophiles and predators to engage in child sexual exploitation' and that 'Meta intentionally designs its platforms to addict young people' while exposing them to eating-disorder and self-harm content; AG Torrez: 'Meta executives knew their products harmed children, disregarded warnings from their own employees, and lied to the public.' The addiction-by-design line is the enshittification thesis. Line 1 is the complaint's allegation (ref 6); jury finding is ref 4, judgment total ref 5. Ben to read all before the blog.">
-      <SlideStack gap="tight">
-        <SlideKicker>Meta, in court</SlideKicker>
-        <SlideStatement size="lead">
-          Their algorithm connected children with adults seeking to exploit
-          them.
-          <SlideRef n={6} />
-        </SlideStatement>
-        <SlideStatement>
-          A jury found Meta liable for endangering children &mdash; $942
-          million.
+    <PresentationSlide note="TODO: Ben to pass. All lines verbatim from the NMDOJ verdict release (ref 4); the complaint (ref 6) and AP judgment total (ref 5) back the kicker. Ben to read all three before the blog.">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>
+          New Mexico v. Meta, 2026 &mdash; jury verdict, $942 million
           <SlideRef n={4} />
           <SlideRef n={5} />
+        </SlideKicker>
+        <SlideStatement>
+          The evidence at trial &ldquo;established that Meta&rsquo;s design
+          features enabled pedophiles and predators to engage in child sexual
+          exploitation on Meta&rsquo;s platforms.&rdquo;
+        </SlideStatement>
+        <SlideStatement>
+          &ldquo;Meta intentionally designs its platforms to addict young
+          people and, contrary to Meta&rsquo;s public commitments, expose
+          them to dangerous content related to eating disorders and self
+          harm.&rdquo;
+        </SlideStatement>
+        <SlideStatement size="lead">
+          &ldquo;Meta executives knew their products harmed children,
+          disregarded warnings from their own employees, and lied to the
+          public about what they knew.&rdquo;
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -549,17 +558,41 @@ export const slides = {
   // The three emotional-invoke slides after the why bullets. Title-only
   // until research 03 delivers verified quotes and Ben reads them.
   "invoke-regulated-info": (
-    <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then quotes go on. Best receipts: a bare hello! triggered the Fable safety fallback (verbatim banner in Claude Code issue #66657); system card p13: competitive-use safeguards 'will not be visible to the user' via prompt modification, steering vectors, or PEFT; Mythos with safeguards lifted is restricted to Glasswing partners and select biology researchers. CORRECTION: do not say 'only approved organizations' — that exact wording does not exist.">
-      <SlideStack align="start">
+    <PresentationSlide note="TODO: Ben to pass. Line 1 is the user-facing banner verbatim from Claude Code issue #66657 (ref 8, reproduced from a bare hello). Lines 2-3 verbatim from the Fable/Mythos system card (ref 9, p13 and pp250-251; PDF also in Ben's Downloads). Ben to read both before presenting.">
+      <SlideStack align="start" gap="tight">
         <h2>Big tech chooses what you can know</h2>
+        <SlideStatement>
+          &ldquo;Fable 5&rsquo;s safety measures flagged this message for
+          cybersecurity or biology topics. They may flag safe, normal content
+          as well.&rdquo;
+          <SlideRef n={8} />
+        </SlideStatement>
+        <SlideStatement>
+          And the ones you can&rsquo;t see, in their own system card:
+          &ldquo;these safeguards will not be visible to the user&rdquo;
+          &mdash; via &ldquo;prompt modification, steering vectors, or
+          parameter-efficient fine-tuning (PEFT).&rdquo;
+          <SlideRef n={9} />
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "invoke-data-privacy": (
-    <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then quotes go on. Best receipts: Altman at 31:22-31:45 (Theo Von): people use it as a therapist, no legal privilege, 'we could be required to produce that'; the May 2025 SDNY order preserved otherwise-deleted output logs — but CORRECTION: that broad obligation ended Sept 2025, do not say they currently keep every deleted chat; ID flows can require government ID plus a selfie (OpenAI and Anthropic both); retention spans 30 days to years by product and flag.">
-      <SlideStack align="start">
+    <PresentationSlide note="TODO: Ben to pass. The order quote is verbatim from ECF 551 p3 (ref 10). CORRECTION lives in the spoken track: the broad obligation ended September 26, 2025 (OpenAI's Oct 2025 update) — say a court DID order it, not that it stands today. ID-verification receipts (government ID plus selfie, both labs) in research 03 for the spoken track.">
+      <SlideStack align="start" gap="tight">
         <h2>It can be used against you</h2>
+        <SlideStatement>
+          A federal court ordered OpenAI to &ldquo;preserve and segregate all
+          output log data that would otherwise be deleted on a going forward
+          basis until further order of the Court&rdquo; &mdash; expressly
+          including chats users deleted.
+          <SlideRef n={10} />
+        </SlideStatement>
+        <SlideStatement>
+          Your deleted conversations, held for a lawsuit you were never part
+          of.
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
