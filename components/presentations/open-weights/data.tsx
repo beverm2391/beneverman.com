@@ -197,6 +197,11 @@ export const sources = [
     n: 5,
     title: "AP News, final New Mexico judgment brings Meta's responsibility to $942 million",
     href: "https://apnews.com/article/meta-court-ruling-mental-health-online-platforms-21b425faf745d0f736b310ebd8bc6b89"
+  },
+  {
+    n: 6,
+    title: "State of New Mexico v. Meta, complaint (allegations)",
+    href: "https://nmdoj.gov/wp-content/uploads/2024/01/2023-12-05-NM-v.-Meta-et-al.-COMPLAINT-REDACTED.pdf"
   }
 ] as const;
 

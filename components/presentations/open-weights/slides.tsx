@@ -178,7 +178,10 @@ export const slides = {
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From sources.md: Oct 2025 airport rider, $44 on-property vs $9 after walking ~20 minutes off; comments dispute perfect comparability, so present as the airport geofence, not manipulation proof. The reddit screenshots would substantiate — Ben to read the post and decide.">
       <SlideStack gap="none">
         <SlideKicker>Uber, right now</SlideKicker>
-        <SlideStatement size="lead">$44 at the airport curb.</SlideStatement>
+        <SlideStatement size="lead">
+          The price knows when you&rsquo;re stranded.
+        </SlideStatement>
+        <SlideStatement>$44 at the airport curb.</SlideStatement>
         <SlideArrow label="Walk 20 min" />
         <SlideStatement size="lead">
           $9.
@@ -222,15 +225,18 @@ export const slides = {
 
   // The drill behind the Instagram model: not an opinion, a verdict.
   "drill-meta-verdict": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From sources.md: New Mexico jury verdict — court finding, not allegation — $375M penalties plus $567M remedies, $942M total. Ben to read before citing on the blog.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Line 1 is the state complaint's allegation (ref 6); line 2 is the jury finding (ref 4) and final judgment total (ref 5). Keep allegation vs finding distinct when speaking. Ben to read all three before the blog.">
       <SlideStack gap="tight">
         <SlideKicker>Meta, in court</SlideKicker>
         <SlideStatement size="lead">
-          A jury found Meta liable.
-          <SlideRef n={4} />
+          Their algorithm connected children with adults seeking to exploit
+          them.
+          <SlideRef n={6} />
         </SlideStatement>
         <SlideStatement>
-          Misleading consumers, endangering children &mdash; $942 million.
+          A jury found Meta liable for endangering children &mdash; $942
+          million.
+          <SlideRef n={4} />
           <SlideRef n={5} />
         </SlideStatement>
       </SlideStack>
@@ -394,96 +400,59 @@ export const slides = {
   ),
 
   "benefit-refuse": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Both claims need sources Ben has read — the classifier scandal coverage and the system card passage. Spare spoken examples: the meme with a friend's face, malware crafted to trip classifiers, soft refusals that hurt research.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — overt: the Fable classifier scandal; covert: risk aversion optimizing the model down, admitted in the system card; closed optimized down to dodge lawsuits vs open optimized up for you; spares: the meme, classifier-tripping malware, soft refusals hurting research. Scandal + system card still need sources Ben has read.">
+      <SlideStack>
         <SlideStatement size="lead">It won&rsquo;t refuse you</SlideStatement>
-        <SlideStatement>
-          The refusals you see: the Fable classifier scandal.
-        </SlideStatement>
-        <SlideStatement>
-          The ones you don&rsquo;t: risk aversion quietly optimizing the
-          model down &mdash; admitted in the system card.
-        </SlideStatement>
-        <SlideStatement>
-          Closed is optimized down to avoid lawsuits &mdash; answers,
-          capability, knowledge all trimmed. Open is optimized up, for you.
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-privacy": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — your 2am conversation is not training data; no account, no ID, no identity tied to your questions.">
+      <SlideStack>
         <SlideStatement size="lead">It won&rsquo;t sell your chats</SlideStatement>
-        <SlideStatement>
-          Your 2am conversation is not training data.
-        </SlideStatement>
-        <SlideStatement>
-          No account, no ID, no identity tied to your questions.
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-price": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — no you-hit-your-limit upsell; dependence plus no substitutes equals their price.">
+      <SlideStack>
         <SlideStatement size="lead">It won&rsquo;t price gouge you</SlideStatement>
-        <SlideStatement>
-          No &ldquo;you&rsquo;ve hit your limit &mdash; upgrade to
-          Pro.&rdquo;
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-forever": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The 4o line may need a beat of setup for anyone who missed the story.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — when 4o died thousands grieved, nobody with the file lost a thing; answers to no one: not a balance sheet, the culture war, or the sitting administration.">
+      <SlideStack>
         <SlideStatement size="lead">It can&rsquo;t be taken from you</SlideStatement>
-        <SlideStatement>
-          When 4o died, thousands grieved. Nobody with the file lost a thing.
-        </SlideStatement>
-        <SlideStatement>
-          It answers to no one &mdash; not a balance sheet, the culture war,
-          or the sitting administration.
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-community": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The DeepSeek-Flash effect / llama.cpp beat: the same file gets faster because thousands of people optimize it.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — the DeepSeek-Flash effect; llama.cpp makes the same file faster every month and you pay no one.">
+      <SlideStack>
         <SlideStatement size="lead">Community improvements come straight to you</SlideStatement>
-        <SlideStatement>
-          The file you downloaded runs faster every month &mdash; and you pay
-          no one.
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-custom": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Ben's example: a model tuned to elicit your creativity, not do your work; any model from any lab, swapped freely.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — tuned to your domain and values, not the average user's; Lea's brainstorm model that elicits creativity instead of doing the work; any model from any lab, swapped freely.">
+      <SlideStack>
         <SlideStatement size="lead">It can be exactly yours</SlideStatement>
-        <SlideStatement>
-          Tuned to your domain and your values &mdash; not the average
-          user&rsquo;s.
-        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-on-device": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. On-device means hardware you already own, not offline.">
-      <SlideStack gap="tight">
+    <PresentationSlide layout="center" note="TODO: spoken bullets — your MacBook, your iPhone, today; hardware you already own, not an offline gimmick.">
+      <SlideStack>
         <SlideStatement size="lead">
           It runs on hardware you already own
         </SlideStatement>
-        <SlideStatement>Your MacBook. Your iPhone. Today.</SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),

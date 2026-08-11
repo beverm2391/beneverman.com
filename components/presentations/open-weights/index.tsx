@@ -38,7 +38,6 @@ const setlist = [
   // When open tech goes right
   "when-open-tech-goes-right",
   "receipt-mp3",
-  "fig-open-internet-vs-closed-ai",
   // Why open weights
   "why-open-weights",
   "benefit-refuse",
