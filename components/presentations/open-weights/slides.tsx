@@ -490,12 +490,24 @@ export const slides = {
   // The internet as the open-goes-right receipt: the one open technology
   // everyone in the room lives on.
   "receipt-internet": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Spoken bullets from the pres note: what a closed internet would look like — pay directly for access, no control over the integrity of results, no peer-to-peer. The benched mesh-vs-funnel figure (fig-open-internet-vs-closed-ai) can back this beat if wanted.">
-      <SlideStack gap="tight">
+    <PresentationSlide note="TODO: wording is Ben's dictation, Ben to pass. This slide contrasts with the closed-AI slide coming up; the mesh-vs-funnel figure dives beneath. Spoken spare: the closed-internet counterfactual from notes.md (pay for access, no result integrity, no peer-to-peer).">
+      <SlideStack align="start">
         <SlideKicker>The internet</SlideKicker>
-        <SlideStatement size="lead">
-          No one owns it. Everyone won.
-        </SlideStatement>
+        <h2>No one owns it. Everyone won.</h2>
+        <ul>
+          <li>
+            No central authority: anyone can hit any public IP, anyone can
+            index
+          </li>
+          <li>
+            No one person can make rules about what info can be shared
+          </li>
+          <li>
+            Open means paid providers like Google have to build value on top
+            of the tech. Just gatekeeping and selling it at base isn&rsquo;t
+            enough.
+          </li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
