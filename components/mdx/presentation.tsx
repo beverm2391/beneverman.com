@@ -13,9 +13,11 @@ import {
   type ReactNode
 } from "react";
 import {
+  depthLetter,
   getPresentationAction,
-  movePresentationSlide,
-  type PresentationAction
+  movePresentation,
+  type PresentationAction,
+  type PresentationPosition
 } from "@/components/mdx/presentation-navigation";
 import {
   blueprintTheme,
@@ -24,8 +26,14 @@ import {
 } from "@/components/mdx/presentation-theme";
 
 type PresentationProps = {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
+  /**
+   * The conditional engine: one array per spine concept, holding the spine
+   * slide followed by its progressively deeper dives. When omitted, children
+   * render as a flat spine with no dives.
+   */
+  columns?: ReactNode[][];
   label?: string;
   monoFontClassName?: string;
   serifFontClassName?: string;
@@ -64,13 +72,20 @@ const SlideNotesVisible = createContext(false);
 export function Presentation({
   children,
   className = "",
+  columns,
   label = "Presentation",
   monoFontClassName = presentationMono.variable,
   serifFontClassName = presentationSerif.variable,
   theme = blueprintTheme
 }: PresentationProps) {
-  const slides = Children.toArray(children);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const stacks = columns ?? Children.toArray(children).map((child) => [child]);
+  const stackSizes = stacks.map((stack) => stack.length);
+  const [position, setPosition] = useState<PresentationPosition>({ column: 0, depth: 0 });
+  // Ben's depth-memory rule: each concept remembers where you left its stack,
+  // so walking the spine and coming back resumes the same dive.
+  const [rememberedDepths, setRememberedDepths] = useState<number[]>([]);
+  const rememberedDepthsRef = useRef(rememberedDepths);
+  rememberedDepthsRef.current = rememberedDepths;
   // Two expansion modes: theater fills the browser viewport (the default way
   // to present), fullscreen takes the whole display via the Fullscreen API
   // (reached with ⌘-click or the F key).
@@ -80,7 +95,7 @@ export function Presentation({
   const [notesVisible, setNotesVisible] = useState(false);
   const [fullscreenError, setFullscreenError] = useState<string | null>(null);
   const rootRef = useRef<HTMLElement>(null);
-  const slideCount = slides.length;
+  const slideCount = stacks.length;
   const isExpanded = isFullscreen || isTheater;
 
   // While presenting, controls should vanish unless the presenter reaches for
@@ -151,10 +166,23 @@ export function Presentation({
   }
 
   const move = useCallback((action: PresentationAction) => {
-    setActiveIndex((currentIndex) =>
-      movePresentationSlide(Math.min(currentIndex, slideCount - 1), slideCount, action)
-    );
-  }, [slideCount]);
+    setPosition((current) => {
+      const clamped = {
+        column: Math.min(current.column, stackSizes.length - 1),
+        depth: current.depth
+      };
+      const next = movePresentation(clamped, stackSizes, rememberedDepthsRef.current, action);
+      setRememberedDepths((depths) => {
+        const updated = depths.slice();
+        updated[next.column] = next.depth;
+        return updated;
+      });
+      return next;
+    });
+    // stackSizes is derived from props each render; join() keeps the callback
+    // stable across renders that do not change the deck's shape.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stackSizes.join(",")]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -209,12 +237,16 @@ export function Presentation({
   if (slideCount === 0) return null;
   // The deck can be hot-reloaded with fewer slides while its previous state
   // still points past the end. Deriving this avoids a corrective render.
-  const currentIndex = Math.min(activeIndex, slideCount - 1);
+  const currentIndex = Math.min(position.column, slideCount - 1);
+  const currentStack = stacks[currentIndex];
+  const currentDepth = Math.min(position.depth, currentStack.length - 1);
+  const hasDiveBelow = currentDepth < currentStack.length - 1;
+  const letter = depthLetter(currentDepth);
 
   return (
     <section
       ref={rootRef}
-      aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}`}
+      aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}${letter ? `, dive ${letter}` : ""}`}
       className={`not-prose text-(--pres-ink) ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "relative h-full w-full overflow-hidden" : isTheater ? "fixed inset-0 z-50" : "content-breakout relative my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
       style={presentationThemeStyle(theme)}
     >
@@ -246,7 +278,7 @@ export function Presentation({
             }
           }}
         >
-          {slides[currentIndex]}
+          {currentStack[currentDepth]}
         </div>
         </SlideNotesVisible.Provider>
 
@@ -301,7 +333,10 @@ export function Presentation({
             <span />
           )}
           <span className="uppercase">
-            {String(currentIndex + 1).padStart(2, "0")} / {String(slideCount).padStart(2, "0")}
+            {currentDepth > 0 ? "\u25b4 " : ""}
+            {hasDiveBelow ? "\u25be " : ""}
+            {String(currentIndex + 1).padStart(2, "0")}
+            {letter} / {String(slideCount).padStart(2, "0")}
           </span>
         </div>
       </div>

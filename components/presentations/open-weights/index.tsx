@@ -16,50 +16,41 @@ const openWeightsMono = IBM_Plex_Mono({
   display: "swap"
 });
 
-// The setlist: which slides from the bench make this deck, in talk order.
-// Other cuts of the same material (a more technical version, a shorter one)
-// are just other setlists over the same bench.
-const setlist = [
-  // Hook and what
+// The setlist: the talk's spine, with each concept's optional dives stacked
+// under it. Right/left walk the spine; down opens the current concept's
+// deeper layer. Other cuts of the same material are just other setlists.
+type SetlistEntry =
+  | SlideName
+  | { readonly slide: SlideName; readonly dives: readonly SlideName[] };
+
+const setlist: readonly SetlistEntry[] = [
   "title",
-  "fig-how-chatbots-work",
+  {
+    slide: "fig-how-chatbots-work",
+    dives: ["what-i-mean", "what-is-a-weight", "fig-what-is-a-weight", "fig-text-through-weights"]
+  },
   "fig-the-file-locked-vs-free",
   "closed-vs-open-tech",
-  // The receipts
   "when-closed-tech-goes-wrong",
-  "receipt-uber",
-  "drill-uber-airport",
-  "receipt-instagram",
-  "drill-meta-verdict",
-  "why-do-we-put-up",
-  "dynamic-dependence",
+  { slide: "receipt-uber", dives: ["drill-uber-airport"] },
+  { slide: "receipt-instagram", dives: ["drill-meta-verdict"] },
+  { slide: "why-do-we-put-up", dives: ["optimized-for-retention", "fig-retention-diverges"] },
+  { slide: "dynamic-dependence", dives: ["fig-growing-dependence"] },
   "dynamic-no-substitutes",
   "the-airbag",
-  // When open tech goes right
   "when-open-tech-goes-right",
-  "receipt-internet",
-  // Why open weights
-  "why-open-weights",
-  "invoke-regulated-info",
-  "invoke-data-privacy",
-  "invoke-perf-cost",
-  // How
+  { slide: "receipt-internet", dives: ["fig-open-internet-vs-closed-ai"] },
+  {
+    slide: "why-open-weights",
+    dives: ["invoke-regulated-info", "invoke-data-privacy", "invoke-perf-cost"]
+  },
   "how-do-you-start",
   "how-hosted",
   "how-own-hardware",
-  "how-find-models",
+  { slide: "how-find-models", dives: ["model-landscape"] },
   "how-cloud",
-  // Close
-  "references",
-  // The technical door: reached only on purpose.
-  "appendix",
-  "what-is-a-weight",
-  "fig-what-is-a-weight",
-  "fig-text-through-weights",
-  "optimized-for-retention",
-  "fig-retention-diverges",
-  "fig-growing-dependence"
-] as const satisfies readonly SlideName[];
+  "references"
+];
 
 export function OpenWeightsPresentation() {
   return (
@@ -67,8 +58,10 @@ export function OpenWeightsPresentation() {
       label="Open Weight Models"
       monoFontClassName={openWeightsMono.variable}
       serifFontClassName={openWeightsSerif.variable}
-    >
-      {setlist.map((name) => cloneElement(slides[name], { key: name }))}
-    </Presentation>
+      columns={setlist.map((entry) => {
+        const names = typeof entry === "string" ? [entry] : [entry.slide, ...entry.dives];
+        return names.map((name) => cloneElement(slides[name], { key: name }));
+      })}
+    />
   );
 }

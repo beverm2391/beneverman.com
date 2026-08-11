@@ -86,7 +86,7 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide note="TODO: benched — cut from the setlist; the pipeline and fig 08 carry the definition beat now.">
+    <PresentationSlide note="TODO: now dive 2a under the pipeline slide — the technical layer of how-chatbots-work, reached on demand.">
       <SlideStack align="start">
         <h2>How do chatbots work?</h2>
         <ul>
