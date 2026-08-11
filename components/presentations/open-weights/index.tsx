@@ -21,8 +21,8 @@ const openWeightsMono = IBM_Plex_Mono({
 // are just other setlists over the same bench.
 const setlist = [
   "title",
-  "closed-vs-open-tech",
   "what-i-mean",
+  "closed-vs-open-tech",
   "when-closed-tech-goes-wrong",
   "receipt-uber",
   "receipt-instagram",
