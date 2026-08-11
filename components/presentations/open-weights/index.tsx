@@ -29,7 +29,9 @@ const setlist = [
   // The receipts
   "when-closed-tech-goes-wrong",
   "receipt-uber",
+  "drill-uber-airport",
   "receipt-instagram",
+  "drill-meta-verdict",
   "why-do-we-put-up",
   "dynamic-dependence",
   "dynamic-no-substitutes",

@@ -173,6 +173,18 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The drill behind the Uber model: one receipt, felt in the legs.
+  "drill-uber-airport": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From sources.md: Oct 2025 airport rider, $44 on-property vs $9 after walking ~20 minutes off; comments dispute perfect comparability, so present as the airport geofence, not manipulation proof. The reddit screenshots would substantiate — Ben to read the post and decide.">
+      <SlideStack gap="none">
+        <SlideKicker>Uber, right now</SlideKicker>
+        <SlideStatement size="lead">$44 at the airport curb.</SlideStatement>
+        <SlideArrow label="Walk 20 min" />
+        <SlideStatement size="lead">$9.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   // Spoken argument: Meta's failures — what retention optimization did to
   // the feed, and where that same playbook goes next.
   "receipt-instagram": (
@@ -201,6 +213,21 @@ export const slides = {
             }
           ]}
         />
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The drill behind the Instagram model: not an opinion, a verdict.
+  "drill-meta-verdict": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From sources.md: New Mexico jury verdict — court finding, not allegation — $375M penalties plus $567M remedies, $942M total. Ben to read before citing on the blog.">
+      <SlideStack gap="tight">
+        <SlideKicker>Meta, in court</SlideKicker>
+        <SlideStatement size="lead">
+          A jury found Meta liable.
+        </SlideStatement>
+        <SlideStatement>
+          Misleading consumers, endangering children &mdash; $942 million.
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
