@@ -594,8 +594,30 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The hermeneutic, taught early: companies say whatever they want, and
+  // one incentive rules them. Hand the room the decoder ring at slide 3 and
+  // every corporate quote for the rest of the talk translates itself.
+  "companies-dont-say-what-they-mean": (
+    <PresentationSlide note="TODO: wording is Ben's dictation, lightly set — Ben to pass.">
+      <SlideStack align="start" gap="tight">
+        <SlideStatement>
+          Companies don&rsquo;t always say what they mean. They say whatever
+          THEY want. (ex. Trump)
+        </SlideStatement>
+        <SlideStatement>
+          Companies like Anthropic care about one thing above everything
+          else: IPO.
+        </SlideStatement>
+        <SlideStatement size="lead">
+          How can we use this to translate what they say &mdash; and find
+          out what they really mean?
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   // The translator: their words on the left, verbatim; what the words mean
-  // on the right. A dive under the regulated-info invoke.
+  // on the right. The worked example, diving under the setup.
   "anthropic-translator": (
     <PresentationSlide note="TODO: translations are draft, Ben to pass — the bit only works in his voice. Left column verbatim from the system card (ref 9) and launch announcement. More pairs welcome from research 03/04.">
       <SlideStack align="start">
