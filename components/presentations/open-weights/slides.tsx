@@ -502,25 +502,21 @@ export const slides = {
   // The internet as the open-goes-right receipt: the one open technology
   // everyone in the room lives on.
   "receipt-internet": (
-    <PresentationSlide note="TODO: wording is Ben's dictation plus the examples he approved, Ben to pass. Optional closing line if wanted: the internet is the one layer from the receipts era that never enshittified, because no one could. Mesh figure dives beneath.">
+    <PresentationSlide note="TODO: bullets are Ben's dictation, Ben to pass. Brainstormed examples for his placement if wanted: leave Gmail tomorrow and still email every Gmail user (nobody owns SMTP, try that with iMessage); launch a search engine tonight without asking permission; bypass Google entirely and the internet still works. Optional closing line: the internet is the one layer from the receipts era that never enshittified, because no one could. Mesh figure dives beneath.">
       <SlideStack align="start">
         <h2>The internet</h2>
         <ul>
           <li>
             No central authority: anyone can hit any public IP, anyone can
-            index. You could launch a search engine tonight without asking
-            permission.
+            index
           </li>
           <li>
-            No one person can make rules about what info can be shared.
-            Nobody owns email: leave Gmail tomorrow and you can still email
-            every Gmail user. Try that with iMessage.
+            No one person can make rules about what info can be shared
           </li>
           <li>
             Open means paid providers like Google have to build value on top
             of the tech. Just gatekeeping and selling it at base isn&rsquo;t
-            enough. You can bypass Google entirely and the internet works
-            fine.
+            enough.
           </li>
         </ul>
       </SlideStack>
