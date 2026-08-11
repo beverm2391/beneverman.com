@@ -177,6 +177,11 @@ export const sources = [
     n: 1,
     title: "Milton Friedman, The Social Responsibility of Business Is to Increase Its Profits",
     href: "https://www.enriquedans.com/wp-content/uploads/2019/08/friedman.pdf"
+  },
+  {
+    n: 2,
+    title: "KLIM, Ai-1 Airbag Vest — subscription FAQ",
+    href: "https://www.klim.com/Ai-1-Airbag-Vest-3046-000"
   }
 ] as const;
 

@@ -310,17 +310,26 @@ export const slides = {
 
   // The bonus receipt, framed as an aside so its absurdity lands on its own.
   "the-airbag": (
-    <PresentationSlide layout="center" note="TODO: quote needs a source Ben has read — candidate: klim.com/Ai-1-Airbag-Vest-3046-000 (their FAQ, verified to contain the quote).">
-      <SlideStack>
-        <SlideKicker>Bonus: you don&rsquo;t own your hardware either</SlideKicker>
-        <SlideStatement size="lead">
-          A motorcycle airbag that stops protecting you.
-        </SlideStatement>
-        <SlideStatement>
-          &ldquo;After the 30-day grace period, the airbag will stop detecting
-          crashes until payment is resumed.&rdquo;
-        </SlideStatement>
-      </SlideStack>
+    <PresentationSlide layout="fill" note="TODO: wording draft, Ben to pass. Citation added at Ben's direction — he should skim the Klim page before Wednesday.">
+      <div className="flex h-full min-h-0 items-center justify-center gap-[max(1.2rem,3cqw)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="The Klim Ai-1 airbag vest, the product whose crash detection pauses for nonpayment."
+          className="h-[70%] w-auto min-h-0 rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) object-contain"
+          src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
+        />
+        <SlideStack align="start" gap="tight">
+          <SlideKicker>Bonus: you don&rsquo;t own your hardware either</SlideKicker>
+          <SlideStatement size="lead">
+            A subscription airbag that stops protecting you.
+          </SlideStatement>
+          <SlideStatement>
+            &ldquo;After the 30-day grace period, the airbag will stop
+            detecting crashes until payment is resumed.&rdquo;
+            <SlideRef n={2} />
+          </SlideStatement>
+        </SlideStack>
+      </div>
     </PresentationSlide>
   ),
 
