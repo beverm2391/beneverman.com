@@ -413,19 +413,20 @@ export const slides = {
       <SlideStack align="start">
         <h2>Why open weight models?</h2>
         <ul>
-          <li>They won&rsquo;t hide information or gate access</li>
+          <li>You can freely access information</li>
           <li>
-            They won&rsquo;t sell your chats &mdash; or your health and bank
-            data
+            Tech companies can&rsquo;t sell your chats (or your health and
+            bank data)
           </li>
-          <li>They won&rsquo;t price gouge you</li>
-          <li>They can&rsquo;t be taken from you</li>
+          <li>If tech companies 10x the price, you have another option</li>
+          <li>No one can take your model away</li>
           <li>Community improvements come straight to you</li>
           <li>Fully customizable</li>
           <li>
-            They run on hardware you already own &mdash; making what you
-            paid for worth more
+            Runs on hardware you already own (making what you paid for worth
+            more)
           </li>
+          <li>You can genuinely maximize performance/cost, today</li>
         </ul>
       </SlideStack>
     </PresentationSlide>
