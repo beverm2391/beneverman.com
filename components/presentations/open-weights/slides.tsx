@@ -613,6 +613,9 @@ export const slides = {
           How can we use this to translate what they say &mdash; and find
           out what they really mean?
         </SlideStatement>
+        <SlideStatement>
+          Let&rsquo;s look at Dario Amodei, CEO of Anthropic, as an example.
+        </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -626,7 +629,7 @@ export const slides = {
   "translator-chips": (
     <PresentationSlide note="TODO: benched — killed from the translator run; nuclear/ban/regulation/surveillance carry it. Quote verbatim, Bloomberg Davos interview (ref 12).">
       <SlideStack align="start" gap="tight">
-        <SlideKicker>Anthropic Translator</SlideKicker>
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
         <div className="[&_p]:!max-w-[46ch]">
           <SlideStatement size="lead">
           &ldquo;It would be a big mistake to ship these chips. I think this is
@@ -647,7 +650,7 @@ export const slides = {
   "translator-surveillance": (
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Anthropic's Department of War statement (ref 13); context: they support defense work and are open to autonomous-weapons research once systems are reliable enough.">
       <SlideStack align="start" gap="tight">
-        <SlideKicker>Anthropic Translator</SlideKicker>
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
         <div className="[&_p]:!max-w-[46ch]">
           <SlideStatement size="lead">
           &ldquo;Mass domestic surveillance &hellip; is incompatible with
@@ -669,7 +672,7 @@ export const slides = {
   "translator-regulation": (
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim, ABC News interview (ref 14).">
       <SlideStack align="start" gap="tight">
-        <SlideKicker>Anthropic Translator</SlideKicker>
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
         <div className="[&_p]:!max-w-[46ch]">
           <SlideStatement size="lead">
           &ldquo;We&rsquo;re proposing stronger regulation of the technology,
@@ -692,7 +695,7 @@ export const slides = {
   "translator-nuclear": (
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Dario's Policy on the AI Exponential (ref 15).">
       <SlideStack align="start" gap="tight">
-        <SlideKicker>Anthropic Translator</SlideKicker>
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
         <div className="[&_p]:!max-w-[46ch]">
           <SlideStatement size="lead">
           &ldquo;There may come a time &hellip; when the most powerful AI
@@ -715,7 +718,7 @@ export const slides = {
   "translator-ban": (
     <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Anthropic's open-weights position post (ref 16), responding to accusations they want open models banned.">
       <SlideStack align="start" gap="tight">
-        <SlideKicker>Anthropic Translator</SlideKicker>
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
         <div className="[&_p]:!max-w-[46ch]">
           <SlideStatement size="lead">
           &ldquo;Anthropic has never advocated for a ban on open-weights
@@ -737,7 +740,7 @@ export const slides = {
   "translator-fine-print": (
     <PresentationSlide note="TODO: fine-print translations draft, Ben to pass. Left column verbatim from the system card (ref 9) and launch announcement.">
       <SlideStack align="start">
-        <h2>Anthropic Translator, the fine print</h2>
+        <h2>Anthropic CEO Translator, the fine print</h2>
         <SlideColumns>
           <SlideColumn label="They say">
             <ul>

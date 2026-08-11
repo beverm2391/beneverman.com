@@ -25,9 +25,13 @@ type SetlistEntry =
 
 const setlist: readonly SetlistEntry[] = [
   "title",
-  "altman-receipt",
-  { slide: "companies-dont-say-what-they-mean", dives: ["translator-nuclear", "translator-ban", "translator-regulation", "translator-surveillance", "translator-fine-print"] },
   "how-this-talk-works",
+  "altman-receipt",
+  "companies-dont-say-what-they-mean",
+  {
+    slide: "translator-nuclear",
+    dives: ["translator-ban", "translator-regulation", "translator-surveillance", "translator-fine-print"]
+  },
   {
     slide: "fig-how-chatbots-work",
     dives: ["what-i-mean", "what-is-a-weight", "fig-what-is-a-weight", "fig-text-through-weights"]
