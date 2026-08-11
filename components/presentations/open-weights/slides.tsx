@@ -74,7 +74,7 @@ export const slides = {
           <path d="M8 30 V186 M4 180 L8 187 L12 180" className="stroke-(--pres-annotation)" strokeWidth="1.25" />
           <text x="16" y="150" transform="rotate(-90 16 150)" className="fill-(--pres-annotation)" fontSize="10" letterSpacing="1.5" fontFamily="var(--font-presentation-mono)">DEPTH</text>
           {/* The spine, labelled with the talk's real concepts */}
-          {["INTRO", "CHATBOTS", "UBER", "WHY?", "OPEN", "HOW", "END"].map((name, i) => (
+          {["INTRO", "CHATBOTS", "BIG TECH", "WHY", "OPEN", "HOW", "END"].map((name, i) => (
             <g key={name}>
               <rect x={24 + i * 60} y={30} width={46} height={26} rx={3} className="stroke-(--pres-ink)" strokeWidth="1.25" />
               <text x={24 + i * 60 + 23} y={47} textAnchor="middle" className="fill-(--pres-ink)" fontSize="7.5" letterSpacing="0.5" fontFamily="var(--font-presentation-mono)">{name}</text>
