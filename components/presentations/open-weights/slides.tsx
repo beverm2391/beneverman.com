@@ -409,9 +409,18 @@ export const slides = {
   // Why open weights: a section marker, then one benefit per slide, each
   // paired with its felt example from Ben's material. All await his pass.
   "why-open-weights": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
-      <SlideStack>
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Example/drill slides to follow this one; the per-benefit ammunition lives in the benched benefit-* slides' notes.">
+      <SlideStack align="start">
         <h2>Why open weights?</h2>
+        <ul>
+          <li>It won&rsquo;t refuse you</li>
+          <li>It won&rsquo;t sell your chats</li>
+          <li>It won&rsquo;t price gouge you</li>
+          <li>It can&rsquo;t be taken from you</li>
+          <li>Community improvements come straight to you</li>
+          <li>It can be exactly yours</li>
+          <li>It runs on hardware you already own</li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -493,15 +502,56 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  "how-everyone": (
-    <PresentationSlide note="TODO: wording draft and the exact recommended model, Ben to pass. One path, zero decisions.">
+  "how-hosted": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — his exact provider/model pairing.">
       <SlideStack align="start">
-        <SlideKicker>Everyone</SlideKicker>
-        <h2>Ten minutes, tonight</h2>
+        <SlideKicker>Step 1 &middot; someone else hosts it</SlideKicker>
+        <h2>Use open models through tools you already have</h2>
         <ul>
-          <li>Download LM Studio</li>
-          <li>Pick the model it recommends for your machine</li>
-          <li>Turn the wifi off and talk to it</li>
+          <li>OpenRouter puts every open model behind one key</li>
+          <li>Point Claude Code, Codex, or pi at it</li>
+          <li>Same workflow &mdash; fraction of the cost</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-own-hardware": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+      <SlideStack align="start">
+        <SlideKicker>Step 2 &middot; hardware you already own</SlideKicker>
+        <h2>Run it on your own machine</h2>
+        <ul>
+          <li>Install Ollama</li>
+          <li>Pull a small model</li>
+          <li>Talk to it</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-find-models": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — his actual picks and how he'd tell someone to choose.">
+      <SlideStack align="start">
+        <SlideKicker>Step 3 &middot; pick your model</SlideKicker>
+        <h2>Find the best model for your hardware and use case</h2>
+        <ul>
+          <li>Hugging Face is the library</li>
+          <li>Match model size to your machine</li>
+          <li>Pick for your use case, not the leaderboard</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-cloud": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+      <SlideStack align="start">
+        <SlideKicker>Step 4 &middot; optional scale</SlideKicker>
+        <h2>Rent a cloud GPU when you outgrow the laptop</h2>
+        <ul>
+          <li>Frontier-size open models, by the hour</li>
+          <li>Your model and your data, on rented iron</li>
         </ul>
       </SlideStack>
     </PresentationSlide>
