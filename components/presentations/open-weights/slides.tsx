@@ -18,9 +18,9 @@ import {
 
 // The bench: every slide the talk has in play, defined once and keyed by name.
 // A setlist in index.tsx picks and orders slides from here, so reordering the
-// talk or benching a slide never touches the slide itself. The bench is for
-// slides in play — current setlists, the appendix, or material awaiting a
-// restructure. Slides retired for good die in git history, not here.
+// talk or benching a slide never touches the slide itself. Cut slides stay on
+// the bench (Ben's call: save everything) — only exact duplicates of live
+// material die into git history.
 //
 // Authoring rules for this deck (Ben's):
 // - Content is Ben's. Agents suggest, challenge, and develop his ideas —
