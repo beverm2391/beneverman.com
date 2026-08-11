@@ -26,7 +26,8 @@ import {
 // - Content is Ben's. Agents suggest, challenge, and develop his ideas —
 //   especially from docs/presentations/open-weights/notes.md — but do not invent
 //   slide content. Draft wording gets a "Ben to pass" note. Never scaffold:
-//   a slide awaiting content or art stays intentionally empty.
+//   a slide awaiting content or art stays intentionally empty. Ben's
+//   dictation lands verbatim — flag suspected typos, never fix silently.
 // - Progressive disclosure: the default layer is felt, every technical layer
 //   is opt-in (a later slide, the appendix, a question from the room).
 // - Bridge, don't lecture: every concept starts from ground the audience
