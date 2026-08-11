@@ -598,16 +598,16 @@ export const slides = {
   // one incentive rules them. Hand the room the decoder ring at slide 3 and
   // every corporate quote for the rest of the talk translates itself.
   "companies-dont-say-what-they-mean": (
-    <PresentationSlide note="TODO: wording is Ben's dictation, lightly set — Ben to pass.">
-      <SlideStack align="start" gap="tight">
-        <SlideStatement>
-          Companies don&rsquo;t always say what they mean. They say whatever
-          THEY want. (ex. Trump)
-        </SlideStatement>
-        <SlideStatement>
-          Companies like Anthropic care about one thing above everything
-          else: IPO.
-        </SlideStatement>
+    <PresentationSlide note="TODO: wording is Ben's dictation — Ben to pass.">
+      <SlideStack align="start">
+        <h2>Companies don&rsquo;t say what they mean</h2>
+        <ul>
+          <li>They say whatever THEY want (ex. Trump)</li>
+          <li>
+            Companies like Anthropic care about one thing above everything
+            else: the IPO
+          </li>
+        </ul>
         <SlideStatement size="lead">
           How can we use this to translate what they say &mdash; and find
           out what they really mean?
