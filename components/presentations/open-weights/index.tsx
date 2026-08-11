@@ -23,6 +23,7 @@ const setlist = [
   "title",
   "what-i-mean",
   "fig-how-chatbots-work",
+  "fig-the-file-locked-vs-free",
   "closed-vs-open-tech",
   "fig-enshittification-vs-appreciation",
   "when-closed-tech-goes-wrong",

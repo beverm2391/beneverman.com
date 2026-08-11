@@ -82,7 +82,7 @@ export const slides = {
   // The deep what-act (model landscape, weights, figures) stays after the
   // door slide, where its job is belief, not definition.
   "what-i-mean": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Fig 08 (the same input-weights-output pipeline twice: OpenAI's computer behind a gate vs your computer) follows as its own slide when the art lands.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass.">
       <SlideStack align="start">
         <h2>How do chatbots work?</h2>
         <ul>
@@ -181,6 +181,19 @@ export const slides = {
         caption="Fig. 06. Enshittification vs appreciation"
         frame={false}
         src="/images/blog/open-weights-ai-models/06-enshittification-vs-appreciation.png"
+      />
+    </PresentationSlide>
+  ),
+
+  // The definition drawn: the identical pipeline twice, and the only
+  // difference between closed and open is whose computer the weights sit on.
+  "fig-the-file-locked-vs-free": (
+    <PresentationSlide layout="fill">
+      <SlideFigure
+        alt="The same prompt-to-response pipeline twice: the weights caged in OpenAI's computer behind a gate marked their rules their prices, and the same file open on your laptop."
+        caption="Fig. 08. The same file, two computers"
+        frame={false}
+        src="/images/blog/open-weights-ai-models/08-the-file-locked-vs-free.png"
       />
     </PresentationSlide>
   ),
