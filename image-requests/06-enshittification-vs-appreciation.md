@@ -38,3 +38,14 @@ dotted bracket labelled `WHAT OWNING IT IS WORTH`.
 The closed curve's decay carries the accent color; it is the harm, and the
 only accent in the figure. Axes quieter than the curves, curves in neutral
 ink, labels in working ink, per the figure 05 revision notes.
+
+## Revision
+
+Three variants delivered (batch 2026-08-10-01). The common-start fork was
+chosen and is placeholding in the deck: one shared path from the origin, a
+visible fork node, OPEN and CLOSED named at the endpoints, dotted bracket
+labelled WHAT OWNING IT IS WORTH. Change wanted:
+
+- **Lift the closed curve's honeymoon.** The brief early rise after the fork
+  is nearly flat; the enshittification story needs the visible good-at-first
+  hill before the fall. Keep everything else as delivered.

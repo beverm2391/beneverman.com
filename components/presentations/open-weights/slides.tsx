@@ -171,6 +171,20 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  "fig-enshittification-vs-appreciation": (
+    <PresentationSlide
+      layout="fill"
+      note="TODO: placeholder version — chosen variant (common-start fork) needs its refinement: the closed curve's early honeymoon rise is too shallow. Revision logged in image request 06."
+    >
+      <SlideFigure
+        alt="One curve leaves the origin, forks: open technology appreciates in your hands, closed technology enshittifies, with the gap labelled as what owning it is worth."
+        caption="Fig. 06. Enshittification vs appreciation"
+        frame={false}
+        src="/images/blog/open-weights-ai-models/06-enshittification-vs-appreciation.png"
+      />
+    </PresentationSlide>
+  ),
+
   // When closed tech goes wrong: a section marker, then one receipt per
   // slide, quick-fire, ending on the airbag as the peak. The mirror section
   // ("when-open-tech-goes-right") is benched until Ben places its receipts.

@@ -24,6 +24,7 @@ const setlist = [
   "what-i-mean",
   "fig-how-chatbots-work",
   "closed-vs-open-tech",
+  "fig-enshittification-vs-appreciation",
   "when-closed-tech-goes-wrong",
   "receipt-uber",
   "receipt-instagram",
