@@ -362,12 +362,11 @@ export const slides = {
   ),
 
   "benefit-refuse": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Ben's examples: the meme with a friend's face, the medical question it gets weird about, soft refusals that hurt research.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Spare examples for the spoken track: the meme with a friend's face, malware crafted to trip classifiers so no frontier model will help remove it, soft refusals that hurt research.">
       <SlideStack gap="tight">
-        <SlideStatement size="lead">It can&rsquo;t refuse you</SlideStatement>
+        <SlideStatement size="lead">It won&rsquo;t refuse you</SlideStatement>
         <SlideStatement>
-          The meme, the medical question, the gray area &mdash; no classifier,
-          no lecture.
+          Ask the medical question. It just answers.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -376,9 +375,9 @@ export const slides = {
   "benefit-privacy": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack gap="tight">
-        <SlideStatement size="lead">It&rsquo;s completely secure</SlideStatement>
+        <SlideStatement size="lead">It won&rsquo;t sell your chats</SlideStatement>
         <SlideStatement>
-          What you type at 2am stays on your machine.
+          Your 2am conversation is not training data.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -387,21 +386,21 @@ export const slides = {
   "benefit-price": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack gap="tight">
-        <SlideStatement size="lead">It can&rsquo;t price gouge you</SlideStatement>
+        <SlideStatement size="lead">It won&rsquo;t price gouge you</SlideStatement>
         <SlideStatement>
-          No subscription, no rate limits, no &ldquo;come back at
-          7pm.&rdquo;
+          No &ldquo;you&rsquo;ve hit your limit &mdash; upgrade to
+          Pro.&rdquo;
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "benefit-forever": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The 4o deprecation grief is the spoken story here.">
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. The 4o line may need a beat of setup for anyone who missed the story.">
       <SlideStack gap="tight">
         <SlideStatement size="lead">It can&rsquo;t be taken from you</SlideStatement>
         <SlideStatement>
-          No deprecation, no personality change you never voted on.
+          When 4o died, thousands grieved. Nobody with the file lost a thing.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
