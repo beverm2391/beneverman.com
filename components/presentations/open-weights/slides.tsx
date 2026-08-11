@@ -426,7 +426,7 @@ export const slides = {
             Runs on hardware you already own (making what you paid for worth
             more)
           </li>
-          <li>You can genuinely maximize performance/cost, today</li>
+          <li>You can reduce cost for your existing AI usage</li>
         </ul>
       </SlideStack>
     </PresentationSlide>
@@ -513,7 +513,7 @@ export const slides = {
     <PresentationSlide note="TODO: wording draft, Ben to pass — his exact provider/model pairing.">
       <SlideStack align="start">
         <SlideKicker>Step 1 &middot; someone else hosts it</SlideKicker>
-        <h2>Use open models through tools you already have</h2>
+        <h2>Use open models that someone else hosts</h2>
         <ul>
           <li>OpenRouter puts every open model behind one key</li>
           <li>Point Claude Code, Codex, or pi at it</li>
@@ -527,7 +527,7 @@ export const slides = {
     <PresentationSlide note="TODO: wording draft, Ben to pass.">
       <SlideStack align="start">
         <SlideKicker>Step 2 &middot; hardware you already own</SlideKicker>
-        <h2>Run it on your own machine</h2>
+        <h2>Run models on your own machine</h2>
         <ul>
           <li>Install Ollama</li>
           <li>Pull a small model</li>
@@ -541,7 +541,7 @@ export const slides = {
     <PresentationSlide note="TODO: wording draft, Ben to pass — his actual picks and how he'd tell someone to choose.">
       <SlideStack align="start">
         <SlideKicker>Step 3 &middot; pick your model</SlideKicker>
-        <h2>Find the best model for your hardware and use case</h2>
+        <h2>Find the best model</h2>
         <ul>
           <li>Hugging Face is the library</li>
           <li>Match model size to your machine</li>
@@ -555,7 +555,7 @@ export const slides = {
     <PresentationSlide note="TODO: wording draft, Ben to pass.">
       <SlideStack align="start">
         <SlideKicker>Step 4 &middot; optional scale</SlideKicker>
-        <h2>Rent a cloud GPU when you outgrow the laptop</h2>
+        <h2>Rent GPUs</h2>
         <ul>
           <li>Frontier-size open models, by the hour</li>
           <li>Your model and your data, on rented iron</li>

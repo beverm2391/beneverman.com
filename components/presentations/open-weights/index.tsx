@@ -40,7 +40,6 @@ const setlist = [
   "receipt-internet",
   // Why open weights
   "why-open-weights",
-  "speed-demo",
   // How
   "how-do-you-start",
   "how-hosted",
