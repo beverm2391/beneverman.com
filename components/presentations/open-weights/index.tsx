@@ -40,6 +40,9 @@ const setlist = [
   "receipt-internet",
   // Why open weights
   "why-open-weights",
+  "invoke-regulated-info",
+  "invoke-data-privacy",
+  "invoke-perf-cost",
   // How
   "how-do-you-start",
   "how-hosted",

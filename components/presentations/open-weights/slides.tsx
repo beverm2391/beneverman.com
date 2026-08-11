@@ -501,6 +501,32 @@ export const slides = {
 
   // The how act: the ladder from the audience-tiers conversation. One path
   // per tier, zero decisions on the default path.
+  // The three emotional-invoke slides after the why bullets. Title-only
+  // until research 03 delivers verified quotes and Ben reads them.
+  "invoke-regulated-info": (
+    <PresentationSlide note="TODO: awaiting research-requests/03 — classifier scandal quotes, system card covert passages (PDF in Ben's Downloads), and the approved-organizations announcement line. Title draft, Ben to pass.">
+      <SlideStack align="start">
+        <h2>Big tech chooses what you can know</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "invoke-data-privacy": (
+    <PresentationSlide note="TODO: awaiting research-requests/03 — the Altman no-privilege quote, the court-ordered retention of deleted chats, ID verification requirements, retention policies. Title draft, Ben to pass.">
+      <SlideStack align="start">
+        <h2>What happens to what you tell them?</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "invoke-perf-cost": (
+    <PresentationSlide note="TODO: awaiting research-requests/03 — the direct pricing comparison table, subscription anchors, one community-improvement number. Title draft, Ben to pass.">
+      <SlideStack align="start">
+        <h2>The direct comparison</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   "how-do-you-start": (
     <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
       <SlideStack>
