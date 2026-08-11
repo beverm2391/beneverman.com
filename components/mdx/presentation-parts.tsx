@@ -98,6 +98,20 @@ export function SlideNotes({
   );
 }
 
+/**
+ * A technical name riding a plain sentence — inline progressive disclosure.
+ * The sentence carries the meaning in the deck's speaking voice; the term
+ * hangs on it in annotation ink, the same register as figure labels, for
+ * listeners who want the real word.
+ */
+export function SlideTerm({ children }: { children: ReactNode }) {
+  return (
+    <span className="font-(family-name:--font-presentation-mono) text-[0.72em] tracking-[0.09em] text-(--pres-annotation) uppercase">
+      ({children})
+    </span>
+  );
+}
+
 /** Supporting prose. Quieter than a statement; use sparingly on a spoken slide. */
 export function SlideBody({ children }: { children: ReactNode }) {
   return (

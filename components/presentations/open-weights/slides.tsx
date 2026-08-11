@@ -12,6 +12,7 @@ import {
   SlideRef,
   SlideStack,
   SlideStatement,
+  SlideTerm,
   SlideTimeline
 } from "@/components/mdx/presentation-parts";
 
@@ -85,14 +86,19 @@ export const slides = {
       <SlideStack align="start">
         <h2>How do chatbots work?</h2>
         <ul>
-          <li>Chatbots are Large Language Models (LLMs)</li>
           <li>
-            LLMs are machine learning (ML) models that take text in and
-            produce text out
+            Chatbots like ChatGPT or Claude are Large Language Models{" "}
+            <SlideTerm>LLMs</SlideTerm>
           </li>
           <li>
-            They do this by turning your text into numbers, doing math, then
-            turning the numbers back into text
+            LLMs are machine learning <SlideTerm>ML</SlideTerm> models that
+            take text in and produce text out
+          </li>
+          <li>
+            They do this by turning your text into numbers{" "}
+            <SlideTerm>tokenization</SlideTerm>, doing math{" "}
+            <SlideTerm>matrix multiplication</SlideTerm>, then turning the
+            numbers back into text <SlideTerm>decoding</SlideTerm>
           </li>
         </ul>
       </SlideStack>
