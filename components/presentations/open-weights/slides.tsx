@@ -368,11 +368,17 @@ export const slides = {
   // The hardware combo: the bed and the airbag on one slide, right after
   // Instagram. You don't own your hardware either.
   "receipt-hardware": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass. Airbag quote verbatim, Klim FAQ (ref 2). Bed price needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page; the AWS-outage story (beds stuck upright, overheating) is spare ammo in sources.md.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Airbag quote verbatim, Klim FAQ (ref 2). Bed price needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page; the AWS-outage story is spare ammo in sources.md.">
       <SlideStack align="start">
         <h2>You don&rsquo;t own your hardware either</h2>
         <SlideColumns>
           <SlideColumn label="Your airbag">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="The Klim Ai-1 airbag vest."
+              className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
+              src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
+            />
             <SlideStatement>
               A subscription airbag that stops protecting you.
             </SlideStatement>
@@ -383,6 +389,12 @@ export const slides = {
             </p>
           </SlideColumn>
           <SlideColumn label="Your bed" tone="accent">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="The Eight Sleep Pod cover and hub."
+              className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
+              src="/images/blog/open-weights-ai-models/screenshots/eight-sleep-pod.jpg"
+            />
             <SlideStatement>A $3,300 smart mattress.</SlideStatement>
             <p>Comfort: $199 a year.</p>
           </SlideColumn>
@@ -490,22 +502,41 @@ export const slides = {
   // The internet as the open-goes-right receipt: the one open technology
   // everyone in the room lives on.
   "receipt-internet": (
-    <PresentationSlide note="TODO: wording is Ben's dictation, Ben to pass. This slide contrasts with the closed-AI slide coming up; the mesh-vs-funnel figure dives beneath. Spoken spare: the closed-internet counterfactual from notes.md (pay for access, no result integrity, no peer-to-peer).">
+    <PresentationSlide note="TODO: wording is Ben's dictation plus the examples he approved, Ben to pass. Optional closing line if wanted: the internet is the one layer from the receipts era that never enshittified, because no one could. Mesh figure dives beneath.">
       <SlideStack align="start">
         <h2>The internet</h2>
         <ul>
           <li>
             No central authority: anyone can hit any public IP, anyone can
-            index
+            index. You could launch a search engine tonight without asking
+            permission.
           </li>
           <li>
-            No one person can make rules about what info can be shared
+            No one person can make rules about what info can be shared.
+            Nobody owns email: leave Gmail tomorrow and you can still email
+            every Gmail user. Try that with iMessage.
           </li>
           <li>
             Open means paid providers like Google have to build value on top
             of the tech. Just gatekeeping and selling it at base isn&rsquo;t
-            enough.
+            enough. You can bypass Google entirely and the internet works
+            fine.
           </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The counterfactual, contrasting the slide above: the same internet with
+  // a landlord. From Ben's notes.md closed-internet block.
+  "closed-internet": (
+    <PresentationSlide note="TODO: wording draft from notes.md, Ben to pass.">
+      <SlideStack align="start">
+        <h2>The internet, if a lab had built it</h2>
+        <ul>
+          <li>Pay directly for access</li>
+          <li>No control over the integrity of results</li>
+          <li>No peer-to-peer</li>
         </ul>
       </SlideStack>
     </PresentationSlide>

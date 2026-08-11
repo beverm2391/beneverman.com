@@ -47,6 +47,7 @@ const setlist: readonly SetlistEntry[] = [
   "dynamic-no-substitutes",
   "when-open-tech-goes-right",
   { slide: "receipt-internet", dives: ["fig-open-internet-vs-closed-ai"] },
+  "closed-internet",
   {
     slide: "why-open-weights",
     dives: ["invoke-regulated-info", "invoke-data-privacy", "invoke-perf-cost"]
