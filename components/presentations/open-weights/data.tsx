@@ -227,6 +227,31 @@ export const sources = [
     n: 11,
     title: "C-SPAN transcript, Sam Altman at the BlackRock Infrastructure Summit, March 2026",
     href: "https://fight.fudgie.org/search/show/cspan/episode/20260315_CSPAN_0429-0510_EDT_OpenAI_CEO_Sam_Altman_Speaks_at_BlackRock_Infrastructure_Summit"
+  },
+  {
+    n: 12,
+    title: "Bloomberg, Anthropic CEO says selling advanced AI chips to China is 'crazy' (Jan 20, 2026)",
+    href: "https://www.bloomberg.com/news/articles/2026-01-20/anthropic-ceo-says-selling-advanced-ai-chips-to-china-is-crazy"
+  },
+  {
+    n: 13,
+    title: "Anthropic, Statement on the Department of War (Feb 26, 2026)",
+    href: "https://www.anthropic.com/news/statement-department-of-war"
+  },
+  {
+    n: 14,
+    title: "ABC News, Anthropic CEO calls for stronger regulation of AI (Jun 10, 2026)",
+    href: "https://abcnews.com/Business/exclusive-anthropic-ceo-calls-stronger-regulation-ai/story?id=133753620"
+  },
+  {
+    n: 15,
+    title: "Dario Amodei, Policy on the AI Exponential (Jun 2026)",
+    href: "https://darioamodei.com/post/policy-on-the-ai-exponential"
+  },
+  {
+    n: 16,
+    title: "Anthropic, Position on open-weights models (Jul 27, 2026)",
+    href: "https://www.anthropic.com/news/position-open-weights-models"
   }
 ] as const;
 
