@@ -101,17 +101,13 @@ export const slides = {
   // promise: we only dig where you want to.
   "how-this-talk-works": (
     <PresentationSlide layout="fill">
-      <div className="flex h-full min-h-0 flex-col items-center gap-[max(0.6rem,1.2cqw)]">
+      <div className="flex h-full min-h-0 flex-col gap-[max(0.6rem,1.2cqw)]">
+        <h2>This presentation is dynamic</h2>
         <SlideFigure
           alt="A map of this talk: seven concepts left to right at equal scope, with optional dive stacks descending into technical depth under three of them."
           frame={false}
           src="/images/blog/open-weights-ai-models/10-how-this-talk-works.png"
         />
-        <div className="text-center">
-          <SlideStatement size="lead">
-            Customize this presentation to your interests
-          </SlideStatement>
-        </div>
       </div>
     </PresentationSlide>
   ),
