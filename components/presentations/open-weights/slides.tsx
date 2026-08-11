@@ -73,8 +73,9 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  // The second Altman receipt: the business model, stated as vision. The
-  // meter is the rent thesis verbatim; the flood is the subsidize phase.
+  // The bridge from the receipts to AI: after the room has seen the squeeze
+  // four times, Altman narrates the same script — flood now (you are in the
+  // subsidized era), meter later (the plan). Sets up the exit that follows.
   "altman-meter": (
     <PresentationSlide layout="center" note="TODO: Ben to pass. Both quotes verbatim from the C-SPAN transcript Ben supplied (ref 11), BlackRock Infrastructure Summit, March 2026.">
       <SlideStack gap="tight">
