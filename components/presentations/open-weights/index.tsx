@@ -22,7 +22,6 @@ const openWeightsMono = IBM_Plex_Mono({
 const setlist = [
   // Hook and what
   "title",
-  "what-i-mean",
   "fig-how-chatbots-work",
   "fig-the-file-locked-vs-free",
   "closed-vs-open-tech",
