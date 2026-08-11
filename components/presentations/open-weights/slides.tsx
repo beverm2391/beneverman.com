@@ -1,7 +1,7 @@
 // loc-check: exempt — the slide bench is a registry that grows with the
 // talk; the unit of review is the slide, not the file.
 import { PresentationSlide } from "@/components/mdx/presentation";
-import { closedProviders, ModelList, openProviders, sources } from "./data";
+import { closedProviders, ModelList, openProviders, sources, thesis } from "./data";
 import {
   SlideArrow,
   SlideColumn,
@@ -626,6 +626,158 @@ export const slides = {
         frame={false}
         src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai.png"
       />
+    </PresentationSlide>
+  ),
+
+  // ---- Benched cuts, resurrected from git history per Ben's save-
+  // everything call. None are in the setlist.
+
+  "receipt-bed": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Price claim needs a source Ben has read — candidate: Eight Sleep's own Autopilot pricing page. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act; coverage candidates: NYT Oct 24 2025, PCMag.">
+      <SlideStack gap="none">
+        <SlideKicker>Your bed</SlideKicker>
+        <SlideStatement>A $3,300 smart mattress</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">
+          Comfort: $199 a year
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "hook-ai-next": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — especially the future marks (IPO hinge, the accented end state). Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) live in the spoken track.">
+      <SlideStack align="start">
+        <SlideKicker>Closed-source AI</SlideKicker>
+        <h2>AI is at the $10-Uber stage.</h2>
+        <SlideTimeline
+          start={2022}
+          end={2030}
+          marks={[
+            { at: 2022.9, yearLabel: "2022", sublabel: "ChatGPT", tone: "ink" },
+            {
+              at: 2025.6,
+              yearLabel: "Now — we are here",
+              label: "Free, or $20",
+              sublabel: "Pre-IPO · subsidized growth"
+            },
+            { at: 2027.6, yearLabel: "Soon · IPO?" },
+            {
+              at: 2029.6,
+              yearLabel: "Then",
+              label: "?",
+              sublabel: "Profit-maxxing · monopoly",
+              tone: "accent"
+            }
+          ]}
+        />
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "hook-the-door": (
+    <PresentationSlide layout="center" note="TODO: the slide after this must answer 'what file?' — the what act is not written yet, the old body currently follows.">
+      <SlideStack gap="none">
+        <SlideStatement>
+          Every other time, there was no exit. You could not download the 2015
+          Uber.
+        </SlideStatement>
+        <SlideArrow label="But" />
+        <SlideStatement size="lead">
+          This time, the good version leaked out the door. As a file.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "thesis": (
+    <PresentationSlide layout="center">
+      <SlideStack gap="none">
+        <SlideStatement>{thesis[0]}</SlideStatement>
+        <SlideArrow label="Thus" />
+        <SlideStatement>{thesis[1]}</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "closed-model-problems": (
+    <PresentationSlide>
+      <SlideStack align="start">
+        <h2>Major Problems with Closed Weight Models</h2>
+        <ul>
+          <li>Optimized for retention and revenue (your dependence)</li>
+          <li>Dependence carries risk</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-community-speed": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. This is the DeepSeek-Flash effect / llama.cpp beat from the pres note: the same file gets faster because thousands of people optimize it, and you pay no one.">
+      <SlideStack gap="none">
+        <SlideKicker>Your model file</SlideKicker>
+        <SlideStatement>Downloaded once</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">Faster every month &mdash; you pay no one</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "dynamic-dependence-draft": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 1 · dependence</SlideKicker>
+        <h2>The more you need it, the more they can upcharge you</h2>
+        <SlideColumns>
+          <SlideColumn label="A latte">
+            <SlideStatement>Price doubles? You skip it.</SlideStatement>
+          </SlideColumn>
+          <SlideColumn label="Your heart medication" tone="accent">
+            <SlideStatement>Price doubles? You pay.</SlideStatement>
+          </SlideColumn>
+        </SlideColumns>
+        <SlideColumns>
+          <SlideColumn label="Closed AI" tone="accent">
+            <p className="!mt-0">
+              Your work, your business, your questions already run on their
+              model. They set the rent.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Open weights">
+            <p className="!mt-0">Your model. There is no rent to raise.</p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "dynamic-no-substitutes-draft": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — examples especially.">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 2 · no substitutes, switching costs</SlideKicker>
+        <h2>And when you look for the door, there isn&rsquo;t one</h2>
+        <SlideColumns>
+          <SlideColumn label="No substitute" tone="accent">
+            <SlideStatement>The taxis Uber undercut are gone.</SlideStatement>
+          </SlideColumn>
+          <SlideColumn label="Switching costs" tone="accent">
+            <SlideStatement>Your friends and history stay behind.</SlideStatement>
+          </SlideColumn>
+        </SlideColumns>
+        <SlideColumns>
+          <SlideColumn label="Closed AI" tone="accent">
+            <p className="!mt-0">
+              Your chats, your memory, your workflows — all living in their
+              cloud.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Open weights">
+            <p className="!mt-0">
+              A drop-in substitute. Walking away costs nothing.
+            </p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
     </PresentationSlide>
   ),
 
