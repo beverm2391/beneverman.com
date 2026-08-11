@@ -619,7 +619,7 @@ export const slides = {
   // The translator: their words on the left, verbatim; what the words mean
   // on the right. The worked example, diving under the setup.
   "anthropic-translator": (
-    <PresentationSlide note="TODO: translations draft except the chips pair (Ben's own words). Sources to pin via research 04: the nuclear-weapons-to-North-Korea chips line, and the surveillance/autonomous-weapons policy language. Left column otherwise verbatim from the system card (ref 9) and launch announcement.">
+    <PresentationSlide note="TODO: translations are Ben's words. Sources to pin via research 04: the chips line, the surveillance/weapons language, and the block-deployment regulation quote.">
       <SlideStack align="start">
         <h2>Anthropic Translator</h2>
         <SlideColumns>
@@ -637,6 +637,45 @@ export const slides = {
                 weapons.&rdquo;
               </li>
               <li>
+                &ldquo;We&rsquo;re proposing stronger regulation of the
+                technology, proposing giving the government the ability to,
+                again, in a narrow way, block deployment of unsafe
+                technology.&rdquo;
+              </li>
+            </ul>
+          </SlideColumn>
+          <SlideColumn label="Translation" tone="accent">
+            <ul>
+              <li>
+                We don&rsquo;t want China to build competing companies that
+                hurt our valuation
+              </li>
+              <li>
+                Let&rsquo;s get America on our good side and be socially
+                responsible since it&rsquo;s convenient for us right now.
+                That will increase our IPO price.
+              </li>
+              <li>
+                Peter Thiel is so smart, we do need to become a monopoly.
+                Let&rsquo;s use the guise of AI safety to become the
+                government&rsquo;s pet, so that we can help them regulate our
+                competitors out of business!
+              </li>
+            </ul>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "anthropic-translator-2": (
+    <PresentationSlide note="TODO: translations draft, Ben to pass. Left column verbatim from the system card (ref 9) and launch announcement.">
+      <SlideStack align="start">
+        <h2>Anthropic Translator, continued</h2>
+        <SlideColumns>
+          <SlideColumn label="They say">
+            <ul>
+              <li>
                 &ldquo;Competitive use safeguards&rdquo;
                 <SlideRef n={9} />
               </li>
@@ -653,15 +692,6 @@ export const slides = {
           </SlideColumn>
           <SlideColumn label="Translation" tone="accent">
             <ul>
-              <li>
-                We don&rsquo;t want China to build competing companies that
-                hurt our valuation
-              </li>
-              <li>
-                Let&rsquo;s get America on our good side and be socially
-                responsible since it&rsquo;s convenient for us right now.
-                That will increase our IPO price.
-              </li>
               <li>We degrade the model if your work competes with ours</li>
               <li>And we won&rsquo;t tell you when we&rsquo;re doing it</li>
               <li>The good one is for approved customers</li>
