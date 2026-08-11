@@ -45,7 +45,7 @@ const setlist: readonly SetlistEntry[] = [
   { slide: "receipt-internet", dives: ["fig-open-internet-vs-closed-ai"] },
   {
     slide: "why-open-weights",
-    dives: ["invoke-regulated-info", "invoke-data-privacy", "invoke-perf-cost"]
+    dives: ["invoke-regulated-info", "anthropic-translator", "invoke-data-privacy", "invoke-perf-cost"]
   },
   "how-do-you-start",
   "how-hosted",

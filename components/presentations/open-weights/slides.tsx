@@ -594,6 +594,42 @@ export const slides = {
     </PresentationSlide>
   ),
 
+  // The translator: their words on the left, verbatim; what the words mean
+  // on the right. A dive under the regulated-info invoke.
+  "anthropic-translator": (
+    <PresentationSlide note="TODO: translations are draft, Ben to pass — the bit only works in his voice. Left column verbatim from the system card (ref 9) and launch announcement. More pairs welcome from research 03/04.">
+      <SlideStack align="start">
+        <h2>Anthropic Translator</h2>
+        <SlideColumns>
+          <SlideColumn label="They say">
+            <ul>
+              <li>
+                &ldquo;Competitive use safeguards&rdquo;
+                <SlideRef n={9} />
+              </li>
+              <li>
+                &ldquo;These safeguards will not be visible to the
+                user&rdquo;
+                <SlideRef n={9} />
+              </li>
+              <li>
+                &ldquo;The same underlying model as Fable 5, but with the
+                safeguards lifted in some areas&rdquo;
+              </li>
+            </ul>
+          </SlideColumn>
+          <SlideColumn label="Translation" tone="accent">
+            <ul>
+              <li>We degrade the model if your work competes with ours</li>
+              <li>And we won&rsquo;t tell you when we&rsquo;re doing it</li>
+              <li>The good one is for approved customers</li>
+            </ul>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
   "invoke-data-privacy": (
     <PresentationSlide note="TODO: Ben to pass. The order quote is verbatim from ECF 551 p3 (ref 10). CORRECTION lives in the spoken track: the broad obligation ended September 26, 2025 (OpenAI's Oct 2025 update) — say a court DID order it, not that it stands today. ID-verification receipts (government ID plus selfie, both labs) in research 03 for the spoken track.">
       <SlideStack align="start" gap="tight">
