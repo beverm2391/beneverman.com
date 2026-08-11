@@ -30,7 +30,8 @@ from pathlib import Path
 from types import ModuleType
 
 import fal_client
-from PIL import Image
+import numpy as np
+from PIL import Image, ImageFilter
 
 DEFAULT_MODEL = "CGI"
 DEFAULT_SHARPEN = 0.8
@@ -38,6 +39,8 @@ DEFAULT_DENOISE = 0.0
 DEFAULT_TARGET = (3840, 2160)
 DEFAULT_PAPER = "#faf9f6"
 SUPPORTED_MODELS = ("CGI", "Text Refine")
+EDGE_UNMIX_RADIUS = 4
+EDGE_UNMIX_PASSES = 2
 
 
 def load_background_module() -> ModuleType:
@@ -110,6 +113,159 @@ def fit_canvas(image: Image.Image, size: tuple[int, int]) -> Image.Image:
     return resized.crop((left, top, left + target_width, top + target_height))
 
 
+def dilate(mask: np.ndarray, radius: int) -> np.ndarray:
+    """Grow a mask by a small 4-connected radius."""
+    grown = mask.copy()
+    for _ in range(radius):
+        source = grown.copy()
+        grown[1:, :] |= source[:-1, :]
+        grown[:-1, :] |= source[1:, :]
+        grown[:, 1:] |= source[:, :-1]
+        grown[:, :-1] |= source[:, 1:]
+    return grown
+
+
+def local_foreground(
+    rgb: np.ndarray,
+    distance: np.ndarray,
+    radius: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Find the highest-contrast nearby pixel as an edge's solid colour."""
+    height, width = distance.shape
+    best_distance = distance.copy()
+    best_rgb = rgb.copy()
+
+    for dy in range(-radius, radius + 1):
+        for dx in range(-radius, radius + 1):
+            if abs(dy) + abs(dx) > radius or (dy == 0 and dx == 0):
+                continue
+
+            dst_y0 = max(0, -dy)
+            dst_y1 = min(height, height - dy)
+            dst_x0 = max(0, -dx)
+            dst_x1 = min(width, width - dx)
+            src_y0 = dst_y0 + dy
+            src_y1 = dst_y1 + dy
+            src_x0 = dst_x0 + dx
+            src_x1 = dst_x1 + dx
+
+            candidate_distance = distance[src_y0:src_y1, src_x0:src_x1]
+            current_distance = best_distance[dst_y0:dst_y1, dst_x0:dst_x1]
+            better = candidate_distance > current_distance
+            if not better.any():
+                continue
+
+            current_distance[better] = candidate_distance[better]
+            candidate_rgb = rgb[src_y0:src_y1, src_x0:src_x1]
+            current_rgb = best_rgb[dst_y0:dst_y1, dst_x0:dst_x1]
+            current_rgb[better] = candidate_rgb[better]
+
+    return best_rgb, best_distance
+
+
+def solve_coverage(
+    observed: np.ndarray,
+    foreground: np.ndarray,
+    backing: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Solve observed = coverage * foreground + (1 - coverage) * backing."""
+    direction = foreground - backing
+    denominator = np.square(direction).sum(axis=2)
+    coverage = np.divide(
+        ((observed - backing) * direction).sum(axis=2),
+        denominator,
+        out=np.zeros_like(denominator, dtype=np.float32),
+        where=denominator > 0,
+    )
+    coverage = np.clip(coverage, 0, 1)
+    reconstructed = backing + coverage[:, :, None] * direction
+    error = np.abs(observed - reconstructed).max(axis=2)
+    return coverage, error, direction
+
+
+def sharpen_coverage(coverage: np.ndarray) -> np.ndarray:
+    """Tighten an edge while preserving its 50% contour."""
+    sharpened = coverage
+    for _ in range(EDGE_UNMIX_PASSES):
+        sharpened = sharpened * sharpened * (3 - 2 * sharpened)
+    return sharpened
+
+
+def unmix_edges(
+    rgb: np.ndarray,
+    canvas: np.ndarray,
+    distance: np.ndarray,
+    removed: np.ndarray,
+    alpha: np.ndarray,
+    tolerance: int,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Remove canvas contamination and tighten only antialiased edge pixels."""
+    foreground, foreground_distance = local_foreground(rgb, distance, EDGE_UNMIX_RADIUS)
+    minimum_contrast = max(tolerance * 4, 48)
+    candidates = (
+        ~removed
+        & (foreground_distance >= minimum_contrast)
+        & (distance < foreground_distance)
+    )
+    if not candidates.any():
+        return rgb, alpha
+
+    observed = rgb.astype(np.float32)
+    solid = foreground.astype(np.float32)
+    output_rgb = rgb.copy()
+    maximum_error = max(tolerance * 2, 24)
+
+    # Exterior pixels become clean foreground plus alpha, avoiding a second
+    # mix with the old canvas when the result lands on the slide paper.
+    exterior_zone = dilate(removed, EDGE_UNMIX_RADIUS)
+    exterior_coverage, exterior_error, _ = solve_coverage(
+        observed,
+        solid,
+        canvas.astype(np.float32),
+    )
+    exterior = candidates & exterior_zone & (exterior_error <= maximum_error)
+    output_rgb[exterior] = foreground[exterior]
+    exterior_sharpened = sharpen_coverage(exterior_coverage)
+    alpha[exterior] = np.round(exterior_sharpened[exterior] * 255).astype(np.uint8)
+
+    # Interior labels can sit on coloured panels. The median recovers that
+    # local backing so edge cleanup does not introduce a white outline.
+    median_size = EDGE_UNMIX_RADIUS * 2 + 1
+    local_backing = np.array(
+        Image.fromarray(rgb).filter(ImageFilter.MedianFilter(size=median_size)),
+        dtype=np.float32,
+    )
+    enclosed_coverage, enclosed_error, enclosed_direction = solve_coverage(
+        observed,
+        solid,
+        local_backing,
+    )
+    local_contrast = np.abs(enclosed_direction).max(axis=2)
+    enclosed = (
+        candidates
+        & ~exterior_zone
+        & (local_contrast >= minimum_contrast)
+        & (enclosed_error <= maximum_error)
+    )
+    enclosed_sharpened = sharpen_coverage(enclosed_coverage)
+    composited = local_backing + enclosed_sharpened[:, :, None] * enclosed_direction
+    output_rgb[enclosed] = np.clip(np.round(composited[enclosed]), 0, 255).astype(np.uint8)
+    return output_rgb, alpha
+
+
+def edge_unmix(
+    image: Image.Image,
+    tolerance: int,
+    background: ModuleType,
+) -> Image.Image:
+    """Apply the upscale-only edge pass using the shared flood-fill mask."""
+    rgb = np.array(image.convert("RGB"), dtype=np.uint8)
+    canvas, distance, removed = background.background_mask(rgb, tolerance)
+    alpha = np.where(removed, 0, 255).astype(np.uint8)
+    rgb, alpha = unmix_edges(rgb, canvas, distance, removed, alpha, tolerance)
+    return Image.fromarray(np.dstack([rgb, alpha]), mode="RGBA")
+
+
 def topaz_request(args: argparse.Namespace, image_url: str) -> dict[str, object]:
     request: dict[str, object] = {
         "model": args.model,
@@ -172,10 +328,10 @@ def process(source: Path, args: argparse.Namespace, background: ModuleType) -> N
     fitted = fit_canvas(Image.open(provider).convert("RGB"), args.target)
     fitted.save(canvas)
 
-    result = background.remove_background(
+    result = edge_unmix(
         fitted,
         args.tolerance,
-        edge_unmix=True,
+        background,
     )
     result.save(transparent)
 
