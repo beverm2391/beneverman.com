@@ -257,10 +257,15 @@ def edge_unmix(
     image: Image.Image,
     tolerance: int,
     background: ModuleType,
+    seeds: list[tuple[float, float]] | None = None,
 ) -> Image.Image:
     """Apply the upscale-only edge pass using the shared flood-fill mask."""
     rgb = np.array(image.convert("RGB"), dtype=np.uint8)
-    canvas, distance, removed = background.background_mask(rgb, tolerance)
+    canvas, distance, removed = background.background_mask(
+        rgb,
+        tolerance,
+        seeds,
+    )
     alpha = np.where(removed, 0, 255).astype(np.uint8)
     rgb, alpha = unmix_edges(rgb, canvas, distance, removed, alpha, tolerance)
     return Image.fromarray(np.dstack([rgb, alpha]), mode="RGBA")
@@ -332,6 +337,7 @@ def process(source: Path, args: argparse.Namespace, background: ModuleType) -> N
         fitted,
         args.tolerance,
         background,
+        args.seed,
     )
     result.save(transparent)
 
@@ -354,6 +360,12 @@ def parser() -> argparse.ArgumentParser:
     parse.add_argument("--target", type=target_size, default=DEFAULT_TARGET)
     parse.add_argument("--paper", default=DEFAULT_PAPER)
     parse.add_argument("--tolerance", type=int, default=None)
+    parse.add_argument(
+        "--seed",
+        action="append",
+        default=[],
+        help="normalized X,Y seed for an enclosed canvas region; repeatable",
+    )
     parse.add_argument("--force", action="store_true", help="Replace existing provider outputs")
     parse.add_argument("--dry-run", action="store_true", help="Print work without API calls")
     return parse
@@ -362,6 +374,7 @@ def parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = parser().parse_args()
     background = load_background_module()
+    args.seed = [background.normalized_seed(seed) for seed in args.seed]
     if args.tolerance is None:
         args.tolerance = background.DEFAULT_TOLERANCE
 

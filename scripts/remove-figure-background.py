@@ -16,6 +16,7 @@ newer than its source.
 
     python3 scripts/remove-figure-background.py public/images/blog/<slug>/source
     python3 scripts/remove-figure-background.py path/to/one.png --tolerance 18
+    python3 scripts/remove-figure-background.py path/to/graph.png --seed 0.25,0.67
 """
 
 from __future__ import annotations
@@ -43,22 +44,40 @@ def sample_background(rgb: np.ndarray) -> np.ndarray:
     return colours[counts.argmax()].astype(np.int16)
 
 
-def flood_background(similar: np.ndarray) -> np.ndarray:
-    """Background-like pixels reachable from the border (4-connected)."""
+def flood_background(
+    similar: np.ndarray,
+) -> np.ndarray:
+    """Background-like pixels reachable from the border."""
+    height, width = similar.shape
+    seeds: list[tuple[int, int]] = []
+
+    for y in range(height):
+        for x in (0, width - 1):
+            if similar[y, x]:
+                seeds.append((y, x))
+    for x in range(width):
+        for y in (0, height - 1):
+            if similar[y, x]:
+                seeds.append((y, x))
+
+    return flood_regions(similar, seeds)
+
+
+def flood_regions(
+    similar: np.ndarray,
+    seeds: list[tuple[int, int]],
+) -> np.ndarray:
+    """Pixels connected to explicit seeds through a similarity mask."""
     height, width = similar.shape
     removed = np.zeros_like(similar, dtype=bool)
     queue: deque[tuple[int, int]] = deque()
 
-    for y in range(height):
-        for x in (0, width - 1):
-            if similar[y, x] and not removed[y, x]:
-                removed[y, x] = True
-                queue.append((y, x))
-    for x in range(width):
-        for y in (0, height - 1):
-            if similar[y, x] and not removed[y, x]:
-                removed[y, x] = True
-                queue.append((y, x))
+    for y, x in seeds:
+        if not similar[y, x]:
+            raise ValueError(f"seed {x},{y} is not within the canvas tolerance")
+        if not removed[y, x]:
+            removed[y, x] = True
+            queue.append((y, x))
 
     while queue:
         y, x = queue.popleft()
@@ -83,20 +102,29 @@ def neighbours(mask: np.ndarray) -> np.ndarray:
 def background_mask(
     rgb: np.ndarray,
     tolerance: int,
+    seeds: list[tuple[float, float]] | None = None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Return the sampled canvas, colour distance, and border flood-fill mask."""
     background = sample_background(rgb)
     distance = np.abs(rgb.astype(np.int16) - background).max(axis=2)
+    height, width = distance.shape
+    pixel_seeds = [
+        (round(y * (height - 1)), round(x * (width - 1)))
+        for x, y in seeds or []
+    ]
     removed = flood_background(distance <= tolerance)
+    if pixel_seeds:
+        removed |= flood_regions(distance <= tolerance, pixel_seeds)
     return background, distance, removed
 
 
 def remove_background(
     image: Image.Image,
     tolerance: int,
+    seeds: list[tuple[float, float]] | None = None,
 ) -> Image.Image:
     rgb = np.array(image.convert("RGB"), dtype=np.uint8)
-    _, distance, removed = background_mask(rgb, tolerance)
+    _, distance, removed = background_mask(rgb, tolerance, seeds)
 
     alpha = np.where(removed, 0, 255).astype(np.uint8)
 
@@ -122,6 +150,17 @@ def collect(paths: list[Path]) -> list[Path]:
     return sources
 
 
+def normalized_seed(value: str) -> tuple[float, float]:
+    """Parse a normalized X,Y seed that works across source resolutions."""
+    try:
+        x, y = (float(part) for part in value.split(",", 1))
+    except (TypeError, ValueError) as error:
+        raise argparse.ArgumentTypeError("must look like 0.25,0.67") from error
+    if not (0 <= x <= 1 and 0 <= y <= 1):
+        raise argparse.ArgumentTypeError("coordinates must be between 0 and 1")
+    return x, y
+
+
 def output_for(source: Path, out_dir: Path | None) -> Path:
     """Generated art sits one level up from `source/`, under the same name."""
     if out_dir is not None:
@@ -135,6 +174,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("paths", nargs="+", type=Path, help="PNG files, or directories of them")
     parser.add_argument("--tolerance", type=int, default=DEFAULT_TOLERANCE)
+    parser.add_argument(
+        "--seed",
+        action="append",
+        default=[],
+        type=normalized_seed,
+        help="normalized X,Y seed for an enclosed canvas region; repeatable",
+    )
     parser.add_argument("--out-dir", type=Path, default=None)
     parser.add_argument("--force", action="store_true", help="Rebuild art that is already current")
     args = parser.parse_args()
@@ -149,7 +195,11 @@ def main() -> None:
             print(f"{source.name}: current")
             continue
 
-        result = remove_background(Image.open(source), args.tolerance)
+        result = remove_background(
+            Image.open(source),
+            args.tolerance,
+            args.seed,
+        )
         target.parent.mkdir(parents=True, exist_ok=True)
         result.save(target)
 
