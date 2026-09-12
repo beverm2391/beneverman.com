@@ -25,6 +25,26 @@ open gates.
   landing. The production route is a 404, and the editor, its UI dependencies,
   and its CSS must not enter production client assets.
 
+## The three lanes
+
+The repository keeps what the site can do apart from what it says, and what it
+says apart from what it publishes (Ben, 2026-09).
+
+- **System** — `app/`, `lib/`, `components/`, `scene/`, `scripts/`. Generic
+  capability: routes, loaders, the MDX compiler, reusable primitives, the scene
+  lab. It never names a post. It is held to the source gates.
+- **Experimental** — everything under `content/` with `status: draft`. A post
+  that needs its own code is a folder: `content/blog/{slug}/index.mdx` beside
+  its components, its working notes, and the image and research request queues
+  that feed it. Code there is content: linted and typechecked, but exempt from
+  the line limit, because the unit of review is the slide or figure, not the
+  file.
+- **Live** — the same files with `status: published`, plus Direction, which has
+  no status. Promotion is a frontmatter change; nothing moves.
+
+A system change that mentions a specific post, or a post that reaches into the
+system for a bespoke component, is in the wrong lane.
+
 ## Acceptance and current proof
 
 ### Landing
@@ -51,7 +71,8 @@ open gates.
   CMS, content codegen, or hand-rolled Markdown parser.
 - Posts statically generate from `generateStaticParams`. Shiki highlighting is
   build-time only, with one shared highlighter and a small language set.
-- GFM tables and footnotes work. The component map is deliberately narrow.
+- GFM tables and footnotes work. The shared component map is deliberately
+  narrow and generic; a post's bespoke components load from its own folder.
 - The index and canonical post routes are `/blog` and `/blog/{slug}`.
 - Metadata includes canonical URLs, article fields, generated OG images, Twitter
   cards carrying Ben's handle, and JSON-LD. `/feed.xml`, `/sitemap.xml`, and
@@ -89,9 +110,9 @@ open gates.
 ### Repository gates
 
 - CI reports four independent blocking checks: the executable-source line
-  limit, ESLint, TypeScript, and deterministic unit tests. Markdown and MDX
-  publications are exempt from the source limit. Browser/E2E coverage is not
-  part of the PR gate for now.
+  limit, ESLint, TypeScript, and deterministic unit tests. Everything under
+  `content/` and every Markdown file is exempt from the source limit.
+  Browser/E2E coverage is not part of the PR gate for now.
 - `pnpm build` remains the manual/release proof for home SSR, the production lab
   404 and client-asset exclusion, RSS output, and that every prerendered post is
   a real article. A post whose MDX fails to compile renders as a 404 rather than
@@ -107,6 +128,15 @@ open gates.
    and is the only post production ships today. `how-i-built-beneverman-com`
    stays a draft until Ben lands a shader worth writing up. Figures, captions,
    and visual rhythm stay a Ben + Claude decision, not a port to grind through.
+3. **Sort the tree into the three lanes.** The open-weights deck and the
+   drug-development figure sit under `components/` and are imported by name in
+   the shared component map; the deck's notes sit under `docs/`, and its image
+   and research request queues sit at the repository root. Each belongs in its
+   post's folder. The system gains one capability to make that possible: a post
+   may be a folder, and the loader passes that folder's components into the
+   compiler. The chat-replay sandbox post and its sky traces were a fixture for
+   the replay primitive; the SAE research post now exercises it for real, so
+   they go. Nothing goes live in this sort.
 
 ## Non-goals
 
