@@ -1,6 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { OpenWeightsPresentation } from "@/components/presentations/open-weights";
+import { OpenWeightsPresentation } from "./components";
 
 describe("open-weight presentation", () => {
   it("opens on its title slide with navigation to further slides", () => {

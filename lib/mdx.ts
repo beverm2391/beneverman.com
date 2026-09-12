@@ -20,10 +20,8 @@ import type { Highlighter } from "shiki";
 import { Callout } from "@/components/mdx/callout";
 import { ChatReplay, ChatReplayComparison } from "@/components/mdx/chat-replay";
 import { CodeBlock } from "@/components/mdx/code-block";
-import { DrugDevelopmentLoops } from "@/components/mdx/drug-development-loops";
 import { MdxLink } from "@/components/mdx/mdx-link";
 import { Presentation, PresentationSlide } from "@/components/mdx/presentation";
-import { OpenWeightsPresentation } from "@/components/presentations/open-weights";
 import { Summary } from "@/components/mdx/summary";
 import { ZoomImage } from "@/components/mdx/zoom-image";
 import { ZoomSvg } from "@/components/mdx/zoom-svg";
@@ -34,16 +32,23 @@ import {
   mermaidThemeCSS
 } from "@/lib/mermaid-theme";
 
-// Besides the bespoke components, MDX primitives are remapped: images and
-// compile-time mermaid SVGs get the click-to-zoom lightbox, links get
-// internal/external routing, and code blocks get a copy button. This map is
-// shared by every first-party MDX surface rather than being blog policy.
+// Components a single publication brings with it, loaded by its collection
+// from the post's own folder. The type is loose on purpose: a components file
+// exports whatever that post's MDX names.
+export type PostComponents = Record<string, React.ComponentType<never>>;
+
+// The global scope: generic components every first-party MDX surface may use.
+// Nothing here belongs to one post. A component that only one post needs
+// lives beside that post and arrives through `components` below; one that
+// every blog or every research publication needs would live under
+// components/blog or components/research and merge in the same way.
+// MDX primitives are remapped too: images and compile-time mermaid SVGs get
+// the click-to-zoom lightbox, links get internal/external routing, and code
+// blocks get a copy button.
 const mdxComponents = {
   Callout,
   ChatReplay,
   ChatReplayComparison,
-  DrugDevelopmentLoops,
-  OpenWeightsPresentation,
   Presentation,
   PresentationSlide,
   Summary,
@@ -127,7 +132,10 @@ const rehypeSanitizeStyleAttributes = () => (tree: HastNode) => {
   walk(tree);
 };
 
-export async function renderMdx(source: string): Promise<React.ReactElement> {
+export async function renderMdx(
+  source: string,
+  components: PostComponents = {}
+): Promise<React.ReactElement> {
   // Imported here rather than at module scope on purpose. rehype-mermaid pulls
   // in Playwright; a top-level import drags it into serverless functions where
   // its browser files are not traced. First-party MDX is compiled at build time.
@@ -135,7 +143,7 @@ export async function renderMdx(source: string): Promise<React.ReactElement> {
   const launchOptions = await mermaidLaunchOptions();
   const { content } = await compileMDX({
     source,
-    components: mdxComponents,
+    components: { ...mdxComponents, ...components },
     options: {
       parseFrontmatter: false,
       mdxOptions: {

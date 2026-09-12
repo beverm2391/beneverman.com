@@ -42,6 +42,13 @@ says apart from what it publishes (Ben, 2026-09).
 - **Live** — the same files with `status: published`, plus Direction, which has
   no status. Promotion is a frontmatter change; nothing moves.
 
+A component's scope is where it lives. One post: that post's folder. Every blog
+or every research publication: `components/blog/` or `components/research/`.
+Every MDX surface: `components/mdx/`. Promotion is a move plus the import, and
+leaving `content/` is where the line limit starts to apply: a post-scope slide
+registry may run to a thousand lines, but it has to be split into pieces a
+human can hold before it may serve every post.
+
 A system change that mentions a specific post, or a post that reaches into the
 system for a bespoke component, is in the wrong lane.
 
@@ -128,15 +135,6 @@ system for a bespoke component, is in the wrong lane.
    and is the only post production ships today. `how-i-built-beneverman-com`
    stays a draft until Ben lands a shader worth writing up. Figures, captions,
    and visual rhythm stay a Ben + Claude decision, not a port to grind through.
-3. **Sort the tree into the three lanes.** The open-weights deck and the
-   drug-development figure sit under `components/` and are imported by name in
-   the shared component map; the deck's notes sit under `docs/`, and its image
-   and research request queues sit at the repository root. Each belongs in its
-   post's folder. The system gains one capability to make that possible: a post
-   may be a folder, and the loader passes that folder's components into the
-   compiler. The chat-replay sandbox post and its sky traces were a fixture for
-   the replay primitive; the SAE research post now exercises it for real, so
-   they go. Nothing goes live in this sort.
 
 ## Non-goals
 

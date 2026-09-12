@@ -4,6 +4,7 @@ import {
   type BlogPostSummary
 } from "@/lib/blog-data";
 import { renderMdx } from "@/lib/mdx";
+import { loadBlogPostComponents } from "@/lib/publication-components";
 import { extractToc, type TocItem } from "@/lib/toc";
 
 export {
@@ -26,7 +27,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost> {
   if (frontmatter.status === "draft" && !includeDrafts) {
     throw new Error(`Post "${slug}" is a draft.`);
   }
-  const content = await renderMdx(source);
+  const content = await renderMdx(source, await loadBlogPostComponents(slug));
 
   return { slug, ...frontmatter, content, toc: extractToc(source) };
 }

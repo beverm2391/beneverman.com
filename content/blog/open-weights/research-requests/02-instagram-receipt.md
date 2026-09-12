@@ -25,5 +25,5 @@ must be the moments the feed stopped serving the user.
 
 - Facts with sources per claim; Ben reads before anything is cited.
 - Corrected dates go straight into the `receipt-instagram` marks in
-  `components/presentations/open-weights/slides.tsx`.
+  `content/blog/open-weights/slides.tsx`.
 - Append findings to this file.

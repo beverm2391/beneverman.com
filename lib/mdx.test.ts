@@ -45,8 +45,8 @@ $$
   it("registers chat replay components for every MDX surface", async () => {
     const content = await renderMdx(`
 <ChatReplayComparison synchronized className="content-breakout">
-  <ChatReplay src="/replays/sky-concise.jsonl" label="Concise" />
-  <ChatReplay src="/replays/sky-detailed.jsonl" label="Detailed" />
+  <ChatReplay src="/replays/sae-for-ads/matrix/open-landmark/baseline/2026-08-01T23-12-00-538Z_019fbf99-4419-704e-98f0-f6e5a035a299.jsonl" label="Concise" />
+  <ChatReplay src="/replays/sae-for-ads/matrix/open-landmark/1.0/2026-08-01T23-12-09-506Z_019fbf99-6722-76a5-926d-d7d586fe41e5.jsonl" label="Detailed" />
 </ChatReplayComparison>
 `);
     const markup = renderToStaticMarkup(content);

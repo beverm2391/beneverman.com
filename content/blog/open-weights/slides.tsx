@@ -17,14 +17,14 @@ import {
 } from "@/components/mdx/presentation-parts";
 
 // The bench: every slide the talk has in play, defined once and keyed by name.
-// A setlist in index.tsx picks and orders slides from here, so reordering the
+// A setlist in components.tsx picks and orders slides from here, so reordering the
 // talk or benching a slide never touches the slide itself. Cut slides stay on
 // the bench (Ben's call: save everything) — only exact duplicates of live
 // material die into git history.
 //
 // Authoring rules for this deck (Ben's):
 // - Content is Ben's. Agents suggest, challenge, and develop his ideas —
-//   especially from docs/presentations/open-weights/notes.md — but do not invent
+//   especially from notes.md beside this file — but do not invent
 //   slide content. Draft wording gets a "Ben to pass" note. Never scaffold:
 //   a slide awaiting content or art stays intentionally empty. Ben's
 //   dictation lands verbatim — flag suspected typos, never fix silently.
@@ -169,7 +169,7 @@ export const slides = {
     <PresentationSlide layout="fill">
       <SlideFigure
         alt="A request to ChatGPT passes through the model weights and becomes a concise email draft."
-        caption="Fig. 09. How a chatbot works"
+        caption="How a chatbot works"
         frame={false}
           src="/images/blog/open-weights-ai-models/09-how-chatbots-work_upscaled.png"
       />
@@ -182,7 +182,7 @@ export const slides = {
     <PresentationSlide layout="fill" note="TODO: benched, killed from the spine. The icon-pair revision (image request 08) is still queued if it returns.">
       <SlideFigure
         alt="The same prompt-to-response pipeline twice: the weights caged in OpenAI's computer behind a gate marked their rules their prices, and the same file open on your laptop."
-        caption="Fig. 08. The same file, two computers"
+        caption="The same file, two computers"
         frame={false}
           src="/images/blog/open-weights-ai-models/08-the-file-locked-vs-free_upscaled.png"
       />
@@ -322,19 +322,88 @@ export const slides = {
 
   // The answer, in two dynamics. Titles are Ben's; bodies await his content.
   "dynamic-dependence": (
-    <PresentationSlide note="TODO: body is empty — Ben to write it. Killed draft: latte/heart-med columns + closed-AI-vs-open-weights row (in git history if wanted).">
+    <PresentationSlide note="Ben's dictation (Aug 12), bullets verbatim, typos fixed per his standing call. Latte/heart-med, usage-equals-revenue (Meta/Instagram), and the RL'd-follow-up-questions line stay spoken.">
       <SlideStack align="start">
         <SlideKicker>Dynamic 1 · dependence</SlideKicker>
-        <h2>The more you need it, the more they can upcharge you</h2>
+        <h2>&ldquo;You can&rsquo;t live without us&rdquo;</h2>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            AI chatbots are designed to make you more dependent on them over
+            time.
+          </SlideStatement>
+        </div>
+        <ul>
+          <li>&ldquo;I forgot how exactly I was organizing my expenses. Good thing Claude knows&rdquo;</li>
+          <li>&ldquo;idk how I&rsquo;d be able to write this paper without ChatGPT&rdquo;</li>
+          <li>&ldquo;I go to ChatGPT whenever I need someone to talk to&rdquo;</li>
+          <li>&ldquo;I fired our marketing guy because Claude does it all now&rdquo;</li>
+          <li>&ldquo;only ChatGPT understands how the government is taking away my freedom&rdquo;</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Supplemental dive under dynamic-dependence: the elasticity concept
+  // behind the latte/heart-med pair. Wording from Ben's notes.md PE block.
+  "price-elasticity": (
+    <PresentationSlide note="TODO: Ben to pass. Assembled from his notes.md price-elasticity block, no invented content.">
+      <SlideStack align="start">
+        <SlideKicker>Supplemental · price elasticity</SlideKicker>
+        <h2>&ldquo;How much can we possibly make them pay?&rdquo;</h2>
+        <ul>
+          <li>
+            If the cost of your insulin doubles, you pay it. If the cost of
+            your Starbucks latte doubles, you go to another coffee shop
+          </li>
+          <li>
+            For those of us who depend on AI to do our work, run our business,
+            manage our health or finances, and answer complex questions: we
+            are less sensitive to price changes AND more vulnerable if we
+            lose access
+          </li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "dynamic-no-substitutes": (
-    <PresentationSlide note="TODO: body is empty — Ben to write it. Killed draft: taxis/switching-costs columns + closed-AI-vs-open-weights row (in git history if wanted).">
+    <PresentationSlide note="Ben's content (Aug 12). The retention-diverges figure now dives under this slide (moved from why-do-we-put-up); it is the diagram version of these bullets. Killed draft: taxis/switching-costs columns + closed-AI-vs-open-weights row (in git history if wanted).">
       <SlideStack align="start">
         <SlideKicker>Dynamic 2 · no substitutes, switching costs</SlideKicker>
-        <h2>And when you look for the door, there isn&rsquo;t one</h2>
+        <h2>&ldquo;We optimize for us, not you&rdquo;</h2>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            Big tech optimizes for their value at the expense of your value.
+          </SlideStatement>
+        </div>
+        <ul>
+          <li>
+            Pull, come back
+            <ul>
+              <li>
+                Sycophancy: &ldquo;You&rsquo;re so right, you deserve so much
+                better than him.&rdquo;
+              </li>
+              <li>
+                Engagement loops: &ldquo;Would you like me to figure out how
+                to set up a TV like this?&rdquo;
+              </li>
+            </ul>
+          </li>
+          <li>
+            Push, do not get sued
+            <ul>
+              <li>
+                Classifier-based refusal: &ldquo;Sorry, I can&rsquo;t help you
+                with that&rdquo;
+              </li>
+              <li>
+                Covert refusal: &ldquo;That&rsquo;s not feasible, so you
+                probably shouldn&rsquo;t try&rdquo;
+              </li>
+            </ul>
+          </li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -353,9 +422,23 @@ export const slides = {
   ),
 
   "when-open-tech-goes-right": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Receipts drafted from his candidates: MP3s and community speed; email/the web remain spares.">
-      <SlideStack>
+    <PresentationSlide note="Fallback set Ben approved for tonight (MP3s/publish/Wikipedia); research 05 (open-tech receipts) is out to Codex hunting better, more recent examples per theme. Swap in whatever Ben picks from its findings.">
+      <SlideStack align="start">
         <h2>When open tech goes right</h2>
+        <ul>
+          <li>
+            Buy to own and customize: your MP3s from 2003 still play
+            everywhere, free
+          </li>
+          <li>
+            Peer to peer: anyone can publish to the internet without asking
+            permission
+          </li>
+          <li>
+            Community beats paid: volunteers built Wikipedia and killed
+            Encarta, the encyclopedia Microsoft sold in a box
+          </li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
@@ -463,7 +546,7 @@ export const slides = {
     >
       <SlideFigure
         alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
-        caption="Fig. 03. What is a weight"
+        caption="What is a weight"
         frame={false}
           src="/images/blog/open-weights-ai-models/03-what-is-a-weight_upscaled.png"
       />
@@ -477,7 +560,7 @@ export const slides = {
     >
       <SlideFigure
         alt="Prompt tokenized, passed through the weights, emitted one token at a time."
-        caption="Fig. 04. Text through the weights"
+        caption="Text through the weights"
         frame={false}
           src="/images/blog/open-weights-ai-models/04-text-through-weights_upscaled.png"
       />
@@ -513,6 +596,7 @@ export const slides = {
           <li>
             No one person can make rules about what info can be shared
           </li>
+          <li>No one person can revoke all access</li>
           <li>
             Open means paid providers like Google have to build value on top
             of the tech. Just gatekeeping and selling it at base isn&rsquo;t
@@ -526,7 +610,7 @@ export const slides = {
   // The counterfactual, contrasting the slide above: the same internet with
   // a landlord. From Ben's notes.md closed-internet block.
   "closed-internet": (
-    <PresentationSlide note="TODO: wording draft from notes.md, Ben to pass.">
+    <PresentationSlide note="TODO: benched, killed from the setlist (Ben, Aug 12). Prior state: wording draft from notes.md awaiting Ben's pass.">
       <SlideStack align="start">
         <h2>The internet, if a lab had built it</h2>
         <ul>
@@ -722,9 +806,8 @@ export const slides = {
         </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
-          Let&rsquo;s get America on our good side and be socially responsible
-          since it&rsquo;s convenient for us right now. That will increase
-          our IPO price.
+          Being socially responsible is convenient for us right now, so
+          let&rsquo;s get America on our good side. It&rsquo;ll pump the IPO.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -745,9 +828,9 @@ export const slides = {
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
           Peter Thiel is so smart, we do need to become a monopoly. Let&rsquo;s
-          use the guise of AI safety to become the government&rsquo;s pet,
-          so that we can help them regulate our competitors out of
-          business.
+          use the guise of AI safety to become the government&rsquo;s favorite
+          big tech company, and then we can help write regulation to put our
+          competitors out of business.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -767,10 +850,10 @@ export const slides = {
         </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
-          We are definitely the only ones that should control access to AI, so
-          we can fearmonger to convince the public we&rsquo;re protecting
-          them! Then they&rsquo;ll have no other option but to pay 10x of
-          what they do now when we IPO and jack up our prices.
+          We should be the only ones who control access to AI, and
+          fearmongering makes the public think we&rsquo;re protecting them.
+          Then when we IPO and jack up prices, they&rsquo;ll have no choice
+          but to pay 10x what they pay today.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -790,9 +873,9 @@ export const slides = {
         </div>
         <SlideKicker tone="accent">Translation</SlideKicker>
         <SlideStatement>
-          Fucking hell dude Moonshot is going to kill our IPO what do we do???
-          We can&rsquo;t let the public find out that they have a better
-          claude cowork replacement for cheaper than us.
+          Uh oh, Chinese AI labs are going to kill our IPO what do we do? We
+          can&rsquo;t let the public find out that they have a better Claude
+          Cowork replacement, cheaper than ours.
         </SlideStatement>
       </SlideStack>
     </PresentationSlide>
@@ -859,60 +942,249 @@ export const slides = {
     </PresentationSlide>
   ),
 
-  "how-do-you-start": (
-    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
-      <SlideStack>
-        <h2>How do you start?</h2>
+  // The performance act: conceptual claim on the spine, vendor-reported
+  // numbers in the dives. All facts from research 07 (Ben-supplied packet).
+  "performance": (
+    <PresentationSlide note="Ben passed the proposed body (Aug 12). Spoken caveats: vendor-reported numbers, harness differences, do not convert to 'K3 beats Claude overall'.">
+      <SlideStack align="start">
+        <h2>Performance</h2>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            Open models are at the frontier now, at a fraction of the price.
+          </SlideStatement>
+        </div>
+        <ul>
+          <li>
+            Kimi K3 trades benchmark wins with Claude Fable 5, at 70%
+            cheaper
+          </li>
+          <li>
+            Qwen3.8 trades wins with Claude Opus, at a quarter of the
+            output price
+          </li>
+        </ul>
       </SlideStack>
     </PresentationSlide>
   ),
 
-  "how-hosted": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass — his exact provider/model pairing.">
+  // Dive: Moonshot's own numbers against Fable 5, with their own honest
+  // sentence quoted so the slide cannot be read as cherry-picking.
+  "k3-vs-fable": (
+    <PresentationSlide note="All numbers vendor-reported from the K3 technical report (research 07: table p27, methodology p26). Sources in research-requests/07-performance-comparison.md; Ben to promote to data.tsx refs if he wants markers.">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Kimi K3 vs Claude Fable 5, Moonshot&rsquo;s own numbers</SlideKicker>
+        <ul>
+          <li>Terminal-Bench 2.1: 88.3 vs 88.0</li>
+          <li>BrowseComp: 91.2 vs 88.0</li>
+          <li>MCPMark-Verified: 94.5 vs 87.4</li>
+          <li>Cost per million tokens: $3 in, $15 out vs $10 in, $50 out</li>
+        </ul>
+        <SlideStatement>
+          &ldquo;While its overall performance still trails the most powerful
+          proprietary models, namely Claude Fable 5 and GPT-5.6
+          Sol&hellip;&rdquo;
+        </SlideStatement>
+        <SlideKicker>Moonshot, K3 technical report</SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Dive: Alibaba's own comparison table, shown as their graphic.
+  "qwen-vs-opus": (
+    <PresentationSlide layout="fill" note="Alibaba's official benchmark table (research 07). Label stays 'hosted Qwen3.8-Max': the hosted product adds vision/1M context/tools on top of the released checkpoint.">
+      <SlideFigure
+        alt="Alibaba's official benchmark table comparing Qwen3.8-Max against Claude Opus 4.8 and other frontier models."
+        caption="Hosted Qwen3.8-Max vs Claude Opus 4.8, Alibaba's own table"
+        src="/images/blog/open-weights-ai-models/screenshots/qwen38-benchmark-table.png"
+      />
+    </PresentationSlide>
+  ),
+
+  "how-do-you-start": (
+    <PresentationSlide note="Merged harness/backend intro + poll (Ben, Aug 12). Car analogy tried and rejected as weak; carrier line is the working one, Ben to pass. Poll: two shows of hands, keep it under a minute. The engine-text-harness-you chain lives in the inference-engine dive.">
       <SlideStack align="start">
-        <SlideKicker>Step 1 &middot; someone else hosts it</SlideKicker>
-        <h2>Use open models that someone else hosts</h2>
+        <SlideKicker>Poll</SlideKicker>
+        <h2>How do you start?</h2>
+        <ul>
+          <li>
+            Which harness have you tried? ChatGPT, Claude, Claude Code,
+            Codex, Cursor, pi
+          </li>
+          <li>
+            Who runs the model behind it? OpenAI, Anthropic, Google,
+            OpenRouter, your laptop
+          </li>
+        </ul>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            The harness stays, the model behind it swaps. Like switching
+            carriers and keeping your phone.
+          </SlideStatement>
+        </div>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The how-act, restructured audience-first (Ben, Aug 12): each spine slide
+  // is a literal recipe keyed to what the listener already uses or owns;
+  // the concepts (HF, quants, engines) dive beneath as support.
+  "how-hosted": (
+    <PresentationSlide note="TODO: Ben wants to SHOW OpenRouter (live screenshot vs diagram undecided; screenshot is the tonight-feasible option). Research 06 is out to Codex on the real Claude Code/Codex/pi configs; put its findings here before presenting.">
+      <SlideStack align="start">
+        <SlideKicker>You use ChatGPT, Claude, or pi</SlideKicker>
+        <h2>Here&rsquo;s how to connect OpenRouter</h2>
         <ul>
           <li>OpenRouter puts every open model behind one key</li>
-          <li>Point Claude Code, Codex, or pi at it</li>
+          <li>One command sets up Claude Code, Codex, or pi</li>
           <li>Same workflow, fraction of the cost</li>
         </ul>
       </SlideStack>
     </PresentationSlide>
   ),
 
-  "how-own-hardware": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+  // Dive under how-hosted: the exact recipe, for the room that asks.
+  "recipe-openrouter": (
+    <PresentationSlide note="Model recs are Ben's (Aug 12): Kimi K3 / Qwen3.8. Prices dropped as unverified for these two; recheck openrouter.ai/api/v1/models before presenting. Research 03's Qwen3.8 caveat is RESOLVED: official weights landed on HF Aug 8 (research 07), open-weight claim now fine.">
       <SlideStack align="start">
-        <SlideKicker>Step 2 &middot; hardware you already own</SlideKicker>
-        <h2>Run models on your own machine</h2>
+        <SlideKicker>The exact recipe</SlideKicker>
+        <h2>OpenRouter, step by step</h2>
         <ul>
-          <li>Install Ollama</li>
-          <li>Pull a small model</li>
-          <li>Talk to it</li>
+          <li>Run Ori, OpenRouter&rsquo;s one-command setup for Claude Code, Codex, and pi</li>
+          <li>Recommended: Kimi K3, or Qwen3.8</li>
+          <li>Cheap generalist: DeepSeek V3.1 Terminus</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-own-hardware": (
+    <PresentationSlide note="Spine stays conceptual (Ben, Aug 12); the exact models/sizes live in the recipe dive. Tools are his picks: LM Studio and Ollama.">
+      <SlideStack align="start">
+        <SlideKicker>You have a Mac or a gaming PC</SlideKicker>
+        <h2>Run one on your own machine</h2>
+        <ul>
+          <li>Install LM Studio or Ollama</li>
+          <li>One command launches your agent on a local model</li>
+          <li>Everything stays on your machine</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Dive under how-own-hardware: the machine-to-model pairs.
+  "recipe-own-hardware": (
+    <PresentationSlide note="Facts from research 06 (Ben-supplied packet): Ollama's official launch integrations and Mac recipe, official Qwen GGUFs for PC VRAM classes.">
+      <SlideStack align="start">
+        <SlideKicker>The exact recipe</SlideKicker>
+        <h2>Your machine, your model</h2>
+        <ul>
+          <li>One command: ollama launch claude, codex, or pi</li>
+          <li>Mac with 32GB+: Qwen3.5 35B-A3B coding, a 22GB download</li>
+          <li>Mac with 16GB: Qwen3.5 9B, a 6.6GB download</li>
+          <li>Gaming PC: Qwen2.5-Coder 7B / 14B / 32B to match 8 / 16 / 24GB of VRAM</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Progressive drill under the poll slide, layer 1: the chain from the
+  // weights to the person, in Ben's ordering (engine -> text -> harness -> you).
+  "stack-engine-to-you": (
+    <PresentationSlide note="TODO: Ben to pass. Chain is his dictation (engine, text, harness, you); wording assembled from it.">
+      <SlideStack align="start">
+        <h2>How the pieces fit</h2>
+        <ul>
+          <li>The engine runs the model weights and produces text</li>
+          <li>The harness turns that text into a chat, or an agent</li>
+          <li>You talk to the harness, never the engine</li>
+          <li>Any harness can point at any engine. That is the whole trick</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Technical dive under how-own-hardware, reached on demand: what actually
+  // runs the weights. Names and roles from the research 06 packet.
+  "what-is-an-inference-engine": (
+    <PresentationSlide note="TODO: Ben to pass. Roles from the research 06 packet's engine references.">
+      <SlideStack align="start">
+        <h2>What is an inference engine?</h2>
+        <ul>
+          <li>
+            <a href="https://github.com/ggml-org/llama.cpp" rel="noreferrer" target="_blank">llama.cpp</a>:
+            runs GGUF models on Macs, PCs, CPUs, and GPUs
+          </li>
+          <li>
+            <a href="https://github.com/ml-explore/mlx" rel="noreferrer" target="_blank">MLX</a>:
+            Apple&rsquo;s framework, what Ollama uses on Apple Silicon
+          </li>
+          <li>
+            <a href="https://docs.vllm.ai/" rel="noreferrer" target="_blank">vLLM</a>{" "}
+            and{" "}
+            <a href="https://docs.sglang.ai/" rel="noreferrer" target="_blank">SGLang</a>:
+            server-class engines for real GPUs
+          </li>
+          <li>LM Studio and Ollama wrap an engine so you never touch it</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Deepest layer of the drill: the curated link set from research 06, so
+  // the deck carries its own rabbit hole.
+  "stack-resources": (
+    <PresentationSlide note="Curated from the research 06 packet (Ben-supplied). Full link set lives in research-requests/06-agents-on-openrouter.md for the blog version.">
+      <SlideStack align="start">
+        <h2>The rabbit hole, linked</h2>
+        <ul>
+          <li>
+            Connect your agent:{" "}
+            <a href="https://openrouter.ai/ori/harness" rel="noreferrer" target="_blank">OpenRouter Ori</a>,{" "}
+            <a href="https://docs.ollama.com/integrations/claude-code" rel="noreferrer" target="_blank">Ollama integrations</a>,{" "}
+            <a href="https://lmstudio.ai/docs/integrations/codex" rel="noreferrer" target="_blank">LM Studio</a>
+          </li>
+          <li>
+            Find models:{" "}
+            <a href="https://huggingface.co/docs/hub/en/gguf" rel="noreferrer" target="_blank">Hugging Face GGUF</a>
+          </li>
+          <li>
+            Understand quants:{" "}
+            <a href="https://ngrok.com/blog/quantization" rel="noreferrer" target="_blank">quantization from the ground up</a>
+          </li>
+          <li>
+            Go deeper:{" "}
+            <a href="https://github.com/ggml-org/llama.cpp" rel="noreferrer" target="_blank">llama.cpp</a>,{" "}
+            <a href="https://www.aleksagordic.com/blog/vllm" rel="noreferrer" target="_blank">inside vLLM</a>
+          </li>
         </ul>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "how-find-models": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass — his actual picks and how he'd tell someone to choose.">
+    <PresentationSlide note="TODO: Ben to curate the example picks (best models per size/use). Criteria are his dictation (Aug 12).">
       <SlideStack align="start">
         <SlideKicker>Step 3 &middot; pick your model</SlideKicker>
         <h2>Find the best model</h2>
         <ul>
           <li>Hugging Face is the library</li>
-          <li>Match model size to your machine</li>
-          <li>Pick for your use case, not the leaderboard</li>
+        </ul>
+        <ol>
+          <li>Size: pick your base model, the full fp16 release</li>
+          <li>Quant: pick a quantization that fits it in your memory</li>
+          <li>Speed: pick the best quant for your hardware and engine</li>
+        </ol>
+        <ul>
+          <li>Abliterated: variants with the refusals removed</li>
         </ul>
       </SlideStack>
     </PresentationSlide>
   ),
 
   "how-cloud": (
-    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Ben's LIVE DEMO is this path: Vast.ai rented GPU serving a model, pi connecting from his laptop. The benched speed-demo slide (airplane mode) is superseded.">
       <SlideStack align="start">
-        <SlideKicker>Step 4 &middot; optional scale</SlideKicker>
+        <SlideKicker>Optional scale</SlideKicker>
         <h2>Rent GPUs</h2>
         <ul>
           <li>Frontier-size open models, by the hour</li>
@@ -1000,7 +1272,7 @@ export const slides = {
     >
       <SlideFigure
         alt="Retention and user value rise together, then diverge under optimization pressure."
-        caption="Fig. 05. Retention diverges from value"
+        caption="Retention diverges from value"
         frame={false}
           src="/images/blog/open-weights-ai-models/05-retention-diverges-from-value_upscaled.png"
       />
@@ -1012,9 +1284,9 @@ export const slides = {
     <PresentationSlide layout="fill">
       <SlideFigure
         alt="Domain knowledge falls as reasoning is delegated while AI-assisted performance rises."
-        caption="Fig. 01. Growing dependence"
+        caption="Growing dependence"
         frame={false}
-          src="/images/blog/open-weights-ai-models/01-growing-dependence_upscaled.png"
+        src="/images/blog/open-weights-ai-models/01-growing-dependence_upscaled.png"
       />
     </PresentationSlide>
   ),
@@ -1023,7 +1295,7 @@ export const slides = {
     <PresentationSlide layout="fill">
       <SlideFigure
         alt="An open internet mesh with alternate routes above a closed AI funnel through one provider-controlled gateway."
-        caption="Fig. 02. Open internet vs closed AI"
+        caption="Open internet vs closed AI"
         frame={false}
           src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai_upscaled.png"
       />

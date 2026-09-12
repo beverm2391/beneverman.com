@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # Keep executable source files small enough for humans and agents to hold in one
-# mental model. Prose content, including Markdown and MDX publications, is
-# deliberately exempt. PROMPT.md is injected context rather than publication
-# content, so it warns at 250 physical lines and blocks at 300.
+# mental model. Everything under content/ is exempt, code included: a post's
+# slide registry or figure is reviewed slide by slide, not as a source file,
+# and the limit starts to apply the moment such code is promoted out of
+# content/ into the system. Markdown is exempt everywhere. PROMPT.md is
+# injected context rather than publication content, so it warns at 250
+# physical lines and blocks at 300.
 
 set -u
 
@@ -22,7 +25,7 @@ checked=0
 
 should_check() {
   local file="$1"
-  [[ "$file" == docs/* ]] && return 1
+  [[ "$file" == docs/* || "$file" == content/* ]] && return 1
   [[ "$file" == *.mdx ]] && return 1
   [[ "$file" == *.md && "$(basename "$file")" != "PROMPT.md" ]] && return 1
   [[ "$file" == *node_modules/* || "$file" == *.generated.* || "$file" == *.d.ts ]] && return 1

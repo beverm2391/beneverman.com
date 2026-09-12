@@ -47,7 +47,7 @@ with one company disclosure. Personal posts show what the product felt like.
 Company filings establish what the pricing system can do.
 
 The deeper working brief is
-[Research 01, the Uber receipt](../../../research-requests/01-uber-receipt.md).
+[Research 01, the Uber receipt](research-requests/01-uber-receipt.md).
 That brief contains the aggregate pricing background and rejected leads. This
 section preserves the evidence most useful to Claude while shaping the deck.
 

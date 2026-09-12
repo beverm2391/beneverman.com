@@ -169,9 +169,11 @@ export function ModelList({ providers }: { providers: readonly ProviderModels[] 
   );
 }
 
-// Numbering runs continuously across the deck: SlideRef marks a claim in the
-// body, and the references slide at the end carries the sources. Only sources
-// Ben has read enter this list; agent-verified candidates wait in slide notes.
+// `n` is a stable source id, not a display number: the numbering pass
+// (presentation-numbering) assigns display numbers by first appearance in the
+// setlist, and the references slide reorders itself to match. Never renumber
+// ids; just add the next free one. Only sources Ben has read enter this list;
+// agent-verified candidates wait in slide notes.
 export const sources = [
   {
     n: 1,

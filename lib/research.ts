@@ -4,6 +4,7 @@ import {
   type ResearchSummary
 } from "@/lib/research-data";
 import { renderMdx } from "@/lib/mdx";
+import { loadResearchComponents } from "@/lib/publication-components";
 import { extractToc, type TocItem } from "@/lib/toc";
 
 export {
@@ -24,7 +25,7 @@ export async function getResearchPublication(slug: string): Promise<ResearchPubl
   if (frontmatter.status === "draft" && !includeDrafts) {
     throw new Error(`Research publication "${slug}" is a draft.`);
   }
-  const content = await renderMdx(source);
+  const content = await renderMdx(source, await loadResearchComponents(slug));
 
   return { slug, ...frontmatter, content, toc: extractToc(source) };
 }

@@ -1,6 +1,7 @@
 import { IBM_Plex_Mono, Source_Serif_4 } from "next/font/google";
 import { cloneElement } from "react";
 import { Presentation } from "@/components/mdx/presentation";
+import { numberPresentation } from "@/components/mdx/presentation-numbering";
 import { slides, type SlideName } from "./slides";
 
 const openWeightsSerif = Source_Serif_4({
@@ -41,20 +42,19 @@ const setlist: readonly SetlistEntry[] = [
   { slide: "receipt-uber", dives: ["drill-uber-airport"] },
   "receipt-instagram",
   "receipt-hardware",
-  { slide: "why-do-we-put-up", dives: ["fig-retention-diverges"] },
-  { slide: "dynamic-dependence", dives: ["altman-meter", "fig-growing-dependence"] },
-  "dynamic-no-substitutes",
+  "why-do-we-put-up",
+  { slide: "dynamic-dependence", dives: ["altman-meter", "price-elasticity", "fig-growing-dependence"] },
+  { slide: "dynamic-no-substitutes", dives: ["fig-retention-diverges"] },
   "when-open-tech-goes-right",
   { slide: "receipt-internet", dives: ["fig-open-internet-vs-closed-ai"] },
-  "closed-internet",
   {
     slide: "why-open-weights",
     dives: ["invoke-regulated-info", "invoke-data-privacy", "invoke-perf-cost"]
   },
-  "how-do-you-start",
-  "how-hosted",
-  "how-own-hardware",
-  { slide: "how-find-models", dives: ["model-landscape"] },
+  { slide: "performance", dives: ["k3-vs-fable", "qwen-vs-opus"] },
+  { slide: "how-do-you-start", dives: ["stack-engine-to-you", "what-is-an-inference-engine", "stack-resources"] },
+  { slide: "how-hosted", dives: ["recipe-openrouter"] },
+  { slide: "how-own-hardware", dives: ["recipe-own-hardware", "how-find-models", "model-landscape"] },
   "how-cloud",
   "references"
 ];
@@ -65,10 +65,12 @@ export function OpenWeightsPresentation() {
       label="Open Weight Models"
       monoFontClassName={openWeightsMono.variable}
       serifFontClassName={openWeightsSerif.variable}
-      columns={setlist.map((entry) => {
-        const names = typeof entry === "string" ? [entry] : [entry.slide, ...entry.dives];
-        return names.map((name) => cloneElement(slides[name], { key: name }));
-      })}
+      columns={numberPresentation(
+        setlist.map((entry) => {
+          const names = typeof entry === "string" ? [entry] : [entry.slide, ...entry.dives];
+          return names.map((name) => cloneElement(slides[name], { key: name }));
+        })
+      )}
     />
   );
 }

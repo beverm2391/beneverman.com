@@ -23,10 +23,10 @@ Package manager: `pnpm`. Do not add npm or Yarn lockfiles.
 CI exposes four independent required checks: LOC, ESLint, TypeScript, and unit
 tests. Browser/E2E and production builds are intentionally outside the PR gate
 for now. The tracked pre-commit hook runs the staged line check and ESLint.
-Executable source warns at 400 physical lines and blocks at 450; Markdown and
-MDX content are exempt. `PROMPT.md` is injected context, so it warns at 250 and
-blocks at 300. GLSL follows the normal executable-source limit. `pnpm install`
-configures the hook.
+Executable source warns at 400 physical lines and blocks at 450; everything
+under `content/` and all Markdown are exempt. `PROMPT.md` is injected context,
+so it warns at 250 and blocks at 300. GLSL follows the normal executable-source
+limit. `pnpm install` configures the hook.
 
 ## Architecture
 
@@ -38,16 +38,25 @@ configures the hook.
   `sceneShell`); read those doc comments before remounting any scene on a
   route. `scene/homeCopy.ts` still owns the intro copy (the lab's text layer
   renders it too).
-- Blog and Direction share the `app/(content)` chrome and styling. Blog content
-  lives in `content/blog/*.mdx`; `lib/blog-data.ts` owns its discovery,
-  frontmatter, and status policy. The evergreen Direction page reads
-  `content/pages/direction.mdx` through `lib/content-page-data.ts`. Research
-  publications live in `content/research/*.mdx` and render through the separate
+- Blog content lives in `content/blog/`, Research in `content/research/`. A
+  publication is `{slug}.mdx`, or `{slug}/index.mdx` when it owns code: that
+  folder's `components.tsx` exports the post's bespoke MDX components, and
+  `lib/publication-data.ts` hands them to `lib/mdx.ts` for that slug alone.
+  The post's working notes and its image and research request queues live in
+  the same folder. `lib/publication-data.ts` owns discovery, frontmatter,
+  status policy, and component loading for both types; metadata/feed routes
+  should import data-only modules.
+- Component scope is location. One post: its folder. Every blog or every
+  research publication: `components/blog/` or `components/research/`, merged
+  in by that type's loader once the first such component exists. Every MDX
+  surface: `components/mdx/`, the shared map in `lib/mdx.ts`, which never
+  names a post. Promotion is a move plus the import; leaving `content/` is
+  where the line limit starts to apply.
+- Blog and Direction share the `app/(content)` chrome and styling. The
+  evergreen Direction page reads `content/pages/direction.mdx` through
+  `lib/content-page-data.ts`. Research renders through the separate
   `app/(research)` group: it imports the shared long-form primitives without
-  inheriting the generic site header or theme control. Blog and Research share
-  the publication schema/status policy in `lib/publication-data.ts` and the MDX
-  compilation pipeline in `lib/mdx.ts`; metadata/feed routes should import
-  data-only modules.
+  inheriting the generic site header or theme control.
 - `$...$` and `$$...$$` LaTeX render to KaTeX + MathML at compile time through
   the shared MDX pipeline. KaTeX's stylesheet stays scoped to the two writing
   route groups so the homepage does not download it.

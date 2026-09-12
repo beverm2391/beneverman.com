@@ -54,11 +54,16 @@ export function SlideStatement({
  * A superscript reference marker, for claims the talk backs with a source.
  * Sits in the annotation ink so citations read as the same layer as labels
  * and figure callouts rather than as part of the sentence.
+ *
+ * `n` is the claim's stable source id, not its display number: the deck's
+ * numbering pass (presentation-numbering) walks the setlist and injects
+ * `resolved` in order of first appearance, so reordering slides renumbers
+ * every marker automatically. Outside a numbered deck the id shows as-is.
  */
-export function SlideRef({ n }: { n: number }) {
+export function SlideRef({ n, resolved }: { n: number; resolved?: number }) {
   return (
     <sup className="ml-[0.1em] align-super font-(family-name:--font-presentation-mono) text-[0.5em] text-(--pres-annotation)">
-      {n}
+      {resolved ?? n}
     </sup>
   );
 }
@@ -70,9 +75,16 @@ export function SlideRef({ n }: { n: number }) {
  */
 export function SlideNotes({
   notes,
+  order,
   size = "footnote"
 }: {
   notes: readonly { href: string; n: number; title: string }[];
+  /**
+   * Display numbers by source id, injected by the deck's numbering pass.
+   * When present, the list renumbers and reorders itself to match the
+   * markers; sources nothing cites keep their relative order at the end.
+   */
+  order?: ReadonlyMap<number, number>;
   /**
    * `footnote` is the strip under a slide, for the rare case where the source
    * is the argument. `slide` is the references slide that collects the deck's
@@ -83,12 +95,20 @@ export function SlideNotes({
   size?: "footnote" | "slide";
 }) {
   const scale = size === "slide" ? "!text-[max(0.6rem,1cqw)]" : "!text-[max(0.5rem,0.72cqw)]";
+  const display = (id: number) => order?.get(id) ?? id;
+  const shown = order
+    ? notes
+        .slice()
+        .sort((a, b) => (order.get(a.n) ?? order.size + a.n) - (order.get(b.n) ?? order.size + b.n))
+    : notes;
 
   return (
     <ol className={`!mt-0 grid list-none !pl-0 ${size === "slide" ? "gap-[0.9em]" : "gap-[0.3em]"}`}>
-      {notes.map((note) => (
+      {shown.map((note) => (
         <li className={`!mt-0 flex gap-[0.6em] ${monoClass} ${scale} normal-case`} key={note.n}>
-          <span className={toneClass.annotation}>{note.n}</span>
+          <span className={toneClass.annotation}>
+            {order && !order.has(note.n) ? "–" : display(note.n)}
+          </span>
           <a className={`${toneClass.muted} underline decoration-1 underline-offset-4`} href={note.href} rel="noreferrer" target="_blank">
             {note.title}
           </a>
@@ -318,11 +338,18 @@ export function SlideColumn({
 export function SlideFigure({
   alt,
   caption,
+  figNumber,
   frame = true,
   src
 }: {
   alt: string;
+  /** The figure's title only — the "Fig. NN." prefix comes from figNumber. */
   caption?: string;
+  /**
+   * Display number injected by the deck's numbering pass, in order of first
+   * appearance. Without it the caption renders bare.
+   */
+  figNumber?: number;
   /**
    * Draws the blog's framed-figure treatment (hairline, radius, inset), which
    * also contains artwork whose own background differs from the paper. Drop it
@@ -346,7 +373,9 @@ export function SlideFigure({
         src={src}
       />
       {caption ? (
-        <figcaption className={`${monoClass} ${toneClass.muted}`}>{caption}</figcaption>
+        <figcaption className={`${monoClass} ${toneClass.muted}`}>
+          {figNumber ? `Fig. ${String(figNumber).padStart(2, "0")}. ${caption}` : caption}
+        </figcaption>
       ) : null}
     </figure>
   );

@@ -247,3 +247,8 @@ whose access is
 - protected from big tech financial collapse
 - proteted from societal and cultural opinions that you dont agree with
 - protected from the sitting administration and its incentives to preserve its own power
+
+
+Internet
+- peer to peer (no central authority)
+- no one entity can take it down/remove access
