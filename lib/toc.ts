@@ -6,6 +6,35 @@ export type TocItem = {
   depth: 2 | 3;
 };
 
+export type TocNode = TocItem & {
+  children: TocNode[];
+};
+
+// Turn the source-order heading list into the same outline represented by the
+// rendered h2/h3 elements. A deeper heading belongs to the nearest preceding
+// shallower heading; peers and shallower headings close the current branch.
+// Orphaned deep headings stay reachable at the root instead of being dropped.
+export function nestToc(items: TocItem[]): TocNode[] {
+  const roots: TocNode[] = [];
+  const ancestors: TocNode[] = [];
+
+  for (const item of items) {
+    const node: TocNode = { ...item, children: [] };
+    let parent = ancestors.at(-1);
+    while (parent && parent.depth >= node.depth) {
+      ancestors.pop();
+      parent = ancestors.at(-1);
+    }
+
+    if (parent) parent.children.push(node);
+    else roots.push(node);
+
+    ancestors.push(node);
+  }
+
+  return roots;
+}
+
 // Strip inline markdown from a heading line so the visible text (and the slug
 // derived from it) matches what rehype-slug produces from the rendered HTML:
 // links keep their label, code/emphasis markers drop, footnote refs vanish.

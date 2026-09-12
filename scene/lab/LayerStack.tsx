@@ -3,9 +3,9 @@
 // the homepage keeps its own battery and reduced-motion behavior.
 
 import { getLayerDef } from './layers'
-import type { Scene } from './scene'
+import type { Scene, SceneTheme } from './scene'
 
-export function LayerStack({ scene }: { scene: Scene }) {
+export function LayerStack({ scene, theme = 'light' }: { scene: Scene; theme?: SceneTheme }) {
   const count = scene.layers.length
   return (
     <>
@@ -17,7 +17,7 @@ export function LayerStack({ scene }: { scene: Scene }) {
         const zIndex = count - index
         return (
           <div className="lab-render-layer" key={layer.instanceId} style={{ zIndex }}>
-            {def.Render({ config: layer.config, sunAngle: scene.sunAngle })}
+            {def.Render({ config: layer.config, sunAngle: scene.sunAngle, theme })}
           </div>
         )
       })}

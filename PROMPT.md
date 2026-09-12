@@ -1,9 +1,9 @@
 # beneverman.com — dev knowledge
 
 Canonical personal site: Next.js App Router + TypeScript. It has a flat
-landing, an MDX blog, and a development-only scene lab. Product promise, proof,
-and open gates live in `PRODUCT.md`; work state lives in Linear's **Personal
-Website** project.
+landing, an MDX blog, a research publication surface, and a development-only
+scene lab. Product promise, proof, and open gates live in `PRODUCT.md`; work
+state lives in Linear's **Personal Website** project.
 
 The renderer and lab originated in the archived `beneverman.com-v7`, which is
 historical source rather than a second owner.
@@ -23,9 +23,10 @@ Package manager: `pnpm`. Do not add npm or Yarn lockfiles.
 CI exposes four independent required checks: LOC, ESLint, TypeScript, and unit
 tests. Browser/E2E and production builds are intentionally outside the PR gate
 for now. The tracked pre-commit hook runs the staged line check and ESLint.
-Source warns at 400 physical lines and blocks at 450; `PROMPT.md` warns at 250
-and blocks at 300. GLSL is source and follows the same limit. `pnpm install`
-configures the hook.
+Executable source warns at 400 physical lines and blocks at 450; everything
+under `content/` and all Markdown are exempt. `PROMPT.md` is injected context,
+so it warns at 250 and blocks at 300. GLSL follows the normal executable-source
+limit. `pnpm install` configures the hook.
 
 ## Architecture
 
@@ -37,10 +38,24 @@ configures the hook.
   `sceneShell`); read those doc comments before remounting any scene on a
   route. `scene/homeCopy.ts` still owns the intro copy (the lab's text layer
   renders it too).
-- Blog routes live under `app/(content)/blog`; content lives in
-  `content/blog/*.mdx`. `lib/blog-data.ts` owns discovery and validation;
-  `lib/blog.ts` owns MDX compilation, the shared Shiki instance, and the
-  component map. Metadata/feed routes should import the data-only module.
+- Blog content lives in `content/blog/`, Research in `content/research/`. A
+  publication is `{slug}.mdx`, or `{slug}/index.mdx` when it owns code: that
+  folder's `components.tsx` exports the post's bespoke MDX components, and
+  `lib/publication-data.ts` hands them to `lib/mdx.ts` for that slug alone.
+  The post's working notes and its image and research request queues live in
+  the same folder. `lib/publication-data.ts` owns discovery, frontmatter,
+  status policy, and component loading for both types; metadata/feed routes
+  should import data-only modules.
+- A component is either one post's (its folder) or global (`components/mdx/`,
+  the shared map in `lib/mdx.ts`, which never names a post). Promotion is a
+  move plus the import; leaving `content/` is where the line limit starts to
+  apply.
+- Blog renders under the `app/(content)` chrome and styling. Research renders
+  through the separate `app/(research)` group: it imports the shared long-form
+  primitives without inheriting the generic site header or theme control.
+- `$...$` and `$$...$$` LaTeX render to KaTeX + MathML at compile time through
+  the shared MDX pipeline. KaTeX's stylesheet stays scoped to the two writing
+  route groups so the homepage does not download it.
 - ```mermaid fences render to inline SVG at compile time. `pnpm build` installs
   its own Chromium: playwright's locally, `@sparticuz/chromium` on Vercel, the
   only one that launches there. Mermaid's packages sit in
@@ -67,6 +82,10 @@ that entry instead of importing Tailwind a second time. Lab CSS and scene CSS
 are imported at their route/client boundaries, not the root layout, so blog
 routes do not pay for them.
 
+Light/dark state uses `@wrksz/themes`: the root layout must import its `/next`
+provider so the bootstrap script is inserted outside the React client tree.
+Do not swap back to `next-themes`; its client-rendered script errors on React 19.
+
 Styling policy (Ben, 2026-07): Tailwind wherever reasonably possible — UI
 chrome, layout, and components are Tailwind-first, and new code defaults to
 it. Bespoke CSS files stay only where they are genuinely cleaner: custom
@@ -76,16 +95,22 @@ sake, its scene will be replaced), and selectors that cannot live on a
 component (library-portaled DOM like the image-zoom modal). `Lab.css` is the
 one migration worth doing (BCP-2840).
 
+For UI work, inspect the live route before making changes. After the change,
+visually verify the updated route in the in-app browser. Reading source code or
+running tests does not replace this visual check.
+
 Tailwind v4 gotcha: utilities are generated only by the `globals.css` build.
 A `@theme` in any other file (e.g. `components/ui/coss.css`) defines variables
 but cannot emit utilities — Coss semantic tokens must stay mapped in globals'
 `@theme inline` or their utilities silently vanish (transparent popups).
 
 Geist is the self-hosted site sans. Inter is a loaded fallback/debug choice;
-JetBrains Mono is the code font. Refer to the `next/font` variables instead of
-literal `Inter` or imaginary `Geist Mono` families. The background is the
-flat `--bg` token on every route — the wash gradient and grain overlay were
-tried and deleted (2026-07).
+JetBrains Mono is the default code font. Research is the deliberate exception:
+its nested layout loads Lora for the paper and Geist Mono for BENCORP-compatible
+metadata and breadcrumb chrome. Refer to their `next/font` variables instead of
+literal family names. The background is the flat `--bg` token on the normal
+site routes — the wash gradient and grain overlay were tried and deleted
+(2026-07); Research owns its neutral paper palette.
 
 Keep Shiki server/build-time only. The scene lab remains development-only. The
 blog's visual design is done interactively by Ben + Claude; Codex should not

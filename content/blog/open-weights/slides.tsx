@@ -1,0 +1,1467 @@
+// loc-check: exempt — the slide bench is a registry that grows with the
+// talk; the unit of review is the slide, not the file.
+import { PresentationSlide } from "@/components/mdx/presentation";
+import { closedProviders, ModelList, openProviders, sources, thesis } from "./data";
+import {
+  SlideArrow,
+  SlideColumn,
+  SlideColumns,
+  SlideFigure,
+  SlideKicker,
+  SlideNotes,
+  SlideRef,
+  SlideStack,
+  SlideStatement,
+  SlideTerm,
+  SlideTimeline
+} from "@/components/mdx/presentation-parts";
+
+// The bench: every slide the talk has in play, defined once and keyed by name.
+// A setlist in components.tsx picks and orders slides from here, so reordering the
+// talk or benching a slide never touches the slide itself. Cut slides stay on
+// the bench (Ben's call: save everything) — only exact duplicates of live
+// material die into git history.
+//
+// Authoring rules for this deck (Ben's):
+// - Content is Ben's. Agents suggest, challenge, and develop his ideas —
+//   especially from notes.md beside this file — but do not invent
+//   slide content. Draft wording gets a "Ben to pass" note. Never scaffold:
+//   a slide awaiting content or art stays intentionally empty. Ben's
+//   dictation lands verbatim — flag suspected typos, never fix silently.
+// - Progressive disclosure: the default layer is felt, every technical layer
+//   is opt-in (a later slide, the appendix, a question from the room).
+// - Bridge, don't lecture: every concept starts from ground the audience
+//   already stands on (ChatGPT, their feed, their ride) and walks to ours.
+// - Every abstract claim carries its concrete example — on the slide, or in
+//   Ben's spoken track. An unpaired abstraction is a draft.
+// - Evidence exists to make the room cringe. Pick the most visceral
+//   defensible fact and quote it exactly, at length — a long verbatim quote
+//   beats a tight summary every time. Never compress a quote, never
+//   sanitize it into an abstraction ("endangering children" is a fact;
+//   what the algorithm did to children is the point).
+// - No em dashes anywhere in the deck. Commas, colons, or periods instead.
+// - Slide notes (the note prop, toggled with N) are internal change-tracking
+//   only: what the slide still needs. Not speaker notes.
+// - No source enters data.tsx unless Ben has read it. Agents verify claims
+//   and park candidate links in the slide's note; Ben promotes them.
+// - Flow: draft first, substantiate after. Slides land fast in Ben's words;
+//   sources and figures follow through research-requests/ and image-requests/,
+//   with each slide's note tracking what it still owes.
+export const slides = {
+  "title": (
+    <PresentationSlide layout="center" note="TODO: spoken close can still cash the $10-Uber line from the Uber receipt.">
+      <SlideStack gap="tight">
+        <h1>Open Weight Models</h1>
+        <SlideStatement>AI they can&rsquo;t use against you.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The talk's first proof, straight from the CEO's mouth: the claim on the
+  // title card, confirmed by the man who runs the biggest closed model.
+  "altman-receipt": (
+    <PresentationSlide layout="center" note="TODO: Ben to pass. One continuous quotation, ellipsis-joined, every fragment verbatim to the recording (This Past Weekend #599, 31:22-31:45, youtube.com/watch?v=aYn8VKW6vXA&t=1882s; TechCrunch ref 7 prints sh** — the recording says shit). Ben to read/watch before presenting.">
+      <SlideStack gap="tight">
+        <SlideKicker>Sam Altman, July 2025</SlideKicker>
+        <SlideStatement size="lead">
+          &ldquo;People talk about the most personal shit in their lives to
+          ChatGPT&hellip; if you talk to a therapist or a lawyer or a doctor
+          about those problems, there&rsquo;s legal privilege for
+          it&hellip; we haven&rsquo;t figured that out yet for when you talk
+          to ChatGPT&hellip; we could be required to produce that.&rdquo;
+          <SlideRef n={7} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The dependence dynamic, confessed: intelligence sold like electricity —
+  // the textbook inelastic utility — on their meter. Flood now (subsidized
+  // era), meter forever. Sits directly after the dependence slide it proves.
+  "altman-meter": (
+    <PresentationSlide layout="center" note="TODO: Ben to pass. Both quotes verbatim from the C-SPAN transcript Ben supplied (ref 11), BlackRock Infrastructure Summit, March 2026.">
+      <SlideStack gap="tight">
+        <SlideKicker>Sam Altman, March 2026</SlideKicker>
+        <SlideStatement size="lead">
+          &ldquo;We see a future where intelligence is a utility like
+          electricity or water, and people buy it from us on a meter and use
+          it for whatever they want to use it for.&rdquo;
+          <SlideRef n={11} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The map of the talk itself: breadth is the spine, depth is optional,
+  // the room steers. Shown right after the title so the mechanic is a
+  // promise: we only dig where you want to.
+  "how-this-talk-works": (
+    <PresentationSlide layout="fill">
+      <div className="flex h-full min-h-0 flex-col items-center gap-[max(0.6rem,1.2cqw)]">
+        <h2>This presentation is dynamic</h2>
+        <SlideFigure
+          alt="A map of this talk: seven concepts left to right at equal scope, with optional dive stacks descending into technical depth under three of them."
+          frame={false}
+          src="/images/blog/open-weights-ai-models/10-how-this-talk-works_upscaled.png"
+        />
+      </div>
+    </PresentationSlide>
+  ),
+
+  // The hook act. Name the closed-vs-open axis, show closed tech going wrong
+  // with squeezes the audience has lived, place AI at the early stage of the
+  // same cycle, then reveal the exit no earlier squeeze had. The talk's
+  // promise is set by the end of "hook-the-door".
+  "closed-vs-open-tech": (
+    <PresentationSlide>
+      <SlideStack align="start">
+        <h2>Closed vs open technology</h2>
+        <SlideColumns>
+          <SlideColumn label="Closed, aka enshittification" tone="accent">
+            <ul>
+              <li>Optimized for revenue, via your retention and dependence</li>
+              <li>Innovations go to their margins</li>
+              <li>Your data goes to deepening your dependence</li>
+            </ul>
+          </SlideColumn>
+          <SlideColumn label="Open, aka appreciation">
+            <ul>
+              <li>Community improvements benefit everyone</li>
+              <li>You configure and improve it freely</li>
+              <li>No one can revoke it</li>
+            </ul>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The ten-second definition, so "open weights" parses everywhere after.
+  // The deep what-act (model landscape, weights, figures) stays after the
+  // door slide, where its job is belief, not definition.
+  "what-i-mean": (
+    <PresentationSlide note="TODO: now dive 2a under the pipeline slide — the technical layer of how-chatbots-work, reached on demand.">
+      <SlideStack align="start">
+        <h2>How do chatbots work?</h2>
+        <ul>
+          <li>
+            Chatbots like ChatGPT or Claude are Large Language Models{" "}
+            <SlideTerm>LLMs</SlideTerm>
+          </li>
+          <li>
+            LLMs are machine learning <SlideTerm>ML</SlideTerm> models that
+            take text in and produce text out
+          </li>
+          <li>
+            They do this by turning your text into numbers{" "}
+            <SlideTerm>tokenization</SlideTerm>, doing math{" "}
+            <SlideTerm>matrix multiplication</SlideTerm>, then turning the
+            numbers back into text <SlideTerm>decoding</SlideTerm>
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The generic chatbot pipeline, kept deliberately human-scale: one familiar
+  // request, the weights in the middle, and one useful response.
+  "fig-how-chatbots-work": (
+    <PresentationSlide layout="fill">
+      <SlideFigure
+        alt="A request to ChatGPT passes through the model weights and becomes a concise email draft."
+        caption="How a chatbot works"
+        frame={false}
+          src="/images/blog/open-weights-ai-models/09-how-chatbots-work_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  // The definition drawn: the identical pipeline twice, and the only
+  // difference between closed and open is whose computer the weights sit on.
+  "fig-the-file-locked-vs-free": (
+    <PresentationSlide layout="fill" note="TODO: benched, killed from the spine. The icon-pair revision (image request 08) is still queued if it returns.">
+      <SlideFigure
+        alt="The same prompt-to-response pipeline twice: the weights caged in OpenAI's computer behind a gate marked their rules their prices, and the same file open on your laptop."
+        caption="The same file, two computers"
+        frame={false}
+          src="/images/blog/open-weights-ai-models/08-the-file-locked-vs-free_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  // When closed tech goes wrong: a section marker, then one receipt per
+  // slide, quick-fire, ending on the airbag as the peak. The mirror section
+  // ("when-open-tech-goes-right") is benched until Ben places its receipts.
+  "when-closed-tech-goes-wrong": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack>
+        <h2>When closed tech goes wrong</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Spoken argument: price elasticity, seeded here and paid off on the
+  // price-elasticity slide after the Instagram receipt.
+  "receipt-uber": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. sources.md has the upgrade path: dated hinges (2015 $10 fare campaign, 2016 upfront quote replacing the visible meter, 2019 S-1 disclosing rider/driver price decoupling, 2026 second-by-second repricing) and the Oct 2025 airport receipt ($44 on-property, $9 after walking off). Ben to read before citing; his own app screenshot still wanted.">
+      <SlideStack align="start">
+        <SlideKicker>Uber</SlideKicker>
+        <h2>Remember when the ride home from the concert was $10?</h2>
+        <SlideTimeline
+          start={2012}
+          end={2027}
+          marks={[
+            {
+              at: 2016,
+              yearLabel: "2015–2017",
+              label: "$10",
+              sublabel: "Pre-IPO · subsidized growth"
+            },
+            { at: 2019.4, yearLabel: "2019", sublabel: "IPO", tone: "ink" },
+            {
+              at: 2026.5,
+              yearLabel: "Now",
+              label: "$70 + surge",
+              sublabel: "Public · profit-maxxing · monopoly",
+              tone: "accent"
+            }
+          ]}
+        />
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The drill behind the Uber model: one receipt, felt in the legs.
+  "drill-uber-airport": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. From sources.md: Oct 2025 airport rider, $44 on-property vs $9 after walking ~20 minutes off; comments dispute perfect comparability, so present as the airport geofence, not manipulation proof. The reddit screenshots would substantiate — Ben to read the post and decide.">
+      <SlideStack gap="none">
+        <SlideKicker>Uber, right now</SlideKicker>
+        <SlideStatement size="lead">
+          The price knows when you&rsquo;re stranded.
+        </SlideStatement>
+        <SlideStatement>$44 at the airport curb.</SlideStatement>
+        <SlideArrow label="Walk 20 min" />
+        <SlideStatement size="lead">
+          $9.
+          <SlideRef n={3} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Spoken argument: Meta's failures — what retention optimization did to
+  // the feed, and where that same playbook goes next.
+  "receipt-instagram": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Dates are from memory — research-requests/02-instagram-receipt.md is out to verify. Spoken-track ammo staged in sources.md: the New Mexico jury verdict against Meta ($942M, court finding not allegation) and the Facebook Papers engagement-ranking research.">
+      <SlideStack align="start">
+        <SlideKicker>Instagram</SlideKicker>
+        <h2>Remember when Instagram was just your friends?</h2>
+        <SlideTimeline
+          start={2010}
+          end={2027}
+          marks={[
+            {
+              at: 2012.5,
+              yearLabel: "2010–2015",
+              label: "Your friends, in order",
+              sublabel: "Chronological feed"
+            },
+            { at: 2016, yearLabel: "2016", sublabel: "Algorithmic feed", tone: "ink" },
+            { at: 2020, yearLabel: "2020", sublabel: "Reels", tone: "ink" },
+            {
+              at: 2026.5,
+              yearLabel: "Now",
+              label: "An ad machine",
+              sublabel: "Ads · engagement-maxxing",
+              tone: "accent"
+            }
+          ]}
+        />
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The drill behind the Instagram model: not an opinion, a verdict.
+  "drill-meta-verdict": (
+    <PresentationSlide note="TODO: benched, killed from the Instagram stack. All lines verbatim from the NMDOJ verdict release (ref 4); complaint ref 6, AP total ref 5.">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>
+          New Mexico v. Meta, 2026: jury verdict, $942 million
+          <SlideRef n={4} />
+          <SlideRef n={5} />
+        </SlideKicker>
+        <SlideStatement>
+          The evidence at trial &ldquo;established that Meta&rsquo;s design
+          features enabled pedophiles and predators to engage in child sexual
+          exploitation on Meta&rsquo;s platforms.&rdquo;
+        </SlideStatement>
+        <SlideStatement>
+          &ldquo;Meta intentionally designs its platforms to addict young
+          people and, contrary to Meta&rsquo;s public commitments, expose
+          them to dangerous content related to eating disorders and self
+          harm.&rdquo;
+        </SlideStatement>
+        <SlideStatement>
+          &ldquo;Meta executives knew their products harmed children,
+          disregarded warnings from their own employees, and lied to the
+          public about what they knew.&rdquo;
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The section question: after two completed arcs, ask it straight. The
+  // elasticity slide answers it.
+  "why-do-we-put-up": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass.">
+      <SlideStack>
+        <h2>Why do we put up with this?</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The answer, in two dynamics. Titles are Ben's; bodies await his content.
+  "dynamic-dependence": (
+    <PresentationSlide note="Ben's dictation (Aug 12), bullets verbatim, typos fixed per his standing call. Latte/heart-med, usage-equals-revenue (Meta/Instagram), and the RL'd-follow-up-questions line stay spoken.">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 1 · dependence</SlideKicker>
+        <h2>&ldquo;You can&rsquo;t live without us&rdquo;</h2>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            AI chatbots are designed to make you more dependent on them over
+            time.
+          </SlideStatement>
+        </div>
+        <ul>
+          <li>&ldquo;I forgot how exactly I was organizing my expenses. Good thing Claude knows&rdquo;</li>
+          <li>&ldquo;idk how I&rsquo;d be able to write this paper without ChatGPT&rdquo;</li>
+          <li>&ldquo;I go to ChatGPT whenever I need someone to talk to&rdquo;</li>
+          <li>&ldquo;I fired our marketing guy because Claude does it all now&rdquo;</li>
+          <li>&ldquo;only ChatGPT understands how the government is taking away my freedom&rdquo;</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Supplemental dive under dynamic-dependence: the elasticity concept
+  // behind the latte/heart-med pair. Wording from Ben's notes.md PE block.
+  "price-elasticity": (
+    <PresentationSlide note="TODO: Ben to pass. Assembled from his notes.md price-elasticity block, no invented content.">
+      <SlideStack align="start">
+        <SlideKicker>Supplemental · price elasticity</SlideKicker>
+        <h2>&ldquo;How much can we possibly make them pay?&rdquo;</h2>
+        <ul>
+          <li>
+            If the cost of your insulin doubles, you pay it. If the cost of
+            your Starbucks latte doubles, you go to another coffee shop
+          </li>
+          <li>
+            For those of us who depend on AI to do our work, run our business,
+            manage our health or finances, and answer complex questions: we
+            are less sensitive to price changes AND more vulnerable if we
+            lose access
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "dynamic-no-substitutes": (
+    <PresentationSlide note="Ben's content (Aug 12). The retention-diverges figure now dives under this slide (moved from why-do-we-put-up); it is the diagram version of these bullets. Killed draft: taxis/switching-costs columns + closed-AI-vs-open-weights row (in git history if wanted).">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 2 · no substitutes, switching costs</SlideKicker>
+        <h2>&ldquo;We optimize for us, not you&rdquo;</h2>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            Big tech optimizes for their value at the expense of your value.
+          </SlideStatement>
+        </div>
+        <ul>
+          <li>
+            Pull, come back
+            <ul>
+              <li>
+                Sycophancy: &ldquo;You&rsquo;re so right, you deserve so much
+                better than him.&rdquo;
+              </li>
+              <li>
+                Engagement loops: &ldquo;Would you like me to figure out how
+                to set up a TV like this?&rdquo;
+              </li>
+            </ul>
+          </li>
+          <li>
+            Push, do not get sued
+            <ul>
+              <li>
+                Classifier-based refusal: &ldquo;Sorry, I can&rsquo;t help you
+                with that&rdquo;
+              </li>
+              <li>
+                Covert refusal: &ldquo;That&rsquo;s not feasible, so you
+                probably shouldn&rsquo;t try&rdquo;
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-fridge": (
+    <PresentationSlide layout="center" note="TODO: benched — Ben's receipt lineup is uber/instagram/bed/airbag. Restore under you-don't-own-it or retire. If restored, needs a source Ben has read — candidate: Ars Technica, Oct 2025, samsung-makes-ads-on-3499-smart-fridges-official.">
+      <SlideStack gap="none">
+        <SlideKicker>Your fridge</SlideKicker>
+        <SlideStatement>A $3,499 smart fridge</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">
+          Ads, by software update
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "when-open-tech-goes-right": (
+    <PresentationSlide note="Fallback set Ben approved for tonight (MP3s/publish/Wikipedia); research 05 (open-tech receipts) is out to Codex hunting better, more recent examples per theme. Swap in whatever Ben picks from its findings.">
+      <SlideStack align="start">
+        <h2>When open tech goes right</h2>
+        <ul>
+          <li>
+            Buy to own and customize: your MP3s from 2003 still play
+            everywhere, free
+          </li>
+          <li>
+            Peer to peer: anyone can publish to the internet without asking
+            permission
+          </li>
+          <li>
+            Community beats paid: volunteers built Wikipedia and killed
+            Encarta, the encyclopedia Microsoft sold in a box
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The hardware combo: the bed and the airbag on one slide, right after
+  // Instagram. You don't own your hardware either.
+  "receipt-hardware": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Klim quote verbatim (ref 2). Bed quote verbatim from an owner's X post as reported by the Daily Beast (ref 17); bed price still needs a source Ben has read, candidate: Eight Sleep's Autopilot pricing page.">
+      <SlideStack align="start">
+        <h2>You don&rsquo;t own your hardware either</h2>
+        <SlideColumns>
+          <SlideColumn label="Your bed" tone="accent">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="The Eight Sleep Pod cover and hub."
+              className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
+              src="/images/blog/open-weights-ai-models/screenshots/eight-sleep-pod.jpg"
+            />
+            <SlideStatement>
+              &ldquo;Would be great if my bed wasn&rsquo;t stuck in an
+              inclined position due to an AWS outage. Cmon now.&rdquo;
+              <SlideRef n={17} />
+            </SlideStatement>
+            <p>
+              Eight Sleep Pod owner, on X. A $3,300 mattress that requires a
+              $199 a year subscription to use.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Your airbag">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="The Klim Ai-1 airbag vest."
+              className="mb-[0.6em] h-[max(5.5rem,12cqw)] w-full rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) bg-white object-contain"
+              src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
+            />
+            <SlideStatement>
+              &ldquo;After the 30-day grace period, the airbag will stop
+              detecting crashes until payment is resumed.&rdquo;
+              <SlideRef n={2} />
+            </SlideStatement>
+            <p>Klim, Ai-1 vest subscription FAQ</p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The bonus receipt, framed as an aside so its absurdity lands on its own.
+  "the-airbag": (
+    <PresentationSlide layout="fill" note="TODO: benched, folded into the hardware combo slide.">
+      <div className="flex h-full min-h-0 items-center justify-center gap-[max(1.2rem,3cqw)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="The Klim Ai-1 airbag vest, the product whose crash detection pauses for nonpayment."
+          className="h-[70%] w-auto min-h-0 rounded-[max(0.4rem,0.9cqw)] border border-(--pres-rule) object-contain"
+          src="/images/blog/open-weights-ai-models/screenshots/klim-ai-1-vest.avif"
+        />
+        <SlideStack align="start" gap="tight">
+          <SlideKicker>Bonus: you don&rsquo;t own your hardware either</SlideKicker>
+          <SlideStatement size="lead">
+            A subscription airbag that stops protecting you.
+          </SlideStatement>
+          <SlideStatement>
+            &ldquo;After the 30-day grace period, the airbag will stop
+            detecting crashes until payment is resumed.&rdquo;
+            <SlideRef n={2} />
+          </SlideStatement>
+        </SlideStack>
+      </div>
+    </PresentationSlide>
+  ),
+
+  "model-landscape": (
+    <PresentationSlide>
+      <SlideStack align="start">
+        <h2>Closed vs open models</h2>
+        <SlideColumns>
+          <SlideColumn label="Closed">
+            <ModelList providers={closedProviders} />
+          </SlideColumn>
+          <SlideColumn label="Open">
+            <ModelList providers={openProviders} />
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "what-is-a-weight": (
+    <PresentationSlide>
+      <SlideStack align="start">
+        <h2>What is a weight?</h2>
+        <ul>
+          <li>An affine function, y = mx + b</li>
+          <li>Composed into matrices, matmuls</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "fig-what-is-a-weight": (
+    <PresentationSlide
+      layout="fill"
+      note="Fig 03: upscale pending. Text fidelity to improve."
+    >
+      <SlideFigure
+        alt="One affine unit, a layer of those units as a matrix, and the matrix as a file on disk."
+        caption="What is a weight"
+        frame={false}
+          src="/images/blog/open-weights-ai-models/03-what-is-a-weight_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  "fig-text-through-weights": (
+    <PresentationSlide
+      layout="fill"
+      note="Fig 04: redraw with real word fragments in the token boxes, they are empty so tokenizing is asserted rather than shown. Upscale pending."
+    >
+      <SlideFigure
+        alt="Prompt tokenized, passed through the weights, emitted one token at a time."
+        caption="Text through the weights"
+        frame={false}
+          src="/images/blog/open-weights-ai-models/04-text-through-weights_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  // ---- After the door: when open tech goes right (the mirror receipts),
+  // the felt-four why, the landscape, the how ladder, and the close. All
+  // drafted from Ben's conversation; every slide awaits his pass.
+
+  "receipt-mp3": (
+    <PresentationSlide layout="center" note="TODO: benched — the internet carries the open-goes-right section now.">
+      <SlideStack gap="none">
+        <SlideKicker>Your MP3s</SlideKicker>
+        <SlideStatement>Bought in 2003</SlideStatement>
+        <SlideArrow label="Still" />
+        <SlideStatement size="lead">Play everywhere, forever, free</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The internet as the open-goes-right receipt: the one open technology
+  // everyone in the room lives on.
+  "receipt-internet": (
+    <PresentationSlide note="TODO: bullets are Ben's dictation, Ben to pass. Brainstormed examples for his placement if wanted: leave Gmail tomorrow and still email every Gmail user (nobody owns SMTP, try that with iMessage); launch a search engine tonight without asking permission; bypass Google entirely and the internet still works. Optional closing line: the internet is the one layer from the receipts era that never enshittified, because no one could. Mesh figure dives beneath.">
+      <SlideStack align="start">
+        <h2>The internet</h2>
+        <ul>
+          <li>
+            No central authority: anyone can hit any public IP, anyone can
+            index
+          </li>
+          <li>
+            No one person can make rules about what info can be shared
+          </li>
+          <li>No one person can revoke all access</li>
+          <li>
+            Open means paid providers like Google have to build value on top
+            of the tech. Just gatekeeping and selling it at base isn&rsquo;t
+            enough.
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The counterfactual, contrasting the slide above: the same internet with
+  // a landlord. From Ben's notes.md closed-internet block.
+  "closed-internet": (
+    <PresentationSlide note="TODO: benched, killed from the setlist (Ben, Aug 12). Prior state: wording draft from notes.md awaiting Ben's pass.">
+      <SlideStack align="start">
+        <h2>The internet, if a lab had built it</h2>
+        <ul>
+          <li>Pay directly for access</li>
+          <li>No control over the integrity of results</li>
+          <li>No peer-to-peer</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Why open weights: a section marker, then one benefit per slide, each
+  // paired with its felt example from Ben's material. All await his pass.
+  "why-open-weights": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Example/drill slides to follow this one; the per-benefit ammunition lives in the benched benefit-* slides' notes.">
+      <SlideStack align="start">
+        <h2>Why open weight models?</h2>
+        <ul>
+          <li>You can freely access information</li>
+          <li>
+            Tech companies can&rsquo;t sell your chats (or your health and
+            bank data)
+          </li>
+          <li>If tech companies 10x the price, you have another option</li>
+          <li>No one can take your model away</li>
+          <li>Community improvements come straight to you</li>
+          <li>Fully customizable</li>
+          <li>
+            Runs on hardware you already own (making what you paid for worth
+            more)
+          </li>
+          <li>You can reduce cost for your existing AI usage</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-refuse": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — overt: the Fable classifier scandal; covert: risk aversion optimizing the model down, admitted in the system card; closed optimized down to dodge lawsuits vs open optimized up for you; spares: the meme, classifier-tripping malware, soft refusals hurting research. Scandal + system card still need sources Ben has read.">
+      <SlideStack>
+        <SlideStatement size="lead">It won&rsquo;t refuse you</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-privacy": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — your 2am conversation is not training data; no account, no ID, no identity tied to your questions.">
+      <SlideStack>
+        <SlideStatement size="lead">It won&rsquo;t sell your chats</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-price": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — no you-hit-your-limit upsell; dependence plus no substitutes equals their price.">
+      <SlideStack>
+        <SlideStatement size="lead">It won&rsquo;t price gouge you</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-forever": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — when 4o died thousands grieved, nobody with the file lost a thing; answers to no one: not a balance sheet, the culture war, or the sitting administration.">
+      <SlideStack>
+        <SlideStatement size="lead">It can&rsquo;t be taken from you</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-community": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — the DeepSeek-Flash effect; llama.cpp makes the same file faster every month and you pay no one.">
+      <SlideStack>
+        <SlideStatement size="lead">Community improvements come straight to you</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-custom": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — tuned to your domain and values, not the average user's; Lea's brainstorm model that elicits creativity instead of doing the work; any model from any lab, swapped freely.">
+      <SlideStack>
+        <SlideStatement size="lead">It can be exactly yours</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "benefit-on-device": (
+    <PresentationSlide layout="center" note="TODO: spoken bullets — your MacBook, your iPhone, today; hardware you already own, not an offline gimmick.">
+      <SlideStack>
+        <SlideStatement size="lead">
+          It runs on hardware you already own
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "speed-demo": (
+    <PresentationSlide layout="center" note="TODO: live demo cue — model streaming at high tok/s, wifi visibly off. Slide stays minimal; the demo is the content. Ben to decide the exact rig.">
+      <SlideStack>
+        <SlideStatement size="lead">And it&rsquo;s fast.</SlideStatement>
+        <SlideKicker>Live: laptop, airplane mode</SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The how act: the ladder from the audience-tiers conversation. One path
+  // per tier, zero decisions on the default path.
+  // The three emotional-invoke slides after the why bullets. Title-only
+  // until research 03 delivers verified quotes and Ben reads them.
+  "invoke-regulated-info": (
+    <PresentationSlide note="TODO: Ben to pass. Line 1 is the user-facing banner verbatim from Claude Code issue #66657 (ref 8, reproduced from a bare hello). Lines 2-3 verbatim from the Fable/Mythos system card (ref 9, p13 and pp250-251; PDF also in Ben's Downloads). Ben to read both before presenting.">
+      <SlideStack align="start" gap="tight">
+        <h2>Big tech chooses what you can know</h2>
+        <SlideStatement>
+          &ldquo;Fable 5&rsquo;s safety measures flagged this message for
+          cybersecurity or biology topics. They may flag safe, normal content
+          as well.&rdquo;
+          <SlideRef n={8} />
+        </SlideStatement>
+        <SlideStatement>
+          And the ones you can&rsquo;t see, in their own system card:
+          &ldquo;these safeguards will not be visible to the user&rdquo;
+          via &ldquo;prompt modification, steering vectors, or
+          parameter-efficient fine-tuning (PEFT).&rdquo;
+          <SlideRef n={9} />
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The hermeneutic, taught early: companies say whatever they want, and
+  // one incentive rules them. Hand the room the decoder ring at slide 3 and
+  // every corporate quote for the rest of the talk translates itself.
+  "companies-dont-say-what-they-mean": (
+    <PresentationSlide note="TODO: wording is Ben's dictation — Ben to pass. Spare sourced pairs if wanted: the avoid-doomerism essay line (darioamodei.com/essay/the-adolescence-of-technology) and the people-call-me-a-doomer line (Big Technology transcript, singjupost.com).">
+      <SlideStack align="start">
+        <h2>Companies don&rsquo;t say what they mean</h2>
+        <ul>
+          <li>They say whatever THEY want (ex. Trump)</li>
+          <li>
+            Companies like Anthropic care about one thing above everything
+            else: the IPO
+          </li>
+        </ul>
+        <SlideStatement size="lead">
+          How can we use this to translate what they say, and find
+          out what they really mean?
+        </SlideStatement>
+        <SlideStatement>
+          Let&rsquo;s look at Dario Amodei, CEO of Anthropic, as an example.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The translator: their words on the left, verbatim; what the words mean
+  // on the right. The worked example, diving under the setup.
+
+
+
+
+  "translator-chips": (
+    <PresentationSlide note="TODO: benched — killed from the translator run; nuclear/ban/regulation/surveillance carry it. Quote verbatim, Bloomberg Davos interview (ref 12).">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
+          &ldquo;It would be a big mistake to ship these chips. I think this is
+          crazy. It&rsquo;s a bit like selling nuclear weapons to North
+          Korea.&rdquo;
+          <SlideRef n={12} />
+        </SlideStatement>
+        </div>
+        <SlideKicker tone="accent">Translation</SlideKicker>
+        <SlideStatement>
+          We don&rsquo;t want China to build competing companies that hurt our
+          valuation.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "translator-surveillance": (
+    <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Anthropic's Department of War statement (ref 13); context: they support defense work and are open to autonomous-weapons research once systems are reliable enough.">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
+          &ldquo;Mass domestic surveillance &hellip; is incompatible with
+          democratic values. &hellip; frontier AI systems are simply not
+          reliable enough to power fully autonomous weapons.&rdquo;
+          <SlideRef n={13} />
+        </SlideStatement>
+        </div>
+        <SlideKicker tone="accent">Translation</SlideKicker>
+        <SlideStatement>
+          Being socially responsible is convenient for us right now, so
+          let&rsquo;s get America on our good side. It&rsquo;ll pump the IPO.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "translator-regulation": (
+    <PresentationSlide note="TODO: Ben's translation. Quote verbatim, ABC News interview (ref 14).">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
+          &ldquo;We&rsquo;re proposing stronger regulation of the technology,
+          proposing giving the government the ability to, again, in a narrow
+          way, block deployment of unsafe technology.&rdquo;
+          <SlideRef n={14} />
+        </SlideStatement>
+        </div>
+        <SlideKicker tone="accent">Translation</SlideKicker>
+        <SlideStatement>
+          Peter Thiel is so smart, we do need to become a monopoly. Let&rsquo;s
+          use the guise of AI safety to become the government&rsquo;s favorite
+          big tech company, and then we can help write regulation to put our
+          competitors out of business.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "translator-nuclear": (
+    <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Dario's Policy on the AI Exponential (ref 15).">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
+          &ldquo;There may come a time &hellip; when the most powerful AI
+          systems look less like airplanes or automobiles and more like
+          weaponizable nuclear materials.&rdquo;
+          <SlideRef n={15} />
+        </SlideStatement>
+        </div>
+        <SlideKicker tone="accent">Translation</SlideKicker>
+        <SlideStatement>
+          We should be the only ones who control access to AI, and
+          fearmongering makes the public think we&rsquo;re protecting them.
+          Then when we IPO and jack up prices, they&rsquo;ll have no choice
+          but to pay 10x what they pay today.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "translator-ban": (
+    <PresentationSlide note="TODO: Ben's translation. Quote verbatim from Anthropic's open-weights position post (ref 16), responding to accusations they want open models banned.">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Anthropic CEO Translator</SlideKicker>
+        <div className="[&_p]:!max-w-[46ch]">
+          <SlideStatement size="lead">
+          &ldquo;Anthropic has never advocated for a ban on open-weights
+          models. Open-weights models that don&rsquo;t have dangerous
+          capabilities are a public good.&rdquo;
+          <SlideRef n={16} />
+        </SlideStatement>
+        </div>
+        <SlideKicker tone="accent">Translation</SlideKicker>
+        <SlideStatement>
+          Uh oh, Chinese AI labs are going to kill our IPO what do we do? We
+          can&rsquo;t let the public find out that they have a better Claude
+          Cowork replacement, cheaper than ours.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "translator-fine-print": (
+    <PresentationSlide note="TODO: fine-print translations draft, Ben to pass. Left column verbatim from the system card (ref 9) and launch announcement.">
+      <SlideStack align="start">
+        <h2>Anthropic CEO Translator, the fine print</h2>
+        <SlideColumns>
+          <SlideColumn label="They say">
+            <ul>
+              <li>
+                &ldquo;Competitive use safeguards&rdquo;
+                <SlideRef n={9} />
+              </li>
+              <li>
+                &ldquo;These safeguards will not be visible to the
+                user&rdquo;
+                <SlideRef n={9} />
+              </li>
+              <li>
+                &ldquo;The same underlying model as Fable 5, but with the
+                safeguards lifted in some areas&rdquo;
+              </li>
+            </ul>
+          </SlideColumn>
+          <SlideColumn label="Translation" tone="accent">
+            <ul>
+              <li>We degrade the model if your work competes with ours</li>
+              <li>And we won&rsquo;t tell you when we&rsquo;re doing it</li>
+              <li>The good one is for approved customers</li>
+            </ul>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "invoke-data-privacy": (
+    <PresentationSlide note="TODO: Ben to pass. The order quote is verbatim from ECF 551 p3 (ref 10). CORRECTION lives in the spoken track: the broad obligation ended September 26, 2025 (OpenAI's Oct 2025 update) — say a court DID order it, not that it stands today. ID-verification receipts (government ID plus selfie, both labs) in research 03 for the spoken track.">
+      <SlideStack align="start" gap="tight">
+        <h2>It can be used against you</h2>
+        <SlideStatement>
+          A federal court ordered OpenAI to &ldquo;preserve and segregate all
+          output log data that would otherwise be deleted on a going forward
+          basis until further order of the Court,&rdquo; expressly
+          including chats users deleted.
+          <SlideRef n={10} />
+        </SlideStatement>
+        <SlideStatement>
+          Your deleted conversations, held for a lawsuit you were never part
+          of.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "invoke-perf-cost": (
+    <PresentationSlide note="TODO: research 03 DELIVERED — Ben to read, then the table goes on. Headlines: Fable 5 output is ~57x DeepSeek V4 Pro list price, ~3.3x Kimi K3; ChatGPT tiers now $20/$100/$200; the DeepSeek release erased $593B of Nvidia in a day (record one-day loss). CAVEATS: list prices are not quality-normalized; do not call Qwen3.8 open-weight (no verifiable checkpoint); recheck prices right before the talk.">
+      <SlideStack align="start">
+        <h2>The direct comparison</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The performance act: conceptual claim on the spine, vendor-reported
+  // numbers in the dives. All facts from research 07 (Ben-supplied packet).
+  "performance": (
+    <PresentationSlide note="Ben passed the proposed body (Aug 12). Spoken caveats: vendor-reported numbers, harness differences, do not convert to 'K3 beats Claude overall'.">
+      <SlideStack align="start">
+        <h2>Performance</h2>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            Open models are at the frontier now, at a fraction of the price.
+          </SlideStatement>
+        </div>
+        <ul>
+          <li>
+            Kimi K3 trades benchmark wins with Claude Fable 5, at 70%
+            cheaper
+          </li>
+          <li>
+            Qwen3.8 trades wins with Claude Opus, at a quarter of the
+            output price
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Dive: Moonshot's own numbers against Fable 5, with their own honest
+  // sentence quoted so the slide cannot be read as cherry-picking.
+  "k3-vs-fable": (
+    <PresentationSlide note="All numbers vendor-reported from the K3 technical report (research 07: table p27, methodology p26). Sources in research-requests/07-performance-comparison.md; Ben to promote to data.tsx refs if he wants markers.">
+      <SlideStack align="start" gap="tight">
+        <SlideKicker>Kimi K3 vs Claude Fable 5, Moonshot&rsquo;s own numbers</SlideKicker>
+        <ul>
+          <li>Terminal-Bench 2.1: 88.3 vs 88.0</li>
+          <li>BrowseComp: 91.2 vs 88.0</li>
+          <li>MCPMark-Verified: 94.5 vs 87.4</li>
+          <li>Cost per million tokens: $3 in, $15 out vs $10 in, $50 out</li>
+        </ul>
+        <SlideStatement>
+          &ldquo;While its overall performance still trails the most powerful
+          proprietary models, namely Claude Fable 5 and GPT-5.6
+          Sol&hellip;&rdquo;
+        </SlideStatement>
+        <SlideKicker>Moonshot, K3 technical report</SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Dive: Alibaba's own comparison table, shown as their graphic.
+  "qwen-vs-opus": (
+    <PresentationSlide layout="fill" note="Alibaba's official benchmark table (research 07). Label stays 'hosted Qwen3.8-Max': the hosted product adds vision/1M context/tools on top of the released checkpoint.">
+      <SlideFigure
+        alt="Alibaba's official benchmark table comparing Qwen3.8-Max against Claude Opus 4.8 and other frontier models."
+        caption="Hosted Qwen3.8-Max vs Claude Opus 4.8, Alibaba's own table"
+        src="/images/blog/open-weights-ai-models/screenshots/qwen38-benchmark-table.png"
+      />
+    </PresentationSlide>
+  ),
+
+  "how-do-you-start": (
+    <PresentationSlide note="Merged harness/backend intro + poll (Ben, Aug 12). Car analogy tried and rejected as weak; carrier line is the working one, Ben to pass. Poll: two shows of hands, keep it under a minute. The engine-text-harness-you chain lives in the inference-engine dive.">
+      <SlideStack align="start">
+        <SlideKicker>Poll</SlideKicker>
+        <h2>How do you start?</h2>
+        <ul>
+          <li>
+            Which harness have you tried? ChatGPT, Claude, Claude Code,
+            Codex, Cursor, pi
+          </li>
+          <li>
+            Who runs the model behind it? OpenAI, Anthropic, Google,
+            OpenRouter, your laptop
+          </li>
+        </ul>
+        <div className="[&_p]:!max-w-none">
+          <SlideStatement>
+            The harness stays, the model behind it swaps. Like switching
+            carriers and keeping your phone.
+          </SlideStatement>
+        </div>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The how-act, restructured audience-first (Ben, Aug 12): each spine slide
+  // is a literal recipe keyed to what the listener already uses or owns;
+  // the concepts (HF, quants, engines) dive beneath as support.
+  "how-hosted": (
+    <PresentationSlide note="TODO: Ben wants to SHOW OpenRouter (live screenshot vs diagram undecided; screenshot is the tonight-feasible option). Research 06 is out to Codex on the real Claude Code/Codex/pi configs; put its findings here before presenting.">
+      <SlideStack align="start">
+        <SlideKicker>You use ChatGPT, Claude, or pi</SlideKicker>
+        <h2>Here&rsquo;s how to connect OpenRouter</h2>
+        <ul>
+          <li>OpenRouter puts every open model behind one key</li>
+          <li>One command sets up Claude Code, Codex, or pi</li>
+          <li>Same workflow, fraction of the cost</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Dive under how-hosted: the exact recipe, for the room that asks.
+  "recipe-openrouter": (
+    <PresentationSlide note="Model recs are Ben's (Aug 12): Kimi K3 / Qwen3.8. Prices dropped as unverified for these two; recheck openrouter.ai/api/v1/models before presenting. Research 03's Qwen3.8 caveat is RESOLVED: official weights landed on HF Aug 8 (research 07), open-weight claim now fine.">
+      <SlideStack align="start">
+        <SlideKicker>The exact recipe</SlideKicker>
+        <h2>OpenRouter, step by step</h2>
+        <ul>
+          <li>Run Ori, OpenRouter&rsquo;s one-command setup for Claude Code, Codex, and pi</li>
+          <li>Recommended: Kimi K3, or Qwen3.8</li>
+          <li>Cheap generalist: DeepSeek V3.1 Terminus</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-own-hardware": (
+    <PresentationSlide note="Spine stays conceptual (Ben, Aug 12); the exact models/sizes live in the recipe dive. Tools are his picks: LM Studio and Ollama.">
+      <SlideStack align="start">
+        <SlideKicker>You have a Mac or a gaming PC</SlideKicker>
+        <h2>Run one on your own machine</h2>
+        <ul>
+          <li>Install LM Studio or Ollama</li>
+          <li>One command launches your agent on a local model</li>
+          <li>Everything stays on your machine</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Dive under how-own-hardware: the machine-to-model pairs.
+  "recipe-own-hardware": (
+    <PresentationSlide note="Facts from research 06 (Ben-supplied packet): Ollama's official launch integrations and Mac recipe, official Qwen GGUFs for PC VRAM classes.">
+      <SlideStack align="start">
+        <SlideKicker>The exact recipe</SlideKicker>
+        <h2>Your machine, your model</h2>
+        <ul>
+          <li>One command: ollama launch claude, codex, or pi</li>
+          <li>Mac with 32GB+: Qwen3.5 35B-A3B coding, a 22GB download</li>
+          <li>Mac with 16GB: Qwen3.5 9B, a 6.6GB download</li>
+          <li>Gaming PC: Qwen2.5-Coder 7B / 14B / 32B to match 8 / 16 / 24GB of VRAM</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Progressive drill under the poll slide, layer 1: the chain from the
+  // weights to the person, in Ben's ordering (engine -> text -> harness -> you).
+  "stack-engine-to-you": (
+    <PresentationSlide note="TODO: Ben to pass. Chain is his dictation (engine, text, harness, you); wording assembled from it.">
+      <SlideStack align="start">
+        <h2>How the pieces fit</h2>
+        <ul>
+          <li>The engine runs the model weights and produces text</li>
+          <li>The harness turns that text into a chat, or an agent</li>
+          <li>You talk to the harness, never the engine</li>
+          <li>Any harness can point at any engine. That is the whole trick</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Technical dive under how-own-hardware, reached on demand: what actually
+  // runs the weights. Names and roles from the research 06 packet.
+  "what-is-an-inference-engine": (
+    <PresentationSlide note="TODO: Ben to pass. Roles from the research 06 packet's engine references.">
+      <SlideStack align="start">
+        <h2>What is an inference engine?</h2>
+        <ul>
+          <li>
+            <a href="https://github.com/ggml-org/llama.cpp" rel="noreferrer" target="_blank">llama.cpp</a>:
+            runs GGUF models on Macs, PCs, CPUs, and GPUs
+          </li>
+          <li>
+            <a href="https://github.com/ml-explore/mlx" rel="noreferrer" target="_blank">MLX</a>:
+            Apple&rsquo;s framework, what Ollama uses on Apple Silicon
+          </li>
+          <li>
+            <a href="https://docs.vllm.ai/" rel="noreferrer" target="_blank">vLLM</a>{" "}
+            and{" "}
+            <a href="https://docs.sglang.ai/" rel="noreferrer" target="_blank">SGLang</a>:
+            server-class engines for real GPUs
+          </li>
+          <li>LM Studio and Ollama wrap an engine so you never touch it</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Deepest layer of the drill: the curated link set from research 06, so
+  // the deck carries its own rabbit hole.
+  "stack-resources": (
+    <PresentationSlide note="Curated from the research 06 packet (Ben-supplied). Full link set lives in research-requests/06-agents-on-openrouter.md for the blog version.">
+      <SlideStack align="start">
+        <h2>The rabbit hole, linked</h2>
+        <ul>
+          <li>
+            Connect your agent:{" "}
+            <a href="https://openrouter.ai/ori/harness" rel="noreferrer" target="_blank">OpenRouter Ori</a>,{" "}
+            <a href="https://docs.ollama.com/integrations/claude-code" rel="noreferrer" target="_blank">Ollama integrations</a>,{" "}
+            <a href="https://lmstudio.ai/docs/integrations/codex" rel="noreferrer" target="_blank">LM Studio</a>
+          </li>
+          <li>
+            Find models:{" "}
+            <a href="https://huggingface.co/docs/hub/en/gguf" rel="noreferrer" target="_blank">Hugging Face GGUF</a>
+          </li>
+          <li>
+            Understand quants:{" "}
+            <a href="https://ngrok.com/blog/quantization" rel="noreferrer" target="_blank">quantization from the ground up</a>
+          </li>
+          <li>
+            Go deeper:{" "}
+            <a href="https://github.com/ggml-org/llama.cpp" rel="noreferrer" target="_blank">llama.cpp</a>,{" "}
+            <a href="https://www.aleksagordic.com/blog/vllm" rel="noreferrer" target="_blank">inside vLLM</a>
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-find-models": (
+    <PresentationSlide note="TODO: Ben to curate the example picks (best models per size/use). Criteria are his dictation (Aug 12).">
+      <SlideStack align="start">
+        <SlideKicker>Step 3 &middot; pick your model</SlideKicker>
+        <h2>Find the best model</h2>
+        <ul>
+          <li>Hugging Face is the library</li>
+        </ul>
+        <ol>
+          <li>Size: pick your base model, the full fp16 release</li>
+          <li>Quant: pick a quantization that fits it in your memory</li>
+          <li>Speed: pick the best quant for your hardware and engine</li>
+        </ol>
+        <ul>
+          <li>Abliterated: variants with the refusals removed</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-cloud": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass. Ben's LIVE DEMO is this path: Vast.ai rented GPU serving a model, pi connecting from his laptop. The benched speed-demo slide (airplane mode) is superseded.">
+      <SlideStack align="start">
+        <SlideKicker>Optional scale</SlideKicker>
+        <h2>Rent GPUs</h2>
+        <ul>
+          <li>Frontier-size open models, by the hour</li>
+          <li>Your model and your data, on rented iron</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-coders": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — his exact recommended provider/model pairing.">
+      <SlideStack align="start">
+        <SlideKicker>You use a coding agent</SlideKicker>
+        <h2>Same tools, open weights behind them</h2>
+        <ul>
+          <li>Point your agent at an open model via OpenRouter</li>
+          <li>Fraction of the cost, sometimes faster than what you pay for</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "how-the-rabbit-hole": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. This is the door to the technical appendix — engines, cloud GPUs, finetuning — and the blog post.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">The rabbit hole is right there.</SlideStatement>
+        <SlideKicker>Engines &middot; cloud GPUs &middot; finetuning &middot; ask me anything</SlideKicker>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // The close: the title card's promise, kept.
+  "own-the-weights": (
+    <PresentationSlide layout="center" note="TODO: benched — cut from the setlist.">
+      <SlideStack gap="tight">
+        <SlideStatement size="lead">Own the weights.</SlideStatement>
+        <SlideStatement>AI they can&rsquo;t use against you.</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  // Appendix marker: everything past this slide is the technical door,
+  // reached only on purpose.
+  "appendix": (
+    <PresentationSlide layout="center">
+      <SlideStack>
+        <h2>Appendix</h2>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "optimized-for-retention": (
+    <PresentationSlide note="TODO: benched, killed from the why stack.">
+      <SlideStack align="start">
+        <h2>Optimized for retention and revenue</h2>
+        <SlideStatement>
+          Corporations optimize for shareholder value
+          <SlideRef n={1} />, aka revenue, which is driven by user retention.
+        </SlideStatement>
+        <ul>
+          <li>
+            Retention gets optimized even at the expense of the user
+            <ul>
+              <li>Sycophancy</li>
+              <li>Engagement loops, RL toward follow-up questions</li>
+              <li>Meta, the played out version of where this goes</li>
+            </ul>
+          </li>
+          <li>
+            Liability removes what would have helped you
+            <ul>
+              <li>Safety classifiers</li>
+              <li>Soft and covert refusal</li>
+            </ul>
+          </li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "fig-retention-diverges": (
+    <PresentationSlide
+      layout="fill"
+      note="Fig 05: redraw. Curves must start as one line, not two. Keep push and pull. Drop OPTIMIZED FOR THEM NOT YOU and the solid fill. Replace the fill with a dotted bracket labelled LOST VALUE. Label the y axis VALUE. Base it on this version."
+    >
+      <SlideFigure
+        alt="Retention and user value rise together, then diverge under optimization pressure."
+        caption="Retention diverges from value"
+        frame={false}
+          src="/images/blog/open-weights-ai-models/05-retention-diverges-from-value_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  // Parked figures: real content, not yet placed in the argument.
+  "fig-growing-dependence": (
+    <PresentationSlide layout="fill">
+      <SlideFigure
+        alt="Domain knowledge falls as reasoning is delegated while AI-assisted performance rises."
+        caption="Growing dependence"
+        frame={false}
+        src="/images/blog/open-weights-ai-models/01-growing-dependence_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  "fig-open-internet-vs-closed-ai": (
+    <PresentationSlide layout="fill">
+      <SlideFigure
+        alt="An open internet mesh with alternate routes above a closed AI funnel through one provider-controlled gateway."
+        caption="Open internet vs closed AI"
+        frame={false}
+          src="/images/blog/open-weights-ai-models/02-open-internet-vs-closed-ai_upscaled.png"
+      />
+    </PresentationSlide>
+  ),
+
+  // ---- Benched cuts, resurrected from git history per Ben's save-
+  // everything call. None are in the setlist.
+
+  "receipt-bed": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. Price claim needs a source Ben has read — candidate: Eight Sleep's own Autopilot pricing page. The AWS-outage story (stuck upright, overheating) is reserved for the dependence act; coverage candidates: NYT Oct 24 2025, PCMag.">
+      <SlideStack gap="none">
+        <SlideKicker>Your bed</SlideKicker>
+        <SlideStatement>A $3,300 smart mattress</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">
+          Comfort: $199 a year
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "hook-ai-next": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — especially the future marks (IPO hinge, the accented end state). Early-signs examples (ChatGPT ads, 4o deprecation, personality changes) live in the spoken track.">
+      <SlideStack align="start">
+        <SlideKicker>Closed-source AI</SlideKicker>
+        <h2>AI is at the $10-Uber stage.</h2>
+        <SlideTimeline
+          start={2022}
+          end={2030}
+          marks={[
+            { at: 2022.9, yearLabel: "2022", sublabel: "ChatGPT", tone: "ink" },
+            {
+              at: 2025.6,
+              yearLabel: "Now — we are here",
+              label: "Free, or $20",
+              sublabel: "Pre-IPO · subsidized growth"
+            },
+            { at: 2027.6, yearLabel: "Soon · IPO?" },
+            {
+              at: 2029.6,
+              yearLabel: "Then",
+              label: "?",
+              sublabel: "Profit-maxxing · monopoly",
+              tone: "accent"
+            }
+          ]}
+        />
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "hook-the-door": (
+    <PresentationSlide layout="center" note="TODO: the slide after this must answer 'what file?' — the what act is not written yet, the old body currently follows.">
+      <SlideStack gap="none">
+        <SlideStatement>
+          Every other time, there was no exit. You could not download the 2015
+          Uber.
+        </SlideStatement>
+        <SlideArrow label="But" />
+        <SlideStatement size="lead">
+          This time, the good version leaked out the door. As a file.
+        </SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "thesis": (
+    <PresentationSlide layout="center">
+      <SlideStack gap="none">
+        <SlideStatement>{thesis[0]}</SlideStatement>
+        <SlideArrow label="Thus" />
+        <SlideStatement>{thesis[1]}</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "closed-model-problems": (
+    <PresentationSlide>
+      <SlideStack align="start">
+        <h2>Major Problems with Closed Weight Models</h2>
+        <ul>
+          <li>Optimized for retention and revenue (your dependence)</li>
+          <li>Dependence carries risk</li>
+        </ul>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "receipt-community-speed": (
+    <PresentationSlide layout="center" note="TODO: wording draft, Ben to pass. This is the DeepSeek-Flash effect / llama.cpp beat from the pres note: the same file gets faster because thousands of people optimize it, and you pay no one.">
+      <SlideStack gap="none">
+        <SlideKicker>Your model file</SlideKicker>
+        <SlideStatement>Downloaded once</SlideStatement>
+        <SlideArrow label="Then" />
+        <SlideStatement size="lead">Faster every month, and you pay no one</SlideStatement>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "dynamic-dependence-draft": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass.">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 1 · dependence</SlideKicker>
+        <h2>The more you need it, the more they can upcharge you</h2>
+        <SlideColumns>
+          <SlideColumn label="A latte">
+            <SlideStatement>Price doubles? You skip it.</SlideStatement>
+          </SlideColumn>
+          <SlideColumn label="Your heart medication" tone="accent">
+            <SlideStatement>Price doubles? You pay.</SlideStatement>
+          </SlideColumn>
+        </SlideColumns>
+        <SlideColumns>
+          <SlideColumn label="Closed AI" tone="accent">
+            <p className="!mt-0">
+              Your work, your business, your questions already run on their
+              model. They set the rent.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Open weights">
+            <p className="!mt-0">Your model. There is no rent to raise.</p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "dynamic-no-substitutes-draft": (
+    <PresentationSlide note="TODO: wording draft, Ben to pass — examples especially.">
+      <SlideStack align="start">
+        <SlideKicker>Dynamic 2 · no substitutes, switching costs</SlideKicker>
+        <h2>And when you look for the door, there isn&rsquo;t one</h2>
+        <SlideColumns>
+          <SlideColumn label="No substitute" tone="accent">
+            <SlideStatement>The taxis Uber undercut are gone.</SlideStatement>
+          </SlideColumn>
+          <SlideColumn label="Switching costs" tone="accent">
+            <SlideStatement>Your friends and history stay behind.</SlideStatement>
+          </SlideColumn>
+        </SlideColumns>
+        <SlideColumns>
+          <SlideColumn label="Closed AI" tone="accent">
+            <p className="!mt-0">
+              Your chats, your memory, your workflows — all living in their
+              cloud.
+            </p>
+          </SlideColumn>
+          <SlideColumn label="Open weights">
+            <p className="!mt-0">
+              A drop-in substitute. Walking away costs nothing.
+            </p>
+          </SlideColumn>
+        </SlideColumns>
+      </SlideStack>
+    </PresentationSlide>
+  ),
+
+  "references": (
+    <PresentationSlide>
+      <SlideStack align="start">
+        <h2>References</h2>
+        <SlideNotes notes={sources} size="slide" />
+      </SlideStack>
+    </PresentationSlide>
+  )
+} as const;
+
+export type SlideName = keyof typeof slides;

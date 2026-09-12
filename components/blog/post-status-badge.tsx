@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { includeDrafts, type BlogPostFrontmatter } from "@/lib/blog-data";
+import { includeDrafts, type PublicationFrontmatter } from "@/lib/publication-data";
 
 // Dev/preview-only status marker, rendered with the Coss Badge (globals.css
 // carries the Coss token fallbacks on blog routes). Gated on the same flag
@@ -15,7 +15,7 @@ const badgeConfig = {
 export function PostStatusBadge({
   status
 }: {
-  status: BlogPostFrontmatter["status"];
+  status: PublicationFrontmatter["status"];
 }) {
   if (!includeDrafts || status === "published") return null;
   const { label, variant } = badgeConfig[status];

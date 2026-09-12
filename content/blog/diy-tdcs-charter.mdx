@@ -1,0 +1,124 @@
+---
+title: "DIY tDCS — working notes"
+date: "2026-07-27"
+description: "I'm going to replicate a $500 brain stimulation device for $100 and run it on myself, supervised. Working notes, not a post yet."
+tags:
+  - n-of-1
+  - neurotech
+  - health
+status: draft
+---
+
+<Callout type="warn">
+Working notes from the day this became real. Not a post. The post gets
+written when there's a device and data.
+</Callout>
+
+## The idea
+
+A commercial tDCS device for depression clears FDA around September. The
+machine runs about \$1.2k, then roughly \$500 per treatment course, on
+their terms, through their app, with no control on my side. In hardware
+terms it's a constant-current source pushing 2mA through two sponge
+electrodes on a headband: a current regulator, electrodes, a battery, a
+Bluetooth chip so the app can feel involved. Maybe \$50 in parts. The rest
+is FDA clearance, certified manufacturing, industrial design, and a
+recurring-revenue model I'd be renting my own treatment from.
+
+An AI told me replicating it would cost \$5k. It priced the regulatory
+program into the bill of materials. This kind of thing is why I keep a
+list (see the end).
+
+So: I'm going to replicate it myself for about \$100 and run it on myself
+as an institution-grade N-of-1, iterating until I never have to get ECT
+or TMS again.
+
+## Version one is deliberately tiny
+
+One device. One subject: me. One protocol. Kwong/Giles supervision.
+
+That's the whole scope. No release, no company, no platform, no
+publication, no FDA argument, no future users, no population-scale
+anything. Version one exists so that one specific person stops renting
+his treatment: I avoid buying a \$1.2k machine I don't control and then
+paying \$500 for every course, forever.
+
+Everything bigger is a later stage, and later stages don't get to bill
+my head today.
+
+## I picked this one on purpose
+
+I'm not skipping safety. I'm doing what the device company did, as cheap
+as possible, without getting tied down in regulatory shit. I have money,
+professional connections, and a care team that will supervise this.
+
+And I risk-tiered the whole self-experimentation space before landing
+here. Some people synthesize peptides in their garage and inject mystery
+molecules with no assay. I picked tDCS *because* it's really difficult to
+hurt yourself with: 2mA is a decades-studied dose, and the realistic worst
+case is a skin burn from dried-out sponges. I chose the intervention where
+physics is the safety officer.
+
+## The only real engineering question
+
+Not "will I be careful." The question is: how do I make it physically
+impossible for the device to ever deliver more than 2mA?
+
+The answer is beautifully dumb: compliance-voltage ceiling. Run the
+current source off roughly 12V. Through the several kilohms of head plus
+electrode impedance, Ohm's law caps the deliverable current even if every
+transistor in the device fails. Hardware-limited beats software-limited;
+no firmware bug can out-argue the power supply. That's an afternoon of
+circuit design, not a regulatory program.
+
+The other failure mode is skin burns, and that's electrode discipline
+(wet sponges, sane current density). Practice, not engineering.
+
+## Steal the right thing from the commercial device
+
+Their clever part isn't the circuit. It's that the device is fiddle-proof
+on purpose: fixed dose, fixed placement (F3/F4), fixed duration, no knobs,
+adherence tracked. I'm a fiddler, and this is the one project where
+fiddling destroys the data. So the build spec includes the anti-me
+features: fixed protocol, session logging baked into the device, nothing
+to adjust.
+
+## The rigor is the actual project
+
+The electronics are a weekend; a month end-to-end with agents doing the
+grunt work. What makes it worth writing about:
+
+- pre-registered protocol before session one
+- PHQ-9 and friends on a fixed cadence, not vibes. Depression is the one
+  domain where my own outcome data is least trustworthy to me
+- providers supervising the data, not just blessing the idea
+
+Bar for session one: current ceiling verified on a dummy load, protocol
+pre-registered, providers signed on.
+
+## Stages, not obligations
+
+My supervised build and the open-source release are separate stages. Mine
+needs to be safe for me. The published version needs to be safe for
+someone with worse judgment who skips the supervision paragraph, so the
+boring parts get over-engineered (fail-safe limiting, impedance
+monitoring, session caps) at *that* stage, not before session one. It
+doesn't bill my head today.
+
+This is also user-research-before-product: become the most rigorous user
+of this device class, instrument everything, and let the data reveal where
+the real gaps are. If a better device deserves to exist, the N-of-1 will
+say so louder than a pitch.
+
+## The list
+
+Very soon (10 years) I will have a fully fledged research lab, and I will
+give a presentation to investors of every time an AI told me something was
+impossible, too dangerous, or assumed I didn't know what I was doing. The
+list grew today. The rest of the deck will be receipts: shipped work,
+open-sourced hardware, N-of-1 data. That's what makes the list funny
+instead of bitter.
+
+Related: my own life keeps tripping AI safety filters over benign
+conversations. The whole point of building my own stack is tooling that
+doesn't flinch at my own life.

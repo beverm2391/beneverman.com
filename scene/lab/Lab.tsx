@@ -14,6 +14,7 @@ import {
   withLayer,
   type LayerType,
   type Scene,
+  type SceneTheme,
 } from './scene'
 import {
   deleteScene as deleteSceneOnDisk,
@@ -39,6 +40,8 @@ export default function Lab() {
   // Sun-angle animation is a preview aid, not part of the saved scene: it sweeps
   // a display angle without touching scene.sunAngle.
   const [sunAnim, setSunAnim] = useState<AnimState>(defaultAnimState)
+  // Which theme the stage previews; themed layers read it, nothing saves it.
+  const [previewTheme, setPreviewTheme] = useState<SceneTheme>('light')
   // Transient mesh-inspector view state, keyed by layer instance id. Not part
   // of the saved scene, so toggling it never dirties.
   const [inspectedIds, setInspectedIds] = useState<Set<string>>(new Set())
@@ -224,8 +227,10 @@ export default function Lab() {
       <LabSidebar
         actions={actions}
         inspectedIds={inspectedIds}
+        onPreviewTheme={setPreviewTheme}
         onSunAnim={setSunAnim}
         onToggleInspect={toggleInspect}
+        previewTheme={previewTheme}
         scene={scene}
         sunAnim={sunAnim}
       />
@@ -239,7 +244,7 @@ export default function Lab() {
           status={status}
         />
         <div className="lab__viewer">
-          <LayerStack scene={displayScene} />
+          <LayerStack scene={displayScene} theme={previewTheme} />
         </div>
       </div>
     </div>

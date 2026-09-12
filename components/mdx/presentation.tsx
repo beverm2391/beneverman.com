@@ -1,0 +1,433 @@
+"use client";
+
+import { MoveLeft, MoveRight } from "lucide-react";
+import { Geist_Mono, Lora } from "next/font/google";
+import {
+  Children,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode
+} from "react";
+import {
+  depthLetter,
+  getPresentationAction,
+  movePresentation,
+  type PresentationAction,
+  type PresentationPosition
+} from "@/components/mdx/presentation-navigation";
+import {
+  blueprintTheme,
+  presentationThemeStyle,
+  type PresentationTheme
+} from "@/components/mdx/presentation-theme";
+
+type PresentationProps = {
+  children?: ReactNode;
+  className?: string;
+  /**
+   * The conditional engine: one array per spine concept, holding the spine
+   * slide followed by its progressively deeper dives. When omitted, children
+   * render as a flat spine with no dives.
+   */
+  columns?: ReactNode[][];
+  label?: string;
+  monoFontClassName?: string;
+  serifFontClassName?: string;
+  theme?: PresentationTheme;
+};
+
+const presentationSerif = Lora({
+  subsets: ["latin"],
+  variable: "--font-presentation-serif",
+  display: "swap"
+});
+
+const presentationMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-presentation-mono",
+  display: "swap"
+});
+
+// Controls are typographic, not web-app furniture: quiet mono text on the
+// bottom hairline rule, mirroring the deck's top rule. No borders, fills, or
+// shadows — hover simply raises the ink from muted to foreground.
+const controlButtonClass =
+  "inline-flex cursor-pointer items-center gap-1.5 py-0.5 text-(--pres-ink-muted) uppercase transition-colors hover:text-(--pres-ink) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--pres-ink-muted) disabled:cursor-default disabled:opacity-30 disabled:hover:text-(--pres-ink-muted)";
+
+// How long the mouse must sit still in fullscreen before the controls and
+// cursor fade. Keyboard navigation deliberately does not wake them.
+const FULLSCREEN_IDLE_MS = 2500;
+
+// Working notes travel with the slide they describe (what to redraw, what
+// still needs writing) but must never appear while presenting, so they are
+// hidden until the author presses N.
+const SlideNotesVisible = createContext(false);
+
+// A deliberately small authoring surface: a post supplies one PresentationSlide
+// per slide, and this component owns only viewing, movement, and fullscreen.
+export function Presentation({
+  children,
+  className = "",
+  columns,
+  label = "Presentation",
+  monoFontClassName = presentationMono.variable,
+  serifFontClassName = presentationSerif.variable,
+  theme = blueprintTheme
+}: PresentationProps) {
+  const stacks = columns ?? Children.toArray(children).map((child) => [child]);
+  const stackSizes = stacks.map((stack) => stack.length);
+  const stackShape = stackSizes.join(",");
+  // Position and the depth-memory rule live in one state object so a single
+  // functional update reads both: each concept remembers where you left its
+  // stack, and returning to it resumes the same dive.
+  const [deckState, setDeckState] = useState<{
+    depths: number[];
+    position: PresentationPosition;
+  }>({ depths: [], position: { column: 0, depth: 0 } });
+  const position = deckState.position;
+  // Two expansion modes: theater fills the browser viewport (the default way
+  // to present), fullscreen takes the whole display via the Fullscreen API
+  // (reached with ⌘-click or the F key).
+  const [isTheater, setIsTheater] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isIdle, setIsIdle] = useState(false);
+  const [notesVisible, setNotesVisible] = useState(false);
+  const [fullscreenError, setFullscreenError] = useState<string | null>(null);
+  const rootRef = useRef<HTMLElement>(null);
+  const slideCount = stacks.length;
+  const isExpanded = isFullscreen || isTheater;
+
+  // While presenting, controls should vanish unless the presenter reaches for
+  // the mouse. Embedded view never hides them; the fullscreenchange handler
+  // resets idleness on both enter and exit.
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    let idleTimer = window.setTimeout(() => setIsIdle(true), FULLSCREEN_IDLE_MS);
+    const wake = () => {
+      setIsIdle(false);
+      window.clearTimeout(idleTimer);
+      idleTimer = window.setTimeout(() => setIsIdle(true), FULLSCREEN_IDLE_MS);
+    };
+
+    document.addEventListener("mousemove", wake);
+    return () => {
+      window.clearTimeout(idleTimer);
+      document.removeEventListener("mousemove", wake);
+    };
+  }, [isExpanded]);
+
+  const controlsHidden = isExpanded && isIdle;
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      const fullscreen = document.fullscreenElement === rootRef.current;
+      setIsFullscreen(fullscreen);
+      // Leaving display fullscreen returns all the way to the embedded view;
+      // theater is not silently restored underneath it.
+      if (!fullscreen) setIsTheater(false);
+      setIsIdle(false);
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    return () => document.removeEventListener("fullscreenchange", onFullscreenChange);
+  }, []);
+
+  // Theater covers the page, so the page behind it must not scroll.
+  useEffect(() => {
+    if (!isTheater) return;
+
+    const previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = previousOverflow;
+    };
+  }, [isTheater]);
+
+  const enterFullscreen = useCallback(async () => {
+    if (!rootRef.current || document.fullscreenElement === rootRef.current) return;
+
+    try {
+      setFullscreenError(null);
+      await rootRef.current.requestFullscreen();
+    } catch {
+      setFullscreenError("Fullscreen is unavailable in this browser. Use the embedded view instead.");
+    }
+  }, []);
+
+  async function exitFullscreen() {
+    try {
+      setFullscreenError(null);
+      await document.exitFullscreen();
+    } catch {
+      setFullscreenError("Fullscreen could not be exited. Press Escape to leave it.");
+    }
+  }
+
+  const move = useCallback((action: PresentationAction) => {
+    const sizes = stackShape === "" ? [] : stackShape.split(",").map(Number);
+    setDeckState(({ depths, position: current }) => {
+      const clamped = {
+        column: Math.min(current.column, sizes.length - 1),
+        depth: current.depth
+      };
+      const next = movePresentation(clamped, sizes, depths, action);
+      const updated = depths.slice();
+      updated[next.column] = next.depth;
+      return { depths: updated, position: next };
+    });
+  }, [stackShape]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // The deck listens at the document level so keyboard navigation never
+      // requires moving focus onto the entire presentation. Interactive slide
+      // content and modified shortcuts keep their normal keyboard behaviour.
+      if (
+        event.altKey ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.shiftKey ||
+        (event.target instanceof HTMLElement &&
+          event.target.closest("input, textarea, select, [contenteditable='true']"))
+      ) {
+        return;
+      }
+
+      const root = rootRef.current;
+      if (!root) return;
+      const rect = root.getBoundingClientRect();
+      const isVisible = document.fullscreenElement === root || (rect.bottom > 0 && rect.top < window.innerHeight);
+      if (!isVisible) return;
+
+      const action = getPresentationAction(event.key);
+      if (action) {
+        event.preventDefault();
+        move(action);
+        return;
+      }
+
+      if (event.key === "Escape" && !document.fullscreenElement) {
+        setIsTheater(false);
+        return;
+      }
+
+      if (event.key.toLowerCase() === "n") {
+        event.preventDefault();
+        setNotesVisible((visible) => !visible);
+        return;
+      }
+
+      if (event.key.toLowerCase() === "f") {
+        event.preventDefault();
+        void enterFullscreen();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [enterFullscreen, move]);
+
+  if (slideCount === 0) return null;
+  // The deck can be hot-reloaded with fewer slides while its previous state
+  // still points past the end. Deriving this avoids a corrective render.
+  const currentIndex = Math.min(position.column, slideCount - 1);
+  const currentStack = stacks[currentIndex];
+  const currentDepth = Math.min(position.depth, currentStack.length - 1);
+  const hasDiveBelow = currentDepth < currentStack.length - 1;
+  const letter = depthLetter(currentDepth);
+
+  return (
+    <section
+      ref={rootRef}
+      aria-label={`${label}: slide ${currentIndex + 1} of ${slideCount}${letter ? `, dive ${letter}` : ""}`}
+      className={`not-prose text-(--pres-ink) ${serifFontClassName} ${monoFontClassName} ${isFullscreen ? "relative h-full w-full overflow-hidden" : isTheater ? "fixed inset-0 z-50" : "content-breakout relative my-10"} ${controlsHidden ? "cursor-none" : ""} ${className}`}
+      style={presentationThemeStyle(theme)}
+    >
+      {/* @container makes the card the reference for every cqw size inside:
+          type and spacing are proportions of the slide itself, so the deck
+          renders identically on a laptop, a TV, and the embedded card. */}
+      <div
+        aria-live="polite"
+        className={`@container relative overflow-hidden bg-(--pres-paper) ${isExpanded ? "h-full w-full" : "aspect-video rounded-2xl border border-(--pres-rule) shadow-xs/5"}`}
+      >
+        {/* The embedded deck is a preview; clicking the slide surface presents
+            it in the browser viewport, ⌘-click on the whole display. Links and
+            controls inside a slide keep their own click behaviour. */}
+        <SlideNotesVisible.Provider value={notesVisible}>
+        <div
+          className={`h-full w-full ${isExpanded ? "" : "cursor-zoom-in"}`}
+          onClick={(event) => {
+            if (isExpanded) return;
+            if (
+              event.target instanceof HTMLElement &&
+              event.target.closest("a, button, input, textarea, select, [contenteditable='true']")
+            ) {
+              return;
+            }
+            if (event.metaKey || event.ctrlKey) {
+              void enterFullscreen();
+            } else {
+              setIsTheater(true);
+            }
+          }}
+        >
+          {currentStack[currentDepth]}
+        </div>
+        </SlideNotesVisible.Provider>
+
+        {/* Chrome is bare mono corner marks — no rules, no bars. Label
+            top-left, presenting controls bottom-left, counter bottom-right. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 px-[max(0.85rem,1.5cqw)] pt-[max(0.75rem,1.3cqw)] font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-ink-muted) uppercase"
+        >
+          <span className="min-w-0 truncate">{label}</span>
+        </div>
+
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 px-[max(0.85rem,1.5cqw)] pb-[max(0.75rem,1.3cqw)] font-(family-name:--font-presentation-mono) text-[max(0.55rem,0.8cqw)] tracking-[0.09em] text-(--pres-ink-muted)">
+          <div className="flex items-end gap-[1.25em]">
+            {hasDiveBelow ? (
+              <button
+                aria-label="Dive deeper into this concept"
+                className={`${controlButtonClass} pointer-events-auto tracking-[0.09em] uppercase !text-[max(0.75rem,1.2cqw)] !text-(--pres-annotation)`}
+                onClick={() => move("down")}
+                type="button"
+              >
+                {"\u25be"} dive deeper
+              </button>
+            ) : null}
+          {isExpanded ? (
+            <div
+              className={`pointer-events-auto flex items-center gap-[1.25em] transition-opacity duration-500 ${controlsHidden ? "!pointer-events-none opacity-0" : "opacity-100"}`}
+            >
+              <button
+                aria-label="Previous slide"
+                className={controlButtonClass}
+                disabled={currentIndex === 0}
+                onClick={() => move("previous")}
+                type="button"
+              >
+                <MoveLeft aria-hidden="true" size={14} />
+              </button>
+              <button
+                aria-label="Next slide"
+                className={controlButtonClass}
+                disabled={currentIndex === slideCount - 1}
+                onClick={() => move("next")}
+                type="button"
+              >
+                <MoveRight aria-hidden="true" size={14} />
+              </button>
+              <button
+                aria-label={isFullscreen ? "Exit fullscreen" : "Exit presentation"}
+                className={controlButtonClass}
+                onClick={() => {
+                  if (isFullscreen) {
+                    void exitFullscreen();
+                  } else {
+                    setIsTheater(false);
+                  }
+                }}
+                type="button"
+              >
+                Exit
+              </button>
+            </div>
+          ) : null}
+          </div>
+          <span className="uppercase">
+            {String(currentIndex + 1).padStart(2, "0")}
+            {letter} / {String(slideCount).padStart(2, "0")}
+          </span>
+        </div>
+      </div>
+
+      {isExpanded ? null : (
+        <div className="mt-3 flex items-center gap-[1.25em] px-1 font-(family-name:--font-presentation-mono) text-[0.7rem] tracking-[0.09em] text-(--pres-ink-muted)">
+          <button
+            aria-label="Previous slide"
+            className={controlButtonClass}
+            disabled={currentIndex === 0}
+            onClick={() => move("previous")}
+            type="button"
+          >
+            <MoveLeft aria-hidden="true" size={14} />
+          </button>
+          <button
+            aria-label="Next slide"
+            className={controlButtonClass}
+            disabled={currentIndex === slideCount - 1}
+            onClick={() => move("next")}
+            type="button"
+          >
+            <MoveRight aria-hidden="true" size={14} />
+          </button>
+          <span className="flex-1" />
+          <button
+            aria-label="Present in the browser window (hold ⌘ for the whole display)"
+            className={controlButtonClass}
+            onClick={(event) => {
+              if (event.metaKey || event.ctrlKey) {
+                void enterFullscreen();
+              } else {
+                setIsTheater(true);
+              }
+            }}
+            title="⌘-click for display fullscreen"
+            type="button"
+          >
+            Fullscreen
+          </button>
+        </div>
+      )}
+      <p className="sr-only">Use left and right arrow keys, Page Up, Page Down, Home, or End to move through slides. Press F for fullscreen.</p>
+      {fullscreenError ? <p className="sr-only" role="status">{fullscreenError}</p> : null}
+    </section>
+  );
+}
+
+// How slide content sits in the height between the chrome. `top` is the
+// working default for titled slides — a heading belongs at the top of the
+// page, not floating in the middle; `center` suits a single statement that
+// should own the whole slide; `fill` lets content claim the full height, which
+// is what a figure needs.
+export function PresentationSlide({
+  children,
+  layout = "top",
+  note,
+  notes
+}: {
+  children: ReactNode;
+  layout?: "top" | "center" | "fill";
+  /** Working note: what this slide still needs. Shown only when N is pressed. */
+  note?: string;
+  /** Sources for the slide's marked claims, pinned under the content. */
+  notes?: ReactNode;
+}) {
+  const fill = layout === "fill";
+  const items = fill ? "items-stretch" : layout === "center" ? "items-center" : "items-start";
+  const noteVisible = useContext(SlideNotesVisible);
+
+  return (
+    <div className={`flex h-full w-full flex-col px-[max(1.25rem,7cqw)] pt-[max(3rem,8cqw)] pb-[max(3rem,8cqw)] font-(family-name:--font-presentation-serif) [&_a]:underline [&_a]:decoration-1 [&_a]:underline-offset-4 [&_blockquote]:border-l [&_blockquote]:border-(--pres-rule) [&_blockquote]:pl-[max(0.9rem,2.5cqw)] [&_blockquote]:text-(--pres-ink-muted) [&_h1]:max-w-[19ch] [&_h1]:text-[max(1.6rem,4.5cqw)] [&_h1]:leading-[1.08] [&_h1]:font-medium [&_h1]:tracking-[-0.025em] [&_h2]:max-w-[40ch] [&_h2]:text-[max(1.3rem,3.3cqw)] [&_h2]:leading-[1.12] [&_h2]:font-medium [&_h2]:tracking-[-0.02em] [&_li]:mt-[0.4em] [&_li]:text-[max(0.85rem,2cqw)] [&_li]:leading-[1.35] [&_li_li]:text-[0.8em] [&_li_ul]:mt-[0.3em] [&_ol]:mt-[1em] [&_ol]:list-decimal [&_ol]:pl-[1.4em] [&_p]:mt-[1em] [&_p]:max-w-[54ch] [&_p]:text-[max(0.78rem,1.4cqw)] [&_p]:leading-[1.55] [&_p]:text-(--pres-ink-muted) [&_strong]:font-semibold [&_ul]:mt-[1em] [&_ul]:list-disc [&_ul]:pl-[1.25em]`}>
+      {/* Notes sit under the content and outside its alignment, so sources
+          stay at the foot of the slide however the body is placed. */}
+      <div className={`flex min-h-0 w-full flex-1 ${items}`}>
+        <div className={`w-full ${fill ? "flex min-h-0 flex-col" : ""}`}>{children}</div>
+      </div>
+      {notes ? <div className="w-full pt-[max(0.6rem,1.2cqw)]">{notes}</div> : null}
+      {note && noteVisible ? (
+        <div className="w-full pt-[max(0.6rem,1.2cqw)]">
+          <p className="!mt-0 !max-w-none border-l-2 border-(--pres-accent) pl-[0.8em] font-(family-name:--font-presentation-mono) !text-[max(0.55rem,0.85cqw)] !leading-[1.5] !text-(--pres-accent)">
+            {note}
+          </p>
+        </div>
+      ) : null}
+    </div>
+  );
+}

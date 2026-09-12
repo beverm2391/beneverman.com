@@ -1,19 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { TocItem } from "@/lib/toc";
+import { nestToc, type TocItem, type TocNode } from "@/lib/toc";
 
-// Minimal long-form TOC: a sticky rail to the right of the 68ch article
-// column that starts level with the article body and pins below the site
-// header while reading. It exists only where the margin is wide enough (the
-// .post-toc media query in globals.css) — no drawer at narrow widths. Highlight
-// tracks reading position: the last heading at or above the 112px mark is the
-// section being read. That threshold must stay above the :target
-// scroll-margin-top in globals.css (4.75rem = 76px), or a TOC click would
-// land a heading just below the line and fail to activate it. A rAF-throttled
-// scroll listener over a handful of headings is cheap and, unlike an
-// IntersectionObserver, has no fast-scroll misses.
-export function PostToc({ items }: { items: TocItem[] }) {
+// One semantic renderer serves every long-form surface. Placement and the
+// scroll activation line are policy inputs; the heading outline is always
+// rendered as nested lists from the source h2/h3 depths.
+export function PostToc({
+  items,
+  className = "post-toc",
+  activationOffset = 112,
+  activateFirst = false
+}: {
+  items: TocItem[];
+  className?: string;
+  activationOffset?: number;
+  activateFirst?: boolean;
+}) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
@@ -21,11 +24,11 @@ export function PostToc({ items }: { items: TocItem[] }) {
 
     const update = () => {
       frame = 0;
-      let current: string | null = null;
+      let current: string | null = activateFirst ? (items[0]?.id ?? null) : null;
       for (const { id } of items) {
         const heading = document.getElementById(id);
         if (!heading) continue;
-        if (heading.getBoundingClientRect().top > 112) break;
+        if (heading.getBoundingClientRect().top > activationOffset) break;
         current = id;
       }
       setActive(current);
@@ -43,27 +46,40 @@ export function PostToc({ items }: { items: TocItem[] }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [items]);
+  }, [activateFirst, activationOffset, items]);
+
+  if (items.length === 0) return null;
 
   return (
-    <nav aria-label="Table of contents" className="post-toc">
-      <ul>
-        {items.map((item) => (
-          <li key={item.id} className={item.depth === 3 ? "pl-3" : undefined}>
-            <a
-              href={`#${item.id}`}
-              aria-current={active === item.id ? "true" : undefined}
-              className={
-                active === item.id
-                  ? "text-fg"
-                  : "text-muted transition-colors duration-150 hover:text-fg"
-              }
-            >
-              {item.text}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <div className={className}>
+      <nav aria-label="Table of contents">
+        <TocList nodes={nestToc(items)} active={active} />
+      </nav>
+    </div>
+  );
+}
+
+function TocList({ nodes, active }: { nodes: TocNode[]; active: string | null }) {
+  return (
+    <ul>
+      {nodes.map((node) => (
+        <li key={node.id}>
+          <a
+            href={`#${node.id}`}
+            aria-current={active === node.id ? "true" : undefined}
+            className={
+              active === node.id
+                ? "text-fg"
+                : "text-muted transition-colors duration-150 hover:text-fg"
+            }
+          >
+            {node.text}
+          </a>
+          {node.children.length > 0 ? (
+            <TocList nodes={node.children} active={active} />
+          ) : null}
+        </li>
+      ))}
+    </ul>
   );
 }

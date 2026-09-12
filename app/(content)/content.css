@@ -1,4 +1,4 @@
-/* Content-route styles: the blog, and only the blog. Imported by
+/* Content-route styles: long-form pages, and only those pages. Imported by
    app/(content)/layout.tsx rather than the root layout, so the homepage never
    downloads or is reachable by any of it. That is the same boundary
    scene/App.css and scene/lab/Lab.css already use.
@@ -23,6 +23,18 @@
   width: min(100% - 2rem, 68ch);
   margin-inline: auto;
   padding-block: 4rem;
+}
+
+/* Opt-in width for visual MDX components that need more room than prose.
+   The class only exists on content routes, so research keeps ownership of its
+   paper geometry. The viewport gutter prevents a breakout from touching the
+   screen edge on narrow layouts. */
+.content-breakout {
+  position: relative;
+  left: 50%;
+  width: min(calc(100vw - 2rem), 60rem);
+  max-width: none;
+  transform: translateX(-50%);
 }
 
 /* ---- post TOC (components/blog/post-toc.tsx) -------------------------- */
@@ -53,10 +65,18 @@
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .post-toc nav > ul {
     max-height: calc(100vh - 7.5rem);
     overflow-y: auto;
     font-size: 0.875rem;
     line-height: 1.5;
+  }
+
+  .post-toc ul ul {
+    margin-top: 0.375rem;
+    padding-left: 0.75rem;
   }
 
   .post-toc li {
@@ -199,6 +219,15 @@
 .prose :where(th, td):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   border: 1px solid var(--border);
   padding: 0.4rem 0.6rem;
+}
+
+/* KaTeX is emitted at compile time. Wide display equations scroll inside the
+   reading column instead of widening the page on small screens. */
+.prose :where(.katex-display):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  margin: 1.6rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: 0.15rem;
 }
 
 /* Code blocks (rehype-pretty-code wraps them in a figure; ```lang

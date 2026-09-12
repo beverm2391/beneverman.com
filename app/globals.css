@@ -1,7 +1,9 @@
 @import "tailwindcss";
+@import "streamdown/styles.css";
 @plugin "@tailwindcss/typography";
+@source "../node_modules/streamdown/dist/*.js";
 
-/* Dark mode is class-driven by next-themes (.dark on <html>), not media. */
+/* Dark mode is class-driven by the theme provider (.dark on <html>), not media. */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Blog runs on Tailwind: colours map to the runtime CSS vars below (so dark
@@ -58,6 +60,18 @@
      `ease-smooth` utility with duration-300 for any size/position morph —
      the lightbox below uses the same tokens. */
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes chat-message-send {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Geist — the homepage/scene display font, ported exactly from v7 (same

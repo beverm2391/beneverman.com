@@ -1,24 +1,53 @@
 # beneverman.com — product
 
-Ben's personal home: an art-first landing page and a small, high-craft
-technical blog under his own name. The landing, blog, and the development scene
-lab live together here; the archived `beneverman.com-v7` is only historical
-source material.
+Ben's personal home: an art-first landing page with distinct spaces for
+technical posts and ongoing research. The public writing surfaces and the
+development scene lab live together here; the archived `beneverman.com-v7` is
+only historical source material.
 
 Work is tracked in Linear's **Personal Website** project. `PROMPT.md` owns local
 development workflow. This file owns the product promise, proof status, and
 open gates.
 
-## The three surfaces
+## The four surfaces
 
 - **Landing (`/`)** — a server-rendered static introduction enhanced by the
   client-only WebGL sun and shadow scene. It must remain useful without
   JavaScript or WebGL.
 - **Blog (`/blog`, `/blog/{slug}`)** — technical build-in-public posts compiled
   from MDX. Seeded placeholder posts are not content.
+- **Research (`/research`, `/research/{slug}`)** — working scientific models,
+  experiments, and trajectories. It uses a separate paper-style presentation
+  while sharing the site's MDX compiler and publication policy.
 - **Scene lab (`/lab`, development only)** — the compositor used to author the
   landing. The production route is a 404, and the editor, its UI dependencies,
   and its CSS must not enter production client assets.
+
+## The three lanes
+
+The repository keeps what the site can do apart from what it says, and what it
+says apart from what it publishes (Ben, 2026-09).
+
+- **System** — `app/`, `lib/`, `components/`, `scene/`, `scripts/`. Generic
+  capability: routes, loaders, the MDX compiler, reusable primitives, the scene
+  lab. It never names a post. It is held to the source gates.
+- **Experimental** — everything under `content/` with `status: draft`. A post
+  that needs its own code is a folder: `content/blog/{slug}/index.mdx` beside
+  its components, its working notes, and the image and research request queues
+  that feed it. Code there is content: linted and typechecked, but exempt from
+  the line limit, because the unit of review is the slide or figure, not the
+  file.
+- **Live** — the same files with `status: published`. Promotion is a
+  frontmatter change; nothing moves.
+
+A component is either one post's, in that post's folder, or global, in
+`components/mdx/`. Promotion is a move plus the import, and leaving `content/`
+is where the line limit starts to apply: a post's slide registry may run to a
+thousand lines, but it has to be split into pieces a human can hold before it
+may serve every post.
+
+A system change that mentions a specific post, or a post that reaches into the
+system for a bespoke component, is in the wrong lane.
 
 ## Acceptance and current proof
 
@@ -46,7 +75,8 @@ open gates.
   CMS, content codegen, or hand-rolled Markdown parser.
 - Posts statically generate from `generateStaticParams`. Shiki highlighting is
   build-time only, with one shared highlighter and a small language set.
-- GFM tables and footnotes work. The component map is deliberately narrow.
+- GFM tables and footnotes work. The shared component map is deliberately
+  narrow and generic; a post's bespoke components load from its own folder.
 - The index and canonical post routes are `/blog` and `/blog/{slug}`.
 - Metadata includes canonical URLs, article fields, generated OG images, Twitter
   cards carrying Ben's handle, and JSON-LD. `/feed.xml`, `/sitemap.xml`, and
@@ -61,11 +91,25 @@ open gates.
 - The blog's visual design remains a Ben + Claude collaboration. Codex owns the
   mechanical plumbing, not unilateral visual redesign.
 
+### Research
+
+- Research is a separate publication type, not a blog frontmatter skin. Its
+  content lives under `content/research`, and its canonical URLs live under
+  `/research`.
+- The dedicated route group owns the BENCORP-style breadcrumb, white-paper
+  surface, Lora reading type, Geist Mono metadata, wider figures, and left
+  sticky table of contents. Its CSS stays scoped under `.research-route`; the
+  normal content header and blog presentation do not leak into Research.
+- Research and Blog share frontmatter validation, draft/archive semantics, the
+  MDX compiler, Shiki, Mermaid, and MDX components. They do not maintain
+  parallel parsing or publishing systems.
+
 ### Repository gates
 
-- CI reports four independent blocking checks: the repository line limit,
-  ESLint, TypeScript, and deterministic unit tests. Browser/E2E coverage is not
-  part of the PR gate for now.
+- CI reports four independent blocking checks: the executable-source line
+  limit, ESLint, TypeScript, and deterministic unit tests. Everything under
+  `content/` and every Markdown file is exempt from the source limit.
+  Browser/E2E coverage is not part of the PR gate for now.
 - `pnpm build` remains the manual/release proof for home SSR, the production lab
   404 and client-asset exclusion, RSS output, and that every prerendered post is
   a real article. A post whose MDX fails to compile renders as a 404 rather than

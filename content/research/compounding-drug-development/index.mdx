@@ -1,0 +1,96 @@
+---
+title: "Drug Development as a Compounding Learning System"
+description: "A working trajectory from predicting simple assays to building domain-specific and trial-scale learning engines."
+date: "2026-07-23"
+tags:
+  - drug discovery
+  - machine learning
+status: draft
+---
+
+I am more likely to discover meaning than plan for it. This is therefore not a roadmap in the ordinary sense. It is a trajectory with room for wandering, experimentation, and opportunities I cannot foresee.
+
+I have dealt with health problems for most of my life. That remains true today. I have a team of doctors helping me manage chronic illnesses I do not expect to resolve. I am also privileged to have received excellent care driven by targeted treatments that came from the research frontier.
+
+My motive is personal but not only personal: accelerate the discovery and clinical translation of treatments for incurable and chronic disease.
+
+The aspiration is not to enter an existing market with a slightly better product. It is to attack unsolved scientific problems and create treatments that would not otherwise exist.
+
+## Start with the smallest closed loop
+
+The initial project can be much smaller than that aspiration.
+
+Take an experimental assay that is expensive or slow enough to constrain iteration, but common and consistent enough to have useful historical data. Train a simple model to predict the measured result from molecular structure. Use the model to select which compounds deserve physical testing, run those tests, then feed the results back into the model.
+
+That creates the first loop:
+
+<DrugDevelopmentLoops />
+
+The important claim is modest. A structure-based model does not need to replace the laboratory. It needs to help the laboratory spend its capacity better.
+
+If the model can reject obvious failures, prioritize promising compounds, and identify uncertain regions of chemical space, the same assay budget can produce more useful information. The economic value comes from faster design–test–learn cycles.
+
+## Earn the next layer
+
+The assay engine is only a starting point. Once it works, its predictions can help select compounds for more expensive and more biologically realistic experiments.
+
+The next loop combines structure inputs with predicted and measured assay results. It uses those signals to prioritize in vivo experiments, human-derived cellular models, organoids, or other domain-specific tests. Those experiments create richer labels. The results feed back into a model that now learns more than an isolated assay.
+
+This is the beginning of a domain engine:
+
+```text
+structure inputs
+  → assay predictions
+  → higher-fidelity biological tests
+  → measured domain evidence
+  → retrain
+```
+
+The model architecture can expand with the experimental system. A shared structure encoder may first support assay heads. Later modules can consume molecular representations, assay vectors, dose and exposure information, and measured biological results. Each layer remains independently testable even as the complete system becomes more capable.
+
+The system should earn this expansion. A weak assay model wrapped in a larger architecture does not become a domain model. Each layer needs prospective evidence that it improves the selection of experiments at the next layer.
+
+## A trial engine is a different kind of model
+
+Eventually, a mature domain engine could improve which drug candidates reach trials. Better selection should mean reaching trials faster, learning from more trials, and returning more useful human evidence to the system.
+
+But the trial layer is not another molecular-property prediction head. Trial outcomes depend on the compound, disease, dose, patient population, protocol, endpoints, and execution. The architecture becomes a multimodal decision model:
+
+```text
+compound × disease × dose × protocol × patient population
+  → outcome distributions
+  → candidate and trial selection
+```
+
+That model would learn from both successes and failures. The goal is not a machine that confidently declares whether a drug will work. The goal is a system that makes better decisions about which uncertainty to resolve next.
+
+A separate trial-selection meta-model may eventually sit above multiple domain engines. That is a later problem. It should not be invented before one domain produces enough real experimental and clinical evidence to justify it.
+
+## The process is the thing that generalizes
+
+The first model may predict one assay in one domain. The long-term value is a repeatable method for building domain-specific discovery engines:
+
+```text
+choose a tractable measurable layer
+  → predict it from cheaper information
+  → use uncertainty to select experiments
+  → collect higher-fidelity measurements
+  → feed them back into the model
+  → expand to the next biological layer
+```
+
+The models, assays, and biological systems will differ across domains. What can generalize is the method for connecting prediction, experiment, and clinical evidence into one learning process.
+
+This also suggests an institutional structure. A biotechnology organization could build the technical and experimental engine. A clinical research institution could turn its outputs into trials and new interventions. Patient care could return longitudinal evidence that neither organization would otherwise capture. Shared incentives and shared data could shorten learning cycles that currently stop at institutional boundaries.
+
+That is the largest version of the idea: an institution that learns how to build treatment-discovery engines for unsolved chronic disease.
+
+## Today
+
+The honest starting point is still the innermost loop:
+
+> Find one valuable assay with enough trustworthy public data. Predict its measured output from molecular structure. Test whether the predictions reduce the number of physical experiments needed to learn the domain.
+
+If that loop works, it creates the data and capability needed to attempt the next one. If it does not, it fails cheaply and teaches us where the real constraint lives.
+
+The trajectory is ambitious. The next experiment does not need to be.

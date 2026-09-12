@@ -1,8 +1,12 @@
 #!/bin/bash
 
-# Keep source files small enough for humans and agents to hold in one mental
-# model. This mirrors BENCORP's policy: warn at 400 physical lines and block at
-# 450. PROMPT.md is injected context, so it warns at 250 and blocks at 300.
+# Keep executable source files small enough for humans and agents to hold in one
+# mental model. Everything under content/ is exempt, code included: a post's
+# slide registry or figure is reviewed slide by slide, not as a source file,
+# and the limit starts to apply the moment such code is promoted out of
+# content/ into the system. Markdown is exempt everywhere. PROMPT.md is
+# injected context rather than publication content, so it warns at 250
+# physical lines and blocks at 300.
 
 set -u
 
@@ -21,7 +25,9 @@ checked=0
 
 should_check() {
   local file="$1"
-  [[ "$file" == docs/* ]] && return 1
+  [[ "$file" == docs/* || "$file" == content/* ]] && return 1
+  [[ "$file" == *.mdx ]] && return 1
+  [[ "$file" == *.md && "$(basename "$file")" != "PROMPT.md" ]] && return 1
   [[ "$file" == *node_modules/* || "$file" == *.generated.* || "$file" == *.d.ts ]] && return 1
   [[ "$(basename "$file")" == "PROMPT.md" ]] && return 0
   case "${file##*.}" in
@@ -79,7 +85,9 @@ else
   while IFS= read -r file; do files+=("$file"); done < <(git diff --cached --name-only --diff-filter=ACM)
 fi
 
-for file in "${files[@]}"; do
+# macOS ships bash 3.2, where `set -u` treats an empty array as unset, so a
+# bare "${files[@]}" aborts the hook whenever nothing is staged.
+for file in ${files[@]+"${files[@]}"}; do
   if should_check "$file"; then
     checked=$((checked + 1))
     check_file "$file"

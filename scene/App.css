@@ -78,7 +78,9 @@
 
 .intro p {
   margin: 0.9rem 0 0;
-  color: rgba(23, 23, 23, 0.88);
+  /* --intro-color lets the lab's text layer recolor the intro; the fallback
+     is the production ink. */
+  color: var(--intro-color, rgba(23, 23, 23, 0.88));
   font-size: var(--intro-font-size, 0.95rem);
   font-weight: var(--intro-font-weight, 300);
   line-height: var(--intro-line-height, 1.5);
