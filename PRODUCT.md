@@ -9,13 +9,11 @@ Work is tracked in Linear's **Personal Website** project. `PROMPT.md` owns local
 development workflow. This file owns the product promise, proof status, and
 open gates.
 
-## The five surfaces
+## The four surfaces
 
 - **Landing (`/`)** — a server-rendered static introduction enhanced by the
   client-only WebGL sun and shadow scene. It must remain useful without
   JavaScript or WebGL.
-- **Direction (`/direction`)** — an evergreen, deliberately non-rigid account
-  of what Ben is building toward, sourced separately from dated blog posts.
 - **Blog (`/blog`, `/blog/{slug}`)** — technical build-in-public posts compiled
   from MDX. Seeded placeholder posts are not content.
 - **Research (`/research`, `/research/{slug}`)** — working scientific models,
@@ -39,8 +37,8 @@ says apart from what it publishes (Ben, 2026-09).
   that feed it. Code there is content: linted and typechecked, but exempt from
   the line limit, because the unit of review is the slide or figure, not the
   file.
-- **Live** — the same files with `status: published`, plus Direction, which has
-  no status. Promotion is a frontmatter change; nothing moves.
+- **Live** — the same files with `status: published`. Promotion is a
+  frontmatter change; nothing moves.
 
 A component is either one post's, in that post's folder, or global, in
 `components/mdx/`. Promotion is a move plus the import, and leaving `content/`
@@ -105,13 +103,6 @@ system for a bespoke component, is in the wrong lane.
 - Research and Blog share frontmatter validation, draft/archive semantics, the
   MDX compiler, Shiki, Mermaid, and MDX components. They do not maintain
   parallel parsing or publishing systems.
-
-### Direction
-
-- The page uses the same build-time MDX renderer and content styling as the
-  blog without inheriting blog frontmatter, status, discovery, or feed policy.
-- Its language states a direction rather than presenting a fixed decade-long
-  roadmap.
 
 ### Repository gates
 

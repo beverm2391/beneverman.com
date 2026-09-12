@@ -7,7 +7,6 @@ export type NavItem = {
 // Keep it minimal.
 export const navItems: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Direction", href: "/direction" },
   { label: "Research", href: "/research" },
   { label: "Blog", href: "/blog" }
 ];

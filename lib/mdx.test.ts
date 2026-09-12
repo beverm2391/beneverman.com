@@ -9,9 +9,9 @@ describe("shared MDX renderer", () => {
 
 | Surface | Source |
 | --- | --- |
-| Direction | MDX |
+| Blog | MDX |
 
-[Direction](/direction)
+[Blog](/blog)
 
 \`\`\`ts
 const shared: boolean = true;
@@ -21,7 +21,7 @@ const shared: boolean = true;
 
     expect(markup).toContain('id="shared-pipeline"');
     expect(markup).toContain("<table>");
-    expect(markup).toContain('href="/direction"');
+    expect(markup).toContain('href="/blog"');
     expect(markup).toContain('data-language="ts"');
     expect(markup).toContain('aria-label="Copy code"');
   });

@@ -50,11 +50,9 @@ limit. `pnpm install` configures the hook.
   the shared map in `lib/mdx.ts`, which never names a post). Promotion is a
   move plus the import; leaving `content/` is where the line limit starts to
   apply.
-- Blog and Direction share the `app/(content)` chrome and styling. The
-  evergreen Direction page reads `content/pages/direction.mdx` through
-  `lib/content-page-data.ts`. Research renders through the separate
-  `app/(research)` group: it imports the shared long-form primitives without
-  inheriting the generic site header or theme control.
+- Blog renders under the `app/(content)` chrome and styling. Research renders
+  through the separate `app/(research)` group: it imports the shared long-form
+  primitives without inheriting the generic site header or theme control.
 - `$...$` and `$$...$$` LaTeX render to KaTeX + MathML at compile time through
   the shared MDX pipeline. KaTeX's stylesheet stays scoped to the two writing
   route groups so the homepage does not download it.
