@@ -42,12 +42,11 @@ says apart from what it publishes (Ben, 2026-09).
 - **Live** — the same files with `status: published`, plus Direction, which has
   no status. Promotion is a frontmatter change; nothing moves.
 
-A component's scope is where it lives. One post: that post's folder. Every blog
-or every research publication: `components/blog/` or `components/research/`.
-Every MDX surface: `components/mdx/`. Promotion is a move plus the import, and
-leaving `content/` is where the line limit starts to apply: a post-scope slide
-registry may run to a thousand lines, but it has to be split into pieces a
-human can hold before it may serve every post.
+A component is either one post's, in that post's folder, or global, in
+`components/mdx/`. Promotion is a move plus the import, and leaving `content/`
+is where the line limit starts to apply: a post's slide registry may run to a
+thousand lines, but it has to be split into pieces a human can hold before it
+may serve every post.
 
 A system change that mentions a specific post, or a post that reaches into the
 system for a bespoke component, is in the wrong lane.

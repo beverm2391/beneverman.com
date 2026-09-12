@@ -39,9 +39,7 @@ export type PostComponents = Record<string, React.ComponentType<never>>;
 
 // The global scope: generic components every first-party MDX surface may use.
 // Nothing here belongs to one post. A component that only one post needs
-// lives beside that post and arrives through `components` below; one that
-// every blog or every research publication needs would live under
-// components/blog or components/research and merge in the same way.
+// lives beside that post and arrives through `components` below.
 // MDX primitives are remapped too: images and compile-time mermaid SVGs get
 // the click-to-zoom lightbox, links get internal/external routing, and code
 // blocks get a copy button.

@@ -46,12 +46,10 @@ limit. `pnpm install` configures the hook.
   the same folder. `lib/publication-data.ts` owns discovery, frontmatter,
   status policy, and component loading for both types; metadata/feed routes
   should import data-only modules.
-- Component scope is location. One post: its folder. Every blog or every
-  research publication: `components/blog/` or `components/research/`, merged
-  in by that type's loader once the first such component exists. Every MDX
-  surface: `components/mdx/`, the shared map in `lib/mdx.ts`, which never
-  names a post. Promotion is a move plus the import; leaving `content/` is
-  where the line limit starts to apply.
+- A component is either one post's (its folder) or global (`components/mdx/`,
+  the shared map in `lib/mdx.ts`, which never names a post). Promotion is a
+  move plus the import; leaving `content/` is where the line limit starts to
+  apply.
 - Blog and Direction share the `app/(content)` chrome and styling. The
   evergreen Direction page reads `content/pages/direction.mdx` through
   `lib/content-page-data.ts`. Research renders through the separate
